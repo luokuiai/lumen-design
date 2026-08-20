@@ -104,19 +104,20 @@ export const tabContainerClassNames =
 
 export const tabVariantClassNames = {
   default: {
-    container: tabContainerClassNames,
+    container: 'bg-[var(--lumen-color-surface)] px-1',
     base:
-      'inline-flex items-center justify-center gap-2 rounded-[10px] px-4 py-3 text-[13px] font-medium transition-all duration-200',
+      'group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 text-[13px] font-medium transition-colors duration-200 after:absolute after:bottom-[-1px] after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out',
     active:
-      'bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)] shadow-[0_10px_20px_var(--lumen-color-focus-ring)]',
+      'text-[var(--lumen-color-primary)] after:scale-x-100 after:opacity-100',
     inactive:
-      'bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-info-soft)] hover:text-[var(--lumen-color-primary)]',
+      'text-[var(--lumen-color-text-muted)] hover:text-[var(--lumen-color-primary)]',
     iconBase: '',
-    iconActive: '',
-    iconInactive: '',
-    badgeBase: 'rounded-full px-2 py-0.5 text-[11px] font-semibold',
-    badgeActive: 'bg-[var(--lumen-color-surface)]/20 text-[var(--lumen-color-on-primary)]',
-    badgeInactive: 'bg-[var(--lumen-color-surface)] text-[var(--lumen-color-primary)]',
+    iconActive: 'text-[var(--lumen-color-primary)]',
+    iconInactive: 'text-[var(--lumen-color-text-placeholder)] group-hover:text-[var(--lumen-color-primary)]',
+    badgeBase:
+      'inline-flex min-w-[24px] items-center justify-center rounded-full px-1.5 py-0.5 text-[11px] font-semibold transition-all',
+    badgeActive: 'bg-[var(--lumen-color-primary-soft-hover)] text-[var(--lumen-color-primary)]',
+    badgeInactive: 'bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-muted)]',
   },
   pill: {
     container:
@@ -156,22 +157,6 @@ export const tabVariantClassNames = {
       'bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)] shadow-[0_6px_12px_var(--lumen-color-focus-ring)]',
     badgeInactive:
       'bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-muted)]',
-  },
-  shortLine: {
-    container: 'bg-[var(--lumen-color-surface)] px-1',
-    base:
-      'group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 text-[13px] font-medium transition-colors duration-200 after:absolute after:bottom-[-1px] after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out',
-    active:
-      'text-[var(--lumen-color-primary)] after:scale-x-100 after:opacity-100',
-    inactive:
-      'text-[var(--lumen-color-text-muted)] hover:text-[var(--lumen-color-primary)]',
-    iconBase: '',
-    iconActive: 'text-[var(--lumen-color-primary)]',
-    iconInactive: 'text-[var(--lumen-color-text-placeholder)] group-hover:text-[var(--lumen-color-primary)]',
-    badgeBase:
-      'inline-flex min-w-[24px] items-center justify-center rounded-full px-1.5 py-0.5 text-[11px] font-semibold transition-all',
-    badgeActive: 'bg-[var(--lumen-color-primary-soft-hover)] text-[var(--lumen-color-primary)]',
-    badgeInactive: 'bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-muted)]',
   },
 } as const;
 

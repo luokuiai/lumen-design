@@ -1,20 +1,22 @@
 import './styles/base.css';
 
 export * from './theme-contract';
+export * from './components/Avatar';
 export * from './components/Badge';
 export * from './components/Button';
 export * from './components/Checkbox';
-export * from './components/CompactPagination';
 export * from './components/ConfirmDialog';
 export * from './components/DatePicker';
 export * from './components/DateTimePicker';
 export * from './components/Drawer';
 export * from './components/DropdownMenu';
+export * from './components/FileUpload';
 export * from './components/FormField';
 export * from './components/Input';
 export * from './components/Modal';
 export * from './components/Pagination';
 export * from './components/Radio';
+export * from './components/SegmentedControl';
 export * from './components/Select';
 export * from './components/Switch';
 export * from './components/Tabs';

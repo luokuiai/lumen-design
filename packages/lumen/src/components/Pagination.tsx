@@ -1,15 +1,22 @@
 import React, { useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from './Button';
 import { cn } from './classNames';
 import { Select } from './Select';
 
 type PaginationItem = number | 'ellipsis-left' | 'ellipsis-right';
 
-interface PaginationProps {
+export type PaginationVariant = 'default' | 'compact';
+
+export interface PaginationProps {
   currentPage: number;
   totalPages: number;
   totalItems: number;
   onPageChange: (page: number) => void;
+  variant?: PaginationVariant;
+  loading?: boolean;
+  itemLabel?: string;
+  hideOnSinglePage?: boolean;
   pageSize?: number;
   pageSizeOptions?: number[];
   onPageSizeChange?: (pageSize: number) => void;
@@ -49,6 +56,10 @@ export const Pagination = ({
   totalPages,
   totalItems,
   onPageChange,
+  variant = 'default',
+  loading = false,
+  itemLabel = '条',
+  hideOnSinglePage,
   pageSize,
   pageSizeOptions,
   onPageSizeChange,
@@ -72,6 +83,45 @@ export const Pagination = ({
     () => buildPaginationItems(safeCurrentPage, safeTotalPages),
     [safeCurrentPage, safeTotalPages],
   );
+  const shouldHideOnSinglePage =
+    hideOnSinglePage ?? variant === 'compact';
+
+  if (shouldHideOnSinglePage && totalPages <= 1) return null;
+
+  if (variant === 'compact') {
+    return (
+      <div
+        className={cn(
+          'flex shrink-0 items-center justify-between border-t border-[var(--lumen-color-border)] px-3 py-1.5 text-xs text-[var(--lumen-color-text-muted)]',
+          className,
+        )}
+      >
+        <span>
+          共 {totalItems} {itemLabel} · 第 {safeCurrentPage} / {safeTotalPages} 页
+        </span>
+        <div className="flex gap-2">
+          <Button
+            disabled={safeCurrentPage <= 1 || loading}
+            onClick={() => onPageChange(safeCurrentPage - 1)}
+            size="sm"
+            type="button"
+            variant="secondary"
+          >
+            上一页
+          </Button>
+          <Button
+            disabled={safeCurrentPage >= safeTotalPages || loading}
+            onClick={() => onPageChange(safeCurrentPage + 1)}
+            size="sm"
+            type="button"
+            variant="secondary"
+          >
+            下一页
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -94,6 +144,7 @@ export const Pagination = ({
                 }))}
                 value={pageSize}
                 onChange={(value) => onPageSizeChange(Number(value))}
+                disabled={loading}
                 size="sm"
                 className="w-full"
                 radius="rounded-[8px]"
@@ -106,7 +157,7 @@ export const Pagination = ({
           type="button"
           aria-label="上一页"
           onClick={() => onPageChange(safeCurrentPage - 1)}
-          disabled={safeCurrentPage <= 1}
+          disabled={safeCurrentPage <= 1 || loading}
           className="flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronLeft size={14} />
@@ -117,6 +168,8 @@ export const Pagination = ({
               key={item}
               type="button"
               onClick={() => onPageChange(item)}
+              disabled={loading}
+              aria-current={item === safeCurrentPage ? 'page' : undefined}
               className={cn(
                 'h-[28px] w-[28px] rounded-[6px] text-[12px] transition-colors',
                 item === safeCurrentPage
@@ -139,7 +192,7 @@ export const Pagination = ({
           type="button"
           aria-label="下一页"
           onClick={() => onPageChange(safeCurrentPage + 1)}
-          disabled={safeCurrentPage >= safeTotalPages}
+          disabled={safeCurrentPage >= safeTotalPages || loading}
           className="flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronRight size={14} />

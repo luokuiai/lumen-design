@@ -14,7 +14,7 @@ export interface TabOption<T extends string> {
   disabled?: boolean;
 }
 
-interface TabsProps<T extends string> {
+export interface TabsProps<T extends string> {
   value: T;
   options: TabOption<T>[];
   onChange: (value: T) => void;
@@ -31,11 +31,16 @@ export const Tabs = <T extends string>({
   onChange,
   variant = 'default',
   className = '',
-  gridClassName = 'grid grid-cols-1 gap-2 xl:grid-cols-4',
+  gridClassName,
   itemClassName = '',
   aside,
 }: TabsProps<T>) => {
   const styles = tabVariantClassNames[variant];
+  const resolvedGridClassName =
+    gridClassName ??
+    (variant === 'card'
+      ? 'grid grid-cols-1 gap-2 xl:grid-cols-4'
+      : 'flex items-center gap-2 overflow-x-auto');
 
   return (
     <div data-ui="tabs-surface" className={cn(styles.container, className)}>
@@ -43,7 +48,7 @@ export const Tabs = <T extends string>({
         <div
           role="tablist"
           data-testid="tabs-grid"
-          className={cn(gridClassName, aside ? 'min-w-0 flex-1' : '')}
+          className={cn(resolvedGridClassName, aside ? 'min-w-0 flex-1' : '')}
         >
           {options.map((option) => {
             const active = option.value === value;
