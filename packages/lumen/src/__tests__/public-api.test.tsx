@@ -5,11 +5,16 @@ import * as Lumen from '../index';
 
 describe('public API', () => {
   it('exports the foundation components', () => {
+    expect(Lumen.Avatar).toBeTypeOf('object');
     expect(Lumen.Button).toBeTypeOf('function');
+    expect(Lumen.FileUpload).toBeTypeOf('object');
     expect(Lumen.Input).toBeTypeOf('object');
     expect(Lumen.Select).toBeTypeOf('function');
     expect(Lumen.Modal).toBeTypeOf('function');
+    expect(Lumen.Pagination).toBeTypeOf('function');
+    expect(Lumen.SegmentedControl).toBeTypeOf('function');
     expect(Lumen.TreeSelect).toBeTypeOf('function');
+    expect('CompactPagination' in Lumen).toBe(false);
     expect('TimeSelector' in Lumen).toBe(false);
   });
 
