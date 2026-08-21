@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@luokuiai/lumen-theme-clarity": ["../packages/lumen-theme-clarity/clarity.css"],
+      "@luokuiai/lumen-ui": ["../packages/lumen-ui/src/index.ts"],
+      "lucide-react": ["../packages/lumen-ui/node_modules/lucide-react"],
+      "react": ["../node_modules/.bun/@types+react@19.2.18/node_modules/@types/react/index.d.ts"],
+      "react-dom": ["../node_modules/.bun/@types+react-dom@19.2.4+bb30d84b8e9977d1/node_modules/@types/react-dom/index.d.ts"],
+      "react-dom/client": ["../node_modules/.bun/@types+react-dom@19.2.4+bb30d84b8e9977d1/node_modules/@types/react-dom/client.d.ts"],
+      "react/jsx-runtime": ["../node_modules/.bun/@types+react@19.2.18/node_modules/@types/react/jsx-runtime.d.ts"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}

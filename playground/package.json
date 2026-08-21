@@ -1,0 +1,24 @@
+{
+  "name": "@luokuiai/lumen-playground",
+  "private": true,
+  "version": "1.0.0-alpha.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --host 0.0.0.0",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@luokuiai/lumen-theme-clarity": "workspace:*",
+    "@luokuiai/lumen-ui": "workspace:*",
+    "lucide-react": "^0.563.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.4",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.4.3"
+  }
+}

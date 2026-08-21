@@ -64,7 +64,7 @@ const TimeColumn: React.FC<TimeColumnProps> = ({
             disabled={disabled}
             onClick={() => onSelect(item)}
             className={cn(
-              'block w-full rounded-[6px] px-2 py-1.5 text-center text-[13px] transition-colors',
+              'block w-full rounded-[6px] px-2 py-1.5 text-center text-[13px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
               selected === item
                 ? 'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)]'
                 : 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',

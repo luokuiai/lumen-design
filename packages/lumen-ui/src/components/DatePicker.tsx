@@ -154,6 +154,15 @@ const sizeTokens = {
 
 type SizeToken = (typeof sizeTokens)[DatePickerSize];
 
+const pickerIconButtonClassName =
+  'flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent';
+
+const pickerHeaderButtonClassName =
+  'rounded-[6px] px-2 py-1 font-semibold text-[var(--lumen-color-text)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
+
+const pickerOptionFocusClassName =
+  'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
+
 // ─── 组件 ──────────────────────────────────────────────
 
 export const DatePicker: React.FC<DatePickerProps> = ({
@@ -856,10 +865,8 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
               disabled={!canGoPrevDayYearRange}
               onClick={prevDayYearRange}
               className={cn(
-                'flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors',
-                canGoPrevDayYearRange
-                  ? 'hover:bg-[var(--lumen-color-surface-muted)]'
-                  : 'cursor-not-allowed opacity-40',
+                pickerIconButtonClassName,
+                !canGoPrevDayYearRange && 'opacity-40',
               )}
             >
               <ChevronLeft size={18} />
@@ -872,10 +879,8 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
               disabled={!canGoNextDayYearRange}
               onClick={nextDayYearRange}
               className={cn(
-                'flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors',
-                canGoNextDayYearRange
-                  ? 'hover:bg-[var(--lumen-color-surface-muted)]'
-                  : 'cursor-not-allowed opacity-40',
+                pickerIconButtonClassName,
+                !canGoNextDayYearRange && 'opacity-40',
               )}
             >
               <ChevronRight size={18} />
@@ -894,7 +899,8 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
                     disabled={disabled}
                     onClick={() => selectYearInDayMode(y)}
                     className={cn(
-                      'mx-auto flex h-10 w-full items-center justify-center rounded-full text-[13px] transition-all',
+                      'mx-auto flex h-10 w-12 items-center justify-center rounded-full text-[13px] transition-all',
+                      pickerOptionFocusClassName,
                       isSelected &&
                         'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
                       !isSelected &&
@@ -921,7 +927,7 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
             <button
               type="button"
               onClick={prevYear}
-              className="flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)]"
+              className={pickerIconButtonClassName}
             >
               <ChevronLeft size={18} />
             </button>
@@ -930,7 +936,7 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
               onClick={() => setDayView('year')}
               className={cn(
                 tokens.header,
-                'font-semibold text-[var(--lumen-color-text)] hover:text-[var(--lumen-color-primary)] transition-colors',
+                pickerHeaderButtonClassName,
               )}
             >
               {viewYear}年
@@ -938,7 +944,7 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
             <button
               type="button"
               onClick={nextYear}
-              className="flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)]"
+              className={pickerIconButtonClassName}
             >
               <ChevronRight size={18} />
             </button>
@@ -957,7 +963,8 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
                   disabled={disabled}
                   onClick={() => selectMonthInDayMode(idx)}
                   className={cn(
-                    'relative flex h-10 items-center justify-center rounded-full text-[13px] transition-all',
+                    'relative mx-auto flex h-10 w-10 items-center justify-center rounded-full text-[13px] transition-all',
+                    pickerOptionFocusClassName,
                     isSelected &&
                       'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
                     !isSelected && isCurrent && 'font-semibold text-[var(--lumen-color-primary)]',
@@ -985,7 +992,7 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
               type="button"
               onClick={prevMonth}
               disabled={!canGoPrevMonth}
-              className="flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] disabled:cursor-not-allowed disabled:opacity-30"
+              className={pickerIconButtonClassName}
             >
               <ChevronLeft size={18} />
             </button>
@@ -995,7 +1002,7 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
                 onClick={() => setDayView('year')}
                 className={cn(
                   tokens.header,
-                  'font-semibold text-[var(--lumen-color-text)] hover:text-[var(--lumen-color-primary)] transition-colors',
+                  pickerHeaderButtonClassName,
                 )}
               >
                 {viewYear}年
@@ -1005,7 +1012,7 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
                 onClick={() => setDayView('month')}
                 className={cn(
                   tokens.header,
-                  'font-semibold text-[var(--lumen-color-text)] hover:text-[var(--lumen-color-primary)] transition-colors',
+                  pickerHeaderButtonClassName,
                 )}
               >
                 {MONTHS[viewMonth]}
@@ -1015,7 +1022,7 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
               type="button"
               onClick={nextMonth}
               disabled={!canGoNextMonth}
-              className="flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] disabled:cursor-not-allowed disabled:opacity-30"
+              className={pickerIconButtonClassName}
             >
               <ChevronRight size={18} />
             </button>
@@ -1059,6 +1066,7 @@ const DayModeContent: React.FC<DayModeContentProps> = ({
                       onClick={() => selectDate(cell.dateStr)}
                       className={cn(
                         'relative mx-auto flex items-center justify-center rounded-full transition-all',
+                        pickerOptionFocusClassName,
                         tokens.cell,
                         !cell.current && 'text-[var(--lumen-color-border-hover)]',
                         isDisabled && 'pointer-events-none text-[var(--lumen-color-border-hover)]',
@@ -1184,10 +1192,8 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
               disabled={!canGoPrevYearRange}
               onClick={prevYearRange}
               className={cn(
-                'flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors',
-                canGoPrevYearRange
-                  ? 'hover:bg-[var(--lumen-color-surface-muted)]'
-                  : 'cursor-not-allowed opacity-40',
+                pickerIconButtonClassName,
+                !canGoPrevYearRange && 'opacity-40',
               )}
             >
               <ChevronLeft size={18} />
@@ -1200,10 +1206,8 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
               disabled={!canGoNextYearRange}
               onClick={nextYearRange}
               className={cn(
-                'flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors',
-                canGoNextYearRange
-                  ? 'hover:bg-[var(--lumen-color-surface-muted)]'
-                  : 'cursor-not-allowed opacity-40',
+                pickerIconButtonClassName,
+                !canGoNextYearRange && 'opacity-40',
               )}
             >
               <ChevronRight size={18} />
@@ -1222,7 +1226,8 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
                     disabled={disabled}
                     onClick={() => selectYear(y)}
                     className={cn(
-                      'mx-auto flex h-10 w-full items-center justify-center rounded-full text-[13px] transition-all',
+                      'mx-auto flex h-10 w-12 items-center justify-center rounded-full text-[13px] transition-all',
+                      pickerOptionFocusClassName,
                       isSelected &&
                         'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
                       !isSelected &&
@@ -1249,7 +1254,7 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
             <button
               type="button"
               onClick={prevYear}
-              className="flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)]"
+              className={pickerIconButtonClassName}
             >
               <ChevronLeft size={18} />
             </button>
@@ -1258,7 +1263,7 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
               onClick={() => setShowYearPicker(true)}
               className={cn(
                 tokens.header,
-                'font-semibold text-[var(--lumen-color-text)] hover:text-[var(--lumen-color-primary)] transition-colors',
+                pickerHeaderButtonClassName,
               )}
             >
               {viewYear}年
@@ -1266,7 +1271,7 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
             <button
               type="button"
               onClick={nextYear}
-              className="flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)]"
+              className={pickerIconButtonClassName}
             >
               <ChevronRight size={18} />
             </button>
@@ -1297,7 +1302,8 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
                       disabled={disabled}
                       onClick={() => selectMonth(viewYear, idx)}
                       className={cn(
-                        'relative flex h-10 items-center justify-center rounded-full text-[13px] transition-all',
+                        'relative mx-auto flex h-10 w-10 items-center justify-center rounded-full text-[13px] transition-all',
+                        pickerOptionFocusClassName,
                         isSelected &&
                           'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
                         !isSelected &&
