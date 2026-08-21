@@ -677,7 +677,7 @@ export const TreeSelect = <TNode,>({
                 </div>
               </div>
             ) : null}
-            <div className="max-h-[280px] overflow-y-auto p-1.5">
+            <div className="max-h-[280px] overflow-y-auto px-2.5 py-1.5">
               {loading ? (
                 <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
                   加载中...

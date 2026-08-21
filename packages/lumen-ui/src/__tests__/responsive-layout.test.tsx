@@ -58,7 +58,7 @@ describe('responsive layouts', () => {
     expect(panel).toHaveStyle({ maxHeight: 'calc(100dvh - 16px)' });
   });
 
-  it('stacks date-time content on mobile and restores columns on pad', async () => {
+  it('keeps date-time columns on mobile with horizontal overflow', async () => {
     Object.defineProperty(window, 'innerWidth', {
       configurable: true,
       value: 300,
@@ -75,19 +75,23 @@ describe('responsive layouts', () => {
     await user.click(screen.getByRole('button', { name: '请选择日期时间' }));
 
     const panel = document.querySelector<HTMLElement>('[data-date-time-picker-panel]');
-    const layout = panel?.firstElementChild;
+    const layout = panel?.firstElementChild as HTMLElement | null;
     expect(panel).toHaveStyle({ width: '284px' });
-    expect(layout).toHaveClass('grid-cols-1');
-    expect(layout).toHaveClass('pad:grid-cols-[minmax(0,1fr)_210px]');
+    expect(panel).toHaveClass('overflow-x-auto');
+    expect(layout).toHaveStyle({ gridTemplateColumns: '320px 210px' });
   });
 
-  it('uses full available width for mobile toasts', async () => {
+  it('positions toasts on the right with responsive width', async () => {
     await act(async () => {
       Toast.info('响应式消息');
     });
 
     const toast = await screen.findByRole('status');
     expect(toast).toHaveClass('w-full', 'min-w-0');
-    expect(toast.parentElement).toHaveClass('inset-x-3', 'pad:w-[min(420px,calc(100vw-2rem))]');
+    expect(toast.parentElement).toHaveClass(
+      'right-3',
+      'w-[min(360px,calc(100vw-1.5rem))]',
+      'l:w-[380px]',
+    );
   });
 });

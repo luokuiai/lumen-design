@@ -26,13 +26,13 @@ export const radiusNormalizationMap = {
 
 export const buttonSizeTokens = {
   sm: 'h-[var(--lumen-control-height-sm)] px-3 text-[12px]',
-  md: 'h-[var(--lumen-control-height-md)] px-4 text-[13px]',
+  md: 'h-[34px] px-3.5 text-[13px]',
   lg: 'h-[var(--lumen-control-height-lg)] px-5 text-[14px]',
 } as const;
 
 export const buttonIconSizeTokens = {
   sm: 'h-8 w-8',
-  md: 'h-9 w-9',
+  md: 'h-[34px] w-[34px]',
   lg: 'h-10 w-10',
 } as const;
 

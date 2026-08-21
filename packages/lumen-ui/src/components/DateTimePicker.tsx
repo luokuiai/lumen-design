@@ -159,10 +159,16 @@ const getCalendarCells = (year: number, month: number) => {
   return cells;
 };
 
-const PANEL_WIDTH = 560;
+const DATE_PANEL_WIDTH = 320;
 const ESTIMATED_PANEL_HEIGHT = 374;
 const PANEL_GAP = 6;
 const CLOSE_ANIMATION_DURATION = 120;
+
+const pickerIconButtonClassName =
+  'flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
+
+const pickerActionButtonClassName =
+  'rounded-[6px] px-2 py-1 text-[13px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
 
 export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   value,
@@ -212,6 +218,8 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
     () => getCalendarCells(viewYear, viewMonth),
     [viewMonth, viewYear],
   );
+  const timePanelWidth = precision === 'minute' ? 148 : 210;
+  const panelWidth = DATE_PANEL_WIDTH + timePanelWidth;
   const minDateText = minDate ?? parseDateTime(minDateTime ?? '')?.date ?? null;
   const minDateTimeValue = getParsedTimestamp(minDateTime);
   const displayValue = parsed
@@ -260,7 +268,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
     }
     const panelHeight =
       panelRef.current?.offsetHeight || ESTIMATED_PANEL_HEIGHT;
-    const panelWidth = Math.min(PANEL_WIDTH, Math.max(0, window.innerWidth - 16));
+    const resolvedPanelWidth = Math.min(panelWidth, Math.max(0, window.innerWidth - 16));
     const spaceBelow = window.innerHeight - rect.bottom;
     const shouldDropUp = spaceBelow < panelHeight + PANEL_GAP;
     const top = shouldDropUp
@@ -268,18 +276,18 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
       : rect.bottom + PANEL_GAP;
     const left = Math.min(
       Math.max(8, rect.left),
-      Math.max(8, window.innerWidth - panelWidth - 8),
+      Math.max(8, window.innerWidth - resolvedPanelWidth - 8),
     );
     setDropDirection(shouldDropUp ? 'up' : 'down');
     setPanelStyle({
       position: 'fixed',
       left,
       top,
-      width: panelWidth,
+      width: resolvedPanelWidth,
       maxHeight: 'calc(100dvh - 16px)',
       zIndex: 9999,
     });
-  }, []);
+  }, [panelWidth]);
 
   const openPanel = () => {
     if (closeTimeoutRef.current) {
@@ -471,7 +479,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
             <div
               ref={panelRef}
               data-date-time-picker-panel
-              className="overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
+              className="overflow-x-auto overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
               style={{
                 ...panelStyle,
                 animation: isAnimatingOut
@@ -485,19 +493,17 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
               }}
             >
               <div
-                className={cn(
-                  'grid grid-cols-1',
-                  precision === 'minute'
-                    ? 'pad:grid-cols-[minmax(0,1fr)_148px]'
-                    : 'pad:grid-cols-[minmax(0,1fr)_210px]',
-                )}
+                className="grid"
+                style={{
+                  gridTemplateColumns: `${DATE_PANEL_WIDTH}px ${timePanelWidth}px`,
+                }}
               >
-                <div className="p-4">
+                <div className="min-w-0 p-4">
                   <div className="mb-3 flex items-center justify-between">
                     <button
                       type="button"
                       onClick={() => changeMonth(-1)}
-                      className="flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface-muted)]"
+                      className={pickerIconButtonClassName}
                     >
                       <ChevronLeft size={18} />
                     </button>
@@ -507,7 +513,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                     <button
                       type="button"
                       onClick={() => changeMonth(1)}
-                      className="flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface-muted)]"
+                      className={pickerIconButtonClassName}
                     >
                       <ChevronRight size={18} />
                     </button>
@@ -532,6 +538,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                           onClick={() => setDraftDate(cell.date)}
                           className={cn(
                             'mx-auto my-0.5 flex h-8 w-8 items-center justify-center rounded-full text-[13px] transition-all',
+                            'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
                             !cell.current && 'text-[var(--lumen-color-border-hover)]',
                             dateDisabled &&
                               'cursor-not-allowed text-[var(--lumen-color-border-hover)] hover:bg-transparent hover:text-[var(--lumen-color-border-hover)]',
@@ -565,7 +572,9 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                   isMinuteDisabled={(minute) =>
                     isTimeDisabled(draftDate, draftHour, minute)
                   }
-                  className="border-t border-[var(--lumen-color-surface-muted)] pad:border-l pad:border-t-0"
+                  className={cn(
+                    'border-l border-[var(--lumen-color-surface-muted)]',
+                  )}
                 />
               </div>
 
@@ -576,7 +585,10 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                     onChange('');
                     closePanel();
                   }}
-                  className="text-[13px] text-[var(--lumen-color-text-placeholder)] transition-colors hover:text-[var(--lumen-color-text-muted)]"
+                  className={cn(
+                    pickerActionButtonClassName,
+                    'text-[var(--lumen-color-text-placeholder)] hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-muted)]',
+                  )}
                 >
                   清除
                 </button>
@@ -584,7 +596,10 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                   <button
                     type="button"
                     onClick={selectToday}
-                    className="text-[13px] font-medium text-[var(--lumen-color-primary)] transition-colors hover:text-[var(--lumen-color-primary-active)]"
+                    className={cn(
+                      pickerActionButtonClassName,
+                      'font-medium text-[var(--lumen-color-primary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary-active)]',
+                    )}
                   >
                     此刻
                   </button>

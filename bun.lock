@@ -47,6 +47,23 @@
         "react-dom": ">=19.0.0",
       },
     },
+    "playground": {
+      "name": "@luokuiai/lumen-playground",
+      "version": "1.0.0-alpha.0",
+      "dependencies": {
+        "@luokuiai/lumen-theme-clarity": "workspace:*",
+        "@luokuiai/lumen-ui": "workspace:*",
+        "lucide-react": "^0.563.0",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+      },
+      "devDependencies": {
+        "@tailwindcss/vite": "^4.1.4",
+        "@vitejs/plugin-react": "^5.0.0",
+        "typescript": "~5.8.2",
+        "vite": "^6.4.3",
+      },
+    },
   },
   "packages": {
     "@adobe/css-tools": ["@adobe/css-tools@4.5.0", "", {}, "sha512-6OzddxPio9UiWTCemp4N8cYLV2ZN1ncRnV1cVGtve7dhPOtRkleRyx32GQCYSwDYgaHU3USMm84tNsvKzRCa1Q=="],
@@ -246,6 +263,8 @@
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
     "@luokuiai/lumen-theme-clarity": ["@luokuiai/lumen-theme-clarity@workspace:packages/lumen-theme-clarity"],
+
+    "@luokuiai/lumen-playground": ["@luokuiai/lumen-playground@workspace:playground"],
 
     "@luokuiai/lumen-ui": ["@luokuiai/lumen-ui@workspace:packages/lumen-ui"],
 

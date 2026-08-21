@@ -330,6 +330,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
           className="z-50"
         >
           <div
+            data-lumen-motion
             className={cn(
               'rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] py-1 shadow-[0_4px_16px_var(--lumen-color-shadow)]',
               align === 'right' ? 'origin-top-right' : 'origin-top-left',
@@ -339,8 +340,8 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             style={{
               animation:
                 phase === 'closing'
-                  ? 'dropdownMenuOutUp 0.12s ease-in forwards'
-                  : 'dropdownMenuInDown 0.12s ease-out',
+                  ? 'lumen-dropdown-out 0.12s ease-in forwards'
+                  : 'lumen-dropdown-in 0.12s ease-out',
             }}
           >
             {typeof children === 'function'
