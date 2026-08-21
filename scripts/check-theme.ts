@@ -1,9 +1,9 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { lumenThemeVariables } from '../packages/lumen/src/theme-contract';
+import { lumenThemeVariables } from '../packages/lumen-ui/src/theme-contract';
 
 const projectRoot = resolve(import.meta.dirname, '..');
-const clarityPath = resolve(projectRoot, 'packages/theme-clarity/clarity.css');
+const clarityPath = resolve(projectRoot, 'packages/lumen-theme-clarity/clarity.css');
 const clarityCss = await readFile(clarityPath, 'utf8');
 const declaredVariables = new Set(
   [...clarityCss.matchAll(/(--lumen-[a-z0-9-]+)\s*:/g)].map(
@@ -19,7 +19,7 @@ const unknown = [...declaredVariables].filter(
   (variable) => !contractVariables.has(variable),
 );
 
-const componentGlob = new Bun.Glob('packages/lumen/src/components/**/*.{ts,tsx}');
+const componentGlob = new Bun.Glob('packages/lumen-ui/src/components/**/*.{ts,tsx}');
 const hardCodedVisuals: string[] = [];
 for await (const relativePath of componentGlob.scan({ cwd: projectRoot })) {
   const source = await readFile(resolve(projectRoot, relativePath), 'utf8');

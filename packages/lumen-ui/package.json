@@ -1,8 +1,12 @@
 {
-  "name": "@luokuiai/lumen",
+  "name": "@luokuiai/lumen-ui",
   "version": "1.0.0-alpha.0",
   "description": "Lumen UI React component library",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luokuiai/lumen-design.git"
+  },
   "sideEffects": ["**/*.css"],
   "files": ["dist"],
   "main": "./dist/index.js",
@@ -13,7 +17,7 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./styles.css": "./dist/lumen.css",
+    "./styles.css": "./dist/lumen-ui.css",
     "./theme-contract": {
       "types": "./dist/types/theme-contract.d.ts",
       "import": "./dist/theme-contract.js"
