@@ -206,7 +206,7 @@ export const selectionPickerClassNames = {
   neutralBadge: 'border-[var(--lumen-color-info-border)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-primary-hover)]',
   infoBadge: 'border-[var(--lumen-color-info-border)] bg-[var(--lumen-color-primary-soft-hover)] text-[var(--lumen-color-primary-hover)]',
   modalPanel:
-    'flex max-h-[86vh] w-full max-w-[980px] flex-col overflow-hidden rounded-[18px] bg-[var(--lumen-color-surface)] shadow-[0_18px_60px_var(--lumen-color-shadow)]',
+    'flex max-h-[calc(100dvh-1.5rem)] w-full max-w-[980px] flex-col overflow-hidden rounded-[12px] bg-[var(--lumen-color-surface)] shadow-[0_18px_60px_var(--lumen-color-shadow)] pad:max-h-[86vh] pad:rounded-[16px] l:rounded-[18px]',
   modalHeader: 'border-[var(--lumen-color-border)]',
   modalTitle: 'text-[16px] font-semibold text-[var(--lumen-color-text-strong)]',
   modalDescription: 'text-[12px] text-[var(--lumen-color-text-muted)]',

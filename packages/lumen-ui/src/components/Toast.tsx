@@ -187,7 +187,7 @@ const ToastViewport: React.FC = () => {
 
   return (
     <div
-      className="pointer-events-none fixed right-6 top-6 z-[120] flex max-w-[calc(100vw-3rem)] flex-col items-end gap-3"
+      className="pointer-events-none fixed inset-x-3 top-3 z-[120] flex flex-col items-stretch gap-2 pad:inset-x-auto pad:right-4 pad:top-4 pad:w-[min(420px,calc(100vw-2rem))] pad:items-end pad:gap-3 xl:right-6 xl:top-6"
       data-toast-container
     >
       {items.map((item) => (
@@ -216,7 +216,7 @@ const ToastCard: React.FC<{
 
   return (
     <div
-      className={`pointer-events-auto relative flex min-w-[320px] max-w-[420px] items-start gap-3 overflow-hidden rounded-[10px] bg-[var(--lumen-color-surface-glass)] px-4 py-3 shadow-[0_14px_32px_var(--lumen-color-shadow),0_4px_10px_var(--lumen-color-shadow)] ring-1 ring-white/70 backdrop-blur-[5px] backdrop-saturate-125 ${
+      className={`pointer-events-auto relative flex w-full min-w-0 max-w-[420px] items-start gap-2.5 overflow-hidden rounded-[10px] bg-[var(--lumen-color-surface-glass)] px-3 py-3 shadow-[0_14px_32px_var(--lumen-color-shadow),0_4px_10px_var(--lumen-color-shadow)] ring-1 ring-white/70 backdrop-blur-[5px] backdrop-saturate-125 pad:gap-3 pad:px-4 ${
         item.closing
           ? 'animate-[lumen-toast-out_160ms_ease-in_forwards]'
           : 'animate-[lumen-toast-in_180ms_ease-out]'

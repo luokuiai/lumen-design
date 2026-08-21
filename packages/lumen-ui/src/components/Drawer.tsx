@@ -84,7 +84,7 @@ export const Drawer: React.FC<DrawerProps> = ({
       <aside
         data-drawer={drawerId}
         data-lumen-motion
-        className={`${closing ? 'animate-[lumen-drawer-out_250ms_ease-in_forwards]' : 'animate-[lumen-drawer-in_300ms_ease-out]'} ${panelClassName}`.trim()}
+        className={`h-full max-w-full overflow-y-auto ${closing ? 'animate-[lumen-drawer-out_250ms_ease-in_forwards]' : 'animate-[lumen-drawer-in_300ms_ease-out]'} ${panelClassName}`.trim()}
         onClick={(event) => event.stopPropagation()}
         {...buildDataAttributes(panelDataAttributes)}
       >

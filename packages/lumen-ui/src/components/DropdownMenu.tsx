@@ -191,12 +191,16 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
     if (!containerRef.current) return;
 
     const triggerRect = containerRef.current.getBoundingClientRect();
-    const menuWidth = menuRef.current?.offsetWidth ?? 200;
+    const measuredMenuWidth = menuRef.current?.offsetWidth ?? 200;
     const menuHeight = menuRef.current?.offsetHeight ?? 200;
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
     const viewportPadding = 8;
     const verticalGap = 8;
+    const menuWidth = Math.min(
+      measuredMenuWidth,
+      Math.max(0, viewportWidth - viewportPadding * 2),
+    );
 
     const preferredLeft =
       align === 'right' ? triggerRect.right - menuWidth : triggerRect.left;
@@ -223,6 +227,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
       position: 'fixed',
       right: 'auto',
       top,
+      maxWidth: `calc(100vw - ${viewportPadding * 2}px)`,
     });
   }, [align]);
 

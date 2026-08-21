@@ -39,12 +39,12 @@ export const Tabs = <T extends string>({
   const resolvedGridClassName =
     gridClassName ??
     (variant === 'card'
-      ? 'grid grid-cols-1 gap-2 xl:grid-cols-4'
+      ? 'grid grid-cols-1 gap-2 pad:grid-cols-2 l:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 xxxl:grid-cols-6'
       : 'flex items-center gap-2 overflow-x-auto');
 
   return (
     <div data-ui="tabs-surface" className={cn(styles.container, className)}>
-      <div className={cn('flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between')}>
+      <div className={cn('flex flex-col gap-3 pad:gap-4 l:flex-row l:items-center l:justify-between')}>
         <div
           role="tablist"
           data-testid="tabs-grid"
@@ -97,7 +97,7 @@ export const Tabs = <T extends string>({
             );
           })}
         </div>
-        {aside ? <div className="shrink-0">{aside}</div> : null}
+        {aside ? <div className="min-w-0 l:shrink-0">{aside}</div> : null}
       </div>
     </div>
   );

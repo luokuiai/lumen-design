@@ -203,10 +203,11 @@ export const Select = <T extends string | number = string>({
     const top = nextShouldDropUp
       ? Math.max(viewportPadding, rect.top - dropdownHeight - gap)
       : Math.min(window.innerHeight - viewportPadding, rect.bottom + gap);
-    const triggerWidth = rect.width;
+    const availableWidth = Math.max(0, window.innerWidth - viewportPadding * 2);
+    const triggerWidth = Math.min(rect.width, availableWidth);
     const maxWidth = Math.max(
       triggerWidth,
-      Math.min(window.innerWidth - viewportPadding * 2, 480),
+      Math.min(availableWidth, 480),
     );
     const measuredWidth = Math.min(
       maxWidth,
