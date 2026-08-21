@@ -7,6 +7,9 @@
     "type": "git",
     "url": "git+https://github.com/luokuiai/lumen-design.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": ["**/*.css"],
   "files": ["dist"],
   "main": "./dist/index.js",
