@@ -2,9 +2,11 @@ import React, { useId, useState } from 'react';
 import { Circle } from 'lucide-react';
 import { cn } from './classNames';
 
+export type RadioSize = 'sm' | 'md';
+
 export interface RadioProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type' | 'onChange'> {
-  size?: 'sm' | 'md';
+  size?: RadioSize;
   checked?: boolean;
   defaultChecked?: boolean;
   disabled?: boolean;
