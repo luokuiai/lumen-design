@@ -104,9 +104,22 @@
   to { opacity: 0; transform: translate3d(18px, -10px, 0) scale(0.965); }
 }
 
+@keyframes lumen-skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.lumen-skeleton[data-animation='pulse'] {
+  animation: lumen-skeleton-pulse 1.6s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-lumen-motion] {
     animation-duration: 1ms !important;
     transition-duration: 1ms !important;
+  }
+
+  .lumen-skeleton {
+    animation: none !important;
   }
 }

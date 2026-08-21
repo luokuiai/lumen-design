@@ -12,7 +12,9 @@ describe('public API', () => {
     expect(Lumen.Select).toBeTypeOf('function');
     expect(Lumen.Modal).toBeTypeOf('function');
     expect(Lumen.Pagination).toBeTypeOf('function');
+    expect(Lumen.RadioGroup).toBeTypeOf('function');
     expect(Lumen.SegmentedControl).toBeTypeOf('function');
+    expect(Lumen.Skeleton).toBeTypeOf('object');
     expect(Lumen.TreeSelect).toBeTypeOf('function');
     expect('CompactPagination' in Lumen).toBe(false);
     expect('TimeSelector' in Lumen).toBe(false);
