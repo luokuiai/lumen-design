@@ -86,6 +86,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     if (!rect) return;
     const panelHeight =
       panelRef.current?.offsetHeight || ESTIMATED_PANEL_HEIGHT;
+    const panelWidth = Math.min(PANEL_WIDTH, Math.max(0, window.innerWidth - 16));
     const shouldDropUp =
       window.innerHeight - rect.bottom < panelHeight + PANEL_GAP;
     setDropDirection(shouldDropUp ? 'up' : 'down');
@@ -93,12 +94,13 @@ export const TimePicker: React.FC<TimePickerProps> = ({
       position: 'fixed',
       left: Math.min(
         Math.max(8, rect.left),
-        Math.max(8, window.innerWidth - PANEL_WIDTH - 8),
+        Math.max(8, window.innerWidth - panelWidth - 8),
       ),
       top: shouldDropUp
         ? Math.max(8, rect.top - panelHeight - PANEL_GAP)
         : rect.bottom + PANEL_GAP,
-      width: PANEL_WIDTH,
+      width: panelWidth,
+      maxHeight: 'calc(100dvh - 16px)',
       zIndex: 9999,
     });
   }, []);
@@ -212,7 +214,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
             <div
               ref={panelRef}
               data-time-picker-panel
-              className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
+              className="overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
               style={{
                 ...panelStyle,
                 animation: isAnimatingOut

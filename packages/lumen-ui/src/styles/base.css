@@ -1,6 +1,38 @@
 @import 'tailwindcss';
 @source '../components';
 
+@theme {
+  --breakpoint-l: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-xxl: 96rem;
+  --breakpoint-xxxl: 120rem;
+}
+
+@custom-variant mobile (@media (width < 40rem));
+@custom-variant pad (@media (40rem <= width < 64rem));
+
+:root {
+  --lumen-breakpoint-mobile: 40rem;
+  --lumen-breakpoint-pad: 64rem;
+  --lumen-breakpoint-l: 64rem;
+  --lumen-breakpoint-xl: 80rem;
+  --lumen-breakpoint-xxl: 96rem;
+  --lumen-breakpoint-xxxl: 120rem;
+  --lumen-viewport-gutter: 12px;
+}
+
+@media (width >= 40rem) {
+  :root {
+    --lumen-viewport-gutter: 16px;
+  }
+}
+
+@media (width >= 80rem) {
+  :root {
+    --lumen-viewport-gutter: 24px;
+  }
+}
+
 :where([data-lumen-theme]) {
   font-family: var(--lumen-font-family);
   color: var(--lumen-color-text);

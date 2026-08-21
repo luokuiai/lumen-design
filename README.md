@@ -31,6 +31,22 @@ export function Example() {
 Themes implement the CSS variable contract exported from
 `@luokuiai/lumen-ui/theme-contract`.
 
+## Responsive breakpoints
+
+Lumen UI components use this mobile-first breakpoint contract:
+
+| Variant | Viewport |
+| --- | --- |
+| `mobile` | below 640px |
+| `pad` | 640px to 1023px |
+| `l` | 1024px and above |
+| `xl` | 1280px and above |
+| `xxl` | 1536px and above |
+| `xxxl` | 1920px and above |
+
+Unprefixed component styles define mobile defaults. Internal component layouts
+use the named variants for device-specific overrides.
+
 ## Development
 
 ```bash

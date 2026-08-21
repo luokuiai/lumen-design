@@ -86,7 +86,7 @@ export const Timeline: React.FC<TimelineProps> = ({
         return (
           <div
             key={item.id}
-            className={`relative flex gap-4 pb-4 ${idx === displayItems.length - 1 ? '' : ''}`}
+            className={`relative flex gap-3 pb-4 pad:gap-4 ${idx === displayItems.length - 1 ? '' : ''}`}
           >
             <div className="relative flex flex-col items-center">
               <div className={`relative z-10 mt-1 h-[14px] w-[14px] rounded-full border-2 ${style.dot} shrink-0`} />
@@ -96,7 +96,7 @@ export const Timeline: React.FC<TimelineProps> = ({
             </div>
 
             <div
-              className={`flex-1 rounded-[12px] border border-[var(--lumen-color-surface-muted)] bg-[var(--lumen-color-surface)] p-4 transition-shadow hover:shadow-sm ${
+              className={`min-w-0 flex-1 rounded-[12px] border border-[var(--lumen-color-surface-muted)] bg-[var(--lumen-color-surface)] p-3 transition-shadow hover:shadow-sm pad:p-4 ${
                 onItemClick ? 'cursor-pointer' : ''
               }`}
               onClick={() => onItemClick?.(item.id)}
@@ -142,7 +142,7 @@ export const Timeline: React.FC<TimelineProps> = ({
                     <p className="text-[12px] leading-6 text-[var(--lumen-color-text-muted)]">{item.description}</p>
                   )}
                   {item.beforeValue && item.afterValue && (
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 gap-2 pad:grid-cols-2 pad:gap-3">
                       <div className="rounded-[6px] bg-[var(--lumen-color-danger-soft)] px-3 py-2">
                         <div className="text-[10px] text-[var(--lumen-color-danger)]">变更前</div>
                         <div className="mt-0.5 text-[12px] text-[var(--lumen-color-danger-text)] line-through">{item.beforeValue}</div>

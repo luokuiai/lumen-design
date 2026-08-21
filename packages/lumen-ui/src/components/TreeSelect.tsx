@@ -261,8 +261,9 @@ export const TreeSelect = <TNode,>({
     const top = shouldOpenUp
       ? Math.max(viewportPadding, rect.top - dropdownHeight - gap)
       : Math.min(window.innerHeight - viewportPadding, rect.bottom + gap);
-    const triggerWidth = rect.width;
-    const maxWidth = Math.min(triggerWidth * 2.8, 480);
+    const availableWidth = Math.max(0, window.innerWidth - viewportPadding * 2);
+    const triggerWidth = Math.min(rect.width, availableWidth);
+    const maxWidth = Math.min(Math.max(triggerWidth, triggerWidth * 2.8), availableWidth, 480);
     const width = Math.max(
       triggerWidth,
       Math.min(

@@ -260,6 +260,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
     }
     const panelHeight =
       panelRef.current?.offsetHeight || ESTIMATED_PANEL_HEIGHT;
+    const panelWidth = Math.min(PANEL_WIDTH, Math.max(0, window.innerWidth - 16));
     const spaceBelow = window.innerHeight - rect.bottom;
     const shouldDropUp = spaceBelow < panelHeight + PANEL_GAP;
     const top = shouldDropUp
@@ -267,14 +268,15 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
       : rect.bottom + PANEL_GAP;
     const left = Math.min(
       Math.max(8, rect.left),
-      Math.max(8, window.innerWidth - PANEL_WIDTH - 8),
+      Math.max(8, window.innerWidth - panelWidth - 8),
     );
     setDropDirection(shouldDropUp ? 'up' : 'down');
     setPanelStyle({
       position: 'fixed',
       left,
       top,
-      width: PANEL_WIDTH,
+      width: panelWidth,
+      maxHeight: 'calc(100dvh - 16px)',
       zIndex: 9999,
     });
   }, []);
@@ -469,7 +471,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
             <div
               ref={panelRef}
               data-date-time-picker-panel
-              className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
+              className="overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
               style={{
                 ...panelStyle,
                 animation: isAnimatingOut
@@ -484,10 +486,10 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
             >
               <div
                 className={cn(
-                  'grid',
+                  'grid grid-cols-1',
                   precision === 'minute'
-                    ? 'grid-cols-[minmax(0,1fr)_148px]'
-                    : 'grid-cols-[minmax(0,1fr)_210px]',
+                    ? 'pad:grid-cols-[minmax(0,1fr)_148px]'
+                    : 'pad:grid-cols-[minmax(0,1fr)_210px]',
                 )}
               >
                 <div className="p-4">
@@ -563,11 +565,11 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                   isMinuteDisabled={(minute) =>
                     isTimeDisabled(draftDate, draftHour, minute)
                   }
-                  className="border-l border-[var(--lumen-color-surface-muted)]"
+                  className="border-t border-[var(--lumen-color-surface-muted)] pad:border-l pad:border-t-0"
                 />
               </div>
 
-              <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-4 py-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[var(--lumen-color-surface-muted)] px-3 py-3 pad:px-4">
                 <button
                   type="button"
                   onClick={() => {

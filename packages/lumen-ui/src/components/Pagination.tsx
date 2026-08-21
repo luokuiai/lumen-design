@@ -92,7 +92,7 @@ export const Pagination = ({
     return (
       <div
         className={cn(
-          'flex shrink-0 items-center justify-between border-t border-[var(--lumen-color-border)] px-3 py-1.5 text-xs text-[var(--lumen-color-text-muted)]',
+          'flex shrink-0 flex-col gap-2 border-t border-[var(--lumen-color-border)] px-3 py-2 text-xs text-[var(--lumen-color-text-muted)] pad:flex-row pad:items-center pad:justify-between pad:py-1.5',
           className,
         )}
       >
@@ -126,7 +126,7 @@ export const Pagination = ({
   return (
     <div
       className={cn(
-        'flex flex-col gap-3 border-t border-[var(--lumen-color-surface-muted)] bg-[var(--lumen-color-surface-subtle)] px-5 py-4 xl:flex-row xl:items-center xl:justify-between',
+        'flex flex-col gap-3 border-t border-[var(--lumen-color-surface-muted)] bg-[var(--lumen-color-surface-subtle)] px-3 py-3 pad:px-4 l:flex-row l:items-center l:justify-between xl:px-5 xl:py-4',
         className,
       )}
     >
@@ -152,7 +152,7 @@ export const Pagination = ({
           </div>
         ) : null}
       </div>
-      <div className="flex flex-wrap items-center gap-0.5">
+      <div className="flex max-w-full flex-wrap items-center gap-0.5 overflow-x-auto">
         <button
           type="button"
           aria-label="上一页"
