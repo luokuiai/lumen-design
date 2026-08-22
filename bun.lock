@@ -27,14 +27,14 @@
     },
     "packages/lumen-theme-clarity": {
       "name": "@luokuiai/lumen-theme-clarity",
-      "version": "1.0.0-alpha.0",
+      "version": "1.0.0-alpha.1",
       "peerDependencies": {
-        "@luokuiai/lumen-ui": "^1.0.0-alpha.0",
+        "@luokuiai/lumen-ui": "^1.0.0-alpha.1",
       },
     },
     "packages/lumen-ui": {
       "name": "@luokuiai/lumen-ui",
-      "version": "1.0.0-alpha.0",
+      "version": "1.0.0-alpha.1",
       "dependencies": {
         "lucide-react": "^0.563.0",
       },
@@ -49,7 +49,7 @@
     },
     "playground": {
       "name": "@luokuiai/lumen-playground",
-      "version": "1.0.0-alpha.0",
+      "version": "1.0.0-alpha.1",
       "dependencies": {
         "@luokuiai/lumen-theme-clarity": "workspace:*",
         "@luokuiai/lumen-ui": "workspace:*",
