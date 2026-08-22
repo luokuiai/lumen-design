@@ -1,5 +1,63 @@
 # AGENTS.md
 
+## Development Branch Workflow
+
+All feature, fix, documentation, refactor, test, build, CI, and maintenance work
+must follow this workflow.
+
+### Mandatory Rules
+
+- Always create working branches from an up-to-date `develop` branch.
+- Always open development pull requests against `develop`.
+- Never create a normal working branch from `main`.
+- Never open a normal development pull request against `main`.
+- Keep each branch focused on one reviewable change.
+- Do not push directly to `develop` or `main` unless the user explicitly requests
+  a release operation described in this file.
+- Update `main` only through the release workflow in the next section.
+
+### Create a Working Branch
+
+Start with a clean worktree, update `develop`, and create a descriptive branch:
+
+```bash
+git switch develop
+git pull --ff-only origin develop
+git switch -c <type>/<short-description>
+```
+
+Examples:
+
+```text
+feat/add-command-menu
+fix/npm-publish-from-package
+docs/update-component-guide
+```
+
+### Validate and Commit
+
+Run the full repository gate before creating a pull request:
+
+```bash
+bun run check
+```
+
+Stage only files related to the task and use a concise commit message. Do not
+include unrelated worktree changes.
+
+### Push and Open the Pull Request
+
+Push the working branch and explicitly set `develop` as the pull request base:
+
+```bash
+git push -u origin <type>/<short-description>
+gh pr create --base develop --head <type>/<short-description>
+```
+
+Before reporting completion, verify that the pull request base is `develop`.
+Use the repository pull request template and write the pull request title and
+body in English.
+
 ## Release and Tagging
 
 This repository publishes npm packages from GitHub Actions when a tag matching
