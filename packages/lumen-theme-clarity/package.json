@@ -1,0 +1,22 @@
+{
+  "name": "@luokuiai/lumen-theme-clarity",
+  "version": "1.0.0-alpha.1",
+  "description": "Clarity theme for Lumen UI",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luokuiai/lumen-design.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": true,
+  "files": ["clarity.css", "README.md"],
+  "exports": {
+    ".": "./clarity.css",
+    "./clarity.css": "./clarity.css"
+  },
+  "peerDependencies": {
+    "@luokuiai/lumen-ui": "^1.0.0-alpha.1"
+  }
+}
