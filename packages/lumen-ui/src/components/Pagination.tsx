@@ -131,8 +131,8 @@ export const Pagination = ({
       )}
     >
       <div className="flex flex-wrap items-center gap-3">
-        <span className="text-[12px] text-[var(--lumen-color-text-muted)]">共 {totalItems} 条</span>
-        <span className="text-[12px] text-[var(--lumen-color-text-muted)]">
+        <span className="text-[13px] text-[var(--lumen-color-text-muted)]">共 {totalItems} 条</span>
+        <span className="text-[13px] text-[var(--lumen-color-text-muted)]">
           第 {safeCurrentPage} / {safeTotalPages} 页
         </span>
         {shouldShowPageSizeSelector ? (
