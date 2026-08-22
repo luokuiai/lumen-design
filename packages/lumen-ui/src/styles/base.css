@@ -4,8 +4,8 @@
 @theme {
   --breakpoint-l: 64rem;
   --breakpoint-xl: 80rem;
-  --breakpoint-xxl: 96rem;
-  --breakpoint-xxxl: 120rem;
+  --breakpoint-xxl: 120rem;
+  --breakpoint-xxxl: 160rem;
 }
 
 @custom-variant mobile (@media (width < 40rem));
@@ -16,8 +16,8 @@
   --lumen-breakpoint-pad: 64rem;
   --lumen-breakpoint-l: 64rem;
   --lumen-breakpoint-xl: 80rem;
-  --lumen-breakpoint-xxl: 96rem;
-  --lumen-breakpoint-xxxl: 120rem;
+  --lumen-breakpoint-xxl: 120rem;
+  --lumen-breakpoint-xxxl: 160rem;
   --lumen-viewport-gutter: 12px;
 }
 
