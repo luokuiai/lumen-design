@@ -453,7 +453,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
           }
         }}
         className={cn(
-          'flex h-[40px] w-full items-center gap-2 border bg-[var(--lumen-color-surface)] px-3.5 text-left text-[13px] outline-none transition-all',
+          'flex h-[40px] w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] px-3.5 text-left text-[13px] outline-none transition-all',
           radiusTokens.control,
           disabled
             ? 'cursor-not-allowed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-placeholder)]'

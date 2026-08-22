@@ -5,16 +5,26 @@ import {
   Check,
   ChevronDown,
   Filter,
+  LogOut,
   MoreHorizontal,
+  Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
   Plus,
   Search,
   Settings,
   UserRound,
+  X,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import {
   Avatar,
   Badge,
   Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
   Checkbox,
   ConfirmDialog,
   DatePicker,
@@ -30,6 +40,7 @@ import {
   RadioGroup,
   SegmentedControl,
   Select,
+  SideNav,
   Skeleton,
   Switch,
   Tabs,
@@ -46,6 +57,7 @@ type Section = {
   id: string;
   title: string;
   description: string;
+  icon: LucideIcon;
 };
 
 type TreeNode = {
@@ -55,12 +67,23 @@ type TreeNode = {
 };
 
 const sections: Section[] = [
-  { id: 'buttons', title: 'Buttons', description: '按钮、徽标、头像和提示。' },
-  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。' },
-  { id: 'pickers', title: 'Pickers', description: '选择器、树选择、日期和时间选择。' },
-  { id: 'navigation', title: 'Navigation', description: 'Tabs、分页、菜单和时间线。' },
-  { id: 'overlays', title: 'Overlays', description: 'Modal、Drawer、Confirm 和 Toast。' },
-  { id: 'feedback', title: 'Feedback', description: '上传、骨架屏和状态反馈。' },
+  { id: 'buttons', title: 'Buttons', description: '按钮、徽标、头像和提示。', icon: Plus },
+  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', icon: Check },
+  { id: 'pickers', title: 'Pickers', description: '选择器、树选择、日期和时间选择。', icon: CalendarDays },
+  { id: 'navigation', title: 'Navigation', description: 'Tabs、分页、菜单和时间线。', icon: MoreHorizontal },
+  { id: 'overlays', title: 'Overlays', description: 'Modal、Drawer、Confirm 和 Toast。', icon: Bell },
+  { id: 'feedback', title: 'Feedback', description: '上传、骨架屏和状态反馈。', icon: Settings },
+];
+
+const sideNavSections = [
+  {
+    items: sections.map((section) => ({
+      value: section.id,
+      label: section.title,
+      icon: section.icon,
+      href: `#${section.id}`,
+    })),
+  },
 ];
 
 const selectOptions = [
@@ -134,15 +157,31 @@ function DemoCard({
   wide?: boolean;
 }) {
   return (
-    <article className={wide ? 'demo-card demo-card-wide' : 'demo-card'}>
-      <h3>{title}</h3>
-      <div className="demo-content">{children}</div>
-    </article>
+    <Card className={wide ? 'demo-card demo-card-wide' : 'demo-card'}>
+      <CardHeader>
+        <CardTitle className="demo-card-title">{title}</CardTitle>
+      </CardHeader>
+      <CardContent>{children}</CardContent>
+    </Card>
+  );
+}
+
+function GalleryBrand({ className = '' }: { className?: string }) {
+  return (
+    <div className={`brand ${className}`.trim()}>
+      <div className="brand-mark">L</div>
+      <div>
+        <strong>Lumen UI</strong>
+        <span>Component Gallery</span>
+      </div>
+    </div>
   );
 }
 
 export default function App() {
-  const [density, setDensity] = useState<'default' | 'compact'>('default');
+  const [activeSection, setActiveSection] = useState('buttons');
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchText, setSearchText] = useState('项目周会');
   const [textareaText, setTextareaText] = useState('记录评审结论和后续动作。');
   const [checked, setChecked] = useState(true);
@@ -161,6 +200,7 @@ export default function App() {
   const [page, setPage] = useState(2);
   const [pageSize, setPageSize] = useState(20);
   const [files, setFiles] = useState<File[]>([]);
+  const [compactFiles, setCompactFiles] = useState<File[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -174,46 +214,215 @@ export default function App() {
   );
 
   return (
-    <div data-lumen-theme="clarity" data-density={density} className="app-shell">
+    <div
+      data-lumen-theme="clarity"
+      data-density="default"
+      className={`app-shell${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}
+    >
       <aside className="sidebar">
-        <div className="brand">
-          <div className="brand-mark">L</div>
-          <div>
-            <strong>Lumen UI</strong>
-            <span>Component Gallery</span>
-          </div>
-        </div>
-        <nav className="side-nav" aria-label="组件分类">
-          {sections.map((section) => (
-            <a key={section.id} href={`#${section.id}`}>
-              {section.title}
-            </a>
-          ))}
-        </nav>
+        <GalleryBrand />
+        <SideNav
+          ariaLabel="组件分类"
+          activeValue={activeSection}
+          collapsed={sidebarCollapsed}
+          className="gallery-side-nav"
+          sections={sideNavSections}
+          onSelect={setActiveSection}
+        />
       </aside>
+
+      <Drawer
+        open={mobileNavOpen}
+        placement="left"
+        drawerId="mobile-navigation"
+        panelClassName="mobile-nav-panel"
+        onRequestClose={() => setMobileNavOpen(false)}
+      >
+        <div className="mobile-nav-header">
+          <GalleryBrand className="mobile-nav-brand" />
+          <Button
+            iconOnly
+            variant="ghost"
+            aria-label="关闭导航"
+            icon={<X size={18} />}
+            onClick={() => setMobileNavOpen(false)}
+          />
+        </div>
+        <SideNav
+          ariaLabel="移动端组件分类"
+          activeValue={activeSection}
+          className="mobile-side-nav"
+          sections={sideNavSections}
+          onSelect={(value) => {
+            setActiveSection(value);
+            setMobileNavOpen(false);
+          }}
+        />
+      </Drawer>
 
       <main className="main">
         <header className="topbar">
-          <div>
-            <h1>Lumen UI Gallery</h1>
-            <p>组件库全量预览和交互检查入口。</p>
+          <div className="topbar-title">
+            <Button
+              iconOnly
+              variant="secondary"
+              className="mobile-menu-button"
+              aria-label="打开导航"
+              icon={<Menu size={18} />}
+              onClick={() => setMobileNavOpen(true)}
+            />
+            <Tooltip content={sidebarCollapsed ? '展开侧栏' : '折叠侧栏'} placement="bottom">
+              <Button
+                iconOnly
+                variant="ghost"
+                className="sidebar-toggle-button"
+                aria-label={sidebarCollapsed ? '展开侧栏' : '折叠侧栏'}
+                aria-expanded={!sidebarCollapsed}
+                icon={sidebarCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+                onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
+              />
+            </Tooltip>
+            <div>
+              <h1>Lumen UI Gallery</h1>
+              <p>组件库全量预览和交互检查入口。</p>
+            </div>
           </div>
           <div className="topbar-actions">
             <Input
+              className="topbar-search"
               size="md"
               value={searchText}
               onChange={(event) => setSearchText(event.target.value)}
               prefix={<Search size={15} />}
               placeholder="搜索组件"
             />
-            <SegmentedControl
-              value={density}
-              onChange={setDensity}
-              options={[
-                { label: '默认', value: 'default' },
-                { label: '紧凑', value: 'compact' },
-              ]}
-            />
+            <DropdownMenu
+              className="topbar-notification"
+              menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden py-0"
+              trigger={({ open, toggle }) => (
+                <Tooltip content="通知" placement="bottom">
+                  <Button
+                    iconOnly
+                    size="sm"
+                    variant="ghost"
+                    className="topbar-notification-button"
+                    aria-label="通知"
+                    aria-expanded={open}
+                    icon={(
+                      <span className="relative inline-flex">
+                        <Bell size={18} />
+                        <span className="absolute -right-1 -top-1 h-2 w-2 rounded-full border border-[var(--lumen-color-surface)] bg-[var(--lumen-color-danger)]" />
+                      </span>
+                    )}
+                    onClick={toggle}
+                  />
+                </Tooltip>
+              )}
+            >
+              {({ close }) => (
+                <div className="-my-1" data-testid="playground-notifications">
+                  <div className="flex items-center justify-between border-b border-[var(--lumen-color-surface-muted)] px-4 py-3">
+                    <span className="text-[14px] font-semibold text-[var(--lumen-color-text-strong)]">通知</span>
+                    <Badge size="sm" variant="danger">2</Badge>
+                  </div>
+                  <div className="py-1">
+                    {[
+                      ['组件检查已完成', '刚刚'],
+                      ['Dropdown 定位已更新', '5 分钟前'],
+                    ].map(([title, time]) => (
+                      <button
+                        key={title}
+                        type="button"
+                        className="flex w-full items-start gap-3 border-b border-[var(--lumen-color-surface-muted)] px-4 py-3 text-left last:border-b-0 hover:bg-[var(--lumen-color-surface-muted)] focus:outline-none focus-visible:bg-[var(--lumen-color-surface-muted)]"
+                        onClick={close}
+                      >
+                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[var(--lumen-color-primary)]" />
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-[13px] font-medium text-[var(--lumen-color-text)]">{title}</span>
+                          <span className="mt-1 block text-[11px] text-[var(--lumen-color-text-placeholder)]">{time}</span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="border-t border-[var(--lumen-color-surface-muted)] p-2">
+                    <button
+                      type="button"
+                      className="w-full rounded-[6px] px-3 py-2 text-center text-[12px] font-medium text-[var(--lumen-color-primary)] hover:bg-[var(--lumen-color-surface-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20"
+                      onClick={close}
+                    >
+                      全部标记为已读
+                    </button>
+                  </div>
+                </div>
+              )}
+            </DropdownMenu>
+            <DropdownMenu
+              menuMode
+              align="right"
+              className="topbar-avatar"
+              menuClassName="account-menu"
+              trigger={({ open, menuId, toggle }) => (
+                <Tooltip content="账户" placement="bottom">
+                  <button
+                    type="button"
+                    className="topbar-avatar-trigger"
+                    aria-label="打开账户菜单"
+                    aria-controls={menuId}
+                    aria-expanded={open}
+                    aria-haspopup="menu"
+                    onClick={toggle}
+                  >
+                    <Avatar
+                      size="sm"
+                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96&q=80"
+                      alt="Gallery user"
+                      name="Gallery User"
+                      imageProps={{
+                        loading: 'lazy',
+                        referrerPolicy: 'no-referrer',
+                      }}
+                    />
+                  </button>
+                </Tooltip>
+              )}
+            >
+              {({ close }) => (
+                <div>
+                  <div className="account-menu-profile">
+                    <Avatar
+                      size="md"
+                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96&q=80"
+                      alt="Gallery user"
+                      name="Gallery User"
+                      imageProps={{
+                        loading: 'lazy',
+                        referrerPolicy: 'no-referrer',
+                      }}
+                    />
+                    <span>
+                      <strong>Gallery User</strong>
+                      <small>gallery@lumen.dev</small>
+                    </span>
+                  </div>
+                  <div className="account-menu-actions">
+                    <button type="button" role="menuitem" onClick={close}>
+                      <UserRound size={16} />
+                      个人信息
+                    </button>
+                    <button type="button" role="menuitem" onClick={close}>
+                      <Settings size={16} />
+                      账户设置
+                    </button>
+                  </div>
+                  <div className="account-menu-actions account-menu-footer">
+                    <button type="button" role="menuitem" className="account-menu-logout" onClick={close}>
+                      <LogOut size={16} />
+                      退出登录
+                    </button>
+                  </div>
+                </div>
+              )}
+            </DropdownMenu>
           </div>
         </header>
 
@@ -236,13 +445,58 @@ export default function App() {
                 <DemoCard title="Badge + Avatar">
                   <div className="stack">
                     <div className="button-row">
-                      <Badge>默认</Badge>
-                      <Badge variant="outline">Outline</Badge>
-                      <Badge size="lg" shape="square">Square</Badge>
+                      <Badge variant="info">Info</Badge>
+                      <Badge variant="success">Success</Badge>
+                      <Badge variant="warning">Warning</Badge>
+                      <Badge variant="danger">Danger</Badge>
+                      <Badge variant="neutral">Neutral</Badge>
+                      <Badge variant="outline" shape="square">Outline</Badge>
                     </div>
                     <div className="avatar-row">
                       <Avatar name="Lumen Design" />
-                      <Avatar name="Qiao Ming" size="lg" shape="rounded" />
+                      <Avatar name="Qiao Ming" shape="rounded" />
+                      <Avatar
+                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96&q=80"
+                        alt="Unsplash portrait"
+                        name="Portrait User"
+                        imageProps={{
+                          loading: 'lazy',
+                          referrerPolicy: 'no-referrer',
+                        }}
+                      />
+                      <Avatar
+                        name="Color Avatar"
+                        style={{
+                          backgroundColor: 'var(--lumen-color-primary)',
+                          borderColor: 'transparent',
+                          color: 'var(--lumen-color-on-primary)',
+                        }}
+                      />
+                      <Avatar
+                        name="Success User"
+                        style={{
+                          backgroundColor: 'var(--lumen-color-success-soft)',
+                          borderColor: 'var(--lumen-color-success-border)',
+                          color: 'var(--lumen-color-success-text)',
+                        }}
+                      />
+                      <Avatar
+                        name="Warning User"
+                        shape="rounded"
+                        style={{
+                          backgroundColor: 'var(--lumen-color-warning-soft)',
+                          borderColor: 'var(--lumen-color-warning-border)',
+                          color: 'var(--lumen-color-warning-text)',
+                        }}
+                      />
+                      <Avatar
+                        name="Danger User"
+                        style={{
+                          backgroundColor: 'var(--lumen-color-danger-soft)',
+                          borderColor: 'var(--lumen-color-danger-border)',
+                          color: 'var(--lumen-color-danger-text)',
+                        }}
+                      />
                       <Avatar fallback={<UserRound size={18} />} />
                     </div>
                   </div>
@@ -425,7 +679,7 @@ export default function App() {
 
           return (
             <GallerySection key={section.id} section={section}>
-              <DemoCard title="FileUpload" wide>
+              <DemoCard title="FileUpload">
                 <FileUpload
                   value={files}
                   onChange={setFiles}
@@ -433,6 +687,18 @@ export default function App() {
                   maxFiles={3}
                   accept=".png,.jpg,.pdf"
                   hint="支持 PNG、JPG、PDF，最多 3 个文件。"
+                  onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
+                />
+              </DemoCard>
+              <DemoCard title="FileUpload Compact">
+                <FileUpload
+                  density="compact"
+                  value={compactFiles}
+                  onChange={setCompactFiles}
+                  multiple
+                  maxFiles={3}
+                  accept=".png,.jpg,.pdf"
+                  hint="支持 PNG、JPG、PDF"
                   onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
                 />
               </DemoCard>

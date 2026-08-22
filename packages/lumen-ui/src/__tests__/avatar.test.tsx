@@ -10,7 +10,7 @@ describe('Avatar', () => {
     const avatar = screen.getByRole('img', { name: 'Ada Lovelace' });
     expect(avatar).toHaveTextContent('AL');
     expect(avatar).toHaveClass('rounded-[var(--lumen-radius-icon)]');
-    expect(avatar).toHaveClass('h-12', 'w-12');
+    expect(avatar).toHaveClass('h-10', 'w-10');
   });
 
   it('falls back when the image cannot load', () => {

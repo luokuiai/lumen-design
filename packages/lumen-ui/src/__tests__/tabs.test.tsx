@@ -16,6 +16,12 @@ describe('Tabs', () => {
 
     expect(screen.getByRole('tab', { name: 'Overview' })).toHaveClass(
       'after:bg-[var(--lumen-color-primary)]',
+      'after:bottom-0',
+      'after:h-[2px]',
+    );
+    expect(screen.getByRole('tablist')).toHaveClass(
+      'overflow-x-auto',
+      'overflow-y-hidden',
     );
   });
 

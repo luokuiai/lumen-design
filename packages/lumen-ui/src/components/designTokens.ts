@@ -49,7 +49,7 @@ export type ButtonVariant = keyof typeof buttonVariantTokens;
 export type ButtonSize = keyof typeof buttonSizeTokens;
 
 const buttonBase =
-  'inline-flex shrink-0 items-center justify-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50';
+  'inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50';
 
 export const getButtonClassNames = ({
   variant = 'primary',
@@ -106,7 +106,7 @@ export const tabVariantClassNames = {
   default: {
     container: 'bg-[var(--lumen-color-surface)] px-1',
     base:
-      'group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 text-[13px] font-medium transition-colors duration-200 after:absolute after:bottom-[-1px] after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out',
+      'group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 text-[13px] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out',
     active:
       'text-[var(--lumen-color-primary)] after:scale-x-100 after:opacity-100',
     inactive:
@@ -173,6 +173,24 @@ export const tabBadgeClassNames = {
   base: 'rounded-full px-2 py-0.5 text-[11px] font-semibold',
   active: 'bg-[var(--lumen-color-surface)]/20 text-[var(--lumen-color-on-primary)]',
   inactive: 'bg-[var(--lumen-color-surface)] text-[var(--lumen-color-primary)]',
+} as const;
+
+export const sideNavClassNames = {
+  root: 'flex min-w-0 flex-col gap-2',
+  section: 'flex min-w-0 flex-col gap-1',
+  sectionTitle:
+    'flex h-7 items-center px-3 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]',
+  collapsedDivider:
+    'mx-auto my-1 h-px w-8 bg-[var(--lumen-color-border)]',
+  item:
+    'group relative flex min-h-[44px] w-full items-center rounded-[8px] text-left text-[14px] font-normal transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
+  expandedItem: 'gap-3 px-3',
+  collapsedItem: 'justify-center px-0',
+  activeItem:
+    'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary-hover)] before:absolute before:left-0 before:top-2 before:h-7 before:w-[3px] before:rounded-r-full before:bg-[var(--lumen-color-primary)]',
+  inactiveItem:
+    'text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary-hover)]',
+  disabledItem: 'cursor-not-allowed opacity-45',
 } as const;
 
 export const statCardToneClassNames = {

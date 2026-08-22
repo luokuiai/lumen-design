@@ -7,6 +7,8 @@ describe('public API', () => {
   it('exports the foundation components', () => {
     expect(Lumen.Avatar).toBeTypeOf('object');
     expect(Lumen.Button).toBeTypeOf('function');
+    expect(Lumen.Card).toBeTypeOf('object');
+    expect(Lumen.CardHeader).toBeTypeOf('object');
     expect(Lumen.FileUpload).toBeTypeOf('object');
     expect(Lumen.Input).toBeTypeOf('object');
     expect(Lumen.Select).toBeTypeOf('function');
@@ -14,6 +16,7 @@ describe('public API', () => {
     expect(Lumen.Pagination).toBeTypeOf('function');
     expect(Lumen.RadioGroup).toBeTypeOf('function');
     expect(Lumen.SegmentedControl).toBeTypeOf('function');
+    expect(Lumen.SideNav).toBeTypeOf('function');
     expect(Lumen.Skeleton).toBeTypeOf('object');
     expect(Lumen.TreeSelect).toBeTypeOf('function');
     expect('CompactPagination' in Lumen).toBe(false);
@@ -35,6 +38,7 @@ describe('public API', () => {
     expect(screen.getByRole('button', { name: 'Save' }).className).toContain(
       '--lumen-color-primary',
     );
+    expect(screen.getByRole('button', { name: 'Save' })).toHaveClass('cursor-pointer');
     expect(screen.getByRole('textbox', { name: 'Name' }).className).toContain(
       '--lumen-color-border',
     );

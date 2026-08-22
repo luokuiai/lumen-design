@@ -1,8 +1,10 @@
 import { type ReactNode } from 'react';
 import { cn } from './classNames';
+import { semanticBadgeToneClassNames } from './designTokens';
 
 type BadgeSize = 'sm' | 'md' | 'lg';
-type BadgeVariant = 'default' | 'outline';
+type BadgeTone = keyof typeof semanticBadgeToneClassNames;
+type BadgeVariant = 'default' | 'outline' | BadgeTone;
 type BadgeShape = 'pill' | 'square';
 
 interface BadgeProps {
@@ -14,14 +16,25 @@ interface BadgeProps {
 }
 
 const sizeClasses: Record<BadgeSize, string> = {
-  sm: 'px-2 py-0.5 text-[11px]',
-  md: 'px-2.5 py-1 text-[12px]',
-  lg: 'px-3 py-1.5 text-[13px]',
+  sm: 'h-5 px-2 text-[11px]',
+  md: 'h-[26px] px-2.5 text-[12px]',
+  lg: 'h-[30px] px-3 text-[13px]',
 };
 
 const shapeClasses: Record<BadgeShape, string> = {
   pill: 'rounded-full',
   square: 'rounded-[4px]',
+};
+
+const variantClasses: Record<BadgeVariant, string> = {
+  default: `border-transparent ${semanticBadgeToneClassNames.info}`,
+  neutral: `border-transparent ${semanticBadgeToneClassNames.neutral}`,
+  info: `border-transparent ${semanticBadgeToneClassNames.info}`,
+  success: `border-transparent ${semanticBadgeToneClassNames.success}`,
+  warning: `border-transparent ${semanticBadgeToneClassNames.warning}`,
+  danger: `border-transparent ${semanticBadgeToneClassNames.danger}`,
+  outline:
+    'border-[var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-secondary)]',
 };
 
 export function Badge({
@@ -34,10 +47,10 @@ export function Badge({
   return (
     <span
       className={cn(
-        'app-badge inline-flex items-center whitespace-nowrap',
+        'inline-flex items-center whitespace-nowrap border font-medium leading-none',
         sizeClasses[size],
         shapeClasses[shape],
-        variant === 'outline' && 'border',
+        variantClasses[variant],
         className,
       )}
     >
@@ -46,4 +59,4 @@ export function Badge({
   );
 }
 
-export type { BadgeProps, BadgeShape, BadgeSize, BadgeVariant };
+export type { BadgeProps, BadgeShape, BadgeSize, BadgeTone, BadgeVariant };

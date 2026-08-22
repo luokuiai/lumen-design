@@ -155,13 +155,13 @@ const sizeTokens = {
 type SizeToken = (typeof sizeTokens)[DatePickerSize];
 
 const pickerIconButtonClassName =
-  'flex h-8 w-8 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent';
+  'flex h-8 w-8 cursor-pointer items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent';
 
 const pickerHeaderButtonClassName =
-  'rounded-[6px] px-2 py-1 font-semibold text-[var(--lumen-color-text)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
+  'cursor-pointer rounded-[6px] px-2 py-1 font-semibold text-[var(--lumen-color-text)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
 
 const pickerOptionFocusClassName =
-  'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
+  'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
 
 // ─── 组件 ──────────────────────────────────────────────
 
@@ -667,7 +667,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
           }
         }}
         className={cn(
-          `flex w-full items-center border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] outline-none transition-all ${radiusTokens.control}`,
+          `flex w-full cursor-pointer items-center border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] outline-none transition-all ${radiusTokens.control}`,
           'hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)]',
           open &&
             !isAnimatingOut &&

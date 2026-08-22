@@ -169,7 +169,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             'relative w-full min-w-0 border-dashed text-[var(--lumen-color-text-muted)] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-60',
             compact
               ? 'min-h-11 rounded-[7px] border px-3'
-              : 'rounded-[var(--lumen-radius-card)] border-2 px-6 py-6',
+              : 'rounded-[var(--lumen-radius-card)] border-2 px-5 py-3',
             isDragOver
               ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]'
               : 'border-[var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface-muted)] hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary)]',
@@ -201,17 +201,17 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             <span className="flex flex-col items-center">
               <span
                 className={cn(
-                  'flex h-11 w-11 items-center justify-center rounded-full bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-placeholder)] transition-all duration-200',
+                  'flex h-9 w-9 items-center justify-center rounded-full bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-placeholder)] transition-all duration-200',
                   isDragOver && 'scale-110 bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]',
                 )}
               >
                 {uploading ? (
-                  <LoaderCircle size={20} className="animate-spin" />
+                  <LoaderCircle size={18} className="animate-spin" />
                 ) : (
-                  <UploadCloud size={20} />
+                  <UploadCloud size={18} />
                 )}
               </span>
-              <span className="mt-3 text-[14px] font-medium text-[var(--lumen-color-text-secondary)]">
+              <span className="mt-2 text-[13px] font-medium text-[var(--lumen-color-text-secondary)]">
                 {uploading
                   ? '正在上传文件'
                   : isDragOver
@@ -219,7 +219,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                     : '拖拽文件到此处，或点击选择文件'}
               </span>
               {hint ? (
-                <span className="mt-1.5 text-[12px] text-[var(--lumen-color-text-placeholder)]">
+                <span className="mt-1 text-[11px] text-[var(--lumen-color-text-placeholder)]">
                   {hint}
                 </span>
               ) : null}
