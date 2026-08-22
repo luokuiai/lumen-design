@@ -87,7 +87,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
               <div
                 className={cn(
                   'text-[13px] font-normal leading-5 text-[var(--lumen-color-text-secondary)]',
-                  title && 'mt-0.5',
+                  Boolean(title) && 'mt-0.5',
                 )}
               >
                 {children}

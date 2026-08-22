@@ -14,7 +14,8 @@ export interface StepItem {
   disabled?: boolean;
 }
 
-export interface StepsProps extends React.HTMLAttributes<HTMLOListElement> {
+export interface StepsProps
+  extends Omit<React.HTMLAttributes<HTMLOListElement>, 'onChange'> {
   items: StepItem[];
   current?: number;
   direction?: StepsDirection;
