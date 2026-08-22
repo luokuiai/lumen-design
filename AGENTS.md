@@ -212,3 +212,24 @@ If the release branch was explicitly pushed, delete the remote branch separately
 ```bash
 git push origin --delete release-1.0.0-alpha.1
 ```
+
+## Component Library Changes
+
+- Use Bun for dependency management and repository scripts.
+- Keep component changes scoped to `packages/lumen-ui` and add focused tests under
+  `packages/lumen-ui/src/__tests__`.
+- Export every public component from `packages/lumen-ui/src/index.ts`.
+- Add or update the categorized playground example when public component behavior
+  changes.
+- Run `bun run check` before committing component-library changes.
+
+## Pull Request Content
+
+- Read and follow `.github/pull_request_template.md` before creating or editing a
+  pull request.
+- Preserve the template headings and their order. Do not add sections unless the
+  template or the user explicitly requires them.
+- Write `Summary` as one short English paragraph covering the goal, outcome, and
+  reviewer-facing impact.
+- Write `Changes` as 3-7 specific, reviewable English bullets.
+- Ensure the pull request title follows Conventional Commits style.

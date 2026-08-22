@@ -8,6 +8,10 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { cn } from './classNames';
+import {
+  announceFloatingLayerOpen,
+  FLOATING_LAYER_OPEN_EVENT,
+} from './floatingEvents';
 
 interface DropdownMenuRenderState {
   open: boolean;
@@ -38,7 +42,6 @@ export interface DropdownMenuProps {
 
 const DEFAULT_CLOSE_DELAY_MS = 120;
 const OPEN_ANIMATION_DELAY_MS = 16;
-const DROPDOWN_OPEN_EVENT = 'intelliconf-dropdown-menu-open';
 type DropdownMenuPhase = 'closed' | 'opening' | 'open' | 'closing';
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
@@ -99,7 +102,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
     }
     setPhase('opening');
     onOpenChange?.(true);
-    window.dispatchEvent(new CustomEvent(DROPDOWN_OPEN_EVENT, { detail: menuId }));
+    announceFloatingLayerOpen(menuId);
   }, [clearCloseTimer, clearOpenTimer, menuId, menuMode, onOpenChange]);
 
   const closeMenuImmediately = useCallback(() => {
@@ -256,9 +259,9 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         closeMenuImmediately();
       }
     };
-    window.addEventListener(DROPDOWN_OPEN_EVENT, handleAnotherMenuOpen);
+    window.addEventListener(FLOATING_LAYER_OPEN_EVENT, handleAnotherMenuOpen);
     return () => {
-      window.removeEventListener(DROPDOWN_OPEN_EVENT, handleAnotherMenuOpen);
+      window.removeEventListener(FLOATING_LAYER_OPEN_EVENT, handleAnotherMenuOpen);
     };
   }, [closeMenuImmediately, menuId]);
 
