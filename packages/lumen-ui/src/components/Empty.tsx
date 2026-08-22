@@ -20,9 +20,9 @@ const emptySizeClassNames: Record<EmptySize, {
   iconSize: number;
   title: string;
 }> = {
-  sm: { root: 'px-4 py-8', icon: 'h-10 w-10', iconSize: 19, title: 'text-[13px]' },
-  md: { root: 'px-5 py-12', icon: 'h-12 w-12', iconSize: 22, title: 'text-[14px]' },
-  lg: { root: 'px-6 py-16', icon: 'h-14 w-14', iconSize: 25, title: 'text-[16px]' },
+  sm: { root: 'px-4 py-4', icon: 'h-10 w-10', iconSize: 19, title: 'text-[13px]' },
+  md: { root: 'px-5 py-8', icon: 'h-12 w-12', iconSize: 22, title: 'text-[14px]' },
+  lg: { root: 'px-6 py-12', icon: 'h-14 w-14', iconSize: 25, title: 'text-[16px]' },
 };
 
 export const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
