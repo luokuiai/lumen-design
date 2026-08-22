@@ -21,14 +21,16 @@ interface DropdownMenuContentState {
   close: () => void;
 }
 
-interface DropdownMenuProps {
+export type DropdownMenuAlign = 'auto' | 'left' | 'right';
+
+export interface DropdownMenuProps {
   trigger: (state: DropdownMenuRenderState) => React.ReactNode;
   children:
     | React.ReactNode
     | ((state: DropdownMenuContentState) => React.ReactNode);
   className?: string;
   menuClassName?: string;
-  align?: 'left' | 'right';
+  align?: DropdownMenuAlign;
   closeDelayMs?: number;
   menuMode?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -44,13 +46,16 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   children,
   className,
   menuClassName,
-  align = 'right',
+  align = 'auto',
   closeDelayMs = DEFAULT_CLOSE_DELAY_MS,
   menuMode = false,
   onOpenChange,
 }) => {
   const menuId = useId();
   const [phase, setPhase] = useState<DropdownMenuPhase>('closed');
+  const [resolvedAlign, setResolvedAlign] = useState<'left' | 'right'>(
+    align === 'right' ? 'right' : 'left',
+  );
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({
     left: -9999,
     position: 'fixed',
@@ -190,9 +195,13 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   const updateMenuPosition = useCallback(() => {
     if (!containerRef.current) return;
 
-    const triggerRect = containerRef.current.getBoundingClientRect();
-    const measuredMenuWidth = menuRef.current?.offsetWidth ?? 200;
-    const menuHeight = menuRef.current?.offsetHeight ?? 200;
+    const triggerElement = containerRef.current.firstElementChild;
+    const triggerRect =
+      triggerElement instanceof HTMLElement
+        ? triggerElement.getBoundingClientRect()
+        : containerRef.current.getBoundingClientRect();
+    const measuredMenuWidth = menuRef.current?.offsetWidth || 200;
+    const menuHeight = menuRef.current?.offsetHeight || 200;
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
     const viewportPadding = 8;
@@ -202,8 +211,16 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
       Math.max(0, viewportWidth - viewportPadding * 2),
     );
 
+    const spaceToRight = viewportWidth - viewportPadding - triggerRect.left;
+    const spaceToLeft = triggerRect.right - viewportPadding;
+    const nextAlign =
+      align === 'auto'
+        ? spaceToRight >= menuWidth || spaceToRight >= spaceToLeft
+          ? 'left'
+          : 'right'
+        : align;
     const preferredLeft =
-      align === 'right' ? triggerRect.right - menuWidth : triggerRect.left;
+      nextAlign === 'right' ? triggerRect.right - menuWidth : triggerRect.left;
     const maxLeft = Math.max(
       viewportPadding,
       viewportWidth - menuWidth - viewportPadding,
@@ -212,6 +229,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
       Math.max(viewportPadding, preferredLeft),
       maxLeft,
     );
+    setResolvedAlign(nextAlign);
 
     let top = triggerRect.bottom + verticalGap;
     if (top + menuHeight > viewportHeight - viewportPadding) {
@@ -274,7 +292,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
     if (!mounted) return;
     updateMenuPosition();
     if (menuMode && phase === 'opening') {
-      getMenuItems()[0]?.focus();
+      menuRef.current?.focus();
     }
   }, [getMenuItems, menuMode, mounted, phase, updateMenuPosition]);
 
@@ -322,18 +340,20 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
           id={menuId}
           role={menuMode ? 'menu' : undefined}
           aria-orientation={menuMode ? 'vertical' : undefined}
+          tabIndex={menuMode ? -1 : undefined}
           data-testid="dropdown-menu"
           data-state={phase}
+          data-align={resolvedAlign}
           ref={menuRef}
           onKeyDown={menuMode ? handleMenuKeyDown : undefined}
           style={menuStyle}
-          className="z-50"
+          className="z-50 outline-none"
         >
           <div
             data-lumen-motion
             className={cn(
               'rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] py-1 shadow-[0_4px_16px_var(--lumen-color-shadow)]',
-              align === 'right' ? 'origin-top-right' : 'origin-top-left',
+              resolvedAlign === 'right' ? 'origin-top-right' : 'origin-top-left',
               menuMode && 'min-w-max whitespace-nowrap [&_svg]:shrink-0',
               menuClassName,
             )}

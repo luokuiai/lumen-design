@@ -41,8 +41,8 @@ Lumen UI components use this mobile-first breakpoint contract:
 | `pad` | 640px to 1023px |
 | `l` | 1024px and above |
 | `xl` | 1280px and above |
-| `xxl` | 1536px and above |
-| `xxxl` | 1920px and above |
+| `xxl` | 1920px and above |
+| `xxxl` | 2560px and above |
 
 Unprefixed component styles define mobile defaults. Internal component layouts
 use the named variants for device-specific overrides.

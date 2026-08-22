@@ -692,7 +692,7 @@ export const Select = <T extends string | number = string>({
           else openDropdown();
         }}
         className={cn(
-          'flex w-full items-center gap-2 border bg-[var(--lumen-color-surface)] text-left outline-none transition-all',
+          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left outline-none transition-all',
           radius ?? radiusTokens.control,
           selectSizeTokens[size],
           disabled || isPreparingOpen

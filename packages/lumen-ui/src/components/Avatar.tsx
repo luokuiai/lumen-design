@@ -19,14 +19,14 @@ export interface AvatarProps
 
 const sizeClasses: Record<AvatarSize, string> = {
   sm: 'h-8 w-8 text-[11px]',
-  md: 'h-10 w-10 text-[13px]',
-  lg: 'h-12 w-12 text-[16px]',
+  md: 'h-9 w-9 text-[13px]',
+  lg: 'h-10 w-10 text-[14px]',
 };
 
 const iconSizes: Record<AvatarSize, number> = {
   sm: 14,
   md: 17,
-  lg: 20,
+  lg: 18,
 };
 
 const getInitials = (name: string) => {

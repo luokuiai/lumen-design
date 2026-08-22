@@ -24,22 +24,22 @@ interface TimelineProps {
 const typeStyles: Record<TimelineType, { dot: string; line: string; badge: string }> = {
   success: {
     dot: 'border-[var(--lumen-color-success)] bg-[var(--lumen-color-surface)]',
-    line: 'bg-[var(--lumen-color-success-border)]',
+    line: 'bg-[var(--lumen-color-success)]',
     badge: 'bg-[var(--lumen-color-success-soft)] text-[var(--lumen-color-success-text)]',
   },
   warning: {
     dot: 'border-[var(--lumen-color-warning)] bg-[var(--lumen-color-surface)]',
-    line: 'bg-[var(--lumen-color-warning-border)]',
+    line: 'bg-[var(--lumen-color-warning)]',
     badge: 'bg-[var(--lumen-color-warning-soft)] text-[var(--lumen-color-warning-text)]',
   },
   error: {
     dot: 'border-[var(--lumen-color-danger)] bg-[var(--lumen-color-surface)]',
-    line: 'bg-[var(--lumen-color-danger-border)]',
+    line: 'bg-[var(--lumen-color-danger)]',
     badge: 'bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger-text)]',
   },
   default: {
     dot: 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-surface)]',
-    line: 'bg-[var(--lumen-color-info-border)]',
+    line: 'bg-[var(--lumen-color-primary)]',
     badge: 'bg-[var(--lumen-color-info-soft)] text-[var(--lumen-color-info-text)]',
   },
 };
@@ -86,13 +86,17 @@ export const Timeline: React.FC<TimelineProps> = ({
         return (
           <div
             key={item.id}
+            data-timeline-item
             className={`relative flex gap-3 pb-4 pad:gap-4 ${idx === displayItems.length - 1 ? '' : ''}`}
           >
+            {idx < displayItems.length - 1 && (
+              <div
+                data-timeline-connector
+                className={`absolute left-[6px] top-[22px] bottom-0 w-[2px] rounded-full opacity-[0.45] ${style.line}`}
+              />
+            )}
             <div className="relative flex flex-col items-center">
               <div className={`relative z-10 mt-1 h-[14px] w-[14px] rounded-full border-2 ${style.dot} shrink-0`} />
-              {idx < displayItems.length - 1 && (
-                <div className={`absolute top-[18px] bottom-[-16px] w-px ${style.line}`} />
-              )}
             </div>
 
             <div

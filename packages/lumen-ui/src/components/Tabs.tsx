@@ -40,7 +40,7 @@ export const Tabs = <T extends string>({
     gridClassName ??
     (variant === 'card'
       ? 'grid grid-cols-1 gap-2 pad:grid-cols-2 l:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 xxxl:grid-cols-6'
-      : 'flex items-center gap-2 overflow-x-auto');
+      : 'flex items-center gap-2 overflow-x-auto overflow-y-hidden');
 
   return (
     <div data-ui="tabs-surface" className={cn(styles.container, className)}>

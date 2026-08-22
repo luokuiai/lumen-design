@@ -90,8 +90,9 @@ describe('responsive layouts', () => {
     expect(toast).toHaveClass('w-full', 'min-w-0');
     expect(toast.parentElement).toHaveClass(
       'right-3',
-      'w-[min(360px,calc(100vw-1.5rem))]',
-      'l:w-[380px]',
+      'w-[calc(100vw-1.5rem)]',
+      'pad:w-[328px]',
+      'l:w-[344px]',
     );
   });
 });

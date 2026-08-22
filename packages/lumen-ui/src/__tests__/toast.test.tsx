@@ -14,8 +14,9 @@ describe('Toast', () => {
 
     const toast = await screen.findByRole('status');
     expect(toast).toHaveTextContent('保存成功');
-    expect(toast).toHaveClass('bg-[var(--lumen-color-surface-glass)]');
+    expect(toast).toHaveClass('bg-[var(--lumen-color-surface-glass)]/85');
     expect(toast).toHaveClass('backdrop-blur-[5px]');
     expect(toast).toHaveClass('backdrop-saturate-125');
+    expect(toast).toHaveClass('shadow-[0_3px_10px_var(--lumen-color-shadow)]');
   });
 });

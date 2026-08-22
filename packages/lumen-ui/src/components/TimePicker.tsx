@@ -183,7 +183,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
         aria-label={placeholder}
         onClick={() => (open ? close() : openPanel())}
         className={cn(
-          'flex w-full items-center border border-[var(--lumen-color-border-strong)] bg-[var(--lumen-color-surface)] outline-none transition-all hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/10',
+          'flex w-full cursor-pointer items-center border border-[var(--lumen-color-border-strong)] bg-[var(--lumen-color-surface)] outline-none transition-all hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/10',
           radiusTokens.control,
           size === 'md'
             ? 'h-[36px] px-3 text-[13px]'

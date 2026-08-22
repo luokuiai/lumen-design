@@ -14,7 +14,7 @@ interface ModalProps {
 }
 
 const overlayBaseClassName =
-  'fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto overscroll-contain bg-[var(--lumen-color-overlay)] p-3 backdrop-blur-sm mobile:items-end pad:p-4 l:p-5 xl:p-6';
+  'fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto overscroll-contain bg-[var(--lumen-color-overlay)] p-3 backdrop-blur-sm pad:p-4 l:p-5 xl:p-6';
 
 export const Modal: React.FC<ModalProps> = ({
   open,
@@ -75,7 +75,7 @@ export const Modal: React.FC<ModalProps> = ({
       <div
         data-modal={modalId}
         data-lumen-motion
-        className={`max-h-[calc(100dvh-1.5rem)] max-w-full ${isClosing ? 'animate-[lumen-modal-out_150ms_ease-in_forwards]' : 'animate-[lumen-modal-in_200ms_ease-out]'} ${panelClassName}`.trim()}
+        className={`max-h-[calc(100dvh-1.5rem)] ${isClosing ? 'animate-[lumen-modal-out_150ms_ease-in_forwards]' : 'animate-[lumen-modal-in_200ms_ease-out]'} ${panelClassName}`.trim()}
         onClick={(event) => event.stopPropagation()}
       >
         {displayChildren}
