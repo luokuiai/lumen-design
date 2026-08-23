@@ -12,10 +12,13 @@ import {
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
+  Palette,
   Plus,
   Search,
   SearchX,
   Settings,
+  Moon,
+  Sun,
   Table2,
   UserRound,
   X,
@@ -87,6 +90,41 @@ type TreeNode = {
   label: string;
   children?: TreeNode[];
 };
+
+type ColorScheme = 'light' | 'dark';
+type Accent = 'blue' | 'purple';
+
+const colorSchemeStorageKey = 'lumen-playground-color-scheme';
+const accentStorageKey = 'lumen-playground-accent';
+
+const getInitialColorScheme = (): ColorScheme => {
+  if (typeof window === 'undefined') return 'light';
+
+  try {
+    const storedScheme = window.localStorage.getItem(colorSchemeStorageKey);
+    if (storedScheme === 'light' || storedScheme === 'dark') return storedScheme;
+  } catch {
+    // Storage can be unavailable in restricted browsing contexts.
+  }
+
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
+const initialColorScheme = getInitialColorScheme();
+const initialAccent: Accent = (() => {
+  if (typeof window === 'undefined') return 'blue';
+  try {
+    return window.localStorage.getItem(accentStorageKey) === 'purple' ? 'purple' : 'blue';
+  } catch {
+    return 'blue';
+  }
+})();
+
+if (typeof document !== 'undefined') {
+  document.documentElement.dataset.lumenTheme = 'clarity';
+  document.documentElement.dataset.colorScheme = initialColorScheme;
+  document.documentElement.dataset.accent = initialAccent;
+}
 
 type SafetyEvent = {
   id: string;
@@ -305,6 +343,8 @@ function GalleryBrand({ className = '' }: { className?: string }) {
 }
 
 export default function App() {
+  const [colorScheme, setColorScheme] = useState<ColorScheme>(initialColorScheme);
+  const [accent, setAccent] = useState<Accent>(initialAccent);
   const [activeSection, setActiveSection] = useState(getSectionFromHash);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -333,7 +373,7 @@ export default function App() {
   const [eventPage, setEventPage] = useState(1);
   const [eventPageSize, setEventPageSize] = useState(5);
   const [eventSort, setEventSort] = useState<DataTableSort>();
-  const [selectedEventKeys, setSelectedEventKeys] = useState<Array<string | number>>([]);
+  const [selectedEventKeys, setSelectedEventKeys] = useState<React.Key[]>([]);
   const [warningAlertVisible, setWarningAlertVisible] = useState(true);
   const [files, setFiles] = useState<File[]>([]);
   const [compactFiles, setCompactFiles] = useState<File[]>([]);
@@ -371,6 +411,24 @@ export default function App() {
     return () => window.removeEventListener('hashchange', syncSectionFromHash);
   }, []);
 
+  useEffect(() => {
+    document.documentElement.dataset.colorScheme = colorScheme;
+    try {
+      window.localStorage.setItem(colorSchemeStorageKey, colorScheme);
+    } catch {
+      // The active theme still applies when persistence is unavailable.
+    }
+  }, [colorScheme]);
+
+  useEffect(() => {
+    document.documentElement.dataset.accent = accent;
+    try {
+      window.localStorage.setItem(accentStorageKey, accent);
+    } catch {
+      // The active accent still applies when persistence is unavailable.
+    }
+  }, [accent]);
+
   const sortedSafetyEvents = useMemo(() => {
     if (!eventSort) return safetyEvents;
     const direction = eventSort.direction === 'asc' ? 1 : -1;
@@ -389,6 +447,8 @@ export default function App() {
   return (
     <div
       data-lumen-theme="clarity"
+      data-color-scheme={colorScheme}
+      data-accent={accent}
       data-density="default"
       className={`app-shell${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}
     >
@@ -469,6 +529,67 @@ export default function App() {
               prefix={<Search size={15} />}
               placeholder="搜索分类或组件"
             />
+            <DropdownMenu
+              menuMode
+              align="right"
+              className="topbar-accent"
+              menuClassName="accent-menu"
+              trigger={({ open, menuId, toggle }) => (
+                <Tooltip content="主题色" placement="bottom">
+                  <Button
+                    iconOnly
+                    size="sm"
+                    variant="ghost"
+                    className="topbar-accent-button"
+                    aria-label={accent === 'purple' ? '紫色主题' : '蓝色主题'}
+                    aria-controls={menuId}
+                    aria-expanded={open}
+                    aria-haspopup="menu"
+                    icon={<Palette size={18} />}
+                    onClick={toggle}
+                  />
+                </Tooltip>
+              )}
+            >
+              {({ close }) => (
+                <div className="accent-options">
+                  {([
+                    ['blue', '蓝色主题'],
+                    ['purple', '紫色主题'],
+                  ] as const).map(([value, label]) => (
+                    <button
+                      key={value}
+                      type="button"
+                      role="menuitemradio"
+                      aria-checked={accent === value}
+                      className="accent-option"
+                      onClick={() => {
+                        setAccent(value);
+                        close();
+                      }}
+                    >
+                      <span className={`accent-swatch accent-swatch-${value}`} />
+                      <span>{label}</span>
+                      {accent === value ? <Check aria-hidden="true" size={15} /> : null}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </DropdownMenu>
+            <Tooltip
+              content={colorScheme === 'dark' ? '切换到浅色主题' : '切换到深色主题'}
+              placement="bottom"
+            >
+              <Button
+                iconOnly
+                size="sm"
+                variant="ghost"
+                className="topbar-theme-button"
+                aria-label={colorScheme === 'dark' ? '切换到浅色主题' : '切换到深色主题'}
+                icon={colorScheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                onClick={() => setColorScheme((scheme) => scheme === 'dark' ? 'light' : 'dark')}
+              />
+            </Tooltip>
             <DropdownMenu
               className="topbar-notification"
               menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden py-0"
