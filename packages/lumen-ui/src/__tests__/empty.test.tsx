@@ -28,4 +28,16 @@ describe('Empty', () => {
     expect(screen.getByText('暂无数据')).toBeVisible();
     expect(container.querySelector('svg')).toBeNull();
   });
+
+  it.each([
+    ['sm', 'py-4'],
+    ['md', 'py-8'],
+    ['lg', 'py-12'],
+  ] as const)('uses compact vertical padding for the %s size', (size, paddingClass) => {
+    render(<Empty size={size} />);
+
+    expect(screen.getByText('暂无数据').closest('[data-ui="empty"]')).toHaveClass(
+      paddingClass,
+    );
+  });
 });

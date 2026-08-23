@@ -4,3 +4,5 @@ coverage/
 .codex/
 *.log
 .DS_Store
+
+.codegraph/

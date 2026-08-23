@@ -71,7 +71,7 @@ import {
   Transfer,
   TreeSelect,
 } from '@luokuiai/lumen-ui';
-import type { DataTableColumn, DataTableSort } from '@luokuiai/lumen-ui';
+import type { DataTableColumn, DataTableSort, StepsDirection } from '@luokuiai/lumen-ui';
 import '@luokuiai/lumen-theme-clarity';
 
 type Section = {
@@ -320,6 +320,7 @@ export default function App() {
   const [segment, setSegment] = useState<'all' | 'active' | 'archived'>('all');
   const [tab, setTab] = useState<'overview' | 'usage' | 'tokens'>('overview');
   const [currentStep, setCurrentStep] = useState(1);
+  const [stepsDirection, setStepsDirection] = useState<StepsDirection>('horizontal');
   const [selectValue, setSelectValue] = useState<string | null>('review');
   const [multiSelectValue, setMultiSelectValue] = useState<Array<string | number>>(['review', 'release']);
   const [treeValue, setTreeValue] = useState<string | null>('frontend');
@@ -715,9 +716,11 @@ export default function App() {
                     </FormField>
                     <FormField label="备注" className="form-span">
                       <Textarea
-                        value={textareaText}
-                        onChange={(event) => setTextareaText(event.target.value)}
-                        rows={4}
+                      value={textareaText}
+                      onChange={(event) => setTextareaText(event.target.value)}
+                      maxLength={200}
+                      rows={4}
+                      showCount
                       />
                     </FormField>
                   </div>
@@ -870,16 +873,30 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="Steps" wide>
-                  <Steps
-                    current={currentStep}
-                    onChange={setCurrentStep}
-                    items={[
-                      { title: '事件上报', description: '已采集现场信息' },
-                      { title: '研判确认', description: '核实风险等级' },
-                      { title: '现场处置', description: '调度处置人员' },
-                      { title: '完成归档', description: '生成处置记录' },
-                    ]}
-                  />
+                  <div className="stack">
+                    <div className="flex">
+                      <SegmentedControl
+                        aria-label="步骤排列方向"
+                        value={stepsDirection}
+                        onChange={setStepsDirection}
+                        options={[
+                          { value: 'horizontal', label: '横向' },
+                          { value: 'vertical', label: '纵向' },
+                        ]}
+                      />
+                    </div>
+                    <Steps
+                      current={currentStep}
+                      direction={stepsDirection}
+                      onChange={setCurrentStep}
+                      items={[
+                        { title: '事件上报', description: '已采集现场信息' },
+                        { title: '研判确认', description: '核实风险等级' },
+                        { title: '现场处置', description: '调度处置人员' },
+                        { title: '完成归档', description: '生成处置记录' },
+                      ]}
+                    />
+                  </div>
                 </DemoCard>
                 <DemoCard title="Timeline" wide>
                   <Timeline items={timelineItems} />
