@@ -243,6 +243,17 @@ textarea {
   background: linear-gradient(135deg, #111111 0 50%, #ffffff 50% 100%);
 }
 
+.accent-swatch-prism {
+  border-radius: 50%;
+  background: conic-gradient(
+    from 25deg,
+    #6c5ce7 0 25%,
+    #16b89a 0 50%,
+    #ffb020 0 75%,
+    #ef476f 0
+  );
+}
+
 .topbar-notification,
 .topbar-avatar {
   justify-self: end;

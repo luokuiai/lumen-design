@@ -96,6 +96,10 @@ Set `1.0.0-alpha.1` in all version-bearing manifests:
 - `packages/lumen-ui/package.json`
 - `packages/lumen-theme-clarity/package.json`
 - `packages/lumen-theme-clarity/package.json` peer dependency on Lumen UI
+- `packages/lumen-theme-paper/package.json`
+- `packages/lumen-theme-paper/package.json` peer dependency on Lumen UI
+- `packages/lumen-theme-prism/package.json`
+- `packages/lumen-theme-prism/package.json` peer dependency on Lumen UI
 - `playground/package.json`
 
 Regenerate `bun.lock` from those manifests, validate that it is reproducible,
@@ -123,6 +127,8 @@ Stage only the version-related files and use this message format:
 git add bun.lock lerna.json package.json \
   packages/lumen-ui/package.json \
   packages/lumen-theme-clarity/package.json \
+  packages/lumen-theme-paper/package.json \
+  packages/lumen-theme-prism/package.json \
   playground/package.json
 git commit -m "Bumped version number to 1.0.0-alpha.1"
 ```
@@ -147,7 +153,9 @@ git show --no-patch --decorate v1.0.0-alpha.1
 rg '"version": "1.0.0-alpha.1"' \
   lerna.json \
   packages/lumen-ui/package.json \
-  packages/lumen-theme-clarity/package.json
+  packages/lumen-theme-clarity/package.json \
+  packages/lumen-theme-paper/package.json \
+  packages/lumen-theme-prism/package.json
 ```
 
 ### 5. Merge Back to Develop

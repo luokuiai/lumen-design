@@ -55,6 +55,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     if (prefix || suffix) {
       return (
         <div
+          data-ui="input"
+          data-invalid={invalid || undefined}
+          data-disabled={disabled || undefined}
           className={cn(
             'flex w-full items-center gap-2 border bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] outline-none transition-all',
             radiusTokens.control,
@@ -93,6 +96,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         ref={ref}
         disabled={disabled}
+        {...props}
+        data-ui="input"
+        data-invalid={invalid || undefined}
+        data-disabled={disabled || undefined}
         className={cn(
           baseControlClassName,
           radiusTokens.control,
@@ -100,7 +107,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           getStateClassName(invalid),
           className,
         )}
-        {...props}
         autoComplete="off"
       />
     );
