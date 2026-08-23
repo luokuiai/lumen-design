@@ -76,6 +76,7 @@ import {
 } from '@luokuiai/lumen-ui';
 import type { DataTableColumn, DataTableSort, StepsDirection } from '@luokuiai/lumen-ui';
 import '@luokuiai/lumen-theme-clarity';
+import '@luokuiai/lumen-theme-paper';
 
 type Section = {
   id: string;
@@ -93,9 +94,20 @@ type TreeNode = {
 
 type ColorScheme = 'light' | 'dark';
 type Accent = 'blue' | 'purple';
+type Theme = 'clarity' | 'paper';
 
+const themeStorageKey = 'lumen-playground-theme';
 const colorSchemeStorageKey = 'lumen-playground-color-scheme';
 const accentStorageKey = 'lumen-playground-accent';
+
+const initialTheme: Theme = (() => {
+  if (typeof window === 'undefined') return 'clarity';
+  try {
+    return window.localStorage.getItem(themeStorageKey) === 'paper' ? 'paper' : 'clarity';
+  } catch {
+    return 'clarity';
+  }
+})();
 
 const getInitialColorScheme = (): ColorScheme => {
   if (typeof window === 'undefined') return 'light';
@@ -121,9 +133,13 @@ const initialAccent: Accent = (() => {
 })();
 
 if (typeof document !== 'undefined') {
-  document.documentElement.dataset.lumenTheme = 'clarity';
+  document.documentElement.dataset.lumenTheme = initialTheme;
   document.documentElement.dataset.colorScheme = initialColorScheme;
-  document.documentElement.dataset.accent = initialAccent;
+  if (initialTheme === 'clarity') {
+    document.documentElement.dataset.accent = initialAccent;
+  } else {
+    delete document.documentElement.dataset.accent;
+  }
 }
 
 type SafetyEvent = {
@@ -343,6 +359,7 @@ function GalleryBrand({ className = '' }: { className?: string }) {
 }
 
 export default function App() {
+  const [theme, setTheme] = useState<Theme>(initialTheme);
   const [colorScheme, setColorScheme] = useState<ColorScheme>(initialColorScheme);
   const [accent, setAccent] = useState<Accent>(initialAccent);
   const [activeSection, setActiveSection] = useState(getSectionFromHash);
@@ -412,6 +429,15 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    document.documentElement.dataset.lumenTheme = theme;
+    try {
+      window.localStorage.setItem(themeStorageKey, theme);
+    } catch {
+      // The active theme still applies when persistence is unavailable.
+    }
+  }, [theme]);
+
+  useEffect(() => {
     document.documentElement.dataset.colorScheme = colorScheme;
     try {
       window.localStorage.setItem(colorSchemeStorageKey, colorScheme);
@@ -421,13 +447,17 @@ export default function App() {
   }, [colorScheme]);
 
   useEffect(() => {
-    document.documentElement.dataset.accent = accent;
+    if (theme === 'clarity') {
+      document.documentElement.dataset.accent = accent;
+    } else {
+      delete document.documentElement.dataset.accent;
+    }
     try {
       window.localStorage.setItem(accentStorageKey, accent);
     } catch {
       // The active accent still applies when persistence is unavailable.
     }
-  }, [accent]);
+  }, [accent, theme]);
 
   const sortedSafetyEvents = useMemo(() => {
     if (!eventSort) return safetyEvents;
@@ -446,9 +476,9 @@ export default function App() {
 
   return (
     <div
-      data-lumen-theme="clarity"
+      data-lumen-theme={theme}
       data-color-scheme={colorScheme}
-      data-accent={accent}
+      data-accent={theme === 'clarity' ? accent : undefined}
       data-density="default"
       className={`app-shell${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}
     >
@@ -535,13 +565,13 @@ export default function App() {
               className="topbar-accent"
               menuClassName="accent-menu"
               trigger={({ open, menuId, toggle }) => (
-                <Tooltip content="主题色" placement="bottom">
+                <Tooltip content="主题" placement="bottom">
                   <Button
                     iconOnly
                     size="sm"
                     variant="ghost"
                     className="topbar-accent-button"
-                    aria-label={accent === 'purple' ? '紫色主题' : '蓝色主题'}
+                    aria-label={theme === 'paper' ? 'Paper 主题' : `Clarity ${accent === 'purple' ? '紫色' : '蓝色'}主题`}
                     aria-controls={menuId}
                     aria-expanded={open}
                     aria-haspopup="menu"
@@ -554,25 +584,31 @@ export default function App() {
               {({ close }) => (
                 <div className="accent-options">
                   {([
-                    ['blue', '蓝色主题'],
-                    ['purple', '紫色主题'],
-                  ] as const).map(([value, label]) => (
+                    ['clarity', 'blue', 'Clarity 蓝色'],
+                    ['clarity', 'purple', 'Clarity 紫色'],
+                    ['paper', null, 'Paper 黑白'],
+                  ] as const).map(([themeValue, accentValue, label]) => {
+                    const selected = theme === themeValue
+                      && (themeValue === 'paper' || accent === accentValue);
+                    return (
                     <button
-                      key={value}
+                      key={`${themeValue}-${accentValue ?? 'default'}`}
                       type="button"
                       role="menuitemradio"
-                      aria-checked={accent === value}
+                      aria-checked={selected}
                       className="accent-option"
                       onClick={() => {
-                        setAccent(value);
+                        setTheme(themeValue);
+                        if (accentValue) setAccent(accentValue);
                         close();
                       }}
                     >
-                      <span className={`accent-swatch accent-swatch-${value}`} />
+                      <span className={`accent-swatch accent-swatch-${accentValue ?? themeValue}`} />
                       <span>{label}</span>
-                      {accent === value ? <Check aria-hidden="true" size={15} /> : null}
+                      {selected ? <Check aria-hidden="true" size={15} /> : null}
                     </button>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </DropdownMenu>

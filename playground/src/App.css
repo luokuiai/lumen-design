@@ -239,6 +239,10 @@ textarea {
   background: #8b5cf6;
 }
 
+.accent-swatch-paper {
+  background: linear-gradient(135deg, #111111 0 50%, #ffffff 50% 100%);
+}
+
 .topbar-notification,
 .topbar-avatar {
   justify-self: end;

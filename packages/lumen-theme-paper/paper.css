@@ -1,0 +1,136 @@
+[data-lumen-theme='paper'] {
+  color-scheme: light;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  --lumen-font-family: Geist, 'Geist Sans', Inter, 'SF Pro Text', 'PingFang SC', 'Microsoft YaHei UI', sans-serif;
+  --lumen-font-weight-normal: 400;
+  --lumen-font-weight-medium: 500;
+  --lumen-font-weight-strong: 600;
+  --lumen-color-primary: #111111;
+  --lumen-color-primary-hover: #292929;
+  --lumen-color-primary-active: #000000;
+  --lumen-color-primary-soft: #eeeeee;
+  --lumen-color-primary-soft-hover: #e4e4e4;
+  --lumen-color-on-primary: #ffffff;
+  --lumen-color-text-strong: #090909;
+  --lumen-color-text: #202020;
+  --lumen-color-text-secondary: #494949;
+  --lumen-color-text-muted: #717171;
+  --lumen-color-text-placeholder: #9a9a9a;
+  --lumen-color-surface: #ffffff;
+  --lumen-color-surface-muted: #f5f5f5;
+  --lumen-color-surface-subtle: #fafafa;
+  --lumen-color-surface-hover: #eeeeee;
+  --lumen-color-surface-glass: rgba(255, 255, 255, 0.94);
+  --lumen-color-overlay: rgba(0, 0, 0, 0.48);
+  --lumen-color-border: #e1e1e1;
+  --lumen-color-border-strong: #c8c8c8;
+  --lumen-color-border-hover: #a8a8a8;
+  --lumen-color-focus-ring: rgba(17, 17, 17, 0.2);
+  --lumen-color-danger: #a33e35;
+  --lumen-color-danger-hover: #873129;
+  --lumen-color-danger-soft: #f7ebe7;
+  --lumen-color-danger-border: #e4c4bc;
+  --lumen-color-danger-text: #792d27;
+  --lumen-color-success: #4c7450;
+  --lumen-color-success-soft: #edf3eb;
+  --lumen-color-success-border: #cadbc7;
+  --lumen-color-success-text: #36583b;
+  --lumen-color-warning: #a66b20;
+  --lumen-color-warning-soft: #fbf2df;
+  --lumen-color-warning-border: #ead6ac;
+  --lumen-color-warning-text: #7b4d17;
+  --lumen-color-info: #416b7d;
+  --lumen-color-info-soft: #eaf1f3;
+  --lumen-color-info-border: #c5d7dc;
+  --lumen-color-info-text: #315767;
+  --lumen-color-tooltip: #111111;
+  --lumen-color-tooltip-text: #ffffff;
+  --lumen-color-shadow: rgba(0, 0, 0, 0.13);
+  --lumen-radius-tag: 6px;
+  --lumen-radius-control: 6px;
+  --lumen-radius-icon: 6px;
+  --lumen-radius-card: 6px;
+  --lumen-radius-modal: 12px;
+  --lumen-radius-pill: 9999px;
+  --lumen-shadow-control: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --lumen-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+  --lumen-shadow-dropdown: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --lumen-shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.2);
+  --lumen-control-height-sm: 32px;
+  --lumen-control-height-md: 36px;
+  --lumen-control-height-lg: 40px;
+  --lumen-motion-duration-fast: 120ms;
+  --lumen-motion-duration-normal: 200ms;
+  --lumen-motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --lumen-motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --lumen-motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
+[data-lumen-theme='paper'][data-color-scheme='dark'] {
+  color-scheme: dark;
+  --lumen-color-primary: #f2f2f2;
+  --lumen-color-primary-hover: #ffffff;
+  --lumen-color-primary-active: #d8d8d8;
+  --lumen-color-primary-soft: rgba(255, 255, 255, 0.1);
+  --lumen-color-primary-soft-hover: rgba(255, 255, 255, 0.16);
+  --lumen-color-on-primary: #0a0a0a;
+  --lumen-color-text-strong: #fafafa;
+  --lumen-color-text: #e5e5e5;
+  --lumen-color-text-secondary: #b8b8b8;
+  --lumen-color-text-muted: #8f8f8f;
+  --lumen-color-text-placeholder: #626262;
+  --lumen-color-surface: #101010;
+  --lumen-color-surface-muted: #191919;
+  --lumen-color-surface-subtle: #141414;
+  --lumen-color-surface-hover: #232323;
+  --lumen-color-surface-glass: rgba(16, 16, 16, 0.94);
+  --lumen-color-overlay: rgba(0, 0, 0, 0.72);
+  --lumen-color-border: #303030;
+  --lumen-color-border-strong: #464646;
+  --lumen-color-border-hover: #5e5e5e;
+  --lumen-color-focus-ring: rgba(255, 255, 255, 0.28);
+  --lumen-color-danger: #df8074;
+  --lumen-color-danger-hover: #eda096;
+  --lumen-color-danger-soft: rgba(223, 128, 116, 0.14);
+  --lumen-color-danger-border: rgba(223, 128, 116, 0.32);
+  --lumen-color-danger-text: #eda096;
+  --lumen-color-success: #91bd8f;
+  --lumen-color-success-soft: rgba(145, 189, 143, 0.14);
+  --lumen-color-success-border: rgba(145, 189, 143, 0.3);
+  --lumen-color-success-text: #afd0ac;
+  --lumen-color-warning: #d9aa62;
+  --lumen-color-warning-soft: rgba(217, 170, 98, 0.14);
+  --lumen-color-warning-border: rgba(217, 170, 98, 0.3);
+  --lumen-color-warning-text: #e7c287;
+  --lumen-color-info: #8eb8c7;
+  --lumen-color-info-soft: rgba(142, 184, 199, 0.14);
+  --lumen-color-info-border: rgba(142, 184, 199, 0.3);
+  --lumen-color-info-text: #afd0da;
+  --lumen-color-tooltip: #f3f3f3;
+  --lumen-color-tooltip-text: #111111;
+  --lumen-color-shadow: rgba(0, 0, 0, 0.36);
+  --lumen-shadow-control: 0 1px 2px rgba(0, 0, 0, 0.28);
+  --lumen-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
+  --lumen-shadow-dropdown: 0 12px 32px rgba(0, 0, 0, 0.44);
+  --lumen-shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.58);
+}
+
+[data-lumen-theme='paper'] [data-ui='card'] {
+  border-color: var(--lumen-color-border);
+  background-clip: padding-box;
+  box-shadow: var(--lumen-shadow-card);
+}
+
+[data-lumen-theme='paper'] [data-ui='chip'] {
+  border-radius: var(--lumen-radius-tag);
+}
+
+[data-lumen-theme='paper'] [data-ui='side-nav'] button {
+  border-radius: var(--lumen-radius-control);
+}
+
+[data-lumen-theme='paper'] [data-ui='popover'] {
+  border-radius: var(--lumen-radius-modal);
+  background-clip: padding-box;
+}
