@@ -6,6 +6,7 @@ const projectRoot = resolve(import.meta.dirname, '..');
 const themeSources = [
   { name: 'clarity', file: 'packages/lumen-theme-clarity/clarity.css' },
   { name: 'paper', file: 'packages/lumen-theme-paper/paper.css' },
+  { name: 'prism', file: 'packages/lumen-theme-prism/prism.css' },
 ] as const;
 const themes = await Promise.all(themeSources.map(async (theme) => ({
   ...theme,

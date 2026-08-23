@@ -62,6 +62,9 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           if (value === undefined) setUncontrolledCount(event.target.value.length);
           onChange?.(event);
         }}
+        {...props}
+        data-ui="textarea"
+        data-invalid={invalid || undefined}
         className={cn(
           'w-full border bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] outline-none transition-all placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed disabled:bg-[var(--lumen-color-surface-muted)] disabled:text-[var(--lumen-color-text-placeholder)] disabled:opacity-100',
           radiusTokens.control,
@@ -71,7 +74,6 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           getStateClassName(invalid),
           className,
         )}
-        {...props}
         autoComplete="off"
       />
     );

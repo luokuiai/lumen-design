@@ -11,6 +11,7 @@
   "dependencies": {
     "@luokuiai/lumen-theme-clarity": "workspace:*",
     "@luokuiai/lumen-theme-paper": "workspace:*",
+    "@luokuiai/lumen-theme-prism": "workspace:*",
     "@luokuiai/lumen-ui": "workspace:*",
     "lucide-react": "^0.563.0",
     "react": "^19.1.0",

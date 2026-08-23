@@ -31,6 +31,13 @@ export function Example() {
 Themes implement the CSS variable contract exported from
 `@luokuiai/lumen-ui/theme-contract`.
 
+## Themes
+
+- `@luokuiai/lumen-theme-clarity`: clean, general-purpose product UI.
+- `@luokuiai/lumen-theme-paper`: restrained monochrome surfaces and elevation.
+- `@luokuiai/lumen-theme-prism`: Material 3-inspired tonal roles, layered
+  surfaces, component variants, and responsive interaction feedback.
+
 ## Responsive breakpoints
 
 Lumen UI components use this mobile-first breakpoint contract:

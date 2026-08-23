@@ -77,6 +77,7 @@ import {
 import type { DataTableColumn, DataTableSort, StepsDirection } from '@luokuiai/lumen-ui';
 import '@luokuiai/lumen-theme-clarity';
 import '@luokuiai/lumen-theme-paper';
+import '@luokuiai/lumen-theme-prism';
 
 type Section = {
   id: string;
@@ -94,7 +95,7 @@ type TreeNode = {
 
 type ColorScheme = 'light' | 'dark';
 type Accent = 'blue' | 'purple';
-type Theme = 'clarity' | 'paper';
+type Theme = 'clarity' | 'paper' | 'prism';
 
 const themeStorageKey = 'lumen-playground-theme';
 const colorSchemeStorageKey = 'lumen-playground-color-scheme';
@@ -103,7 +104,8 @@ const accentStorageKey = 'lumen-playground-accent';
 const initialTheme: Theme = (() => {
   if (typeof window === 'undefined') return 'clarity';
   try {
-    return window.localStorage.getItem(themeStorageKey) === 'paper' ? 'paper' : 'clarity';
+    const storedTheme = window.localStorage.getItem(themeStorageKey);
+    return storedTheme === 'paper' || storedTheme === 'prism' ? storedTheme : 'clarity';
   } catch {
     return 'clarity';
   }
@@ -571,7 +573,11 @@ export default function App() {
                     size="sm"
                     variant="ghost"
                     className="topbar-accent-button"
-                    aria-label={theme === 'paper' ? 'Paper 主题' : `Clarity ${accent === 'purple' ? '紫色' : '蓝色'}主题`}
+                    aria-label={theme === 'paper'
+                      ? 'Paper 主题'
+                      : theme === 'prism'
+                        ? 'Prism 多彩主题'
+                        : `Clarity ${accent === 'purple' ? '紫色' : '蓝色'}主题`}
                     aria-controls={menuId}
                     aria-expanded={open}
                     aria-haspopup="menu"
@@ -587,9 +593,10 @@ export default function App() {
                     ['clarity', 'blue', 'Clarity 蓝色'],
                     ['clarity', 'purple', 'Clarity 紫色'],
                     ['paper', null, 'Paper 黑白'],
+                    ['prism', null, 'Prism 多彩'],
                   ] as const).map(([themeValue, accentValue, label]) => {
                     const selected = theme === themeValue
-                      && (themeValue === 'paper' || accent === accentValue);
+                      && (themeValue !== 'clarity' || accent === accentValue);
                     return (
                     <button
                       key={`${themeValue}-${accentValue ?? 'default'}`}
@@ -1066,7 +1073,7 @@ export default function App() {
             return (
               <GallerySection key={section.id} section={section}>
                 <DemoCard title="DataTable + Pagination" wide>
-                  <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
+                  <div className="overflow-hidden rounded-[var(--lumen-radius-card)] border border-[var(--lumen-color-border)]">
                     <DataTable
                       caption="公路安全事件"
                       className="rounded-none border-0"

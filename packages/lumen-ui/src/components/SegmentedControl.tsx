@@ -35,14 +35,15 @@ export const SegmentedControl = <T extends string>({
   ...props
 }: SegmentedControlProps<T>) => (
   <div
+    {...props}
     role={role}
+    data-ui="segmented-control"
     className={cn(
       'inline-flex max-w-full gap-1 border border-[var(--lumen-color-border)]/80 bg-[var(--lumen-color-surface-glass)] p-1 backdrop-blur-[5px]',
       radiusTokens.control,
       fullWidth && 'flex w-full',
       className,
     )}
-    {...props}
   >
     {options.map((option) => {
       const active = option.value === value;

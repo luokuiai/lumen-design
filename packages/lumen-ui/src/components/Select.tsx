@@ -557,6 +557,8 @@ export const Select = <T extends string | number = string>({
         <button
           key={String(option.value)}
           type="button"
+          data-ui="select-option"
+          data-selected={isSelected || undefined}
           disabled={option.disabled}
           onClick={() => !option.disabled && handleSelect(option.value)}
           onMouseEnter={() => !option.disabled && setHighlightedIndex(index)}
@@ -610,6 +612,8 @@ export const Select = <T extends string | number = string>({
       <button
         key={String(option.value)}
         type="button"
+        data-ui="select-option"
+        data-selected={isSelected || undefined}
         disabled={option.disabled}
         onClick={() => !option.disabled && handleSelect(option.value)}
         onMouseEnter={() => !option.disabled && setHighlightedIndex(index)}
@@ -664,6 +668,7 @@ export const Select = <T extends string | number = string>({
       </span>
       <button
         type="button"
+        data-ui="select-trigger"
         onClick={handleClearAll}
         className="text-[12px] text-[var(--lumen-color-text-placeholder)] transition-colors hover:text-[var(--lumen-color-text-muted)]"
       >
@@ -725,6 +730,7 @@ export const Select = <T extends string | number = string>({
         createPortal(
           <div
             ref={portalRef}
+            data-ui="select-dropdown"
             data-testid="select-dropdown"
             className={cn(
               radiusTokens.card,
