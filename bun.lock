@@ -32,6 +32,13 @@
         "@luokuiai/lumen-ui": "^1.0.0-alpha.1",
       },
     },
+    "packages/lumen-theme-paper": {
+      "name": "@luokuiai/lumen-theme-paper",
+      "version": "1.0.0-alpha.1",
+      "peerDependencies": {
+        "@luokuiai/lumen-ui": "^1.0.0-alpha.1",
+      },
+    },
     "packages/lumen-ui": {
       "name": "@luokuiai/lumen-ui",
       "version": "1.0.0-alpha.1",
@@ -52,6 +59,7 @@
       "version": "1.0.0-alpha.1",
       "dependencies": {
         "@luokuiai/lumen-theme-clarity": "workspace:*",
+        "@luokuiai/lumen-theme-paper": "workspace:*",
         "@luokuiai/lumen-ui": "workspace:*",
         "lucide-react": "^0.563.0",
         "react": "^19.1.0",
@@ -263,6 +271,8 @@
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
     "@luokuiai/lumen-theme-clarity": ["@luokuiai/lumen-theme-clarity@workspace:packages/lumen-theme-clarity"],
+
+    "@luokuiai/lumen-theme-paper": ["@luokuiai/lumen-theme-paper@workspace:packages/lumen-theme-paper"],
 
     "@luokuiai/lumen-playground": ["@luokuiai/lumen-playground@workspace:playground"],
 
