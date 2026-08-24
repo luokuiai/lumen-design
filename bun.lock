@@ -27,28 +27,28 @@
     },
     "packages/lumen-theme-clarity": {
       "name": "@luokuiai/lumen-theme-clarity",
-      "version": "1.0.0-alpha.1",
+      "version": "1.0.0-alpha.2",
       "peerDependencies": {
-        "@luokuiai/lumen-ui": "^1.0.0-alpha.1",
+        "@luokuiai/lumen-ui": "^1.0.0-alpha.2",
       },
     },
     "packages/lumen-theme-paper": {
       "name": "@luokuiai/lumen-theme-paper",
-      "version": "1.0.0-alpha.1",
+      "version": "1.0.0-alpha.2",
       "peerDependencies": {
-        "@luokuiai/lumen-ui": "^1.0.0-alpha.1",
+        "@luokuiai/lumen-ui": "^1.0.0-alpha.2",
       },
     },
     "packages/lumen-theme-prism": {
       "name": "@luokuiai/lumen-theme-prism",
-      "version": "1.0.0-alpha.1",
+      "version": "1.0.0-alpha.2",
       "peerDependencies": {
-        "@luokuiai/lumen-ui": "^1.0.0-alpha.1",
+        "@luokuiai/lumen-ui": "^1.0.0-alpha.2",
       },
     },
     "packages/lumen-ui": {
       "name": "@luokuiai/lumen-ui",
-      "version": "1.0.0-alpha.1",
+      "version": "1.0.0-alpha.2",
       "dependencies": {
         "lucide-react": "^0.563.0",
       },
@@ -63,7 +63,7 @@
     },
     "playground": {
       "name": "@luokuiai/lumen-playground",
-      "version": "1.0.0-alpha.1",
+      "version": "1.0.0-alpha.2",
       "dependencies": {
         "@luokuiai/lumen-theme-clarity": "workspace:*",
         "@luokuiai/lumen-theme-paper": "workspace:*",
