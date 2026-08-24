@@ -1,7 +1,7 @@
 {
-  "name": "@luokuiai/lumen-theme-clarity",
+  "name": "@luokuiai/lumen-theme-paper",
   "version": "1.0.0-alpha.2",
-  "description": "Clarity theme for Lumen UI",
+  "description": "Paper theme for Lumen UI",
   "type": "module",
   "repository": {
     "type": "git",
@@ -11,10 +11,10 @@
     "access": "public"
   },
   "sideEffects": true,
-  "files": ["clarity.css", "README.md"],
+  "files": ["paper.css", "README.md"],
   "exports": {
-    ".": "./clarity.css",
-    "./clarity.css": "./clarity.css"
+    ".": "./paper.css",
+    "./paper.css": "./paper.css"
   },
   "peerDependencies": {
     "@luokuiai/lumen-ui": "^1.0.0-alpha.2"

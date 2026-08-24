@@ -18,9 +18,12 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   return (
-    <button 
-      className={getButtonClassNames({ variant, size, iconOnly, className })}
+    <button
       {...props}
+      data-ui="button"
+      data-variant={variant}
+      data-size={size}
+      className={getButtonClassNames({ variant, size, iconOnly, className })}
     >
       {icon && <span className="shrink-0">{icon}</span>}
       {!iconOnly && children}

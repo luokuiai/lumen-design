@@ -65,3 +65,75 @@
   --lumen-motion-ease-enter: ease-out;
   --lumen-motion-ease-exit: ease-in;
 }
+
+:root[data-color-scheme='dark'],
+[data-lumen-theme='clarity'][data-color-scheme='dark'] {
+  color-scheme: dark;
+  --lumen-color-primary: #60a5fa;
+  --lumen-color-primary-hover: #93c5fd;
+  --lumen-color-primary-active: #3b82f6;
+  --lumen-color-primary-soft: rgba(96, 165, 250, 0.14);
+  --lumen-color-primary-soft-hover: rgba(96, 165, 250, 0.2);
+  --lumen-color-on-primary: #0b1220;
+  --lumen-color-text-strong: #f8fafc;
+  --lumen-color-text: #e5e7eb;
+  --lumen-color-text-secondary: #cbd5e1;
+  --lumen-color-text-muted: #94a3b8;
+  --lumen-color-text-placeholder: #64748b;
+  --lumen-color-surface: #181a1f;
+  --lumen-color-surface-muted: #22252b;
+  --lumen-color-surface-subtle: #1d2025;
+  --lumen-color-surface-hover: #292d35;
+  --lumen-color-surface-glass: rgba(24, 26, 31, 0.9);
+  --lumen-color-overlay: rgba(0, 0, 0, 0.68);
+  --lumen-color-border: #343840;
+  --lumen-color-border-strong: #454b55;
+  --lumen-color-border-hover: #59616d;
+  --lumen-color-focus-ring: rgba(96, 165, 250, 0.32);
+  --lumen-color-danger: #fb7185;
+  --lumen-color-danger-hover: #fda4af;
+  --lumen-color-danger-soft: rgba(251, 113, 133, 0.14);
+  --lumen-color-danger-border: rgba(251, 113, 133, 0.32);
+  --lumen-color-danger-text: #fda4af;
+  --lumen-color-success: #34d399;
+  --lumen-color-success-soft: rgba(52, 211, 153, 0.14);
+  --lumen-color-success-border: rgba(52, 211, 153, 0.3);
+  --lumen-color-success-text: #6ee7b7;
+  --lumen-color-warning: #fbbf24;
+  --lumen-color-warning-soft: rgba(251, 191, 36, 0.14);
+  --lumen-color-warning-border: rgba(251, 191, 36, 0.3);
+  --lumen-color-warning-text: #fcd34d;
+  --lumen-color-info: #60a5fa;
+  --lumen-color-info-soft: rgba(96, 165, 250, 0.14);
+  --lumen-color-info-border: rgba(96, 165, 250, 0.3);
+  --lumen-color-info-text: #93c5fd;
+  --lumen-color-tooltip: #f8fafc;
+  --lumen-color-tooltip-text: #111318;
+  --lumen-color-shadow: rgba(0, 0, 0, 0.32);
+  --lumen-shadow-control: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --lumen-shadow-card: 0 12px 36px rgba(0, 0, 0, 0.2);
+  --lumen-shadow-dropdown: 0 8px 30px rgba(0, 0, 0, 0.3);
+  --lumen-shadow-modal: 0 18px 60px rgba(0, 0, 0, 0.48);
+}
+
+:root[data-accent='purple'],
+[data-lumen-theme='clarity'][data-accent='purple'] {
+  --lumen-color-primary: #8b5cf6;
+  --lumen-color-primary-hover: #7c4ef1;
+  --lumen-color-primary-active: #7c3aed;
+  --lumen-color-primary-soft: #f5f3ff;
+  --lumen-color-primary-soft-hover: #ede9fe;
+  --lumen-color-on-primary: #ffffff;
+  --lumen-color-focus-ring: rgba(139, 92, 246, 0.18);
+}
+
+:root[data-color-scheme='dark'][data-accent='purple'],
+[data-lumen-theme='clarity'][data-color-scheme='dark'][data-accent='purple'] {
+  --lumen-color-primary: #a78bfa;
+  --lumen-color-primary-hover: #c4b5fd;
+  --lumen-color-primary-active: #8b5cf6;
+  --lumen-color-primary-soft: rgba(139, 92, 246, 0.16);
+  --lumen-color-primary-soft-hover: rgba(139, 92, 246, 0.24);
+  --lumen-color-on-primary: #171020;
+  --lumen-color-focus-ring: rgba(167, 139, 250, 0.32);
+}

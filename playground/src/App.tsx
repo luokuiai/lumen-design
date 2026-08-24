@@ -1,23 +1,32 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
+  AlertTriangle,
   Bell,
   CalendarDays,
   Check,
   ChevronDown,
   Filter,
+  MapPin,
   LogOut,
   MoreHorizontal,
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
+  Palette,
   Plus,
   Search,
+  SearchX,
   Settings,
+  Moon,
+  Sun,
+  Table2,
   UserRound,
   X,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import {
+  Accordion,
+  Alert,
   Avatar,
   Badge,
   Button,
@@ -26,22 +35,35 @@ import {
   CardHeader,
   CardTitle,
   Checkbox,
+  Chip,
+  Collapse,
+  CollapseItem,
   ConfirmDialog,
   DatePicker,
   DateTimePicker,
+  DataTable,
+  Divider,
   Drawer,
   DropdownMenu,
   FileUpload,
   FormField,
+  Empty,
   Input,
+  List,
+  ListItem,
   Modal,
   Pagination,
+  Popover,
+  Progress,
   Radio,
   RadioGroup,
   SegmentedControl,
   Select,
   SideNav,
+  Slider,
   Skeleton,
+  Spinner,
+  Steps,
   Switch,
   Tabs,
   Textarea,
@@ -49,14 +71,19 @@ import {
   Timeline,
   Toast,
   Tooltip,
+  Transfer,
   TreeSelect,
 } from '@luokuiai/lumen-ui';
+import type { DataTableColumn, DataTableSort, StepsDirection } from '@luokuiai/lumen-ui';
 import '@luokuiai/lumen-theme-clarity';
+import '@luokuiai/lumen-theme-paper';
+import '@luokuiai/lumen-theme-prism';
 
 type Section = {
   id: string;
   title: string;
   description: string;
+  keywords: string;
   icon: LucideIcon;
 };
 
@@ -66,25 +93,83 @@ type TreeNode = {
   children?: TreeNode[];
 };
 
+type ColorScheme = 'light' | 'dark';
+type Accent = 'blue' | 'purple';
+type Theme = 'clarity' | 'paper' | 'prism';
+
+const themeStorageKey = 'lumen-playground-theme';
+const colorSchemeStorageKey = 'lumen-playground-color-scheme';
+const accentStorageKey = 'lumen-playground-accent';
+
+const initialTheme: Theme = (() => {
+  if (typeof window === 'undefined') return 'clarity';
+  try {
+    const storedTheme = window.localStorage.getItem(themeStorageKey);
+    return storedTheme === 'paper' || storedTheme === 'prism' ? storedTheme : 'clarity';
+  } catch {
+    return 'clarity';
+  }
+})();
+
+const getInitialColorScheme = (): ColorScheme => {
+  if (typeof window === 'undefined') return 'light';
+
+  try {
+    const storedScheme = window.localStorage.getItem(colorSchemeStorageKey);
+    if (storedScheme === 'light' || storedScheme === 'dark') return storedScheme;
+  } catch {
+    // Storage can be unavailable in restricted browsing contexts.
+  }
+
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
+const initialColorScheme = getInitialColorScheme();
+const initialAccent: Accent = (() => {
+  if (typeof window === 'undefined') return 'blue';
+  try {
+    return window.localStorage.getItem(accentStorageKey) === 'purple' ? 'purple' : 'blue';
+  } catch {
+    return 'blue';
+  }
+})();
+
+if (typeof document !== 'undefined') {
+  document.documentElement.dataset.lumenTheme = initialTheme;
+  document.documentElement.dataset.colorScheme = initialColorScheme;
+  if (initialTheme === 'clarity') {
+    document.documentElement.dataset.accent = initialAccent;
+  } else {
+    delete document.documentElement.dataset.accent;
+  }
+}
+
+type SafetyEvent = {
+  id: string;
+  section: string;
+  category: string;
+  level: '高' | '中' | '低';
+  status: '待处置' | '处置中' | '已关闭';
+  updatedAt: string;
+};
+
 const sections: Section[] = [
-  { id: 'buttons', title: 'Buttons', description: '按钮、徽标、头像和提示。', icon: Plus },
-  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', icon: Check },
-  { id: 'pickers', title: 'Pickers', description: '选择器、树选择、日期和时间选择。', icon: CalendarDays },
-  { id: 'navigation', title: 'Navigation', description: 'Tabs、分页、菜单和时间线。', icon: MoreHorizontal },
-  { id: 'overlays', title: 'Overlays', description: 'Modal、Drawer、Confirm 和 Toast。', icon: Bell },
-  { id: 'feedback', title: 'Feedback', description: '上传、骨架屏和状态反馈。', icon: Settings },
+  { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button Badge Chip Avatar Tooltip', icon: Plus },
+  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input FormField Textarea Checkbox Radio RadioGroup Switch Slider', icon: Check },
+  { id: 'pickers', title: 'Pickers', description: '选择器、树选择、穿梭框、日期和时间选择。', keywords: 'Select TreeSelect Transfer DatePicker TimePicker DateTimePicker', icon: CalendarDays },
+  { id: 'data', title: 'Data Display', description: '数据表格、列表、分隔和折叠内容。', keywords: 'DataTable List ListItem Pagination Divider Collapse Accordion', icon: Table2 },
+  { id: 'navigation', title: 'Navigation', description: '标签页、步骤、菜单和时间线。', keywords: 'Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
+  { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、确认和消息提示。', keywords: 'Modal Drawer ConfirmDialog Toast', icon: Bell },
+  { id: 'feedback', title: 'Feedback', description: '页面提示、加载、进度、空状态、上传和骨架屏。', keywords: 'Alert Spinner Progress Empty FileUpload Skeleton SegmentedControl', icon: Settings },
 ];
 
-const sideNavSections = [
-  {
-    items: sections.map((section) => ({
-      value: section.id,
-      label: section.title,
-      icon: section.icon,
-      href: `#${section.id}`,
-    })),
-  },
-];
+const getSectionFromHash = () => {
+  if (typeof window === 'undefined') return sections[0]!.id;
+  const sectionId = window.location.hash.slice(1);
+  return sections.some((section) => section.id === sectionId)
+    ? sectionId
+    : sections[0]!.id;
+};
 
 const selectOptions = [
   { label: '设计评审', value: 'review', group: '会议', description: 'UI 组件走查' },
@@ -112,6 +197,15 @@ const treeNodes: TreeNode[] = [
   },
 ];
 
+const transferItems = [
+  { key: 'camera-north', label: '北向摄像机', description: 'K18+900' },
+  { key: 'camera-south', label: '南向摄像机', description: 'K18+900' },
+  { key: 'radar', label: '毫米波雷达', description: 'K24+300' },
+  { key: 'weather', label: '气象监测站', description: 'K28+100' },
+  { key: 'slope', label: '边坡传感器', description: 'K31+600' },
+  { key: 'offline', label: '离线设备', description: '暂不可分配', disabled: true },
+];
+
 const timelineItems = [
   {
     id: '1',
@@ -132,6 +226,94 @@ const timelineItems = [
     afterValue: '可交互预览',
   },
 ];
+
+const safetyEvents: SafetyEvent[] = Array.from({ length: 23 }, (_, index) => {
+  const levels: SafetyEvent['level'][] = ['高', '中', '低'];
+  const statuses: SafetyEvent['status'][] = ['待处置', '处置中', '已关闭'];
+  const categories = ['异常停车', '行人闯入', '边坡告警', '拥堵缓行'];
+  const minute = String((index * 7) % 60).padStart(2, '0');
+  return {
+    id: `SJ-${String(index + 1).padStart(4, '0')}`,
+    section: `G65 K${12 + index}+${String((index * 137) % 1000).padStart(3, '0')}`,
+    category: categories[index % categories.length]!,
+    level: levels[index % levels.length]!,
+    status: statuses[index % statuses.length]!,
+    updatedAt: `2026-08-${String(22 - Math.floor(index / 8)).padStart(2, '0')} ${String(9 + (index % 8)).padStart(2, '0')}:${minute}`,
+  };
+});
+
+const safetyEventColumns: DataTableColumn<SafetyEvent>[] = [
+  {
+    key: 'id',
+    header: '事件编号',
+    sortable: true,
+    minWidth: 112,
+    render: (event) => <span className="font-medium text-[var(--lumen-color-text)]">{event.id}</span>,
+  },
+  {
+    key: 'section',
+    header: '路段位置',
+    sortable: true,
+    minWidth: 150,
+    render: (event) => event.section,
+  },
+  {
+    key: 'category',
+    header: '事件类型',
+    minWidth: 112,
+    render: (event) => event.category,
+  },
+  {
+    key: 'level',
+    header: '等级',
+    sortable: true,
+    minWidth: 84,
+    render: (event) => (
+      <Badge
+        variant={event.level === '高' ? 'danger' : event.level === '中' ? 'warning' : 'info'}
+      >
+        {event.level}
+      </Badge>
+    ),
+  },
+  {
+    key: 'status',
+    header: '状态',
+    minWidth: 96,
+    render: (event) => (
+      <Badge
+        variant={event.status === '已关闭' ? 'neutral' : event.status === '处置中' ? 'info' : 'warning'}
+      >
+        {event.status}
+      </Badge>
+    ),
+  },
+  {
+    key: 'updatedAt',
+    header: '更新时间',
+    sortable: true,
+    minWidth: 152,
+    render: (event) => event.updatedAt,
+  },
+  {
+    key: 'actions',
+    header: '操作',
+    align: 'left',
+    width: 96,
+    minWidth: 96,
+    className: 'whitespace-nowrap',
+    render: (event) => (
+      <Button size="sm" variant="ghost" onClick={() => Toast.info(`查看 ${event.id}`)}>
+        查看
+      </Button>
+    ),
+  },
+];
+
+const getSafetyEventSortValue = (event: SafetyEvent, key: string) => {
+  if (key === 'level') return { 高: 3, 中: 2, 低: 1 }[event.level];
+  return event[key as keyof SafetyEvent];
+};
 
 function GallerySection({ section, children }: { section: Section; children: React.ReactNode }) {
   return (
@@ -179,43 +361,126 @@ function GalleryBrand({ className = '' }: { className?: string }) {
 }
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState('buttons');
+  const [theme, setTheme] = useState<Theme>(initialTheme);
+  const [colorScheme, setColorScheme] = useState<ColorScheme>(initialColorScheme);
+  const [accent, setAccent] = useState<Accent>(initialAccent);
+  const [activeSection, setActiveSection] = useState(getSectionFromHash);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [searchText, setSearchText] = useState('项目周会');
+  const [gallerySearch, setGallerySearch] = useState('');
+  const [meetingName, setMeetingName] = useState('项目周会');
   const [textareaText, setTextareaText] = useState('记录评审结论和后续动作。');
   const [checked, setChecked] = useState(true);
   const [enabled, setEnabled] = useState(true);
+  const [priorityChipSelected, setPriorityChipSelected] = useState(false);
+  const [temporaryChipVisible, setTemporaryChipVisible] = useState(true);
+  const [sliderValue, setSliderValue] = useState(62);
   const [radioValue, setRadioValue] = useState('pad');
   const [segment, setSegment] = useState<'all' | 'active' | 'archived'>('all');
   const [tab, setTab] = useState<'overview' | 'usage' | 'tokens'>('overview');
+  const [currentStep, setCurrentStep] = useState(1);
+  const [stepsDirection, setStepsDirection] = useState<StepsDirection>('horizontal');
   const [selectValue, setSelectValue] = useState<string | null>('review');
   const [multiSelectValue, setMultiSelectValue] = useState<Array<string | number>>(['review', 'release']);
   const [treeValue, setTreeValue] = useState<string | null>('frontend');
   const [treeValues, setTreeValues] = useState(['product-design', 'frontend']);
+  const [transferTargetKeys, setTransferTargetKeys] = useState<React.Key[]>(['camera-north', 'radar']);
   const [dateValue, setDateValue] = useState('2026-08-21');
   const [monthValue, setMonthValue] = useState('2026-08');
   const [timeValue, setTimeValue] = useState('09:30');
   const [dateTimeValue, setDateTimeValue] = useState('2026-08-21 09:30:00');
-  const [page, setPage] = useState(2);
-  const [pageSize, setPageSize] = useState(20);
+  const [eventPage, setEventPage] = useState(1);
+  const [eventPageSize, setEventPageSize] = useState(5);
+  const [eventSort, setEventSort] = useState<DataTableSort>();
+  const [selectedEventKeys, setSelectedEventKeys] = useState<React.Key[]>([]);
+  const [warningAlertVisible, setWarningAlertVisible] = useState(true);
   const [files, setFiles] = useState<File[]>([]);
   const [compactFiles, setCompactFiles] = useState<File[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const filteredSections = useMemo(
-    () =>
-      sections.filter((section) =>
-        `${section.title} ${section.description}`.toLowerCase().includes(searchText.trim().toLowerCase()) || searchText.trim() === '项目周会',
-      ),
-    [searchText],
+  const filteredNavigationSections = useMemo(
+    () => sections.filter((section) =>
+      `${section.title} ${section.description} ${section.keywords}`
+        .toLowerCase()
+        .includes(gallerySearch.trim().toLowerCase()),
+    ),
+    [gallerySearch],
+  );
+  const sideNavSections = useMemo(
+    () => [{
+      items: filteredNavigationSections.map((section) => ({
+        value: section.id,
+        label: section.title,
+        icon: section.icon,
+        href: `#${section.id}`,
+      })),
+    }],
+    [filteredNavigationSections],
+  );
+  const activeSections = useMemo(
+    () => sections.filter((section) => section.id === activeSection),
+    [activeSection],
+  );
+
+  useEffect(() => {
+    const syncSectionFromHash = () => setActiveSection(getSectionFromHash());
+    window.addEventListener('hashchange', syncSectionFromHash);
+    return () => window.removeEventListener('hashchange', syncSectionFromHash);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.lumenTheme = theme;
+    try {
+      window.localStorage.setItem(themeStorageKey, theme);
+    } catch {
+      // The active theme still applies when persistence is unavailable.
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.dataset.colorScheme = colorScheme;
+    try {
+      window.localStorage.setItem(colorSchemeStorageKey, colorScheme);
+    } catch {
+      // The active theme still applies when persistence is unavailable.
+    }
+  }, [colorScheme]);
+
+  useEffect(() => {
+    if (theme === 'clarity') {
+      document.documentElement.dataset.accent = accent;
+    } else {
+      delete document.documentElement.dataset.accent;
+    }
+    try {
+      window.localStorage.setItem(accentStorageKey, accent);
+    } catch {
+      // The active accent still applies when persistence is unavailable.
+    }
+  }, [accent, theme]);
+
+  const sortedSafetyEvents = useMemo(() => {
+    if (!eventSort) return safetyEvents;
+    const direction = eventSort.direction === 'asc' ? 1 : -1;
+    return [...safetyEvents].sort((left, right) => {
+      const leftValue = getSafetyEventSortValue(left, eventSort.key);
+      const rightValue = getSafetyEventSortValue(right, eventSort.key);
+      return String(leftValue).localeCompare(String(rightValue), 'zh-CN', { numeric: true }) * direction;
+    });
+  }, [eventSort]);
+  const eventTotalPages = Math.ceil(sortedSafetyEvents.length / eventPageSize);
+  const visibleSafetyEvents = useMemo(
+    () => sortedSafetyEvents.slice((eventPage - 1) * eventPageSize, eventPage * eventPageSize),
+    [eventPage, eventPageSize, sortedSafetyEvents],
   );
 
   return (
     <div
-      data-lumen-theme="clarity"
+      data-lumen-theme={theme}
+      data-color-scheme={colorScheme}
+      data-accent={theme === 'clarity' ? accent : undefined}
       data-density="default"
       className={`app-shell${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}
     >
@@ -291,11 +556,83 @@ export default function App() {
             <Input
               className="topbar-search"
               size="md"
-              value={searchText}
-              onChange={(event) => setSearchText(event.target.value)}
+              value={gallerySearch}
+              onChange={(event) => setGallerySearch(event.target.value)}
               prefix={<Search size={15} />}
-              placeholder="搜索组件"
+              placeholder="搜索分类或组件"
             />
+            <DropdownMenu
+              menuMode
+              align="right"
+              className="topbar-accent"
+              menuClassName="accent-menu"
+              trigger={({ open, menuId, toggle }) => (
+                <Tooltip content="主题" placement="bottom">
+                  <Button
+                    iconOnly
+                    size="sm"
+                    variant="ghost"
+                    className="topbar-accent-button"
+                    aria-label={theme === 'paper'
+                      ? 'Paper 主题'
+                      : theme === 'prism'
+                        ? 'Prism 多彩主题'
+                        : `Clarity ${accent === 'purple' ? '紫色' : '蓝色'}主题`}
+                    aria-controls={menuId}
+                    aria-expanded={open}
+                    aria-haspopup="menu"
+                    icon={<Palette size={18} />}
+                    onClick={toggle}
+                  />
+                </Tooltip>
+              )}
+            >
+              {({ close }) => (
+                <div className="accent-options">
+                  {([
+                    ['clarity', 'blue', 'Clarity 蓝色'],
+                    ['clarity', 'purple', 'Clarity 紫色'],
+                    ['paper', null, 'Paper 黑白'],
+                    ['prism', null, 'Prism 多彩'],
+                  ] as const).map(([themeValue, accentValue, label]) => {
+                    const selected = theme === themeValue
+                      && (themeValue !== 'clarity' || accent === accentValue);
+                    return (
+                    <button
+                      key={`${themeValue}-${accentValue ?? 'default'}`}
+                      type="button"
+                      role="menuitemradio"
+                      aria-checked={selected}
+                      className="accent-option"
+                      onClick={() => {
+                        setTheme(themeValue);
+                        if (accentValue) setAccent(accentValue);
+                        close();
+                      }}
+                    >
+                      <span className={`accent-swatch accent-swatch-${accentValue ?? themeValue}`} />
+                      <span>{label}</span>
+                      {selected ? <Check aria-hidden="true" size={15} /> : null}
+                    </button>
+                    );
+                  })}
+                </div>
+              )}
+            </DropdownMenu>
+            <Tooltip
+              content={colorScheme === 'dark' ? '切换到浅色主题' : '切换到深色主题'}
+              placement="bottom"
+            >
+              <Button
+                iconOnly
+                size="sm"
+                variant="ghost"
+                className="topbar-theme-button"
+                aria-label={colorScheme === 'dark' ? '切换到浅色主题' : '切换到深色主题'}
+                icon={colorScheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                onClick={() => setColorScheme((scheme) => scheme === 'dark' ? 'light' : 'dark')}
+              />
+            </Tooltip>
             <DropdownMenu
               className="topbar-notification"
               menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden py-0"
@@ -426,7 +763,7 @@ export default function App() {
           </div>
         </header>
 
-        {filteredSections.map((section) => {
+        {activeSections.map((section) => {
           if (section.id === 'buttons') {
             return (
               <GallerySection key={section.id} section={section}>
@@ -501,6 +838,23 @@ export default function App() {
                     </div>
                   </div>
                 </DemoCard>
+                <DemoCard title="Chip" wide>
+                  <div className="button-row">
+                    <Chip
+                      tone="danger"
+                      shape="pill"
+                      selected={priorityChipSelected}
+                      onSelect={setPriorityChipSelected}
+                    >
+                      高风险
+                    </Chip>
+                    {temporaryChipVisible ? (
+                      <Chip tone="neutral" onClose={() => setTemporaryChipVisible(false)}>
+                        临时标签
+                      </Chip>
+                    ) : null}
+                  </div>
+                </DemoCard>
               </GallerySection>
             );
           }
@@ -515,8 +869,8 @@ export default function App() {
                         <Input
                           {...props}
                           id="meeting-title"
-                          value={searchText}
-                          onChange={(event) => setSearchText(event.target.value)}
+                          value={meetingName}
+                          onChange={(event) => setMeetingName(event.target.value)}
                           prefix={<CalendarDays size={15} />}
                         />
                       )}
@@ -526,9 +880,11 @@ export default function App() {
                     </FormField>
                     <FormField label="备注" className="form-span">
                       <Textarea
-                        value={textareaText}
-                        onChange={(event) => setTextareaText(event.target.value)}
-                        rows={4}
+                      value={textareaText}
+                      onChange={(event) => setTextareaText(event.target.value)}
+                      maxLength={200}
+                      rows={4}
+                      showCount
                       />
                     </FormField>
                   </div>
@@ -547,6 +903,33 @@ export default function App() {
                         { value: 'pad', label: 'Pad' },
                         { value: 'desktop', label: 'Desktop' },
                       ]}
+                    />
+                  </div>
+                </DemoCard>
+                <DemoCard title="Slider" wide>
+                  <div className="form-grid">
+                    <Slider
+                      aria-label="告警阈值"
+                      label="告警阈值"
+                      value={sliderValue}
+                      onChange={setSliderValue}
+                      showValue
+                      formatValue={(value) => `${value}%`}
+                      marks={[
+                        { value: 0, label: '0' },
+                        { value: 50, label: '50' },
+                        { value: 100, label: '100' },
+                      ]}
+                    />
+                    <Slider
+                      aria-label="风险等级"
+                      label="风险等级"
+                      defaultValue={40}
+                      min={0}
+                      max={80}
+                      step={10}
+                      status="warning"
+                      showValue
                     />
                   </div>
                 </DemoCard>
@@ -605,6 +988,15 @@ export default function App() {
                     <DateTimePicker label="开始时间" value={dateTimeValue} onChange={setDateTimeValue} minuteStep={5} />
                   </div>
                 </DemoCard>
+                <DemoCard title="Transfer" wide>
+                  <Transfer
+                    items={transferItems}
+                    targetKeys={transferTargetKeys}
+                    onChange={setTransferTargetKeys}
+                    sourceTitle="可分配设备"
+                    targetTitle="已分配设备"
+                  />
+                </DemoCard>
               </GallerySection>
             );
           }
@@ -624,17 +1016,8 @@ export default function App() {
                     aside={<Button size="sm" variant="secondary">导出</Button>}
                   />
                 </DemoCard>
-                <DemoCard title="Pagination + Dropdown">
+                <DemoCard title="Dropdown">
                   <div className="stack">
-                    <Pagination
-                      currentPage={page}
-                      totalPages={9}
-                      totalItems={180}
-                      pageSize={pageSize}
-                      pageSizeOptions={[10, 20, 50]}
-                      onPageSizeChange={setPageSize}
-                      onPageChange={setPage}
-                    />
                     <DropdownMenu
                       menuMode
                       trigger={({ toggle, open }) => (
@@ -653,8 +1036,142 @@ export default function App() {
                     </DropdownMenu>
                   </div>
                 </DemoCard>
+                <DemoCard title="Steps" wide>
+                  <div className="stack">
+                    <div className="flex">
+                      <SegmentedControl
+                        aria-label="步骤排列方向"
+                        value={stepsDirection}
+                        onChange={setStepsDirection}
+                        options={[
+                          { value: 'horizontal', label: '横向' },
+                          { value: 'vertical', label: '纵向' },
+                        ]}
+                      />
+                    </div>
+                    <Steps
+                      current={currentStep}
+                      direction={stepsDirection}
+                      onChange={setCurrentStep}
+                      items={[
+                        { title: '事件上报', description: '已采集现场信息' },
+                        { title: '研判确认', description: '核实风险等级' },
+                        { title: '现场处置', description: '调度处置人员' },
+                        { title: '完成归档', description: '生成处置记录' },
+                      ]}
+                    />
+                  </div>
+                </DemoCard>
                 <DemoCard title="Timeline" wide>
                   <Timeline items={timelineItems} />
+                </DemoCard>
+              </GallerySection>
+            );
+          }
+
+          if (section.id === 'data') {
+            return (
+              <GallerySection key={section.id} section={section}>
+                <DemoCard title="DataTable + Pagination" wide>
+                  <div className="overflow-hidden rounded-[var(--lumen-radius-card)] border border-[var(--lumen-color-border)]">
+                    <DataTable
+                      caption="公路安全事件"
+                      className="rounded-none border-0"
+                      columns={safetyEventColumns}
+                      data={visibleSafetyEvents}
+                      getRowKey={(event) => event.id}
+                      sort={eventSort}
+                      onSortChange={(nextSort) => {
+                        setEventSort(nextSort);
+                        setEventPage(1);
+                      }}
+                      selectedRowKeys={selectedEventKeys}
+                      onSelectedRowKeysChange={setSelectedEventKeys}
+                    />
+                    <Pagination
+                      currentPage={eventPage}
+                      totalPages={eventTotalPages}
+                      totalItems={safetyEvents.length}
+                      pageSize={eventPageSize}
+                      pageSizeOptions={[5, 10, 20]}
+                      onPageSizeChange={(nextPageSize) => {
+                        setEventPageSize(nextPageSize);
+                        setEventPage(1);
+                      }}
+                      onPageChange={setEventPage}
+                    />
+                  </div>
+                  <p className="mt-3 text-[12px] text-[var(--lumen-color-text-muted)]">
+                    已选择 {selectedEventKeys.length} 条事件
+                  </p>
+                </DemoCard>
+                <DemoCard title="List" wide>
+                  <List aria-label="重点事件">
+                    <ListItem
+                      title="主线异常停车"
+                      description="G65 K18+900，车辆已持续停留 6 分钟。"
+                      leading={<AlertTriangle className="text-[var(--lumen-color-danger)]" size={18} />}
+                      meta={<Badge size="sm" variant="danger">高风险</Badge>}
+                      actions={(
+                        <Tooltip content="更多操作">
+                          <Button
+                            iconOnly
+                            size="sm"
+                            variant="ghost"
+                            aria-label="主线异常停车更多操作"
+                            icon={<MoreHorizontal size={16} />}
+                          />
+                        </Tooltip>
+                      )}
+                    />
+                    <ListItem
+                      title="边坡监测预警"
+                      description="K24 路段位移速率超过关注阈值。"
+                      leading={<MapPin className="text-[var(--lumen-color-warning)]" size={18} />}
+                      meta="8 分钟前"
+                    />
+                    <ListItem
+                      title="巡检任务已完成"
+                      description="今日重点路段巡检结果已提交。"
+                      leading={<Check className="text-[var(--lumen-color-success)]" size={18} />}
+                      meta={<Badge size="sm" variant="success">已完成</Badge>}
+                    />
+                  </List>
+                </DemoCard>
+                <DemoCard title="Collapse + Accordion" wide>
+                  <div className="form-grid">
+                    <Collapse defaultValue={['road', 'device']}>
+                      <CollapseItem value="road" title="路段信息" extra="G65 K18+900">
+                        南向双车道，当前平均车速 72 km/h。
+                      </CollapseItem>
+                      <CollapseItem value="device" title="监测设备" extra="12 台在线">
+                        摄像机、雷达和气象监测设备运行正常。
+                      </CollapseItem>
+                    </Collapse>
+                    <Accordion defaultValue="event">
+                      <CollapseItem value="event" title="事件详情">
+                        异常停车事件已持续 6 分钟，等待现场确认。
+                      </CollapseItem>
+                      <CollapseItem value="history" title="处置记录">
+                        10:26 已通知附近巡检人员前往现场。
+                      </CollapseItem>
+                    </Accordion>
+                  </div>
+                </DemoCard>
+                <DemoCard title="Divider" wide>
+                  <div>
+                    <p className="text-[13px] text-[var(--lumen-color-text-secondary)]">G65 K18+900 南向路段</p>
+                    <Divider />
+                    <p className="text-[13px] text-[var(--lumen-color-text-secondary)]">当前平均车速 72 km/h</p>
+                    <Divider label="设备状态" variant="dashed" />
+                    <div className="flex h-8 items-center text-[13px] text-[var(--lumen-color-text-secondary)]">
+                      <span>摄像机在线</span>
+                      <Divider orientation="vertical" />
+                      <span>雷达在线</span>
+                      <Divider orientation="vertical" />
+                      <span>气象站在线</span>
+                    </div>
+                  </div>
                 </DemoCard>
               </GallerySection>
             );
@@ -673,12 +1190,126 @@ export default function App() {
                     </Button>
                   </div>
                 </DemoCard>
+                <DemoCard title="Popover" wide>
+                  <div className="button-row">
+                    <Popover
+                      placement="bottom"
+                      align="start"
+                      ariaLabel="监测设备详情"
+                      contentClassName="w-[300px]"
+                      trigger={({ open, popoverId, toggle }) => (
+                        <Button
+                          variant="secondary"
+                          aria-expanded={open}
+                          aria-controls={popoverId}
+                          aria-haspopup="dialog"
+                          icon={<MapPin size={15} />}
+                          onClick={toggle}
+                        >
+                          设备详情
+                        </Button>
+                      )}
+                    >
+                      {({ close }) => (
+                        <div>
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <div className="text-[14px] font-semibold text-[var(--lumen-color-text)]">摄像机 K18-03</div>
+                              <div className="mt-1 text-[12px] text-[var(--lumen-color-text-muted)]">G65 K18+900 南向</div>
+                            </div>
+                            <Badge variant="success">在线</Badge>
+                          </div>
+                          <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-[13px]">
+                            <span className="text-[var(--lumen-color-text-muted)]">最后同步</span>
+                            <span className="text-right text-[var(--lumen-color-text)]">2 分钟前</span>
+                            <span className="text-[var(--lumen-color-text-muted)]">今日事件</span>
+                            <span className="text-right text-[var(--lumen-color-text)]">3 条</span>
+                          </div>
+                          <div className="mt-4 flex justify-end">
+                            <Button size="sm" variant="outline" onClick={close}>关闭</Button>
+                          </div>
+                        </div>
+                      )}
+                    </Popover>
+                  </div>
+                </DemoCard>
               </GallerySection>
             );
           }
 
           return (
             <GallerySection key={section.id} section={section}>
+              <DemoCard title="Alert" wide>
+                <div className="stack">
+                  <Alert
+                    variant="info"
+                    title="路况数据已更新"
+                    action={<Button size="sm" variant="outline">查看变化</Button>}
+                  >
+                    最新一次同步完成于 10:32，当前路网数据正常。
+                  </Alert>
+                  <Alert variant="success" title="事件处置完成">
+                    SJ-0018 已关闭，处置记录已归档。
+                  </Alert>
+                  {warningAlertVisible ? (
+                    <Alert
+                      variant="warning"
+                      title="部分设备离线"
+                      onClose={() => setWarningAlertVisible(false)}
+                    >
+                      K28 路段有 3 台监测设备暂时无法连接。
+                    </Alert>
+                  ) : (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="self-start"
+                      onClick={() => setWarningAlertVisible(true)}
+                    >
+                      恢复警告
+                    </Button>
+                  )}
+                  <Alert variant="danger" title="高风险事件待处置">
+                    行人闯入主线区域，请立即通知现场人员。
+                  </Alert>
+                </div>
+              </DemoCard>
+              <DemoCard title="Progress" wide>
+                <div className="stack">
+                  <Progress label="事件处置进度" value={68} showValue />
+                  <Progress label="今日巡检完成率" value={84} status="success" showValue />
+                  <Progress label="设备离线占比" value={27} status="warning" showValue />
+                  <div className="button-row">
+                    <Progress type="circle" label="设备在线率" value={92} status="success" showValue />
+                    <Progress type="circle" label="风险处置率" value={64} status="info" showValue />
+                    <Progress type="circle" label="同步中" indeterminate />
+                  </div>
+                </div>
+              </DemoCard>
+              <DemoCard title="Spinner" wide>
+                <div className="button-row">
+                  <Spinner size="sm" />
+                  <Spinner label="正在刷新路况" />
+                  <Spinner size="lg" tone="warning" label="正在同步设备" />
+                </div>
+              </DemoCard>
+              <DemoCard title="Empty" wide>
+                <Empty
+                  bordered
+                  icon={<SearchX size={22} />}
+                  title="没有匹配的事件"
+                  description="当前筛选条件下没有安全事件记录。"
+                  action={(
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => Toast.info('已清除筛选条件')}
+                    >
+                      清除筛选
+                    </Button>
+                  )}
+                />
+              </DemoCard>
               <DemoCard title="FileUpload">
                 <FileUpload
                   value={files}

@@ -9,7 +9,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: #f3f7fb;
+  background: var(--lumen-color-surface-muted);
   font-size: 14px;
 }
 
@@ -23,9 +23,7 @@ textarea {
   --playground-sidebar-width: 272px;
   min-height: 100dvh;
   color: var(--lumen-color-text);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(243, 247, 251, 0.96)),
-    #f3f7fb;
+  background: var(--lumen-color-surface-muted);
 }
 
 .app-shell.sidebar-collapsed {
@@ -39,7 +37,7 @@ textarea {
   width: var(--playground-sidebar-width);
   padding: 24px 16px;
   border-right: 1px solid var(--lumen-color-border);
-  background: rgba(255, 255, 255, 0.82);
+  background: var(--lumen-color-surface-glass);
   backdrop-filter: blur(14px);
   transition: width 180ms ease, padding 180ms ease;
 }
@@ -135,7 +133,7 @@ textarea {
   margin: 0 -28px 24px;
   padding: 16px 28px;
   border-bottom: 1px solid var(--lumen-color-border);
-  background: rgba(255, 255, 255, 0.88);
+  background: var(--lumen-color-surface-glass);
   backdrop-filter: blur(14px);
 }
 
@@ -168,7 +166,7 @@ textarea {
 
 .topbar-actions {
   display: grid;
-  grid-template-columns: minmax(220px, 320px) auto auto;
+  grid-template-columns: minmax(220px, 320px) auto auto auto auto;
   column-gap: 16px;
   row-gap: 12px;
   align-items: center;
@@ -176,6 +174,84 @@ textarea {
 
 .topbar-search {
   min-width: 0;
+}
+
+.topbar-accent,
+.topbar-theme-button {
+  justify-self: end;
+}
+
+.topbar-accent,
+.topbar-accent-button {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+}
+
+.accent-menu {
+  width: 176px;
+  padding: 6px;
+}
+
+.accent-options {
+  display: grid;
+  gap: 2px;
+}
+
+.accent-option {
+  display: grid;
+  width: 100%;
+  min-height: 36px;
+  cursor: pointer;
+  grid-template-columns: 18px minmax(0, 1fr) 16px;
+  align-items: center;
+  gap: 9px;
+  border: 0;
+  border-radius: var(--lumen-radius-control);
+  background: transparent;
+  padding: 7px 9px;
+  color: var(--lumen-color-text-secondary);
+  text-align: left;
+}
+
+.accent-option:hover,
+.accent-option:focus-visible {
+  background: var(--lumen-color-surface-muted);
+  color: var(--lumen-color-text-strong);
+  outline: none;
+}
+
+.accent-swatch {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--lumen-color-surface);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--lumen-color-border);
+}
+
+.accent-swatch-blue {
+  background: #006aff;
+}
+
+.accent-swatch-purple {
+  background: #8b5cf6;
+}
+
+.accent-swatch-paper {
+  background: linear-gradient(135deg, #111111 0 50%, #ffffff 50% 100%);
+}
+
+.accent-swatch-prism {
+  border-radius: 50%;
+  background: conic-gradient(
+    from 25deg,
+    #6c5ce7 0 25%,
+    #16b89a 0 50%,
+    #ffb020 0 75%,
+    #ef476f 0
+  );
 }
 
 .topbar-notification,
@@ -324,7 +400,7 @@ textarea {
   border: 1px solid var(--lumen-color-border);
   border-radius: 8px;
   background: var(--lumen-color-surface);
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.05);
+  box-shadow: var(--lumen-shadow-card);
 }
 
 .demo-card-wide {
@@ -493,18 +569,26 @@ textarea {
   }
 
   .topbar-actions {
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-columns: minmax(0, 1fr) auto auto auto auto;
   }
 
   .topbar-search {
     grid-column: 1 / -1;
   }
 
-  .topbar-notification {
+  .topbar-accent {
     grid-column: 2;
   }
 
-  .topbar-avatar {
+  .topbar-theme-button {
     grid-column: 3;
+  }
+
+  .topbar-notification {
+    grid-column: 4;
+  }
+
+  .topbar-avatar {
+    grid-column: 5;
   }
 }

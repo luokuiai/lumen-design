@@ -1,7 +1,7 @@
 {
   "name": "@luokuiai/lumen-playground",
   "private": true,
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "type": "module",
   "scripts": {
     "build": "vite build",
@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@luokuiai/lumen-theme-clarity": "workspace:*",
+    "@luokuiai/lumen-theme-paper": "workspace:*",
+    "@luokuiai/lumen-theme-prism": "workspace:*",
     "@luokuiai/lumen-ui": "workspace:*",
     "lucide-react": "^0.563.0",
     "react": "^19.1.0",

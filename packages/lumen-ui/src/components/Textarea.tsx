@@ -9,6 +9,7 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   size?: TextareaSize;
   resize?: TextareaResize;
   invalid?: boolean;
+  showCount?: boolean;
 }
 
 const textareaSizeTokens: Record<TextareaSize, string> = {
@@ -33,27 +34,64 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       size = 'lg',
       resize = 'vertical',
       invalid = false,
+      showCount = false,
       className,
       disabled,
+      value,
+      defaultValue,
+      maxLength,
+      onChange,
       ...props
     },
     ref,
-  ) => (
-    <textarea
-      ref={ref}
-      disabled={disabled}
-      className={cn(
-        'w-full border bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] outline-none transition-all placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed disabled:bg-[var(--lumen-color-surface-muted)] disabled:text-[var(--lumen-color-text-placeholder)] disabled:opacity-100',
-        radiusTokens.control,
-        textareaSizeTokens[size],
-        resizeTokens[resize],
-        getStateClassName(invalid),
-        className,
-      )}
-      {...props}
-      autoComplete="off"
-    />
-  ),
+  ) => {
+    const [uncontrolledCount, setUncontrolledCount] = React.useState(
+      () => String(defaultValue ?? '').length,
+    );
+    const currentCount = value === undefined
+      ? uncontrolledCount
+      : String(value ?? '').length;
+    const textarea = (
+      <textarea
+        ref={ref}
+        disabled={disabled}
+        value={value}
+        defaultValue={defaultValue}
+        maxLength={maxLength}
+        onChange={(event) => {
+          if (value === undefined) setUncontrolledCount(event.target.value.length);
+          onChange?.(event);
+        }}
+        {...props}
+        data-ui="textarea"
+        data-invalid={invalid || undefined}
+        className={cn(
+          'w-full border bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] outline-none transition-all placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed disabled:bg-[var(--lumen-color-surface-muted)] disabled:text-[var(--lumen-color-text-placeholder)] disabled:opacity-100',
+          radiusTokens.control,
+          textareaSizeTokens[size],
+          resizeTokens[resize],
+          showCount && 'pb-7',
+          getStateClassName(invalid),
+          className,
+        )}
+        autoComplete="off"
+      />
+    );
+
+    if (!showCount) return textarea;
+
+    return (
+      <div className="relative w-full">
+        {textarea}
+        <span
+          aria-live="polite"
+          className="pointer-events-none absolute bottom-2 right-3 text-[11px] leading-4 text-[var(--lumen-color-text-placeholder)]"
+        >
+          {currentCount}{maxLength === undefined ? null : `/${maxLength}`}
+        </span>
+      </div>
+    );
+  },
 );
 
 Textarea.displayName = 'Textarea';
