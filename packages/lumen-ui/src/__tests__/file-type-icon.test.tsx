@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import {
   FileTypeIcon,
   resolveFileTypeIcon,
-} from '../components/FileTypeIcon';
+} from '../components/file-type-icon';
 
 describe('FileTypeIcon', () => {
   it.each([

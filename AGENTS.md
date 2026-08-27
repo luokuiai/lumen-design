@@ -224,6 +224,8 @@ git push origin --delete release-1.0.0-alpha.1
 ## Component Library Changes
 
 - Use Bun for dependency management and repository scripts.
+- Use kebab-case for component module directories, PascalCase for public React
+  component files and exports, and camelCase for internal helper files.
 - Keep component changes scoped to `packages/lumen-ui` and add focused tests under
   `packages/lumen-ui/src/__tests__`.
 - Export every public component from `packages/lumen-ui/src/index.ts`.
