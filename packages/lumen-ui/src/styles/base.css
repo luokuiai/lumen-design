@@ -12,6 +12,19 @@
 @custom-variant pad (@media (40rem <= width < 64rem));
 
 :root {
+  --lumen-color-file-pdf: #d92d20;
+  --lumen-color-file-document: #175cd3;
+  --lumen-color-file-spreadsheet: #067647;
+  --lumen-color-file-presentation: #c4320a;
+  --lumen-color-file-image: #7a5af8;
+  --lumen-color-file-video: #c11574;
+  --lumen-color-file-audio: #026aa2;
+  --lumen-color-file-archive: #b54708;
+  --lumen-color-file-text: #344054;
+  --lumen-color-file-app: #027a48;
+  --lumen-color-file-bin: #475467;
+  --lumen-color-file-icon-border: #d5d7da;
+  --lumen-color-file-icon-on-accent: #ffffff;
   --lumen-breakpoint-mobile: 40rem;
   --lumen-breakpoint-pad: 64rem;
   --lumen-breakpoint-l: 64rem;
