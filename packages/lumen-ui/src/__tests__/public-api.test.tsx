@@ -18,6 +18,7 @@ describe('public API', () => {
     expect(Lumen.Empty).toBeTypeOf('object');
     expect('EmptyState' in Lumen).toBe(false);
     expect(Lumen.FileUpload).toBeTypeOf('object');
+    expect(Lumen.FileTypeIcon).toBeTypeOf('function');
     expect(Lumen.Input).toBeTypeOf('object');
     expect(Lumen.List).toBeTypeOf('object');
     expect(Lumen.ListItem).toBeTypeOf('object');
