@@ -92,9 +92,15 @@ function filterTreeNodes<TNode>(
 }
 
 const sizeTokens: Record<TreeSelectSize, string> = {
-  sm: 'min-h-[32px] px-3 text-[12px]',
-  md: 'min-h-[36px] px-3 text-[13px]',
-  lg: 'min-h-[40px] px-3.5 text-[14px]',
+  sm: 'min-h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]',
+  md: 'min-h-[var(--lumen-control-height-md)] px-3 text-[14px]',
+  lg: 'min-h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]',
+};
+
+const optionSizeTokens: Record<TreeSelectSize, string> = {
+  sm: 'text-[13px]',
+  md: 'text-[14px]',
+  lg: 'text-[15px]',
 };
 
 function getNodeChildren<TNode>(
@@ -439,7 +445,8 @@ export const TreeSelect = <TNode,>({
       <div key={nodeValue} className="space-y-1">
         <div
           className={cn(
-            'flex items-center rounded-[8px] px-2 py-1.5 text-[13px] transition-colors',
+            'flex items-center rounded-[8px] px-2 py-1.5 transition-colors',
+            optionSizeTokens[size],
             isSelected
               ? 'bg-[var(--lumen-color-primary-soft)] font-medium text-[var(--lumen-color-primary)]'
               : selectable || expandableOnly
@@ -668,7 +675,7 @@ export const TreeSelect = <TNode,>({
                 <div className="flex items-center gap-2 rounded-[8px] bg-[var(--lumen-color-surface-muted)] px-3 py-2">
                   <Search size={14} className="shrink-0 text-[var(--lumen-color-text-placeholder)]" />
                   <input
-                    className="w-full bg-transparent text-[13px] text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)]"
+                    className="w-full bg-transparent text-[13px] text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]"
                     placeholder={searchPlaceholder}
                     value={searchKeyword}
                     onChange={(event) => setSearchKeyword(event.target.value)}

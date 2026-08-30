@@ -117,6 +117,7 @@ textarea {
 }
 
 .main {
+  min-width: 0;
   margin-left: var(--playground-sidebar-width);
   padding: 0 28px 28px;
   transition: margin-left 180ms ease;
@@ -324,13 +325,13 @@ textarea {
 
 .account-menu-profile strong {
   color: var(--lumen-color-text-strong);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
 }
 
 .account-menu-profile small {
   color: var(--lumen-color-text-muted);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .account-menu-actions {
@@ -348,7 +349,7 @@ textarea {
   background: transparent;
   padding: 8px 9px;
   color: var(--lumen-color-text-secondary);
-  font-size: 12px;
+  font-size: 14px;
   text-align: left;
 }
 
@@ -496,13 +497,15 @@ textarea {
   margin: 0;
   color: var(--lumen-color-text-strong);
   font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
 }
 
 .modal-panel p {
   margin: 10px 0 0;
   color: var(--lumen-color-text-muted);
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: 14px;
+  line-height: 24px;
 }
 
 .modal-actions {
@@ -538,9 +541,28 @@ textarea {
   }
 
   .main {
+    width: 100%;
+    max-width: 100%;
     margin-left: 0;
     padding: 0 12px 24px;
     transition: none;
+  }
+
+  .gallery-section,
+  .section-grid,
+  .demo-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .gallery-section [class~='overflow-x-auto'] {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .gallery-section [class~='overflow-x-auto']::-webkit-scrollbar {
+    display: none;
   }
 
   .topbar,

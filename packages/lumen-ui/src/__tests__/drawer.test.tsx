@@ -72,7 +72,10 @@ describe('Drawer', () => {
       </Drawer>,
     );
 
-    act(() => vi.advanceTimersByTime(220));
+    act(() => vi.advanceTimersByTime(309));
+    expect(screen.getByText('Fallback content')).toBeInTheDocument();
+
+    act(() => vi.advanceTimersByTime(1));
 
     expect(screen.queryByText('Fallback content')).not.toBeInTheDocument();
   });

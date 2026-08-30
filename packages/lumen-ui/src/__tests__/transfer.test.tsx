@@ -10,6 +10,21 @@ const items: TransferItem[] = [
 ];
 
 describe('Transfer', () => {
+  it('uses medium search controls and readable panel titles', () => {
+    render(<Transfer items={items} targetKeys={[]} onChange={() => undefined} />);
+
+    expect(screen.getByText('可选项')).toHaveClass('text-[14px]');
+    expect(screen.getByText('0/3')).toHaveClass('text-[13px]');
+    expect(
+      screen
+        .getByRole('textbox', { name: '可选列表搜索' })
+        .closest('[data-ui="input"]'),
+    ).toHaveClass(
+      'h-[var(--lumen-control-height-md)]',
+      'text-[14px]',
+    );
+  });
+
   it('keeps the transfer panels horizontal on tablet and desktop breakpoints', () => {
     const { container } = render(
       <Transfer items={items} targetKeys={[]} onChange={() => undefined} />,

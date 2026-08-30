@@ -68,7 +68,7 @@ export const Switch: React.FC<SwitchProps> = ({
       <span
         className={cn(
           'relative inline-flex shrink-0 items-center',
-          isSmall ? 'h-4 w-7' : 'h-6 w-11',
+          isSmall ? 'h-4 w-7' : 'h-[22px] w-10',
         )}
         data-switch-track
         data-checked={currentChecked ? 'true' : 'false'}
@@ -99,8 +99,8 @@ export const Switch: React.FC<SwitchProps> = ({
           data-switch-knob
           className={cn(
             'absolute top-1/2 -translate-y-1/2 rounded-full border border-[var(--lumen-color-surface)]/80 bg-[var(--lumen-color-surface)] shadow-[0_2px_8px_var(--lumen-color-shadow)] transition-transform duration-200 ease-out',
-            isSmall ? 'left-[2px] h-3 w-3' : 'left-[2px] h-5 w-5',
-            currentChecked ? (isSmall ? 'translate-x-3' : 'translate-x-5') : 'translate-x-0',
+            isSmall ? 'left-[2px] h-3 w-3' : 'left-[2px] h-[18px] w-[18px]',
+            currentChecked ? (isSmall ? 'translate-x-3' : 'translate-x-[18px]') : 'translate-x-0',
           )}
         />
       </span>

@@ -108,7 +108,7 @@ export const Timeline: React.FC<TimelineProps> = ({
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${style.badge}`}>
+                    <span className={`inline-flex rounded-full px-2 py-0.5 text-[12px] font-medium ${style.badge}`}>
                       {item.title}
                     </span>
                     {hasDetails && (
@@ -118,7 +118,7 @@ export const Timeline: React.FC<TimelineProps> = ({
                           event.stopPropagation();
                           toggleExpand(item.id);
                         }}
-                        className="inline-flex items-center gap-0.5 text-[11px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"
+                        className="inline-flex items-center gap-0.5 text-[12px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"
                       >
                         {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
                         详情
@@ -133,7 +133,7 @@ export const Timeline: React.FC<TimelineProps> = ({
                 <div className="mt-3 flex flex-wrap gap-3 border-t border-[var(--lumen-color-surface-muted)] pt-3">
                   {item.meta.map((metaItem) => (
                     <div key={metaItem.label}>
-                      <span className="text-[11px] text-[var(--lumen-color-text-placeholder)]">{metaItem.label}</span>
+                      <span className="text-[12px] text-[var(--lumen-color-text-placeholder)]">{metaItem.label}</span>
                       <span className="ml-1.5 text-[12px] font-medium text-[var(--lumen-color-text-secondary)]">{metaItem.value}</span>
                     </div>
                   ))}
@@ -148,11 +148,11 @@ export const Timeline: React.FC<TimelineProps> = ({
                   {item.beforeValue && item.afterValue && (
                     <div className="grid grid-cols-1 gap-2 pad:grid-cols-2 pad:gap-3">
                       <div className="rounded-[6px] bg-[var(--lumen-color-danger-soft)] px-3 py-2">
-                        <div className="text-[10px] text-[var(--lumen-color-danger)]">变更前</div>
+                        <div className="text-[12px] text-[var(--lumen-color-danger)]">变更前</div>
                         <div className="mt-0.5 text-[12px] text-[var(--lumen-color-danger-text)] line-through">{item.beforeValue}</div>
                       </div>
                       <div className="rounded-[6px] bg-[var(--lumen-color-success-soft)] px-3 py-2">
-                        <div className="text-[10px] text-[var(--lumen-color-success)]">变更后</div>
+                        <div className="text-[12px] text-[var(--lumen-color-success)]">变更后</div>
                         <div className="mt-0.5 text-[12px] text-[var(--lumen-color-success-text)]">{item.afterValue}</div>
                       </div>
                     </div>

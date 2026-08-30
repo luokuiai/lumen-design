@@ -43,7 +43,9 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       panelClassName="w-full max-w-[420px] rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4 shadow-[0_24px_70px_var(--lumen-color-shadow)] pad:p-5 l:p-6"
     >
       <div role="dialog" aria-label={title}>
-        <div className="text-[18px] font-semibold text-[var(--lumen-color-text)]">{title}</div>
+        <div className="text-[16px] font-semibold leading-6 text-[var(--lumen-color-text)]">
+          {title}
+        </div>
         <div className="mt-3 text-[14px] leading-6 text-[var(--lumen-color-text-secondary)]">
           {message}
         </div>

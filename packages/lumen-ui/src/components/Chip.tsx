@@ -31,8 +31,8 @@ export type ChipProps = ChipBaseProps & (
 );
 
 const chipSizeClassNames: Record<ChipSize, string> = {
-  sm: 'min-h-5 text-[11px]',
-  md: 'min-h-[26px] text-[12px]',
+  sm: 'min-h-5 text-[12px]',
+  md: 'min-h-[26px] text-[13px]',
 };
 
 const chipShapeClassNames: Record<ChipShape, string> = {

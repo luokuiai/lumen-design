@@ -63,7 +63,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   useEffect(() => {
     if (!mounted || open) return undefined;
 
-    const timer = window.setTimeout(finishExit, 220);
+    const timer = window.setTimeout(finishExit, 310);
     return () => window.clearTimeout(timer);
   }, [finishExit, mounted, open]);
 
