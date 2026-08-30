@@ -1,7 +1,7 @@
 :root,
 [data-lumen-theme='clarity'] {
   color-scheme: light;
-  --lumen-font-family: 'PingFang SC', 'Microsoft YaHei UI', 'Microsoft YaHei', 'HarmonyOS Sans', Roboto, 'Helvetica Neue', sans-serif;
+  --lumen-font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI', sans-serif;
   --lumen-font-weight-normal: 400;
   --lumen-font-weight-medium: 500;
   --lumen-font-weight-strong: 600;

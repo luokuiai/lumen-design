@@ -43,6 +43,30 @@ describe('Pagination', () => {
     unmount();
   });
 
+  it('uses 10, 20, and 50 as the default page-size options', () => {
+    const onPageSizeChange = vi.fn();
+    render(
+      <Pagination
+        currentPage={1}
+        totalPages={8}
+        totalItems={80}
+        pageSize={10}
+        onPageChange={() => undefined}
+        onPageSizeChange={onPageSizeChange}
+      />,
+    );
+
+    fireEvent.click(screen.getByTestId('select-trigger'));
+    const options = Array.from(
+      document.querySelectorAll('[data-ui="select-option"]'),
+      (option) => option.textContent,
+    );
+    expect(options).toEqual(['10条/页', '20条/页', '50条/页']);
+
+    fireEvent.click(screen.getByText('20条/页'));
+    expect(onPageSizeChange).toHaveBeenCalledWith(20);
+  });
+
   it('hides a compact paginator when there is only one page', () => {
     const { container, unmount } = render(
       <Pagination

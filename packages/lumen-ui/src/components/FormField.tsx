@@ -31,12 +31,12 @@ const formFieldSizeTokens: Record<FormFieldSize, {
 }> = {
   sm: {
     root: 'space-y-1',
-    label: 'text-[12px]',
-    error: 'text-[11px]',
+    label: 'text-[13px]',
+    error: 'text-[12px]',
   },
   md: {
     root: 'space-y-1.5',
-    label: 'text-[13px]',
+    label: 'text-[14px]',
     error: 'text-[12px]',
   },
   lg: {
@@ -82,13 +82,13 @@ export const FormField: React.FC<FormFieldProps> = ({
       >
         <span>{label}</span>
         <span
-          aria-hidden={!required}
+          aria-hidden="true"
           className={cn(
             'ml-1 inline-block w-[0.5em] align-middle text-[var(--lumen-color-danger)]',
             required ? 'opacity-100' : 'opacity-0',
           )}
         >
-          {required ? '*' : ''}
+          *
         </span>
       </label>
       <div className={contentClassName}>

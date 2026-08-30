@@ -6,12 +6,14 @@ import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { TimeSelector } from './TimeSelector';
 
+export type TimePickerSize = 'sm' | 'md' | 'lg';
+
 export interface TimePickerProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
-  size?: 'md' | 'lg';
+  size?: TimePickerSize;
   precision?: 'minute' | 'second';
   minuteStep?: number;
   minExclusiveTime?: string;
@@ -23,6 +25,12 @@ const PANEL_WIDTH = 220;
 const ESTIMATED_PANEL_HEIGHT = 326;
 const PANEL_GAP = 6;
 const CLOSE_ANIMATION_DURATION = 120;
+
+const timePickerSizeTokens: Record<TimePickerSize, string> = {
+  sm: 'h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]',
+  md: 'h-[var(--lumen-control-height-md)] px-3 text-[14px]',
+  lg: 'h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]',
+};
 
 const pad = (value: number) => String(value).padStart(2, '0');
 
@@ -185,9 +193,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
         className={cn(
           'flex w-full cursor-pointer items-center border border-[var(--lumen-color-border-strong)] bg-[var(--lumen-color-surface)] outline-none transition-all hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/10',
           radiusTokens.control,
-          size === 'md'
-            ? 'h-[36px] px-3 text-[13px]'
-            : 'h-[40px] px-3.5 text-[14px]',
+          timePickerSizeTokens[size],
           disabled && 'cursor-not-allowed bg-[var(--lumen-color-surface-muted)] opacity-60',
         )}
       >

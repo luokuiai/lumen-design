@@ -75,6 +75,7 @@ export function DataTable<T>({
     && selectedVisibleCount === selectableKeys.length;
   const someVisibleSelected = selectedVisibleCount > 0 && !allVisibleSelected;
   const cellPadding = density === 'compact' ? 'px-3 py-2' : 'px-4 py-3';
+  const cellTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
 
   const updateVisibleSelection = (checked: boolean) => {
     const nextKeys = new Set(selectedKeys);
@@ -149,7 +150,8 @@ export function DataTable<T>({
                     }
                     className={cn(
                       cellPadding,
-                      'whitespace-nowrap text-[13px] font-medium leading-5 text-[var(--lumen-color-text-secondary)]',
+                      'whitespace-nowrap font-medium leading-5 text-[var(--lumen-color-text-secondary)]',
+                      cellTextSize,
                       column.align === 'center' && 'text-center',
                       column.align === 'right' && 'text-right',
                       column.headerClassName,
@@ -202,7 +204,10 @@ export function DataTable<T>({
                     <tr>
                       <td
                         colSpan={totalColumns}
-                        className="px-4 py-14 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]"
+                        className={cn(
+                          'px-4 py-14 text-center text-[var(--lumen-color-text-placeholder)]',
+                          cellTextSize,
+                        )}
                       >
                         {emptyText}
                       </td>
@@ -238,7 +243,8 @@ export function DataTable<T>({
                             key={column.key}
                             className={cn(
                               cellPadding,
-                              'text-[13px] font-normal leading-5 text-[var(--lumen-color-text-secondary)]',
+                              'font-normal leading-5 text-[var(--lumen-color-text-secondary)]',
+                              cellTextSize,
                               column.align === 'center' && 'text-center',
                               column.align === 'right' && 'text-right',
                               column.className,

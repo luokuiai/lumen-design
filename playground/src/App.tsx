@@ -420,7 +420,7 @@ export default function App() {
   const [timeValue, setTimeValue] = useState('09:30');
   const [dateTimeValue, setDateTimeValue] = useState('2026-08-21 09:30:00');
   const [eventPage, setEventPage] = useState(1);
-  const [eventPageSize, setEventPageSize] = useState(5);
+  const [eventPageSize, setEventPageSize] = useState(10);
   const [eventSort, setEventSort] = useState<DataTableSort>();
   const [selectedEventKeys, setSelectedEventKeys] = useState<React.Key[]>([]);
   const [warningAlertVisible, setWarningAlertVisible] = useState(true);
@@ -905,9 +905,9 @@ export default function App() {
                         />
                       )}
                     </FormField>
-                    <FormField label="负责人" error="请选择负责人">
-                      <Input invalid placeholder="负责人姓名" suffix={<UserRound size={15} />} />
-                    </FormField>
+              <FormField label="负责人">
+                <Input placeholder="负责人姓名" suffix={<UserRound size={15} />} />
+              </FormField>
                     <FormField label="备注" className="form-span">
                       <Textarea
                       value={textareaText}
@@ -1124,7 +1124,7 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="DataTable + Pagination" wide>
-                  <div className="overflow-hidden rounded-[var(--lumen-radius-card)] border border-[var(--lumen-color-border)]">
+                  <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
                     <DataTable
                       caption="公路安全事件"
                       className="rounded-none border-0"
@@ -1144,7 +1144,6 @@ export default function App() {
                       totalPages={eventTotalPages}
                       totalItems={safetyEvents.length}
                       pageSize={eventPageSize}
-                      pageSizeOptions={[5, 10, 20]}
                       onPageSizeChange={(nextPageSize) => {
                         setEventPageSize(nextPageSize);
                         setEventPage(1);

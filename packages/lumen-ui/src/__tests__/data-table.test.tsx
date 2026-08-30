@@ -31,13 +31,28 @@ describe('DataTable', () => {
 
     expect(screen.getByRole('table', { name: '事件列表' })).toBeVisible();
     expect(screen.getByRole('table').parentElement?.parentElement).toHaveClass('rounded-[8px]');
-    expect(screen.getByText('K12+400')).toBeVisible();
+    expect(screen.getByText('K12+400').closest('td')).toHaveClass('text-[14px]');
     expect(screen.getByRole('columnheader', { name: /路段/ })).toHaveAttribute(
       'aria-sort',
       'ascending',
     );
+    expect(screen.getByRole('columnheader', { name: /路段/ })).toHaveClass('text-[14px]');
     fireEvent.click(screen.getByRole('button', { name: /路段/ }));
     expect(onSortChange).toHaveBeenCalledWith({ key: 'name', direction: 'desc' });
+  });
+
+  it('keeps compact tables at the dense text scale', () => {
+    render(
+      <DataTable
+        density="compact"
+        columns={columns}
+        data={rows}
+        getRowKey={(row) => row.id}
+      />,
+    );
+
+    expect(screen.getByRole('columnheader', { name: '路段' })).toHaveClass('text-[13px]');
+    expect(screen.getByText('K12+400').closest('td')).toHaveClass('text-[13px]');
   });
 
   it('selects visible rows while retaining selections from other pages', () => {

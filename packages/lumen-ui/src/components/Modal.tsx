@@ -14,7 +14,7 @@ interface ModalProps {
 }
 
 const overlayBaseClassName =
-  'fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto overscroll-contain bg-[var(--lumen-color-overlay)] p-3 backdrop-blur-sm pad:p-4 l:p-5 xl:p-6';
+  'fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto overscroll-contain bg-[var(--lumen-color-overlay)] p-3 backdrop-blur-[2px] pad:p-4 l:p-5 xl:p-6';
 
 export const Modal: React.FC<ModalProps> = ({
   open,

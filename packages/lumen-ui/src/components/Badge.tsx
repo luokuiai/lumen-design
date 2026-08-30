@@ -16,9 +16,9 @@ interface BadgeProps {
 }
 
 const sizeClasses: Record<BadgeSize, string> = {
-  sm: 'h-5 px-2 text-[11px]',
-  md: 'h-[26px] px-2.5 text-[12px]',
-  lg: 'h-[30px] px-3 text-[13px]',
+  sm: 'h-5 px-2 text-[12px]',
+  md: 'h-[26px] px-2.5 text-[13px]',
+  lg: 'h-[30px] px-3 text-[14px]',
 };
 
 const shapeClasses: Record<BadgeShape, string> = {

@@ -12,6 +12,8 @@ import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { TimeSelector } from './TimeSelector';
 
+export type DateTimePickerSize = 'sm' | 'md' | 'lg';
+
 export interface DateTimePickerProps {
   value: string;
   onChange: (value: string) => void;
@@ -24,6 +26,7 @@ export interface DateTimePickerProps {
   minDate?: string;
   minDateTime?: string;
   defaultToNow?: boolean;
+  size?: DateTimePickerSize;
 }
 
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
@@ -170,6 +173,12 @@ const pickerIconButtonClassName =
 const pickerActionButtonClassName =
   'rounded-[6px] px-2 py-1 text-[13px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
 
+const dateTimePickerSizeTokens: Record<DateTimePickerSize, string> = {
+  sm: 'h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]',
+  md: 'h-[var(--lumen-control-height-md)] px-3 text-[14px]',
+  lg: 'h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]',
+};
+
 export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   value,
   onChange,
@@ -182,6 +191,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   minDate,
   minDateTime,
   defaultToNow = false,
+  size = 'md',
 }) => {
   const parsed = useMemo(() => parseDateTime(value), [value]);
   const today = useMemo(() => new Date(), []);
@@ -453,7 +463,8 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
           }
         }}
         className={cn(
-          'flex h-[40px] w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] px-3.5 text-left text-[13px] outline-none transition-all',
+          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left outline-none transition-all',
+          dateTimePickerSizeTokens[size],
           radiusTokens.control,
           disabled
             ? 'cursor-not-allowed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-placeholder)]'

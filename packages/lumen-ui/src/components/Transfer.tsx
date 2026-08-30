@@ -135,10 +135,10 @@ export const Transfer: React.FC<TransferProps> = ({
               setSelectedKeys(Array.from(nextKeys));
             }}
           />
-          <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-[var(--lumen-color-text)]">
+          <span className="min-w-0 flex-1 truncate text-[14px] font-medium text-[var(--lumen-color-text)]">
             {title}
           </span>
-          <span className="text-[12px] text-[var(--lumen-color-text-muted)]">
+          <span className="text-[13px] text-[var(--lumen-color-text-muted)]">
             {selectedVisibleCount}/{panelItems.length}
           </span>
         </header>
@@ -146,9 +146,9 @@ export const Transfer: React.FC<TransferProps> = ({
           <div className="shrink-0 border-b border-[var(--lumen-color-surface-muted)] p-2">
             <Input
               aria-label={`${side === 'source' ? '可选' : '已选'}列表搜索`}
-              size="sm"
+              size="md"
               value={query}
-              prefix={<Search aria-hidden="true" size={14} />}
+              prefix={<Search aria-hidden="true" size={15} />}
               placeholder={searchPlaceholder}
               disabled={disabled}
               onChange={(event) => setQuery(event.target.value)}
