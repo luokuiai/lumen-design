@@ -123,7 +123,7 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
           />
         </div>
         {marks?.length ? (
-          <div className="relative mt-1 h-5 text-[11px] text-[var(--lumen-color-text-placeholder)]">
+          <div className="relative mt-1 h-5 text-[12px] text-[var(--lumen-color-text-placeholder)]">
             {marks.map((mark) => {
               const markPercentage = ((clampSliderValue(mark.value, min, safeMax) - min) / (safeMax - min)) * 100;
               return (

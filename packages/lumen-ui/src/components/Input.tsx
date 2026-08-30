@@ -14,15 +14,15 @@ export interface InputProps
 }
 
 const inputSizeTokens: Record<InputSize, string> = {
-  sm: 'h-[32px] px-2.5 text-[12px]',
-  md: 'h-[36px] px-3 text-[13px]',
-  lg: 'h-[40px] px-3.5 text-[14px]',
+  sm: 'h-[var(--lumen-control-height-sm)] px-2.5 text-[13px] mobile:text-[16px]',
+  md: 'h-[var(--lumen-control-height-md)] px-3 text-[14px] mobile:text-[16px]',
+  lg: 'h-[var(--lumen-control-height-lg)] px-3.5 text-[15px] mobile:text-[16px]',
 };
 
 const affixSizeTokens: Record<InputSize, string> = {
-  sm: 'h-[32px] px-2.5 text-[12px]',
-  md: 'h-[36px] px-3 text-[13px]',
-  lg: 'h-[40px] px-3.5 text-[14px]',
+  sm: 'h-[var(--lumen-control-height-sm)] px-2.5 text-[13px] mobile:text-[16px]',
+  md: 'h-[var(--lumen-control-height-md)] px-3 text-[14px] mobile:text-[16px]',
+  lg: 'h-[var(--lumen-control-height-lg)] px-3.5 text-[15px] mobile:text-[16px]',
 };
 
 const baseControlClassName =
@@ -41,7 +41,7 @@ const getAffixStateClassName = (invalid?: boolean) =>
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
-      size = 'lg',
+      size = 'md',
       invalid = false,
       prefix,
       suffix,

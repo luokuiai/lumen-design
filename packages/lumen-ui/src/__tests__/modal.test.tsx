@@ -26,7 +26,7 @@ describe('Modal', () => {
     expect(screen.getByText('Modal content')).toBeInTheDocument();
     const overlay = document.querySelector('[data-modal-overlay="demo"]');
     const panel = document.querySelector('[data-modal="demo"]');
-    expect(overlay).toHaveClass('backdrop-blur-sm');
+    expect(overlay).toHaveClass('backdrop-blur-[2px]');
     expect(overlay).toHaveClass('items-center');
     expect(overlay).not.toHaveClass('mobile:items-end');
     expect(panel).not.toHaveClass('max-w-full');

@@ -61,7 +61,7 @@ export const Pagination = ({
   itemLabel = '条',
   hideOnSinglePage,
   pageSize,
-  pageSizeOptions,
+  pageSizeOptions = [10, 20, 50],
   onPageSizeChange,
   className = '',
 }: PaginationProps) => {

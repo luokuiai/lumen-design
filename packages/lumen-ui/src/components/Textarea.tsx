@@ -13,9 +13,9 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
 }
 
 const textareaSizeTokens: Record<TextareaSize, string> = {
-  sm: 'px-2.5 py-2 text-[12px] leading-5',
-  md: 'px-3 py-2.5 text-[13px] leading-5',
-  lg: 'px-3.5 py-3 text-[14px] leading-6',
+  sm: 'px-2.5 py-2 text-[13px] leading-5 mobile:text-[16px]',
+  md: 'px-3 py-2.5 text-[14px] leading-5 mobile:text-[16px]',
+  lg: 'px-3.5 py-3 text-[14px] leading-6 mobile:text-[16px]',
 };
 
 const resizeTokens: Record<TextareaResize, string> = {
@@ -85,7 +85,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {textarea}
         <span
           aria-live="polite"
-          className="pointer-events-none absolute bottom-2 right-3 text-[11px] leading-4 text-[var(--lumen-color-text-placeholder)]"
+          className="pointer-events-none absolute bottom-2 right-3 text-[12px] leading-4 text-[var(--lumen-color-text-placeholder)]"
         >
           {currentCount}{maxLength === undefined ? null : `/${maxLength}`}
         </span>

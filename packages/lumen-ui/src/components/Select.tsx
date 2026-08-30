@@ -110,9 +110,9 @@ export interface SelectProps<T extends string | number = string> {
 }
 
 const selectSizeTokens: Record<SelectSize, string> = {
-  sm: 'min-h-[32px] px-3 text-[12px]',
-  md: 'min-h-[36px] px-3 text-[13px]',
-  lg: 'min-h-[40px] px-3.5 text-[14px]',
+  sm: 'min-h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]',
+  md: 'min-h-[var(--lumen-control-height-md)] px-3 text-[14px]',
+  lg: 'min-h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]',
 };
 
 export const Select = <T extends string | number = string>({
@@ -532,7 +532,7 @@ export const Select = <T extends string | number = string>({
         <Search size={14} className="shrink-0 text-[var(--lumen-color-text-placeholder)]" />
         <input
           ref={searchInputRef}
-          className="w-full bg-transparent text-[13px] text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)]"
+          className="w-full bg-transparent text-[13px] text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]"
           placeholder={searchPlaceholder}
           value={effectiveSearchQuery}
           onChange={(e) => updateSearchQuery(e.target.value)}
@@ -565,7 +565,7 @@ export const Select = <T extends string | number = string>({
           className={cn(
             renderOption
               ? 'block w-full text-left transition-all'
-              : 'flex w-full items-center gap-2.5 rounded-[8px] px-3 py-2.5 text-left text-[13px] transition-colors',
+              : 'flex w-full items-center gap-2.5 rounded-[8px] px-2.5 py-2 text-left text-[13px] transition-colors',
             option.disabled && 'cursor-not-allowed opacity-40',
             !renderOption &&
               (isSelected
@@ -620,7 +620,7 @@ export const Select = <T extends string | number = string>({
         className={cn(
           renderOption
             ? 'block w-full text-left transition-all'
-            : 'flex w-full items-center gap-2 rounded-[8px] pl-3 pr-2 py-2.5 text-left text-[13px] transition-colors',
+            : 'flex w-full items-center gap-2 rounded-[8px] py-2 pl-2.5 pr-2 text-left text-[13px] transition-colors',
           option.disabled && 'cursor-not-allowed opacity-40',
           !renderOption &&
             (isSelected
@@ -750,7 +750,7 @@ export const Select = <T extends string | number = string>({
           >
             {searchable && renderSearchSection()}
 
-            <div className="max-h-[252px] overflow-y-auto px-2.5 py-1.5">
+            <div className="flex max-h-[252px] flex-col gap-1 overflow-y-auto px-2.5 py-1.5">
               {loading ? (
                 <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
                   {loadingText}
@@ -764,7 +764,7 @@ export const Select = <T extends string | number = string>({
                   return (
                     <React.Fragment key={String(option.value)}>
                       {shouldRenderGroup && (
-                        <div className="px-3 pb-1 pt-2 text-[11px] font-medium text-[var(--lumen-color-text-placeholder)]">
+                        <div className="px-3 pb-1 pt-2 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]">
                           {option.group}
                         </div>
                       )}

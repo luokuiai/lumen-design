@@ -46,6 +46,7 @@ import {
   Drawer,
   DropdownMenu,
   FileUpload,
+  FileTypeIcon,
   FormField,
   Empty,
   Input,
@@ -157,7 +158,7 @@ const sections: Section[] = [
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button Badge Chip Avatar Tooltip', icon: Plus },
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input FormField Textarea Checkbox Radio RadioGroup Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、树选择、穿梭框、日期和时间选择。', keywords: 'Select TreeSelect Transfer DatePicker TimePicker DateTimePicker', icon: CalendarDays },
-  { id: 'data', title: 'Data Display', description: '数据表格、列表、分隔和折叠内容。', keywords: 'DataTable List ListItem Pagination Divider Collapse Accordion', icon: Table2 },
+  { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem Pagination Divider Collapse Accordion', icon: Table2 },
   { id: 'navigation', title: 'Navigation', description: '标签页、步骤、菜单和时间线。', keywords: 'Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
   { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、确认和消息提示。', keywords: 'Modal Drawer ConfirmDialog Toast', icon: Bell },
   { id: 'feedback', title: 'Feedback', description: '页面提示、加载、进度、空状态、上传和骨架屏。', keywords: 'Alert Spinner Progress Empty FileUpload Skeleton SegmentedControl', icon: Settings },
@@ -205,6 +206,35 @@ const transferItems = [
   { key: 'slope', label: '边坡传感器', description: 'K31+600' },
   { key: 'offline', label: '离线设备', description: '暂不可分配', disabled: true },
 ];
+
+const fileTypeIconExamples = [
+  {
+    title: '文档与文本',
+    files: [
+      'report.pdf', 'proposal.doc', 'brief.docx', 'budget.xls', 'budget.xlsx',
+      'table.csv', 'slides.ppt', 'slides.pptx', 'notes.txt', 'notes.md',
+      'config.json', 'source.ts', 'query.sql',
+    ],
+  },
+  {
+    title: '图片与媒体',
+    files: [
+      'photo.jpg', 'graphic.svg', 'camera.heic', 'clip.mp4', 'movie.mkv',
+      'camera.mts', 'recording.mp3', 'lossless.flac', 'voice.m4a',
+    ],
+  },
+  {
+    title: '压缩与应用包',
+    files: [
+      'bundle.zip', 'backup.7z', 'source.tar.gz', 'client.apk', 'client.aab',
+      'client.ipa', 'client.hap',
+    ],
+  },
+  {
+    title: 'BIN 回退',
+    files: ['setup.exe', 'library.dll', 'disk.iso', 'unknown.xyz', 'README'],
+  },
+] as const;
 
 const timelineItems = [
   {
@@ -390,7 +420,7 @@ export default function App() {
   const [timeValue, setTimeValue] = useState('09:30');
   const [dateTimeValue, setDateTimeValue] = useState('2026-08-21 09:30:00');
   const [eventPage, setEventPage] = useState(1);
-  const [eventPageSize, setEventPageSize] = useState(5);
+  const [eventPageSize, setEventPageSize] = useState(10);
   const [eventSort, setEventSort] = useState<DataTableSort>();
   const [selectedEventKeys, setSelectedEventKeys] = useState<React.Key[]>([]);
   const [warningAlertVisible, setWarningAlertVisible] = useState(true);
@@ -875,9 +905,9 @@ export default function App() {
                         />
                       )}
                     </FormField>
-                    <FormField label="负责人" error="请选择负责人">
-                      <Input invalid placeholder="负责人姓名" suffix={<UserRound size={15} />} />
-                    </FormField>
+              <FormField label="负责人">
+                <Input placeholder="负责人姓名" suffix={<UserRound size={15} />} />
+              </FormField>
                     <FormField label="备注" className="form-span">
                       <Textarea
                       value={textareaText}
@@ -1072,8 +1102,29 @@ export default function App() {
           if (section.id === 'data') {
             return (
               <GallerySection key={section.id} section={section}>
+                <DemoCard title="FileTypeIcon" wide>
+                  <div className="space-y-5">
+                    {fileTypeIconExamples.map((group) => (
+                      <section key={group.title} aria-label={group.title}>
+                        <h3 className="mb-3 text-[12px] font-medium text-[var(--lumen-color-text-secondary)]">
+                          {group.title}
+                        </h3>
+                        <div className="grid grid-cols-[repeat(auto-fill,minmax(72px,1fr))] gap-x-3 gap-y-4">
+                          {group.files.map((fileName) => (
+                            <div key={fileName} className="flex min-w-0 flex-col items-center gap-2">
+                              <FileTypeIcon fileName={fileName} title={fileName} size="lg" />
+                              <span className="w-full truncate text-center text-[11px] text-[var(--lumen-color-text-muted)]">
+                                {fileName}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    ))}
+                  </div>
+                </DemoCard>
                 <DemoCard title="DataTable + Pagination" wide>
-                  <div className="overflow-hidden rounded-[var(--lumen-radius-card)] border border-[var(--lumen-color-border)]">
+                  <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
                     <DataTable
                       caption="公路安全事件"
                       className="rounded-none border-0"
@@ -1093,7 +1144,6 @@ export default function App() {
                       totalPages={eventTotalPages}
                       totalItems={safetyEvents.length}
                       pageSize={eventPageSize}
-                      pageSizeOptions={[5, 10, 20]}
                       onPageSizeChange={(nextPageSize) => {
                         setEventPageSize(nextPageSize);
                         setEventPage(1);

@@ -191,7 +191,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                       : '拖拽文件到此处，或点击上传'}
                 </span>
                 {hint ? (
-                  <span className="mt-0.5 block text-[11px] font-normal text-[var(--lumen-color-text-placeholder)]">
+                  <span className="mt-0.5 block text-[12px] font-normal text-[var(--lumen-color-text-placeholder)]">
                     {hint}
                   </span>
                 ) : null}
@@ -219,7 +219,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                     : '拖拽文件到此处，或点击选择文件'}
               </span>
               {hint ? (
-                <span className="mt-1 text-[11px] text-[var(--lumen-color-text-placeholder)]">
+                <span className="mt-1 text-[12px] text-[var(--lumen-color-text-placeholder)]">
                   {hint}
                 </span>
               ) : null}
@@ -274,7 +274,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                   <span className="block truncate text-[13px] font-medium text-[var(--lumen-color-text)]">
                     {file.name}
                   </span>
-                  <span className="mt-0.5 block text-[11px] text-[var(--lumen-color-text-placeholder)]">
+                  <span className="mt-0.5 block text-[12px] text-[var(--lumen-color-text-placeholder)]">
                     {formatBytes(file.size)}
                   </span>
                 </span>

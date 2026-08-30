@@ -102,7 +102,7 @@ export const Radio: React.FC<RadioProps> = ({
               className={cn(
                 'block font-normal',
                 currentChecked ? 'text-[var(--lumen-color-text)]' : 'text-[var(--lumen-color-text-muted)]',
-                isSmall ? 'text-[13px] leading-5' : 'text-[13px] leading-5',
+                'text-[14px] leading-5',
               )}
             >
               {label}
@@ -113,7 +113,7 @@ export const Radio: React.FC<RadioProps> = ({
               id={descriptionId}
               className={cn(
                 'mt-0.5 block text-[var(--lumen-color-text-muted)]',
-                isSmall ? 'text-[11px] leading-4.5' : 'text-[12px] leading-5',
+                isSmall ? 'text-[12px] leading-4.5' : 'text-[12px] leading-5',
               )}
             >
               {description}

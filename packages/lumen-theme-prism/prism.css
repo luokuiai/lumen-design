@@ -58,8 +58,8 @@
   --lumen-shadow-dropdown: 0 8px 20px rgba(29, 27, 32, 0.18), 0 3px 6px rgba(29, 27, 32, 0.12);
   --lumen-shadow-modal: 0 24px 56px rgba(29, 27, 32, 0.26), 0 8px 18px rgba(29, 27, 32, 0.16);
   --lumen-control-height-sm: 32px;
-  --lumen-control-height-md: 40px;
-  --lumen-control-height-lg: 48px;
+  --lumen-control-height-md: 36px;
+  --lumen-control-height-lg: 40px;
   --lumen-motion-duration-fast: 150ms;
   --lumen-motion-duration-normal: 250ms;
   --lumen-motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);

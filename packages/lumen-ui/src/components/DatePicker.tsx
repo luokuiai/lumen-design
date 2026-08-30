@@ -127,7 +127,7 @@ const getYearPageStart = (year: number) =>
 
 const sizeTokens = {
   sm: {
-    trigger: 'h-[32px] px-2.5 text-[12px]',
+    trigger: 'h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]',
     cell: 'h-8 w-8 text-[12px]',
     header: 'text-[13px]',
     footer: 'text-[12px]',
@@ -135,7 +135,7 @@ const sizeTokens = {
     icon: 14,
   },
   md: {
-    trigger: 'h-[36px] px-3 text-[13px]',
+    trigger: 'h-[var(--lumen-control-height-md)] px-3 text-[14px]',
     cell: 'h-9 w-9 text-[13px]',
     header: 'text-[15px]',
     footer: 'text-[13px]',
@@ -143,7 +143,7 @@ const sizeTokens = {
     icon: 16,
   },
   lg: {
-    trigger: 'h-[40px] px-3.5 text-[14px]',
+    trigger: 'h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]',
     cell: 'h-10 w-10 text-[14px]',
     header: 'text-[16px]',
     footer: 'text-[14px]',

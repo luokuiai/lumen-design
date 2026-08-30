@@ -12,6 +12,19 @@
 @custom-variant pad (@media (40rem <= width < 64rem));
 
 :root {
+  --lumen-color-file-pdf: #d92d20;
+  --lumen-color-file-document: #175cd3;
+  --lumen-color-file-spreadsheet: #067647;
+  --lumen-color-file-presentation: #c4320a;
+  --lumen-color-file-image: #7a5af8;
+  --lumen-color-file-video: #c11574;
+  --lumen-color-file-audio: #026aa2;
+  --lumen-color-file-archive: #b54708;
+  --lumen-color-file-text: #344054;
+  --lumen-color-file-app: #027a48;
+  --lumen-color-file-bin: #475467;
+  --lumen-color-file-icon-border: #d5d7da;
+  --lumen-color-file-icon-on-accent: #ffffff;
   --lumen-breakpoint-mobile: 40rem;
   --lumen-breakpoint-pad: 64rem;
   --lumen-breakpoint-l: 64rem;
@@ -47,9 +60,9 @@
 }
 
 :where([data-density='compact']) {
-  --lumen-control-height-sm: 28px;
-  --lumen-control-height-md: 32px;
-  --lumen-control-height-lg: 36px;
+  --lumen-control-height-sm: 32px;
+  --lumen-control-height-md: 36px;
+  --lumen-control-height-lg: 40px;
 }
 
 @keyframes lumen-page-fade-in {
@@ -93,27 +106,45 @@
 }
 
 .lumen-drawer-overlay[data-drawer-state='open'] {
-  animation: lumen-page-fade-in 160ms ease-out;
+  animation: lumen-page-fade-in 300ms ease-out;
 }
 
 .lumen-drawer-overlay[data-drawer-state='closing'] {
-  animation: lumen-page-fade-out 160ms ease-in forwards;
+  animation: lumen-page-fade-out 250ms ease-in forwards;
 }
 
 .lumen-drawer-panel[data-drawer-placement='right'][data-drawer-state='open'] {
-  animation: lumen-drawer-in 180ms cubic-bezier(.16, 1, .3, 1);
+  animation: lumen-drawer-in 350ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .lumen-drawer-panel[data-drawer-placement='right'][data-drawer-state='closing'] {
-  animation: lumen-drawer-out 160ms ease-in forwards;
+  animation: lumen-drawer-out 250ms ease-in forwards;
 }
 
 .lumen-drawer-panel[data-drawer-placement='left'][data-drawer-state='open'] {
-  animation: lumen-drawer-left-in 180ms cubic-bezier(.16, 1, .3, 1);
+  animation: lumen-drawer-left-in 350ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .lumen-drawer-panel[data-drawer-placement='left'][data-drawer-state='closing'] {
-  animation: lumen-drawer-left-out 160ms ease-in forwards;
+  animation: lumen-drawer-left-out 250ms ease-in forwards;
+}
+
+@media (max-width: 40rem) {
+  .lumen-drawer-panel[data-drawer-placement='right'][data-drawer-state='open'] {
+    animation-duration: 280ms;
+  }
+
+  .lumen-drawer-panel[data-drawer-placement='right'][data-drawer-state='closing'] {
+    animation-duration: 220ms;
+  }
+
+  .lumen-drawer-panel[data-drawer-placement='left'][data-drawer-state='open'] {
+    animation-duration: 280ms;
+  }
+
+  .lumen-drawer-panel[data-drawer-placement='left'][data-drawer-state='closing'] {
+    animation-duration: 220ms;
+  }
 }
 
 @keyframes lumen-dropdown-in {

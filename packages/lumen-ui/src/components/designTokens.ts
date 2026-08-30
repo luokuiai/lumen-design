@@ -25,14 +25,14 @@ export const radiusNormalizationMap = {
 } as const;
 
 export const buttonSizeTokens = {
-  sm: 'h-[var(--lumen-control-height-sm)] px-3 text-[12px]',
-  md: 'h-[34px] px-3.5 text-[13px]',
-  lg: 'h-[var(--lumen-control-height-lg)] px-5 text-[14px]',
+  sm: 'h-[var(--lumen-control-height-sm)] px-3 text-[13px]',
+  md: 'h-[var(--lumen-control-height-md)] px-4 text-[14px]',
+  lg: 'h-[var(--lumen-control-height-lg)] px-5 text-[15px]',
 } as const;
 
 export const buttonIconSizeTokens = {
   sm: 'h-8 w-8',
-  md: 'h-[34px] w-[34px]',
+  md: 'h-9 w-9',
   lg: 'h-10 w-10',
 } as const;
 
@@ -78,18 +78,18 @@ export const rawButtonPresets = {
   subtleSm: getButtonClassNames({ variant: 'secondary', size: 'sm' }),
   dangerSm: getButtonClassNames({ variant: 'destructive', size: 'sm' }),
   segment:
-    'inline-flex items-center justify-center h-[32px] px-3 text-[12px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] border border-transparent text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface)] hover:text-[var(--lumen-color-text)]',
+    'inline-flex items-center justify-center h-[32px] px-3 text-[13px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] border border-transparent text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface)] hover:text-[var(--lumen-color-text)]',
   pagination:
     'inline-flex items-center justify-center h-8 min-w-8 px-2 text-[12px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
   dashedUpload:
-    'inline-flex items-center justify-center gap-1.5 h-[36px] px-4 text-[12px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] border border-dashed border-[var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-muted)] hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary)]',
+    'inline-flex items-center justify-center gap-1.5 h-[36px] px-4 text-[14px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] border border-dashed border-[var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-muted)] hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary)]',
 } as const;
 
 export const headerActionButtonClassNames = {
   primary:
-    'group relative isolate inline-flex h-[38px] items-center justify-center gap-1.5 overflow-hidden rounded-[8px] border border-[var(--lumen-color-primary-hover)] bg-[var(--lumen-color-primary)] px-4 text-[13px] font-medium tracking-[0.01em] text-[var(--lumen-color-on-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[var(--lumen-color-primary-active)] hover:bg-[var(--lumen-color-primary-hover)] hover:shadow-[0_12px_24px_var(--lumen-color-focus-ring)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50',
+    'group relative isolate inline-flex h-[38px] items-center justify-center gap-1.5 overflow-hidden rounded-[8px] border border-[var(--lumen-color-primary-hover)] bg-[var(--lumen-color-primary)] px-4 text-[14px] font-medium tracking-[0.01em] text-[var(--lumen-color-on-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[var(--lumen-color-primary-active)] hover:bg-[var(--lumen-color-primary-hover)] hover:shadow-[0_12px_24px_var(--lumen-color-focus-ring)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50',
   outline:
-    'group relative isolate inline-flex h-[38px] items-center justify-center gap-1.5 overflow-hidden rounded-[8px] border border-[var(--lumen-color-border-strong)] bg-[var(--lumen-color-surface-glass)] px-4 text-[13px] font-medium tracking-[0.01em] text-[var(--lumen-color-text-secondary)] shadow-[0_6px_14px_var(--lumen-color-shadow)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[var(--lumen-color-border-hover)] hover:bg-[var(--lumen-color-surface-glass)] hover:text-[var(--lumen-color-primary-active)] hover:shadow-[0_10px_20px_var(--lumen-color-shadow)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50',
+    'group relative isolate inline-flex h-[38px] items-center justify-center gap-1.5 overflow-hidden rounded-[8px] border border-[var(--lumen-color-border-strong)] bg-[var(--lumen-color-surface-glass)] px-4 text-[14px] font-medium tracking-[0.01em] text-[var(--lumen-color-text-secondary)] shadow-[0_6px_14px_var(--lumen-color-shadow)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[var(--lumen-color-border-hover)] hover:bg-[var(--lumen-color-surface-glass)] hover:text-[var(--lumen-color-primary-active)] hover:shadow-[0_10px_20px_var(--lumen-color-shadow)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50',
 } as const;
 
 export const headerActionButtonSurfaceClassNames = {
@@ -106,7 +106,7 @@ export const tabVariantClassNames = {
   default: {
     container: 'bg-[var(--lumen-color-surface)] px-1',
     base:
-      'group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 text-[13px] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out',
+      'group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 text-[14px] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out',
     active:
       'text-[var(--lumen-color-primary)] after:scale-x-100 after:opacity-100',
     inactive:
@@ -123,7 +123,7 @@ export const tabVariantClassNames = {
     container:
       'rounded-[16px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-subtle)] px-5 py-4 shadow-[0_6px_18px_var(--lumen-color-shadow)]',
     base:
-      'group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] transition-all',
+      'group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[14px] transition-all',
     active:
       'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]',
     inactive:
@@ -162,7 +162,7 @@ export const tabVariantClassNames = {
 
 export const tabClassNames = {
   base:
-    'inline-flex items-center justify-center gap-2 rounded-[10px] px-4 py-2.5 text-[13px] font-medium transition-all duration-200',
+    'inline-flex items-center justify-center gap-2 rounded-[10px] px-4 py-2.5 text-[14px] font-medium transition-all duration-200',
   active:
     'bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)] shadow-[0_10px_20px_var(--lumen-color-focus-ring)]',
   inactive:
