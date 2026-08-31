@@ -60,7 +60,7 @@ export const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
         {iconNode ? (
           <span
             className={cn(
-              'mb-3 flex items-center justify-center rounded-[8px] bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-placeholder)]',
+              'mb-3 flex items-center justify-center rounded-[8px] text-[var(--lumen-color-text-placeholder)]',
               sizeClasses.icon,
             )}
           >

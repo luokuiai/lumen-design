@@ -106,7 +106,7 @@ export const SideNav = <T extends string>({
           );
 
           return collapsed ? (
-            <Tooltip key={item.value} content={item.label} placement="right" showDelay={200}>
+            <Tooltip key={item.value} content={item.label} placement="right">
               {itemNode}
             </Tooltip>
           ) : (

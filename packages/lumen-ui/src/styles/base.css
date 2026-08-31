@@ -151,6 +151,82 @@
   }
 }
 
+@keyframes lumen-tooltip-top-in {
+  from { opacity: 0; transform: translateY(4px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes lumen-tooltip-top-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(3px) scale(0.98); }
+}
+
+@keyframes lumen-tooltip-right-in {
+  from { opacity: 0; transform: translateX(-4px) scale(0.96); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes lumen-tooltip-right-out {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to { opacity: 0; transform: translateX(-3px) scale(0.98); }
+}
+
+@keyframes lumen-tooltip-bottom-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes lumen-tooltip-bottom-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(-3px) scale(0.98); }
+}
+
+@keyframes lumen-tooltip-left-in {
+  from { opacity: 0; transform: translateX(4px) scale(0.96); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes lumen-tooltip-left-out {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to { opacity: 0; transform: translateX(3px) scale(0.98); }
+}
+
+.lumen-tooltip {
+  will-change: opacity, transform;
+}
+
+.lumen-tooltip[data-state='opening'][data-placement='top'] {
+  animation: lumen-tooltip-top-in 140ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.lumen-tooltip[data-state='opening'][data-placement='right'] {
+  animation: lumen-tooltip-right-in 140ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.lumen-tooltip[data-state='opening'][data-placement='bottom'] {
+  animation: lumen-tooltip-bottom-in 140ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.lumen-tooltip[data-state='opening'][data-placement='left'] {
+  animation: lumen-tooltip-left-in 140ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.lumen-tooltip[data-state='closing'][data-placement='top'] {
+  animation: lumen-tooltip-top-out 100ms ease-in forwards;
+}
+
+.lumen-tooltip[data-state='closing'][data-placement='right'] {
+  animation: lumen-tooltip-right-out 100ms ease-in forwards;
+}
+
+.lumen-tooltip[data-state='closing'][data-placement='bottom'] {
+  animation: lumen-tooltip-bottom-out 100ms ease-in forwards;
+}
+
+.lumen-tooltip[data-state='closing'][data-placement='left'] {
+  animation: lumen-tooltip-left-out 100ms ease-in forwards;
+}
+
 @keyframes lumen-dropdown-in {
   from { opacity: 0; transform: scaleY(0.92) translateY(-4px); }
   to { opacity: 1; transform: scaleY(1) translateY(0); }

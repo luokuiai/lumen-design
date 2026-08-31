@@ -24,6 +24,7 @@
   --lumen-color-surface-glass: rgba(255, 255, 255, 0.94);
   --lumen-color-overlay: rgba(0, 0, 0, 0.48);
   --lumen-color-border: #e1e1e1;
+  --lumen-color-divider: #efefef;
   --lumen-color-border-strong: #c8c8c8;
   --lumen-color-border-hover: #a8a8a8;
   --lumen-color-focus-ring: rgba(17, 17, 17, 0.2);
@@ -87,6 +88,7 @@
   --lumen-color-surface-glass: rgba(16, 16, 16, 0.94);
   --lumen-color-overlay: rgba(0, 0, 0, 0.72);
   --lumen-color-border: #303030;
+  --lumen-color-divider: #232323;
   --lumen-color-border-strong: #464646;
   --lumen-color-border-hover: #5e5e5e;
   --lumen-color-focus-ring: rgba(255, 255, 255, 0.28);

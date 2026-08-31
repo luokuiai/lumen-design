@@ -30,7 +30,10 @@ describe('DataTable', () => {
     );
 
     expect(screen.getByRole('table', { name: '事件列表' })).toBeVisible();
-    expect(screen.getByRole('table').parentElement?.parentElement).toHaveClass('rounded-[8px]');
+    expect(screen.getByRole('table').parentElement?.parentElement).toHaveClass(
+      'rounded-[8px]',
+      'border-[var(--lumen-color-border)]',
+    );
     expect(screen.getByText('K12+400').closest('td')).toHaveClass('text-[14px]');
     expect(screen.getByRole('columnheader', { name: /路段/ })).toHaveAttribute(
       'aria-sort',
@@ -39,6 +42,9 @@ describe('DataTable', () => {
     expect(screen.getByRole('columnheader', { name: /路段/ })).toHaveClass(
       'text-[14px]',
       'font-normal',
+    );
+    expect(screen.getByRole('columnheader', { name: /路段/ }).parentElement?.className).toContain(
+      '--lumen-color-divider',
     );
     fireEvent.click(screen.getByRole('button', { name: /路段/ }));
     expect(onSortChange).toHaveBeenCalledWith({ key: 'name', direction: 'desc' });

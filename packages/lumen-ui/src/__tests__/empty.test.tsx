@@ -29,6 +29,14 @@ describe('Empty', () => {
     expect(container.querySelector('svg')).toBeNull();
   });
 
+  it('renders the icon without a background surface', () => {
+    const { container } = render(<Empty />);
+
+    expect(container.querySelector('svg')?.parentElement).not.toHaveClass(
+      'bg-[var(--lumen-color-surface-muted)]',
+    );
+  });
+
   it.each([
     ['sm', 'py-4'],
     ['md', 'py-8'],
