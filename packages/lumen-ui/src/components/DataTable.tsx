@@ -6,6 +6,7 @@ import { cn } from './classNames';
 export type DataTableKey = React.Key;
 export type DataTableSortDirection = 'asc' | 'desc';
 export type DataTableDensity = 'default' | 'compact';
+export type DataTableVariant = 'default' | 'embedded';
 
 export interface DataTableSort {
   key: string;
@@ -30,6 +31,7 @@ export interface DataTableProps<T> {
   getRowKey: (row: T) => DataTableKey;
   caption?: string;
   density?: DataTableDensity;
+  variant?: DataTableVariant;
   loading?: boolean;
   loadingRowCount?: number;
   emptyText?: React.ReactNode;
@@ -48,12 +50,18 @@ const toCssSize = (value?: string | number) =>
 
 const loadingCellWidths = ['72%', '48%', '64%', '40%', '58%'];
 
+const variantClassNames: Record<DataTableVariant, string> = {
+  default: 'rounded-[8px] border border-[var(--lumen-color-border)]',
+  embedded: 'rounded-none border-0',
+};
+
 export function DataTable<T>({
   columns,
   data,
   getRowKey,
   caption,
   density = 'default',
+  variant = 'default',
   loading = false,
   loadingRowCount = 5,
   emptyText = '暂无数据',
@@ -74,7 +82,9 @@ export function DataTable<T>({
   const allVisibleSelected = selectableKeys.length > 0
     && selectedVisibleCount === selectableKeys.length;
   const someVisibleSelected = selectedVisibleCount > 0 && !allVisibleSelected;
-  const cellPadding = density === 'compact' ? 'px-3 py-2' : 'px-4 py-3';
+  const cellPadding = density === 'compact'
+    ? 'px-3 py-2 mobile:px-2.5'
+    : 'px-4 py-3 mobile:px-3 mobile:py-2.5';
   const cellTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
 
   const updateVisibleSelection = (checked: boolean) => {
@@ -114,8 +124,10 @@ export function DataTable<T>({
     <div
       data-ui="data-table"
       data-density={density}
+      data-variant={variant}
       className={cn(
-        'min-w-0 overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]',
+        'min-w-0 overflow-hidden bg-[var(--lumen-color-surface)]',
+        variantClassNames[variant],
         className,
       )}
     >

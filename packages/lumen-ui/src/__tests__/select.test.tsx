@@ -9,7 +9,7 @@ const options = [
 ];
 
 describe('Select', () => {
-  it('uses compact option padding with visible spacing between items', () => {
+  it('uses equal compact padding around options with visible item spacing', () => {
     render(
       <Select
         options={options}
@@ -21,7 +21,7 @@ describe('Select', () => {
     fireEvent.click(screen.getByTestId('select-trigger'));
     const option = document.querySelector('[data-ui="select-option"]');
 
-    expect(option).toHaveClass('py-2', 'pl-2.5', 'pr-2');
+    expect(option).toHaveClass('p-2');
     expect(option?.parentElement).toHaveClass('flex', 'flex-col', 'gap-1');
   });
 });

@@ -28,6 +28,7 @@ describe('public API', () => {
     expect(Lumen.Popover).toBeTypeOf('function');
     expect(Lumen.Progress).toBeTypeOf('object');
     expect(Lumen.RadioGroup).toBeTypeOf('function');
+    expect(Lumen.Scrollbar).toBeTypeOf('object');
     expect(Lumen.SegmentedControl).toBeTypeOf('function');
     expect(Lumen.SideNav).toBeTypeOf('function');
     expect(Lumen.Slider).toBeTypeOf('object');

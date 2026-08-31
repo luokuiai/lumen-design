@@ -186,6 +186,61 @@
   animation: lumen-skeleton-pulse 1.6s ease-in-out infinite;
 }
 
+.lumen-scrollbar {
+  scrollbar-color: var(--lumen-color-border-strong) transparent;
+  scrollbar-width: thin;
+}
+
+.lumen-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.lumen-scrollbar[data-size='sm']::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.lumen-scrollbar::-webkit-scrollbar-track,
+.lumen-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.lumen-scrollbar::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: var(--lumen-radius-pill);
+  background: var(--lumen-color-border-strong);
+  background-clip: padding-box;
+}
+
+.lumen-scrollbar[data-size='sm']::-webkit-scrollbar-thumb {
+  border-width: 1px;
+}
+
+.lumen-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--lumen-color-border-hover);
+}
+
+.lumen-scrollbar[data-auto-hide='true'] {
+  scrollbar-color: transparent transparent;
+}
+
+.lumen-scrollbar[data-auto-hide='true']::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.lumen-scrollbar[data-auto-hide='true']:hover,
+.lumen-scrollbar[data-auto-hide='true']:focus-within,
+.lumen-scrollbar[data-auto-hide='true']:focus-visible {
+  scrollbar-color: var(--lumen-color-border-strong) transparent;
+}
+
+.lumen-scrollbar[data-auto-hide='true']:hover::-webkit-scrollbar-thumb,
+.lumen-scrollbar[data-auto-hide='true']:focus-within::-webkit-scrollbar-thumb,
+.lumen-scrollbar[data-auto-hide='true']:focus-visible::-webkit-scrollbar-thumb {
+  background-color: var(--lumen-color-border-strong);
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-lumen-motion] {
     animation-duration: 1ms !important;
