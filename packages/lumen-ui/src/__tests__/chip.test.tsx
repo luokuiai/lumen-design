@@ -14,6 +14,7 @@ describe('Chip', () => {
     expect(screen.getByText('重点关注').closest('[data-ui="chip"]')).toHaveClass(
       'bg-[var(--lumen-color-warning-soft)]',
       'text-[13px]',
+      'font-normal',
       'ring-1',
       'rounded-full',
     );

@@ -21,7 +21,7 @@ export interface SegmentedControlProps<T extends string>
 
 const itemSizeClasses: Record<SegmentedControlSize, string> = {
   sm: 'h-7 px-3 text-[12px]',
-  md: 'h-8 px-3.5 text-[13px]',
+  md: 'h-[var(--lumen-control-height-md)] px-4 text-[14px]',
 };
 
 export const SegmentedControl = <T extends string>({
@@ -55,7 +55,7 @@ export const SegmentedControl = <T extends string>({
           disabled={option.disabled}
           onClick={() => onChange(option.value)}
           className={cn(
-            'inline-flex min-w-0 items-center justify-center whitespace-nowrap rounded-[5px] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-45',
+            'inline-flex min-w-0 items-center justify-center whitespace-nowrap rounded-[5px] font-normal transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-45',
             itemSizeClasses[size],
             fullWidth && 'flex-1',
             active

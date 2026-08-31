@@ -448,7 +448,7 @@ export const TreeSelect = <TNode,>({
             'flex items-center rounded-[8px] px-2 py-1.5 transition-colors',
             optionSizeTokens[size],
             isSelected
-              ? 'bg-[var(--lumen-color-primary-soft)] font-medium text-[var(--lumen-color-primary)]'
+              ? 'bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary)]'
               : selectable || expandableOnly
                 ? 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]'
                 : 'text-[var(--lumen-color-text-placeholder)]',
@@ -580,7 +580,7 @@ export const TreeSelect = <TNode,>({
           openDropdown();
         }}
         className={cn(
-          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left outline-none transition-all',
+          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left font-normal outline-none transition-all',
           radiusTokens.control,
           sizeTokens[size],
           disabled

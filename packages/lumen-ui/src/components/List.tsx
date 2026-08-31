@@ -78,7 +78,7 @@ export const ListItem = React.forwardRef<HTMLLIElement, ListItemProps>(
         ) : null}
         <span className="min-w-0 flex-1">
           <span className="flex min-w-0 flex-col gap-1 pad:flex-row pad:items-start pad:justify-between pad:gap-4">
-            <span className="min-w-0 text-[13px] font-medium leading-5 text-[var(--lumen-color-text)]">
+            <span className="min-w-0 text-[13px] font-normal leading-5 text-[var(--lumen-color-text)]">
               {title}
             </span>
             {meta ? <span className="shrink-0 text-[12px] leading-5 text-[var(--lumen-color-text-muted)]">{meta}</span> : null}

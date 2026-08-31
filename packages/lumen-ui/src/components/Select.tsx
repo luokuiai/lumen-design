@@ -624,7 +624,7 @@ export const Select = <T extends string | number = string>({
           option.disabled && 'cursor-not-allowed opacity-40',
           !renderOption &&
             (isSelected
-              ? 'bg-[var(--lumen-color-primary-soft)] font-medium text-[var(--lumen-color-primary)]'
+              ? 'bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary)]'
               : 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]'),
           !renderOption &&
             isHighlighted &&
@@ -697,7 +697,7 @@ export const Select = <T extends string | number = string>({
           else openDropdown();
         }}
         className={cn(
-          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left outline-none transition-all',
+          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left font-normal outline-none transition-all',
           radius ?? radiusTokens.control,
           selectSizeTokens[size],
           disabled || isPreparingOpen
@@ -750,7 +750,7 @@ export const Select = <T extends string | number = string>({
           >
             {searchable && renderSearchSection()}
 
-            <div className="flex max-h-[252px] flex-col gap-1 overflow-y-auto px-2.5 py-1.5">
+            <div className="flex max-h-[252px] flex-col gap-1 overflow-y-auto p-2">
               {loading ? (
                 <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
                   {loadingText}
@@ -764,7 +764,7 @@ export const Select = <T extends string | number = string>({
                   return (
                     <React.Fragment key={String(option.value)}>
                       {shouldRenderGroup && (
-                        <div className="px-3 pb-1 pt-2 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]">
+                <div className="px-3 pb-1 pt-2 text-[12px] font-normal text-[var(--lumen-color-text-placeholder)]">
                           {option.group}
                         </div>
                       )}

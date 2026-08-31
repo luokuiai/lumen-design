@@ -22,6 +22,6 @@ describe('Select', () => {
     const option = document.querySelector('[data-ui="select-option"]');
 
     expect(option).toHaveClass('p-2');
-    expect(option?.parentElement).toHaveClass('flex', 'flex-col', 'gap-1');
+    expect(option?.parentElement).toHaveClass('flex', 'flex-col', 'gap-1', 'p-2');
   });
 });

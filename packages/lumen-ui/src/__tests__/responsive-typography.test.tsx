@@ -127,9 +127,12 @@ describe('responsive typography', () => {
       </>,
     );
 
-    expect(screen.getByRole('button', { name: '提交' })).toHaveClass('text-[14px]');
-    expect(screen.getByTestId('select-trigger')).toHaveClass('text-[14px]');
-    expect(screen.getByTestId('tree-select-trigger')).toHaveClass('text-[14px]');
+    expect(screen.getByRole('button', { name: '提交' })).toHaveClass(
+      'text-[14px]',
+      'font-normal',
+    );
+    expect(screen.getByTestId('select-trigger')).toHaveClass('text-[14px]', 'font-normal');
+    expect(screen.getByTestId('tree-select-trigger')).toHaveClass('text-[14px]', 'font-normal');
     expect(screen.getByRole('button', { name: '选择日期' })).toHaveClass('text-[14px]');
     expect(screen.getByRole('button', { name: '选择时间' })).toHaveClass('text-[14px]');
 
@@ -167,12 +170,13 @@ describe('compact Switch', () => {
     const track = document.querySelector('[data-switch-track]');
     const knob = document.querySelector('[data-switch-knob]');
 
-    expect(track).toHaveClass('h-[22px]', 'w-10');
-    expect(knob).toHaveClass('h-[18px]', 'w-[18px]');
+    expect(track).toHaveClass('h-5', 'w-9');
+    expect(knob).toHaveClass('h-4', 'w-4');
+    expect(screen.getByText('开启提醒')).toHaveClass('font-normal');
 
     await user.click(screen.getByText('开启提醒'));
 
     expect(control).toBeChecked();
-    expect(knob).toHaveClass('translate-x-[18px]');
+    expect(knob).toHaveClass('translate-x-4');
   });
 });
