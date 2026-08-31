@@ -169,12 +169,12 @@ git merge --no-ff release-1.0.0-alpha.1 \
 
 ### 6. Push in Release Order
 
-Push the exact tag first to trigger publishing, then push `main`, and finally
+Push `main` first, then push the exact tag to trigger publishing, and finally
 push `develop`:
 
 ```bash
-git push origin v1.0.0-alpha.1
 git push origin main
+git push origin v1.0.0-alpha.1
 git push origin develop
 ```
 
