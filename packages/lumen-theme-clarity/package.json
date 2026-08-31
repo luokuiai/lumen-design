@@ -1,6 +1,6 @@
 {
   "name": "@luokuiai/lumen-theme-clarity",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "Clarity theme for Lumen UI",
   "type": "module",
   "repository": {
@@ -17,6 +17,6 @@
     "./clarity.css": "./clarity.css"
   },
   "peerDependencies": {
-    "@luokuiai/lumen-ui": "^1.0.0-alpha.4"
+    "@luokuiai/lumen-ui": "^1.0.0-alpha.5"
   }
 }
