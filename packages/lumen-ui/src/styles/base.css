@@ -51,6 +51,10 @@
   color: var(--lumen-color-text);
 }
 
+:where([data-lumen-theme]) :where(button, input, textarea, select) {
+  font-family: inherit;
+}
+
 :where(button:not(:disabled), [role='button']:not([aria-disabled='true'])) {
   cursor: pointer;
 }
@@ -187,7 +191,13 @@
 }
 
 .lumen-scrollbar {
-  scrollbar-color: var(--lumen-color-border-strong) transparent;
+  --lumen-scrollbar-thumb: color-mix(
+    in srgb,
+    var(--lumen-color-text-muted) 72%,
+    var(--lumen-color-border-strong)
+  );
+  --lumen-scrollbar-thumb-hover: var(--lumen-color-text-muted);
+  scrollbar-color: var(--lumen-scrollbar-thumb) transparent;
   scrollbar-width: thin;
 }
 
@@ -209,7 +219,7 @@
 .lumen-scrollbar::-webkit-scrollbar-thumb {
   border: 2px solid transparent;
   border-radius: var(--lumen-radius-pill);
-  background: var(--lumen-color-border-strong);
+  background: var(--lumen-scrollbar-thumb);
   background-clip: padding-box;
 }
 
@@ -218,7 +228,7 @@
 }
 
 .lumen-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: var(--lumen-color-border-hover);
+  background-color: var(--lumen-scrollbar-thumb-hover);
 }
 
 .lumen-scrollbar[data-auto-hide='true'] {
@@ -232,13 +242,13 @@
 .lumen-scrollbar[data-auto-hide='true']:hover,
 .lumen-scrollbar[data-auto-hide='true']:focus-within,
 .lumen-scrollbar[data-auto-hide='true']:focus-visible {
-  scrollbar-color: var(--lumen-color-border-strong) transparent;
+  scrollbar-color: var(--lumen-scrollbar-thumb) transparent;
 }
 
 .lumen-scrollbar[data-auto-hide='true']:hover::-webkit-scrollbar-thumb,
 .lumen-scrollbar[data-auto-hide='true']:focus-within::-webkit-scrollbar-thumb,
 .lumen-scrollbar[data-auto-hide='true']:focus-visible::-webkit-scrollbar-thumb {
-  background-color: var(--lumen-color-border-strong);
+  background-color: var(--lumen-scrollbar-thumb);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -70,7 +70,7 @@ export const SideNav = <T extends string>({
               {Icon ? (
                 <Icon aria-hidden="true" className="shrink-0" size={19} />
               ) : collapsed ? (
-                <span aria-hidden="true" className="text-[13px] font-medium">
+                <span aria-hidden="true" className="text-[13px] font-normal">
                   {item.label.slice(0, 1)}
                 </span>
               ) : null}

@@ -43,4 +43,22 @@ describe('SegmentedControl', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Week' }));
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  it('aligns its medium size with other medium controls', () => {
+    render(
+      <SegmentedControl
+        size="md"
+        value="day"
+        options={[{ label: 'Day', value: 'day' }]}
+        onChange={() => undefined}
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: 'Day' })).toHaveClass(
+      'h-[var(--lumen-control-height-md)]',
+      'px-4',
+      'text-[14px]',
+      'font-normal',
+    );
+  });
 });

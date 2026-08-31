@@ -49,7 +49,7 @@ export type ButtonVariant = keyof typeof buttonVariantTokens;
 export type ButtonSize = keyof typeof buttonSizeTokens;
 
 const buttonBase =
-  'inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50';
+  'inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50';
 
 export const getButtonClassNames = ({
   variant = 'primary',
@@ -78,11 +78,11 @@ export const rawButtonPresets = {
   subtleSm: getButtonClassNames({ variant: 'secondary', size: 'sm' }),
   dangerSm: getButtonClassNames({ variant: 'destructive', size: 'sm' }),
   segment:
-    'inline-flex items-center justify-center h-[32px] px-3 text-[13px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] border border-transparent text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface)] hover:text-[var(--lumen-color-text)]',
+    'inline-flex items-center justify-center h-[32px] px-3 text-[13px] font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] border border-transparent text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface)] hover:text-[var(--lumen-color-text)]',
   pagination:
-    'inline-flex items-center justify-center h-8 min-w-8 px-2 text-[12px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
+    'inline-flex items-center justify-center h-8 min-w-8 px-2 text-[12px] font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
   dashedUpload:
-    'inline-flex items-center justify-center gap-1.5 h-[36px] px-4 text-[14px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] border border-dashed border-[var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-muted)] hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary)]',
+    'inline-flex items-center justify-center gap-1.5 h-[36px] px-4 text-[14px] font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] border border-dashed border-[var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-muted)] hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary)]',
 } as const;
 
 export const headerActionButtonClassNames = {
@@ -106,7 +106,7 @@ export const tabVariantClassNames = {
   default: {
     container: 'bg-[var(--lumen-color-surface)] px-1',
     base:
-      'group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 text-[14px] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out',
+      'group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 text-[14px] font-normal transition-colors duration-200 after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out',
     active:
       'text-[var(--lumen-color-primary)] after:scale-x-100 after:opacity-100',
     inactive:
@@ -140,7 +140,7 @@ export const tabVariantClassNames = {
     container:
       'rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-4 py-4 shadow-sm',
     base:
-      'group inline-flex min-h-[46px] items-center gap-2.5 rounded-[8px] border px-4 py-2 text-[14px] font-medium tracking-[0.01em] transition-all duration-200',
+      'group inline-flex min-h-[46px] items-center gap-2.5 rounded-[8px] border px-4 py-2 text-[14px] font-normal tracking-[0.01em] transition-all duration-200',
     active:
       'border-[var(--lumen-color-info-border)] bg-[linear-gradient(180deg,var(--lumen-color-info-soft)_0%,var(--lumen-color-surface)_100%)] text-[var(--lumen-color-primary-active)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]',
     inactive:
@@ -162,7 +162,7 @@ export const tabVariantClassNames = {
 
 export const tabClassNames = {
   base:
-    'inline-flex items-center justify-center gap-2 rounded-[10px] px-4 py-2.5 text-[14px] font-medium transition-all duration-200',
+    'inline-flex items-center justify-center gap-2 rounded-[10px] px-4 py-2.5 text-[14px] font-normal transition-all duration-200',
   active:
     'bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)] shadow-[0_10px_20px_var(--lumen-color-focus-ring)]',
   inactive:
@@ -179,7 +179,7 @@ export const sideNavClassNames = {
   root: 'flex min-w-0 flex-col gap-2',
   section: 'flex min-w-0 flex-col gap-1',
   sectionTitle:
-    'flex h-7 items-center px-3 text-[13px] font-medium text-[var(--lumen-color-text-placeholder)]',
+    'flex h-7 items-center px-3 text-[13px] font-normal text-[var(--lumen-color-text-placeholder)]',
   collapsedDivider:
     'mx-auto my-1 h-px w-8 bg-[var(--lumen-color-border)]',
   item:
@@ -187,7 +187,7 @@ export const sideNavClassNames = {
   expandedItem: 'gap-3 px-3',
   collapsedItem: 'justify-center px-0',
   activeItem:
-    'bg-[var(--lumen-color-primary-soft)] font-medium text-[var(--lumen-color-primary-hover)] before:absolute before:left-0 before:top-2 before:h-7 before:w-[3px] before:rounded-r-full before:bg-[var(--lumen-color-primary)]',
+    'bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary-hover)] before:absolute before:left-0 before:top-2 before:h-7 before:w-[3px] before:rounded-r-full before:bg-[var(--lumen-color-primary)]',
   inactiveItem:
     'text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary-hover)]',
   disabledItem: 'cursor-not-allowed opacity-45',

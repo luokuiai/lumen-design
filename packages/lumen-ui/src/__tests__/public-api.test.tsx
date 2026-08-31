@@ -39,6 +39,7 @@ describe('public API', () => {
     expect('Tag' in Lumen).toBe(false);
     expect(Lumen.TreeSelect).toBeTypeOf('function');
     expect(Lumen.Transfer).toBeTypeOf('function');
+    expect(Lumen.Typography).toBeTypeOf('object');
     expect('CompactPagination' in Lumen).toBe(false);
     expect('TimeSelector' in Lumen).toBe(false);
   });

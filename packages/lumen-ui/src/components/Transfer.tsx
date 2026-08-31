@@ -135,7 +135,7 @@ export const Transfer: React.FC<TransferProps> = ({
               setSelectedKeys(Array.from(nextKeys));
             }}
           />
-          <span className="min-w-0 flex-1 truncate text-[14px] font-medium text-[var(--lumen-color-text)]">
+          <span className="min-w-0 flex-1 truncate text-[14px] font-normal text-[var(--lumen-color-text)]">
             {title}
           </span>
           <span className="text-[13px] text-[var(--lumen-color-text-muted)]">
@@ -143,7 +143,7 @@ export const Transfer: React.FC<TransferProps> = ({
           </span>
         </header>
         {searchable ? (
-          <div className="shrink-0 border-b border-[var(--lumen-color-surface-muted)] p-2">
+          <div className="shrink-0 p-2">
             <Input
               aria-label={`${side === 'source' ? '可选' : '已选'}列表搜索`}
               size="md"

@@ -42,7 +42,7 @@ export const CardHeader = React.forwardRef<
     ref={ref}
     data-ui="card-header"
     className={cn(
-      'flex min-w-0 items-start justify-between gap-3 border-b border-[var(--lumen-color-surface-muted)] px-5 py-4 pad:px-6',
+      'flex min-w-0 items-start justify-between gap-3 px-5 py-4 pad:px-6',
       className,
     )}
     {...props}
@@ -59,7 +59,7 @@ export const CardTitle = React.forwardRef<
     ref={ref}
     data-ui="card-title"
     className={cn(
-      'm-0 text-[14px] font-semibold text-[var(--lumen-color-text-strong)]',
+      'm-0 text-[15px] font-medium text-[var(--lumen-color-text-strong)]',
       className,
     )}
     {...props}
@@ -76,7 +76,7 @@ export const CardDescription = React.forwardRef<
     ref={ref}
     data-ui="card-description"
     className={cn(
-      'mt-1 text-[12px] leading-5 text-[var(--lumen-color-text-muted)]',
+      'mt-1 text-[13px] leading-5 text-[var(--lumen-color-text-muted)]',
       className,
     )}
     {...props}

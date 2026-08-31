@@ -66,7 +66,7 @@ export const Chip: React.FC<ChipProps> = ({
       data-selected={selected || undefined}
       data-disabled={disabled || undefined}
       className={cn(
-        'inline-flex max-w-full items-center overflow-hidden font-medium leading-none ring-inset transition-colors',
+        'inline-flex max-w-full items-center overflow-hidden font-normal leading-none ring-inset transition-colors',
         semanticBadgeToneClassNames[tone],
         chipSizeClassNames[size],
         chipShapeClassNames[shape],

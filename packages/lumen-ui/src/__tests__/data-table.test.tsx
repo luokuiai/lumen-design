@@ -36,7 +36,10 @@ describe('DataTable', () => {
       'aria-sort',
       'ascending',
     );
-    expect(screen.getByRole('columnheader', { name: /路段/ })).toHaveClass('text-[14px]');
+    expect(screen.getByRole('columnheader', { name: /路段/ })).toHaveClass(
+      'text-[14px]',
+      'font-normal',
+    );
     fireEvent.click(screen.getByRole('button', { name: /路段/ }));
     expect(onSortChange).toHaveBeenCalledWith({ key: 'name', direction: 'desc' });
   });

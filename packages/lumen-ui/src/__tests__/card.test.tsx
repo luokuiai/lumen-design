@@ -31,7 +31,12 @@ describe('Card', () => {
       'rounded-[var(--lumen-radius-card)]',
       'bg-[var(--lumen-color-surface)]',
     );
-    expect(screen.getByRole('heading', { name: 'Project status' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Project status' })).toHaveClass(
+      'text-[15px]',
+      'font-medium',
+    );
+    expect(screen.getByRole('heading', { name: 'Project status' }).closest('[data-ui="card-header"]'))
+      .not.toHaveClass('border-b');
     expect(screen.getByText('Updated today')).toHaveAttribute(
       'data-ui',
       'card-description',
