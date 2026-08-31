@@ -50,14 +50,10 @@ textarea {
 }
 
 .brand-mark {
-  display: grid;
+  display: block;
   width: 36px;
   height: 36px;
-  place-items: center;
-  border-radius: 8px;
-  background: var(--lumen-color-primary);
-  color: var(--lumen-color-on-primary);
-  font-weight: 700;
+  flex: 0 0 auto;
 }
 
 .brand strong,
@@ -107,7 +103,7 @@ textarea {
 }
 
 .brand strong {
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .brand span {

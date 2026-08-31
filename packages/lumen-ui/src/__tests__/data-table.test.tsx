@@ -55,6 +55,23 @@ describe('DataTable', () => {
     expect(screen.getByText('K12+400').closest('td')).toHaveClass('text-[13px]');
   });
 
+  it('removes the outer frame when embedded in another surface', () => {
+    render(
+      <DataTable
+        variant="embedded"
+        columns={columns}
+        data={rows}
+        getRowKey={(row) => row.id}
+      />,
+    );
+
+    const root = screen.getByRole('table').parentElement?.parentElement;
+    expect(root).toHaveAttribute('data-variant', 'embedded');
+    expect(root).toHaveClass('rounded-none', 'border-0');
+    expect(root).not.toHaveClass('rounded-[8px]');
+    expect(root).not.toHaveClass('border-t');
+  });
+
   it('selects visible rows while retaining selections from other pages', () => {
     const onSelectedRowKeysChange = vi.fn();
     render(

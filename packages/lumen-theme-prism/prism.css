@@ -323,7 +323,7 @@
   box-shadow: none;
 }
 
-[data-lumen-theme='prism'] [data-ui='data-table']:not(.rounded-none) {
+[data-lumen-theme='prism'] [data-ui='data-table']:not([data-variant='embedded']) {
   border-radius: var(--lumen-radius-card);
 }
 

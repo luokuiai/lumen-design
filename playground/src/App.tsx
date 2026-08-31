@@ -285,12 +285,16 @@ const safetyEventColumns: DataTableColumn<SafetyEvent>[] = [
     header: '路段位置',
     sortable: true,
     minWidth: 150,
+    className: 'mobile:hidden',
+    headerClassName: 'mobile:hidden',
     render: (event) => event.section,
   },
   {
     key: 'category',
     header: '事件类型',
     minWidth: 112,
+    className: 'mobile:hidden',
+    headerClassName: 'mobile:hidden',
     render: (event) => event.category,
   },
   {
@@ -298,6 +302,8 @@ const safetyEventColumns: DataTableColumn<SafetyEvent>[] = [
     header: '等级',
     sortable: true,
     minWidth: 84,
+    className: 'mobile:hidden',
+    headerClassName: 'mobile:hidden',
     render: (event) => (
       <Badge
         variant={event.level === '高' ? 'danger' : event.level === '中' ? 'warning' : 'info'}
@@ -323,6 +329,8 @@ const safetyEventColumns: DataTableColumn<SafetyEvent>[] = [
     header: '更新时间',
     sortable: true,
     minWidth: 152,
+    className: 'mobile:hidden',
+    headerClassName: 'mobile:hidden',
     render: (event) => event.updatedAt,
   },
   {
@@ -331,7 +339,8 @@ const safetyEventColumns: DataTableColumn<SafetyEvent>[] = [
     align: 'left',
     width: 96,
     minWidth: 96,
-    className: 'whitespace-nowrap',
+    className: 'whitespace-nowrap mobile:hidden',
+    headerClassName: 'mobile:hidden',
     render: (event) => (
       <Button size="sm" variant="ghost" onClick={() => Toast.info(`查看 ${event.id}`)}>
         查看
@@ -381,9 +390,9 @@ function DemoCard({
 function GalleryBrand({ className = '' }: { className?: string }) {
   return (
     <div className={`brand ${className}`.trim()}>
-      <div className="brand-mark">L</div>
+      <img className="brand-mark" src="/favicon.svg" alt="" aria-hidden="true" />
       <div>
-        <strong>Lumen UI</strong>
+        <strong>Lumen Design</strong>
         <span>Component Gallery</span>
       </div>
     </div>
@@ -1123,11 +1132,27 @@ export default function App() {
                     ))}
                   </div>
                 </DemoCard>
-                <DemoCard title="DataTable + Pagination" wide>
+                <DemoCard title="DataTable · Default" wide>
+                  <DataTable
+                    caption="默认公路安全事件表格"
+                    columns={safetyEventColumns}
+                    data={safetyEvents.slice(0, 5)}
+                    getRowKey={(event) => event.id}
+                  />
+                </DemoCard>
+                <DemoCard title="DataTable · Embedded + Pagination" wide>
                   <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
+                    <div className="border-b border-[var(--lumen-color-border)] px-4 py-3">
+                      <strong className="block text-[14px] font-semibold text-[var(--lumen-color-text-strong)]">
+                        公路安全事件
+                      </strong>
+                      <span className="mt-1 block text-[13px] text-[var(--lumen-color-text-muted)]">
+                        按更新时间排序 · {safetyEvents.length} 条
+                      </span>
+                    </div>
                     <DataTable
                       caption="公路安全事件"
-                      className="rounded-none border-0"
+                      variant="embedded"
                       columns={safetyEventColumns}
                       data={visibleSafetyEvents}
                       getRowKey={(event) => event.id}

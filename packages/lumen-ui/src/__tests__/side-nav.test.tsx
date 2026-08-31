@@ -28,7 +28,12 @@ describe('SideNav', () => {
 
     const activeItem = screen.getByRole('link', { name: 'Overview' });
     expect(activeItem).toHaveAttribute('aria-current', 'page');
-    expect(activeItem).toHaveClass('bg-[var(--lumen-color-primary-soft)]');
+    expect(activeItem).toHaveClass(
+      'bg-[var(--lumen-color-primary-soft)]',
+      'text-[15px]',
+      'font-medium',
+    );
+    expect(screen.getByText('Workspace')).toHaveClass('text-[13px]');
 
     fireEvent.click(activeItem);
     expect(onSelect).toHaveBeenCalledWith('overview', sections[0]!.items[0]!);
