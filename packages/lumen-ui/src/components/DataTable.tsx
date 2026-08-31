@@ -136,7 +136,7 @@ export function DataTable<T>({
         <table className={cn('w-full border-collapse text-left', tableClassName)}>
           {caption ? <caption className="sr-only">{caption}</caption> : null}
           <thead className="bg-[var(--lumen-color-surface-subtle)]">
-            <tr className="border-b border-[var(--lumen-color-border)]">
+            <tr className="border-b border-[var(--lumen-color-divider)]">
               {selectable ? (
                 <th scope="col" className={cn('w-12', cellPadding)}>
                   <Checkbox

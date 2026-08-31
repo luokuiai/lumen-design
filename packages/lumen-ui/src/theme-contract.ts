@@ -22,6 +22,7 @@ export const lumenThemeVariables = [
   '--lumen-color-surface-glass',
   '--lumen-color-overlay',
   '--lumen-color-border',
+  '--lumen-color-divider',
   '--lumen-color-border-strong',
   '--lumen-color-border-hover',
   '--lumen-color-focus-ring',
