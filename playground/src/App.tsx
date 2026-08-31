@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
   Bell,
@@ -20,6 +20,7 @@ import {
   Moon,
   Sun,
   Table2,
+  Type as TypeIcon,
   UserRound,
   X,
 } from 'lucide-react';
@@ -32,6 +33,7 @@ import {
   Button,
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
   Checkbox,
@@ -75,6 +77,7 @@ import {
   Tooltip,
   Transfer,
   TreeSelect,
+  Typography,
 } from '@luokuiai/lumen-ui';
 import type { DataTableColumn, DataTableSort, StepsDirection } from '@luokuiai/lumen-ui';
 import '@luokuiai/lumen-theme-clarity';
@@ -156,6 +159,7 @@ type SafetyEvent = {
 };
 
 const sections: Section[] = [
+  { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button Badge Chip Avatar Tooltip', icon: Plus },
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input FormField Textarea Checkbox Radio RadioGroup Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、树选择、穿梭框、日期和时间选择。', keywords: 'Select TreeSelect Transfer DatePicker TimePicker DateTimePicker', icon: CalendarDays },
@@ -286,7 +290,7 @@ const safetyEventColumns: DataTableColumn<SafetyEvent>[] = [
     header: '事件编号',
     sortable: true,
     minWidth: 112,
-    render: (event) => <span className="font-medium text-[var(--lumen-color-text)]">{event.id}</span>,
+    render: (event) => <span className="font-normal text-[var(--lumen-color-text)]">{event.id}</span>,
   },
   {
     key: 'section',
@@ -408,6 +412,7 @@ function GalleryBrand({ className = '' }: { className?: string }) {
 }
 
 export default function App() {
+  const mainScrollRef = useRef<HTMLDivElement>(null);
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [colorScheme, setColorScheme] = useState<ColorScheme>(initialColorScheme);
   const [accent, setAccent] = useState<Accent>(initialAccent);
@@ -462,7 +467,6 @@ export default function App() {
         value: section.id,
         label: section.title,
         icon: section.icon,
-        href: `#${section.id}`,
       })),
     }],
     [filteredNavigationSections],
@@ -477,6 +481,10 @@ export default function App() {
     window.addEventListener('hashchange', syncSectionFromHash);
     return () => window.removeEventListener('hashchange', syncSectionFromHash);
   }, []);
+
+  useLayoutEffect(() => {
+    mainScrollRef.current?.scrollTo({ top: 0 });
+  }, [activeSection]);
 
   useEffect(() => {
     document.documentElement.dataset.lumenTheme = theme;
@@ -540,7 +548,10 @@ export default function App() {
           collapsed={sidebarCollapsed}
           className="gallery-side-nav"
           sections={sideNavSections}
-          onSelect={setActiveSection}
+          onSelect={(value) => {
+            setActiveSection(value);
+            window.history.replaceState(null, '', `#${value}`);
+          }}
         />
       </aside>
 
@@ -568,6 +579,7 @@ export default function App() {
           sections={sideNavSections}
           onSelect={(value) => {
             setActiveSection(value);
+            window.history.replaceState(null, '', `#${value}`);
             setMobileNavOpen(false);
           }}
         />
@@ -811,7 +823,36 @@ export default function App() {
           </div>
         </header>
 
-        {activeSections.map((section) => {
+        <Scrollbar ref={mainScrollRef} className="main-scrollbar" size="sm">
+          <div className="main-content">
+            {activeSections.map((section) => {
+          if (section.id === 'typography') {
+            return (
+              <GallerySection key={section.id} section={section}>
+                <DemoCard title="Headings">
+                  <div className="stack">
+                    <Typography variant="h1">H1 运营总览</Typography>
+                    <Typography variant="h2">H2 事件处置</Typography>
+                    <Typography variant="h3">H3 实时监测</Typography>
+                    <Typography variant="h4">H4 设备状态</Typography>
+                    <Typography variant="h5">H5 基础配置</Typography>
+                    <Typography variant="h6">H6 详细信息</Typography>
+                  </div>
+                </DemoCard>
+                <DemoCard title="Body">
+                  <div className="stack">
+                    <Typography>正文用于承载主要说明和数据内容。</Typography>
+                    <Typography variant="body-sm" tone="secondary">
+                      小号正文用于紧凑列表和次要信息。
+                    </Typography>
+                    <Typography variant="caption" tone="muted">
+                      辅助文字用于时间、状态补充和简短提示。
+                    </Typography>
+                  </div>
+                </DemoCard>
+              </GallerySection>
+            );
+          }
           if (section.id === 'buttons') {
             return (
               <GallerySection key={section.id} section={section}>
@@ -940,7 +981,7 @@ export default function App() {
                 <DemoCard title="Checkbox + Radio + Switch">
                   <div className="stack">
                     <Checkbox checked={checked} onChange={setChecked} label="同步到日历" description="创建后自动邀请成员。" />
-                    <Switch checked={enabled} onChange={setEnabled} label="开启提醒" description="会前 10 分钟推送。" />
+                    <Switch checked={enabled} onChange={setEnabled} label="开启提醒" />
                     <Radio checked label="单独 Radio" />
                     <RadioGroup
                       value={radioValue}
@@ -1158,12 +1199,10 @@ export default function App() {
                 <DemoCard title="DataTable · Embedded + Pagination" wide>
                   <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
                     <div className="border-b border-[var(--lumen-color-border)] px-4 py-3">
-                      <strong className="block text-[14px] font-semibold text-[var(--lumen-color-text-strong)]">
-                        公路安全事件
-                      </strong>
-                      <span className="mt-1 block text-[13px] text-[var(--lumen-color-text-muted)]">
+                      <CardTitle>公路安全事件</CardTitle>
+                      <CardDescription>
                         按更新时间排序 · {safetyEvents.length} 条
-                      </span>
+                      </CardDescription>
                     </div>
                     <DataTable
                       caption="公路安全事件"
@@ -1486,7 +1525,9 @@ export default function App() {
               </DemoCard>
             </GallerySection>
           );
-        })}
+            })}
+          </div>
+        </Scrollbar>
       </main>
 
       <Modal

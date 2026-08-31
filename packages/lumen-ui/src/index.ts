@@ -45,3 +45,4 @@ export * from './components/Toast';
 export * from './components/Tooltip';
 export * from './components/Transfer';
 export * from './components/TreeSelect';
+export * from './components/Typography';

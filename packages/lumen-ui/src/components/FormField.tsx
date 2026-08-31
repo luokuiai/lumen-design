@@ -75,7 +75,7 @@ export const FormField: React.FC<FormFieldProps> = ({
       <label
         htmlFor={inputId}
         className={cn(
-          'block font-medium text-[var(--lumen-color-text-secondary)]',
+          'block font-normal text-[var(--lumen-color-text-secondary)]',
           sizeTokens.label,
           labelClassName,
         )}

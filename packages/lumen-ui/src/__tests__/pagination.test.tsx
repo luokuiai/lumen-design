@@ -15,7 +15,10 @@ describe('Pagination', () => {
       />,
     );
 
-    expect(screen.getByText('第 3 / 8 页')).toBeInTheDocument();
+    const root = screen.getByText('第 3 / 8 页').closest('[data-ui="pagination"]');
+    expect(root).toHaveAttribute('data-variant', 'default');
+    expect(root).toHaveClass('gap-2', 'py-2.5', 'pad:px-4');
+    expect(root).not.toHaveClass('xl:py-4');
     expect(screen.getByRole('button', { current: 'page' })).toHaveTextContent(
       '3',
     );
@@ -37,7 +40,11 @@ describe('Pagination', () => {
       />,
     );
 
-    expect(screen.getByText('共 32 records · 第 2 / 4 页')).toBeInTheDocument();
+    const root = screen
+      .getByText('共 32 records · 第 2 / 4 页')
+      .closest('[data-ui="pagination"]');
+    expect(root).toHaveAttribute('data-variant', 'compact');
+    expect(root).toHaveClass('gap-1.5', 'py-1.5');
     fireEvent.click(screen.getByRole('button', { name: '上一页' }));
     expect(onPageChange).toHaveBeenCalledWith(1);
     unmount();

@@ -110,7 +110,7 @@ export const CollapseItem = React.forwardRef<HTMLDivElement, CollapseItemProps>(
           aria-controls={panelId}
           disabled={disabled}
           className={cn(
-            'flex w-full items-center gap-3 text-left text-[13px] font-medium text-[var(--lumen-color-text)] transition-colors hover:bg-[var(--lumen-color-surface-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed',
+            'flex w-full items-center gap-3 text-left text-[13px] font-normal text-[var(--lumen-color-text)] transition-colors hover:bg-[var(--lumen-color-surface-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed',
             spacing,
           )}
           onClick={() => context.toggle(value)}

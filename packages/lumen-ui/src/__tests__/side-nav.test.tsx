@@ -31,9 +31,9 @@ describe('SideNav', () => {
     expect(activeItem).toHaveClass(
       'bg-[var(--lumen-color-primary-soft)]',
       'text-[15px]',
-      'font-medium',
+      'font-normal',
     );
-    expect(screen.getByText('Workspace')).toHaveClass('text-[13px]');
+    expect(screen.getByText('Workspace')).toHaveClass('text-[13px]', 'font-normal');
 
     fireEvent.click(activeItem);
     expect(onSelect).toHaveBeenCalledWith('overview', sections[0]!.items[0]!);

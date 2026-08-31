@@ -10,6 +10,7 @@ describe('Badge', () => {
     expect(screen.getByText('Default')).toHaveClass(
       'h-[26px]',
       'text-[13px]',
+      'font-normal',
       'bg-[var(--lumen-color-primary-soft-hover)]',
       'text-[var(--lumen-color-primary-hover)]',
     );

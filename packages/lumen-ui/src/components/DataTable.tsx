@@ -86,6 +86,7 @@ export function DataTable<T>({
     ? 'px-3 py-2 mobile:px-2.5'
     : 'px-4 py-3 mobile:px-3 mobile:py-2.5';
   const cellTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
+  const headerTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
 
   const updateVisibleSelection = (checked: boolean) => {
     const nextKeys = new Set(selectedKeys);
@@ -162,8 +163,8 @@ export function DataTable<T>({
                     }
                     className={cn(
                       cellPadding,
-                      'whitespace-nowrap font-medium leading-5 text-[var(--lumen-color-text-secondary)]',
-                      cellTextSize,
+                      'whitespace-nowrap font-normal leading-5 text-[var(--lumen-color-text-secondary)]',
+                      headerTextSize,
                       column.align === 'center' && 'text-center',
                       column.align === 'right' && 'text-right',
                       column.headerClassName,

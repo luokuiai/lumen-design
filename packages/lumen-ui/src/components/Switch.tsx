@@ -54,7 +54,7 @@ export const Switch: React.FC<SwitchProps> = ({
       {(label || description) && (
         <span className="min-w-0">
           {label ? (
-            <span id={labelId} className="block text-[14px] font-medium text-[var(--lumen-color-text)]">
+          <span id={labelId} className="block text-[14px] font-normal text-[var(--lumen-color-text)]">
               {label}
             </span>
           ) : null}
@@ -68,7 +68,7 @@ export const Switch: React.FC<SwitchProps> = ({
       <span
         className={cn(
           'relative inline-flex shrink-0 items-center',
-          isSmall ? 'h-4 w-7' : 'h-[22px] w-10',
+          isSmall ? 'h-4 w-7' : 'h-5 w-9',
         )}
         data-switch-track
         data-checked={currentChecked ? 'true' : 'false'}
@@ -99,8 +99,8 @@ export const Switch: React.FC<SwitchProps> = ({
           data-switch-knob
           className={cn(
             'absolute top-1/2 -translate-y-1/2 rounded-full border border-[var(--lumen-color-surface)]/80 bg-[var(--lumen-color-surface)] shadow-[0_2px_8px_var(--lumen-color-shadow)] transition-transform duration-200 ease-out',
-            isSmall ? 'left-[2px] h-3 w-3' : 'left-[2px] h-[18px] w-[18px]',
-            currentChecked ? (isSmall ? 'translate-x-3' : 'translate-x-[18px]') : 'translate-x-0',
+            isSmall ? 'left-[2px] h-3 w-3' : 'left-[2px] h-4 w-4',
+            currentChecked ? (isSmall ? 'translate-x-3' : 'translate-x-4') : 'translate-x-0',
           )}
         />
       </span>
