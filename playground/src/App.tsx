@@ -58,6 +58,7 @@ import {
   Progress,
   Radio,
   RadioGroup,
+  Scrollbar,
   SegmentedControl,
   Select,
   SideNav,
@@ -158,7 +159,7 @@ const sections: Section[] = [
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button Badge Chip Avatar Tooltip', icon: Plus },
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input FormField Textarea Checkbox Radio RadioGroup Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、树选择、穿梭框、日期和时间选择。', keywords: 'Select TreeSelect Transfer DatePicker TimePicker DateTimePicker', icon: CalendarDays },
-  { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem Pagination Divider Collapse Accordion', icon: Table2 },
+  { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
   { id: 'navigation', title: 'Navigation', description: '标签页、步骤、菜单和时间线。', keywords: 'Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
   { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、确认和消息提示。', keywords: 'Modal Drawer ConfirmDialog Toast', icon: Bell },
   { id: 'feedback', title: 'Feedback', description: '页面提示、加载、进度、空状态、上传和骨架屏。', keywords: 'Alert Spinner Progress Empty FileUpload Skeleton SegmentedControl', icon: Settings },
@@ -171,6 +172,13 @@ const getSectionFromHash = () => {
     ? sectionId
     : sections[0]!.id;
 };
+
+const basicSelectOptions = [
+  { label: '设计评审', value: 'review' },
+  { label: '需求同步', value: 'sync' },
+  { label: '线上发布', value: 'release' },
+  { label: '回归测试', value: 'qa' },
+];
 
 const selectOptions = [
   { label: '设计评审', value: 'review', group: '会议', description: 'UI 组件走查' },
@@ -419,6 +427,7 @@ export default function App() {
   const [tab, setTab] = useState<'overview' | 'usage' | 'tokens'>('overview');
   const [currentStep, setCurrentStep] = useState(1);
   const [stepsDirection, setStepsDirection] = useState<StepsDirection>('horizontal');
+  const [basicSelectValue, setBasicSelectValue] = useState<string | null>(null);
   const [selectValue, setSelectValue] = useState<string | null>('review');
   const [multiSelectValue, setMultiSelectValue] = useState<Array<string | number>>(['review', 'release']);
   const [treeValue, setTreeValue] = useState<string | null>('frontend');
@@ -982,6 +991,12 @@ export default function App() {
                 <DemoCard title="Select" wide>
                   <div className="form-grid">
                     <Select
+                      options={basicSelectOptions}
+                      value={basicSelectValue}
+                      onChange={(value) => setBasicSelectValue(value as string | null)}
+                      placeholder="请选择"
+                    />
+                    <Select
                       options={selectOptions}
                       value={selectValue}
                       onChange={(value) => setSelectValue(value as string | null)}
@@ -1212,6 +1227,45 @@ export default function App() {
                       meta={<Badge size="sm" variant="success">已完成</Badge>}
                     />
                   </List>
+                </DemoCard>
+                <DemoCard title="Scrollbar" wide>
+                  <div className="form-grid items-start">
+                    <Scrollbar
+                      aria-label="告警记录"
+                      className="h-48 rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
+                    >
+                      <div className="divide-y divide-[var(--lumen-color-surface-muted)] px-4">
+                        {Array.from({ length: 12 }, (_, index) => (
+                          <div key={index} className="py-3 text-[13px] text-[var(--lumen-color-text-secondary)]">
+                            K{18 + index} 路段监测记录 · {String(index + 8).padStart(2, '0')}:30
+                          </div>
+                        ))}
+                      </div>
+                    </Scrollbar>
+                    <Scrollbar
+                      aria-label="巡检看板"
+                      orientation="horizontal"
+                      size="sm"
+                      autoHide
+                      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4"
+                    >
+                      <div className="flex w-max gap-3">
+                        {['桥梁巡检', '隧道照明', '边坡监测', '路面养护', '机电设备'].map((item) => (
+                          <div
+                            key={item}
+                            className="w-40 shrink-0 border-l-2 border-[var(--lumen-color-primary)] bg-[var(--lumen-color-surface-muted)] px-3 py-4"
+                          >
+                            <strong className="block text-[13px] font-medium text-[var(--lumen-color-text-strong)]">
+                              {item}
+                            </strong>
+                            <span className="mt-1 block text-[12px] text-[var(--lumen-color-text-muted)]">
+                              今日任务 8 项
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </Scrollbar>
+                  </div>
                 </DemoCard>
                 <DemoCard title="Collapse + Accordion" wide>
                   <div className="form-grid">

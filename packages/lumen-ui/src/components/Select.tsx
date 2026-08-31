@@ -565,7 +565,7 @@ export const Select = <T extends string | number = string>({
           className={cn(
             renderOption
               ? 'block w-full text-left transition-all'
-              : 'flex w-full items-center gap-2.5 rounded-[8px] px-2.5 py-2 text-left text-[13px] transition-colors',
+              : 'flex w-full items-center gap-2.5 rounded-[8px] p-2 text-left text-[13px] transition-colors',
             option.disabled && 'cursor-not-allowed opacity-40',
             !renderOption &&
               (isSelected
@@ -620,7 +620,7 @@ export const Select = <T extends string | number = string>({
         className={cn(
           renderOption
             ? 'block w-full text-left transition-all'
-            : 'flex w-full items-center gap-2 rounded-[8px] py-2 pl-2.5 pr-2 text-left text-[13px] transition-colors',
+            : 'flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[13px] transition-colors',
           option.disabled && 'cursor-not-allowed opacity-40',
           !renderOption &&
             (isSelected

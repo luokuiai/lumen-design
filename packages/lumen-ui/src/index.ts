@@ -28,6 +28,7 @@ export * from './components/Popover';
 export * from './components/Progress';
 export * from './components/Radio';
 export * from './components/RadioGroup';
+export * from './components/Scrollbar';
 export * from './components/SegmentedControl';
 export * from './components/Select';
 export * from './components/SideNav';
