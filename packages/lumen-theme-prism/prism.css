@@ -399,6 +399,25 @@
   border-radius: var(--lumen-radius-card);
   background: var(--prism-surface-high);
   box-shadow: var(--lumen-shadow-dropdown);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+[data-lumen-theme='prism'] [data-ui='dropdown-surface'],
+[data-lumen-theme='prism'] [data-ui='toast'],
+[data-lumen-theme='prism'] [data-ui='tree-select-dropdown'],
+[data-lumen-theme='prism'] [data-ui='date-picker-panel'],
+[data-lumen-theme='prism'] [data-ui='time-picker-panel'] {
+  border-color: transparent;
+  border-radius: var(--lumen-radius-card);
+  background: var(--prism-surface-high);
+  box-shadow: var(--lumen-shadow-dropdown);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+[data-lumen-theme='prism'] [data-ui='toast'] {
+  background: var(--prism-surface-highest);
 }
 
 [data-lumen-theme='prism'] [data-ui='select-option'][data-selected='true'] {

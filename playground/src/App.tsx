@@ -719,7 +719,7 @@ export default function App() {
               {({ close }) => (
                 <div className="-my-1" data-testid="playground-notifications">
                   <div className="flex items-center justify-between border-b border-[var(--lumen-color-surface-muted)] px-4 py-3">
-                    <span className="text-[14px] font-semibold text-[var(--lumen-color-text-strong)]">通知</span>
+                    <span className="text-[15px] font-medium text-[var(--lumen-color-text-strong)]">通知</span>
                     <Badge size="sm" variant="danger">2</Badge>
                   </div>
                   <div className="py-1">
@@ -735,8 +735,8 @@ export default function App() {
                       >
                         <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[var(--lumen-color-primary)]" />
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-[13px] font-medium text-[var(--lumen-color-text)]">{title}</span>
-                          <span className="mt-1 block text-[11px] text-[var(--lumen-color-text-placeholder)]">{time}</span>
+                          <span className="block truncate text-[14px] font-normal leading-5 text-[var(--lumen-color-text)]">{title}</span>
+                          <span className="mt-1 block text-[12px] leading-5 text-[var(--lumen-color-text-placeholder)]">{time}</span>
                         </span>
                       </button>
                     ))}
@@ -744,7 +744,7 @@ export default function App() {
                   <div className="border-t border-[var(--lumen-color-surface-muted)] p-2">
                     <button
                       type="button"
-                      className="w-full rounded-[6px] px-3 py-2 text-center text-[12px] font-medium text-[var(--lumen-color-primary)] hover:bg-[var(--lumen-color-surface-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20"
+                      className="w-full rounded-[6px] px-3 py-2 text-center text-[13px] font-normal text-[var(--lumen-color-primary)] hover:bg-[var(--lumen-color-surface-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20"
                       onClick={close}
                     >
                       全部标记为已读

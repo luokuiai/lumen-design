@@ -41,6 +41,10 @@ describe('DropdownMenu', () => {
       left: '100px',
       top: '78px',
     });
+    expect(screen.getByTestId('dropdown-menu').firstElementChild).toHaveAttribute(
+      'data-ui',
+      'dropdown-surface',
+    );
   });
 
   it('opens toward available right space by default without focusing the first item', () => {

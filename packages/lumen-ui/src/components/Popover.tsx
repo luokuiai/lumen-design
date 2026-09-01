@@ -262,16 +262,16 @@ export const Popover: React.FC<PopoverProps> = ({
           ref={popoverRef}
           role={contentRole}
           aria-label={ariaLabel}
-          data-ui="popover"
           data-state={phase}
           data-placement={actualPlacement}
           style={popoverStyle}
-          className="z-50 overflow-auto outline-none"
+          className="z-50 outline-none"
         >
           <div
             data-lumen-motion
+            data-ui="popover"
             className={cn(
-              'rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4 shadow-[var(--lumen-shadow-dropdown)]',
+              'max-h-[inherit] max-w-[inherit] overflow-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4 shadow-[var(--lumen-shadow-dropdown)]',
               getTransformOriginClassName(actualPlacement, align),
               contentClassName,
             )}

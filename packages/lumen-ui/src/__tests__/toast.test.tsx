@@ -7,16 +7,15 @@ describe('Toast', () => {
     Toast.resetForTests();
   });
 
-  it('renders notifications with the glass surface treatment', async () => {
+  it('renders notifications with a themeable surface', async () => {
     await act(async () => {
       Toast.success('保存成功');
     });
 
     const toast = await screen.findByRole('status');
     expect(toast).toHaveTextContent('保存成功');
-    expect(toast).toHaveClass('bg-[var(--lumen-color-surface-glass)]/85');
-    expect(toast).toHaveClass('backdrop-blur-[5px]');
-    expect(toast).toHaveClass('backdrop-saturate-125');
-    expect(toast).toHaveClass('shadow-[0_3px_10px_var(--lumen-color-shadow)]');
+    expect(toast).toHaveAttribute('data-ui', 'toast');
+    expect(toast).toHaveClass('bg-[var(--lumen-color-surface)]');
+    expect(toast).toHaveClass('shadow-[var(--lumen-shadow-dropdown)]');
   });
 });
