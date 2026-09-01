@@ -219,6 +219,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
         ? createPortal(
             <div
               ref={panelRef}
+              data-ui="time-picker-panel"
               data-time-picker-panel
               className="overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
               style={{

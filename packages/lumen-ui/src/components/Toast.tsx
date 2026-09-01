@@ -216,11 +216,12 @@ const ToastCard: React.FC<{
 
   return (
     <div
-      className={`pointer-events-auto relative flex w-full min-w-0 max-w-full items-start gap-2.5 overflow-hidden rounded-[10px] bg-[var(--lumen-color-surface-glass)]/85 px-3 py-3 shadow-[0_3px_10px_var(--lumen-color-shadow)] ring-1 ring-white/70 backdrop-blur-[5px] backdrop-saturate-125 pad:gap-3 pad:px-4 ${
+      className={`pointer-events-auto relative flex w-full min-w-0 max-w-full items-start gap-2.5 overflow-hidden rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-3 py-3 shadow-[var(--lumen-shadow-dropdown)] pad:gap-3 pad:px-4 ${
         item.closing
           ? 'animate-[lumen-toast-out_160ms_ease-in_forwards]'
           : 'animate-[lumen-toast-in_180ms_ease-out]'
       }`}
+      data-ui="toast"
       data-toast-id={item.id}
       onAnimationEnd={() => {
         if (item.closing) onExited();

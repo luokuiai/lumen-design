@@ -652,6 +652,7 @@ export const TreeSelect = <TNode,>({
         createPortal(
           <div
             ref={portalRef}
+            data-ui="tree-select-dropdown"
             data-testid="tree-select-dropdown"
             className={cn(
               radiusTokens.card,
