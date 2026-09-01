@@ -13,7 +13,12 @@ describe('Transfer', () => {
   it('uses medium search controls and regular-weight panel titles', () => {
     render(<Transfer items={items} targetKeys={[]} onChange={() => undefined} />);
 
+    const sourceHeader = screen.getByText('可选项').closest('header');
     expect(screen.getByText('可选项')).toHaveClass('text-[14px]', 'font-normal');
+    expect(sourceHeader).toHaveClass(
+      'border-b',
+      'border-[var(--lumen-color-divider)]',
+    );
     expect(screen.getByText('0/3')).toHaveClass('text-[13px]');
     expect(
       screen
@@ -21,11 +26,14 @@ describe('Transfer', () => {
         .closest('[data-ui="input"]'),
     ).toHaveClass(
       'h-[var(--lumen-control-height-md)]',
+      'border-[var(--lumen-color-border)]',
       'text-[14px]',
     );
-    expect(
-      screen.getByRole('textbox', { name: '可选列表搜索' }).parentElement?.parentElement,
-    ).not.toHaveClass('border-b');
+    const searchWrapper = screen.getByRole('textbox', {
+      name: '可选列表搜索',
+    }).parentElement?.parentElement;
+    expect(searchWrapper).toHaveClass('px-2', 'pb-1', 'pt-3.5');
+    expect(searchWrapper).not.toHaveClass('border-b');
   });
 
   it('keeps the transfer panels horizontal on tablet and desktop breakpoints', () => {

@@ -172,7 +172,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               : 'rounded-[var(--lumen-radius-card)] border-2 px-5 py-3',
             isDragOver
               ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]'
-              : 'border-[var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface-muted)] hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary)]',
+              : 'border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary)]',
           )}
         >
           {compact ? (
