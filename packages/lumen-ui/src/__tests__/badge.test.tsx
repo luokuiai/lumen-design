@@ -32,7 +32,7 @@ describe('Badge', () => {
     render(<Badge variant="outline">Outline</Badge>);
 
     expect(screen.getByText('Outline')).toHaveClass(
-      'border-[var(--lumen-color-border-hover)]',
+      'border-[var(--lumen-color-border)]',
       'bg-[var(--lumen-color-surface)]',
     );
   });

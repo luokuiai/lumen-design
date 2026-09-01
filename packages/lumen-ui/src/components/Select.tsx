@@ -588,7 +588,7 @@ export const Select = <T extends string | number = string>({
                   'flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[4px] border transition-colors',
                   isSelected
                     ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary)]'
-                    : 'border-[var(--lumen-color-border-strong)]',
+                    : 'border-[var(--lumen-color-border)]',
                 )}
               >
                 {isSelected && <Check size={12} className="text-[var(--lumen-color-on-primary)]" />}

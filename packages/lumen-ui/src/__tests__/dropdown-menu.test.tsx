@@ -36,6 +36,7 @@ describe('DropdownMenu', () => {
 
     fireEvent.click(trigger);
 
+    expect(screen.getByTestId('dropdown-menu')).toHaveClass('z-[90]');
     expect(screen.getByTestId('dropdown-menu')).toHaveStyle({
       left: '100px',
       top: '78px',

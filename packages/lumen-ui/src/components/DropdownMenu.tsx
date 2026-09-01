@@ -350,7 +350,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
           ref={menuRef}
           onKeyDown={menuMode ? handleMenuKeyDown : undefined}
           style={menuStyle}
-          className="z-50 outline-none"
+          className="z-[90] outline-none"
         >
           <div
             data-lumen-motion

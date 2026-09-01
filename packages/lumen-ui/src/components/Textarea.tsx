@@ -26,7 +26,7 @@ const resizeTokens: Record<TextareaResize, string> = {
 const getStateClassName = (invalid?: boolean) =>
   invalid
     ? 'border-[var(--lumen-color-danger)] focus:border-[var(--lumen-color-danger)] focus:ring-2 focus:ring-[var(--lumen-color-danger)]/10'
-    : 'border-[var(--lumen-color-border-strong)] hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/10';
+    : 'border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/10';
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   (

@@ -34,7 +34,7 @@ const variantClasses: Record<BadgeVariant, string> = {
   warning: `border-transparent ${semanticBadgeToneClassNames.warning}`,
   danger: `border-transparent ${semanticBadgeToneClassNames.danger}`,
   outline:
-    'border-[var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-secondary)]',
+    'border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-secondary)]',
 };
 
 export function Badge({
