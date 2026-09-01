@@ -137,8 +137,30 @@ describe('responsive typography', () => {
     expect(screen.getByRole('button', { name: '选择时间' })).toHaveClass('text-[14px]');
 
     await user.click(screen.getByTestId('tree-select-trigger'));
+    expect(screen.getByTestId('tree-select-dropdown')).toHaveAttribute(
+      'data-ui',
+      'tree-select-dropdown',
+    );
     expect(screen.getByTestId('tree-select-option-one').parentElement).toHaveClass(
       'text-[14px]',
+    );
+
+    await user.click(screen.getByTestId('select-trigger'));
+    expect(screen.getByTestId('select-dropdown')).toHaveAttribute(
+      'data-ui',
+      'select-dropdown',
+    );
+
+    await user.click(screen.getByRole('button', { name: '选择日期' }));
+    expect(document.querySelector('[data-date-picker-portal]')).toHaveAttribute(
+      'data-ui',
+      'date-picker-panel',
+    );
+
+    await user.click(screen.getByRole('button', { name: '选择时间' }));
+    expect(document.querySelector('[data-time-picker-panel]')).toHaveAttribute(
+      'data-ui',
+      'time-picker-panel',
     );
   });
 

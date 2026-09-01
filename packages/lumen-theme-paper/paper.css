@@ -24,6 +24,7 @@
   --lumen-color-surface-glass: rgba(255, 255, 255, 0.94);
   --lumen-color-overlay: rgba(0, 0, 0, 0.48);
   --lumen-color-border: #e1e1e1;
+  --lumen-color-divider: #efefef;
   --lumen-color-border-strong: #c8c8c8;
   --lumen-color-border-hover: #a8a8a8;
   --lumen-color-focus-ring: rgba(17, 17, 17, 0.2);
@@ -87,6 +88,7 @@
   --lumen-color-surface-glass: rgba(16, 16, 16, 0.94);
   --lumen-color-overlay: rgba(0, 0, 0, 0.72);
   --lumen-color-border: #303030;
+  --lumen-color-divider: #232323;
   --lumen-color-border-strong: #464646;
   --lumen-color-border-hover: #5e5e5e;
   --lumen-color-focus-ring: rgba(255, 255, 255, 0.28);
@@ -133,4 +135,25 @@
 [data-lumen-theme='paper'] [data-ui='popover'] {
   border-radius: var(--lumen-radius-modal);
   background-clip: padding-box;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+[data-lumen-theme='paper'] [data-ui='dropdown-surface'],
+[data-lumen-theme='paper'] [data-ui='toast'],
+[data-lumen-theme='paper'] [data-ui='select-dropdown'],
+[data-lumen-theme='paper'] [data-ui='tree-select-dropdown'],
+[data-lumen-theme='paper'] [data-ui='date-picker-panel'],
+[data-lumen-theme='paper'] [data-ui='time-picker-panel'] {
+  border-color: var(--lumen-color-border);
+  border-radius: var(--lumen-radius-icon);
+  background: var(--lumen-color-surface);
+  background-clip: padding-box;
+  box-shadow: var(--lumen-shadow-dropdown);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+[data-lumen-theme='paper'] [data-ui='toast'] {
+  box-shadow: 0 1px 2px var(--lumen-color-shadow), 0 8px 24px var(--lumen-color-shadow);
 }

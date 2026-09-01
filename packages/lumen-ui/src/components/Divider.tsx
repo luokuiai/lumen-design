@@ -38,7 +38,7 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
           aria-orientation="vertical"
           data-ui="divider"
           className={cn(
-            'mx-2 inline-block min-h-4 self-stretch border-l border-[var(--lumen-color-border)] align-middle',
+            'mx-2 inline-block min-h-4 self-stretch border-l border-[var(--lumen-color-divider)] align-middle',
             lineClassName,
             className,
           )}
@@ -55,7 +55,7 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
           aria-orientation="horizontal"
           data-ui="divider"
           className={cn(
-            'my-4 w-full border-t border-[var(--lumen-color-border)]',
+            'my-4 w-full border-t border-[var(--lumen-color-divider)]',
             lineClassName,
             className,
           )}
@@ -75,7 +75,7 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
         {align !== 'start' ? (
           <span
             className={cn(
-              'border-t border-[var(--lumen-color-border)]',
+              'border-t border-[var(--lumen-color-divider)]',
               lineClassName,
               'flex-1',
             )}
@@ -87,7 +87,7 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
         {align !== 'end' ? (
           <span
             className={cn(
-              'border-t border-[var(--lumen-color-border)]',
+              'border-t border-[var(--lumen-color-divider)]',
               lineClassName,
               align === 'center' ? 'flex-1' : 'flex-1',
             )}

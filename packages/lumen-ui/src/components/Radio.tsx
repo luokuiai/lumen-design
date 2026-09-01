@@ -83,7 +83,7 @@ export const Radio: React.FC<RadioProps> = ({
             isSmall ? 'h-4 w-4' : 'h-5 w-5',
             currentChecked
               ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]'
-              : 'border-[var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface)] text-transparent',
+              : 'border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-transparent',
             !disabled && 'peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--lumen-color-info-border)]/70 peer-focus-visible:ring-offset-2',
             !disabled && !currentChecked && 'hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)]',
           )}

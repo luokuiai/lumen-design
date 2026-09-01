@@ -120,7 +120,7 @@ export const Transfer: React.FC<TransferProps> = ({
     const someVisibleSelected = selectedVisibleCount > 0 && !allVisibleSelected;
     return (
       <section className="flex min-h-0 min-w-0 flex-col overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
-        <header className="flex h-11 shrink-0 items-center gap-2 border-b border-[var(--lumen-color-surface-muted)] px-3">
+        <header className="flex h-11 shrink-0 items-center gap-2 border-b border-[var(--lumen-color-divider)] px-3">
           <Checkbox
             aria-label={`选择${side === 'source' ? '可选' : '已选'}列表全部可见项`}
             checked={allVisibleSelected}
@@ -143,7 +143,7 @@ export const Transfer: React.FC<TransferProps> = ({
           </span>
         </header>
         {searchable ? (
-          <div className="shrink-0 p-2">
+          <div className="shrink-0 px-2 pb-1 pt-3.5">
             <Input
               aria-label={`${side === 'source' ? '可选' : '已选'}列表搜索`}
               size="md"

@@ -11,11 +11,15 @@ describe('Divider', () => {
     expect(divider).toHaveAttribute('aria-orientation', 'horizontal');
     expect(divider).toHaveTextContent('更多信息');
     expect(divider.querySelector('.border-dashed')).toBeInTheDocument();
+    expect(divider.querySelector('.border-dashed')?.className).toContain(
+      '--lumen-color-divider',
+    );
   });
 
   it('renders a vertical separator', () => {
     render(<Divider orientation="vertical" />);
 
     expect(screen.getByRole('separator')).toHaveAttribute('aria-orientation', 'vertical');
+    expect(screen.getByRole('separator').className).toContain('--lumen-color-divider');
   });
 });

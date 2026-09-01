@@ -36,10 +36,15 @@ describe('DropdownMenu', () => {
 
     fireEvent.click(trigger);
 
+    expect(screen.getByTestId('dropdown-menu')).toHaveClass('z-[90]');
     expect(screen.getByTestId('dropdown-menu')).toHaveStyle({
       left: '100px',
       top: '78px',
     });
+    expect(screen.getByTestId('dropdown-menu').firstElementChild).toHaveAttribute(
+      'data-ui',
+      'dropdown-surface',
+    );
   });
 
   it('opens toward available right space by default without focusing the first item', () => {

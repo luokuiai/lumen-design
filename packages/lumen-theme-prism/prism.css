@@ -24,6 +24,7 @@
   --lumen-color-surface-glass: rgba(255, 251, 254, 0.92);
   --lumen-color-overlay: rgba(29, 27, 32, 0.42);
   --lumen-color-border: #cac4d0;
+  --lumen-color-divider: #e8e3ea;
   --lumen-color-border-strong: #79747e;
   --lumen-color-border-hover: #625f68;
   --lumen-color-focus-ring: rgba(90, 84, 214, 0.24);
@@ -101,6 +102,7 @@
   --lumen-color-surface-glass: rgba(20, 18, 24, 0.92);
   --lumen-color-overlay: rgba(0, 0, 0, 0.72);
   --lumen-color-border: #49454f;
+  --lumen-color-divider: #323037;
   --lumen-color-border-strong: #938f99;
   --lumen-color-border-hover: #aea9b4;
   --lumen-color-focus-ring: rgba(195, 191, 255, 0.3);
@@ -397,6 +399,25 @@
   border-radius: var(--lumen-radius-card);
   background: var(--prism-surface-high);
   box-shadow: var(--lumen-shadow-dropdown);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+[data-lumen-theme='prism'] [data-ui='dropdown-surface'],
+[data-lumen-theme='prism'] [data-ui='toast'],
+[data-lumen-theme='prism'] [data-ui='tree-select-dropdown'],
+[data-lumen-theme='prism'] [data-ui='date-picker-panel'],
+[data-lumen-theme='prism'] [data-ui='time-picker-panel'] {
+  border-color: transparent;
+  border-radius: var(--lumen-radius-card);
+  background: var(--prism-surface-high);
+  box-shadow: var(--lumen-shadow-dropdown);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+[data-lumen-theme='prism'] [data-ui='toast'] {
+  background: var(--prism-surface-highest);
 }
 
 [data-lumen-theme='prism'] [data-ui='select-option'][data-selected='true'] {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { Bell, Settings } from 'lucide-react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SideNav } from '../components/SideNav';
 
 const sections = [
@@ -13,6 +13,10 @@ const sections = [
     ],
   },
 ];
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe('SideNav', () => {
   it('marks the active item and emits selections', () => {
@@ -45,5 +49,22 @@ describe('SideNav', () => {
 
     expect(screen.getByRole('navigation')).toHaveAttribute('data-collapsed', 'true');
     expect(screen.getByRole('link', { name: 'Overview' })).toHaveClass('justify-center');
+  });
+
+  it('does not show tooltips while quickly moving across collapsed items', () => {
+    vi.useFakeTimers();
+    render(<SideNav sections={sections} collapsed activeValue="overview" />);
+
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    const settings = screen.getByRole('button', { name: 'Settings' });
+
+    fireEvent.pointerEnter(overview);
+    act(() => vi.advanceTimersByTime(200));
+    fireEvent.pointerLeave(overview);
+    fireEvent.pointerEnter(settings);
+    act(() => vi.advanceTimersByTime(200));
+    fireEvent.pointerLeave(settings);
+
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
 });

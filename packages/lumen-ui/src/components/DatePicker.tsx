@@ -692,6 +692,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         createPortal(
           <div
             ref={portalRef}
+            data-ui="date-picker-panel"
             data-date-picker-portal
             className="rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-xl"
             style={{

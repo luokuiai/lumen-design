@@ -47,10 +47,14 @@ describe('Popover', () => {
 
     fireEvent.click(trigger);
 
-    expect(screen.getByRole('dialog', { name: '设备详情' })).toHaveStyle({
+    const popover = screen.getByRole('dialog', { name: '设备详情' });
+    expect(popover).toHaveStyle({
       left: '100px',
       top: '78px',
     });
+    expect(popover.firstElementChild).toHaveAttribute('data-ui', 'popover');
+    expect(popover).not.toHaveClass('overflow-auto');
+    expect(popover.firstElementChild).toHaveClass('overflow-auto');
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
   });
 

@@ -23,15 +23,15 @@ export interface TooltipProps {
   children: React.ReactElement;
   /** 放置位置，默认 'top' */
   placement?: TooltipPlacement;
-  /** 显示延迟 (ms)，默认 300 */
+  /** 显示延迟 (ms)，默认 350 */
   showDelay?: number;
-  /** 隐藏延迟 (ms)，默认 0 */
+  /** 隐藏延迟 (ms)，默认 150 */
   hideDelay?: number;
   /** 是否禁用 tooltip */
   disabled?: boolean;
   /** 自定义 className */
   className?: string;
-  /** 与触发元素的间距 (px)，默认 8 */
+  /** 与触发元素的间距 (px)，默认 12 */
   offset?: number;
   /** 是否显示小箭头，默认 true */
   showArrow?: boolean;
@@ -77,10 +77,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
   children,
   placement = 'top',
   showDelay = 350,
-  hideDelay = 0,
+  hideDelay = 150,
   disabled = false,
   className,
-  offset = 8,
+  offset = 12,
   showArrow = true,
 }) => {
   const [phase, setPhase] = useState<Phase>('hidden');
@@ -95,7 +95,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const tooltipRef = useRef<HTMLDivElement>(null);
   const showTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const animFrameRef = useRef<number>(undefined);
 
   // 清理所有定时器
   const clearTimers = useCallback(() => {
@@ -140,39 +139,23 @@ export const Tooltip: React.FC<TooltipProps> = ({
   // 触发隐藏
   const hide = useCallback(() => {
     clearTimers();
+    if (phase === 'hidden') return;
     hideTimerRef.current = setTimeout(() => {
       setPhase('exiting');
     }, hideDelay);
-  }, [hideDelay, clearTimers]);
+  }, [phase, hideDelay, clearTimers]);
 
   const dismissOnScroll = useCallback(() => {
     clearTimers();
-    if (animFrameRef.current !== undefined) {
-      cancelAnimationFrame(animFrameRef.current);
-      animFrameRef.current = undefined;
-    }
     setPhase('hidden');
   }, [clearTimers]);
 
-  // 入场：entering → visible（双帧 rAF 保证初始样式先渲染）
+  // 挂载后先计算位置；方向动画由 CSS keyframe 驱动。
   useLayoutEffect(() => {
     if (phase === 'entering') {
       updatePosition();
-      animFrameRef.current = requestAnimationFrame(() => {
-        animFrameRef.current = requestAnimationFrame(() => {
-          setPhase('visible');
-        });
-      });
     }
   }, [phase, updatePosition]);
-
-  // 退场：exiting → hidden（等动画结束）
-  useEffect(() => {
-    if (phase === 'exiting') {
-      const timer = setTimeout(() => setPhase('hidden'), 150);
-      return () => clearTimeout(timer);
-    }
-  }, [phase]);
 
   // 滚动任意容器时立即关闭，并取消等待显示的 tooltip。
   useEffect(() => {
@@ -200,30 +183,35 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
   // 组件卸载清理
   useEffect(() => {
-    return () => {
-      clearTimers();
-      if (animFrameRef.current !== undefined) {
-        cancelAnimationFrame(animFrameRef.current);
-      }
-    };
+    return clearTimers;
   }, [clearTimers]);
 
   // 事件处理 — 使用 pointer 事件兼容平板触摸板
   const handlePointerEnter = useCallback(() => show(), [show]);
   const handlePointerLeave = useCallback(() => hide(), [hide]);
+  const handleAnimationEnd = useCallback((event: React.AnimationEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) return;
+    setPhase((currentPhase) => {
+      if (currentPhase === 'entering') return 'visible';
+      if (currentPhase === 'exiting') return 'hidden';
+      return currentPhase;
+    });
+  }, []);
 
   const tooltipNode = phase !== 'hidden' ? (
     <div
       ref={tooltipRef}
+      data-lumen-motion
+      data-placement={actualPlacement}
+      data-state={phase === 'entering' ? 'opening' : phase === 'exiting' ? 'closing' : 'open'}
       className={cn(
-        'bg-[var(--lumen-color-tooltip)]/90 text-[var(--lumen-color-on-primary)] text-[12px] px-3 py-1.5 rounded-md shadow-xl whitespace-nowrap',
+        'lumen-tooltip bg-[var(--lumen-color-tooltip)]/90 text-[var(--lumen-color-on-primary)] text-[12px] px-3 py-1.5 rounded-md shadow-xl whitespace-nowrap',
         getOriginClass(actualPlacement),
-        'transition-[opacity,transform] duration-150 ease-out',
-        phase === 'visible' ? 'opacity-100 scale-100' : 'opacity-0 scale-95',
         className,
       )}
       style={positionStyle}
       role="tooltip"
+      onAnimationEnd={handleAnimationEnd}
     >
       {content}
       {showArrow && <div style={arrowStyle} />}

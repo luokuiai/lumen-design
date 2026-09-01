@@ -82,7 +82,7 @@ export const rawButtonPresets = {
   pagination:
     'inline-flex items-center justify-center h-8 min-w-8 px-2 text-[12px] font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
   dashedUpload:
-    'inline-flex items-center justify-center gap-1.5 h-[36px] px-4 text-[14px] font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] border border-dashed border-[var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-muted)] hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary)]',
+    'inline-flex items-center justify-center gap-1.5 h-[36px] px-4 text-[14px] font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 rounded-[6px] border border-dashed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-muted)] hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary)]',
 } as const;
 
 export const headerActionButtonClassNames = {
