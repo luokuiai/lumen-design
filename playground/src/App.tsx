@@ -98,6 +98,7 @@ type Section = {
 type TreeNode = {
   id: string;
   label: string;
+  selectable?: boolean;
   disabled?: boolean;
   children?: TreeNode[];
 };
@@ -200,19 +201,83 @@ const treeNodes: TreeNode[] = [
     id: 'product',
     label: '产品中心',
     children: [
-      { id: 'product-design', label: '体验设计' },
-      { id: 'product-growth', label: '增长策略' },
+      {
+        id: 'user-product',
+        label: '用户产品',
+        selectable: true,
+        children: [
+          {
+            id: 'product-design',
+            label: '体验设计',
+            selectable: true,
+            children: [
+              { id: 'web-experience', label: 'Web 体验' },
+              { id: 'mobile-experience', label: '移动端体验' },
+            ],
+          },
+          {
+            id: 'product-growth',
+            label: '增长策略',
+            children: [
+              { id: 'user-growth', label: '用户增长' },
+              { id: 'business-growth', label: '商业增长' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'platform-product',
+        label: '平台产品',
+        selectable: true,
+        children: [
+          { id: 'data-platform-product', label: '数据平台' },
+          { id: 'open-platform-product', label: '开放平台' },
+        ],
+      },
     ],
   },
   {
     id: 'engineering',
     label: '研发中心',
     children: [
-      { id: 'frontend', label: '前端平台' },
-      { id: 'qa', label: '质量保障', disabled: true },
+      {
+        id: 'application-engineering',
+        label: '应用研发',
+        children: [
+          {
+            id: 'frontend',
+            label: '前端平台',
+            selectable: true,
+            children: [
+              { id: 'web-foundation', label: 'Web 基础设施' },
+              { id: 'client-framework', label: '客户端框架' },
+            ],
+          },
+          {
+            id: 'backend',
+            label: '服务端平台',
+            children: [
+              { id: 'business-services', label: '业务服务' },
+              { id: 'data-services', label: '数据服务' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'engineering-productivity',
+        label: '工程效能',
+        selectable: true,
+        children: [
+          { id: 'qa', label: '质量保障', disabled: true },
+          { id: 'release-platform', label: '发布平台' },
+        ],
+      },
     ],
   },
 ];
+
+const isTreeNodeSelectable = (node: TreeNode) =>
+  !node.disabled && (node.selectable ?? !node.children?.length);
 
 const transferItems = [
   { key: 'camera-north', label: '北向摄像机', description: 'K18+900' },
@@ -1064,7 +1129,7 @@ export default function App() {
                       searchable
                       getValue={(node) => node.id}
                       getLabel={(node) => node.label}
-                      isNodeSelectable={(node) => !node.children?.length && !node.disabled}
+                      isNodeSelectable={isTreeNodeSelectable}
                       placeholder="选择组织"
                     />
                     <TreeSelect
@@ -1077,7 +1142,7 @@ export default function App() {
                       searchable
                       getValue={(node) => node.id}
                       getLabel={(node) => node.label}
-                      isNodeSelectable={(node) => !node.children?.length && !node.disabled}
+                      isNodeSelectable={isTreeNodeSelectable}
                       placeholder="选择多个组织"
                     />
                   </div>

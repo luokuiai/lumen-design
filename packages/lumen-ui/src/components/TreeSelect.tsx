@@ -450,7 +450,7 @@ export const TreeSelect = <TNode,>({
               ? 'bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary)]'
               : selectable
                 ? 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]'
-                : 'text-[var(--lumen-color-text-placeholder)]',
+                : 'text-[var(--lumen-color-text-secondary)]',
           )}
           style={{ paddingLeft: `${depth * 16 + 8}px` }}
         >
