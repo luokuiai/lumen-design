@@ -10,7 +10,6 @@ import { createPortal } from 'react-dom';
 import {
   ChevronDown,
   ChevronRight,
-  ChevronDown as ExpandChevronDown,
   Search,
   X,
 } from 'lucide-react';
@@ -436,20 +435,20 @@ export const TreeSelect = <TNode,>({
     const isExpanded =
       shouldExpandSearchResults || expandedKeys.includes(nodeValue);
     const selectable = isNodeSelectable?.(node) ?? true;
-    const expandableOnly = !selectable && hasChildren;
     const isSelected = multiple
       ? selectedValues.includes(nodeValue)
       : value === nodeValue;
 
     return (
-      <div key={nodeValue} className="space-y-1">
+      <div key={nodeValue}>
         <div
           className={cn(
             'flex items-center rounded-[8px] px-2 py-1.5 transition-colors',
             optionSizeTokens[size],
+            !selectable && 'cursor-default',
             isSelected
               ? 'bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary)]'
-              : selectable || expandableOnly
+              : selectable
                 ? 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]'
                 : 'text-[var(--lumen-color-text-placeholder)]',
           )}
@@ -459,17 +458,20 @@ export const TreeSelect = <TNode,>({
             <button
               type="button"
               data-testid={`tree-select-expand-${nodeValue}`}
-              className="mr-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)]"
+              aria-expanded={isExpanded}
+              className="mr-1 flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)]"
               onClick={(event) => {
                 event.stopPropagation();
                 toggleExpand(nodeValue);
               }}
             >
-              {isExpanded ? (
-                <ExpandChevronDown size={14} />
-              ) : (
-                <ChevronRight size={14} />
-              )}
+              <ChevronRight
+                size={14}
+                className={cn(
+                  'transition-transform duration-200 ease-out',
+                  isExpanded && 'rotate-90',
+                )}
+              />
             </button>
           ) : (
             <span className="mr-1 w-[18px] shrink-0" />
@@ -478,16 +480,13 @@ export const TreeSelect = <TNode,>({
             type="button"
             data-testid={`tree-select-option-${nodeValue}`}
             aria-disabled={!selectable}
+            disabled={!selectable}
             className={cn(
               'flex min-w-0 flex-1 items-center gap-2 bg-transparent text-left text-inherit',
-              selectable ? 'cursor-pointer' : 'cursor-default',
+              selectable ? 'cursor-pointer' : '!cursor-default',
             )}
-            onClick={(event) => {
+            onClick={() => {
               if (!selectable) {
-                if (hasChildren && !isExpanded) {
-                  event.stopPropagation();
-                  toggleExpand(nodeValue);
-                }
                 return;
               }
               if (multiple) {
@@ -537,9 +536,22 @@ export const TreeSelect = <TNode,>({
             <span className="truncate">{getLabel(node)}</span>
           </button>
         </div>
-        {hasChildren && isExpanded && (
-          <div className="space-y-1">
-            {children.map((child) => renderNode(child, depth + 1))}
+        {hasChildren && (
+          <div
+            aria-hidden={!isExpanded}
+            inert={!isExpanded}
+            className={cn(
+              'grid transition-[grid-template-rows,opacity] duration-200 ease-out',
+              isExpanded
+                ? 'grid-rows-[1fr] opacity-100'
+                : 'grid-rows-[0fr] opacity-0',
+            )}
+          >
+            <div className="min-h-0 overflow-hidden">
+              <div className="space-y-1 pt-1">
+                {children.map((child) => renderNode(child, depth + 1))}
+              </div>
+            </div>
           </div>
         )}
       </div>
