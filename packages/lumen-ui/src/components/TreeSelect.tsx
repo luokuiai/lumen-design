@@ -688,7 +688,10 @@ export const TreeSelect = <TNode,>({
                 <div className="flex items-center gap-2 rounded-[8px] bg-[var(--lumen-color-surface-muted)] px-3 py-2">
                   <Search size={14} className="shrink-0 text-[var(--lumen-color-text-placeholder)]" />
                   <input
-                    className="w-full bg-transparent text-[13px] text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]"
+                    className={cn(
+                      'w-full bg-transparent text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]',
+                      optionSizeTokens[size],
+                    )}
                     placeholder={searchPlaceholder}
                     value={searchKeyword}
                     onChange={(event) => setSearchKeyword(event.target.value)}
