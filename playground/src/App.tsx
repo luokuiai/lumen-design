@@ -95,6 +95,7 @@ type Section = {
 type TreeNode = {
   id: string;
   label: string;
+  disabled?: boolean;
   children?: TreeNode[];
 };
 
@@ -205,7 +206,7 @@ const treeNodes: TreeNode[] = [
     label: '研发中心',
     children: [
       { id: 'frontend', label: '前端平台' },
-      { id: 'qa', label: '质量保障' },
+      { id: 'qa', label: '质量保障', disabled: true },
     ],
   },
 ];
@@ -1060,6 +1061,7 @@ export default function App() {
                       searchable
                       getValue={(node) => node.id}
                       getLabel={(node) => node.label}
+                      isNodeSelectable={(node) => !node.children?.length && !node.disabled}
                       placeholder="选择组织"
                     />
                     <TreeSelect
@@ -1072,6 +1074,7 @@ export default function App() {
                       searchable
                       getValue={(node) => node.id}
                       getLabel={(node) => node.label}
+                      isNodeSelectable={(node) => !node.children?.length && !node.disabled}
                       placeholder="选择多个组织"
                     />
                   </div>
