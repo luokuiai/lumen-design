@@ -19,16 +19,21 @@ export interface SegmentedControlProps<T extends string>
   fullWidth?: boolean;
 }
 
+const rootSizeClasses: Record<SegmentedControlSize, string> = {
+  sm: 'h-[var(--lumen-control-height-sm)]',
+  md: 'h-[var(--lumen-control-height-md)]',
+};
+
 const itemSizeClasses: Record<SegmentedControlSize, string> = {
-  sm: 'h-7 px-3 text-[12px]',
-  md: 'h-[var(--lumen-control-height-md)] px-4 text-[14px]',
+  sm: 'px-3 text-[13px]',
+  md: 'px-4 text-[14px]',
 };
 
 export const SegmentedControl = <T extends string>({
   value,
   options,
   onChange,
-  size = 'sm',
+  size = 'md',
   fullWidth = false,
   className,
   role = 'group',
@@ -38,9 +43,11 @@ export const SegmentedControl = <T extends string>({
     {...props}
     role={role}
     data-ui="segmented-control"
+    data-size={size}
     className={cn(
       'inline-flex max-w-full gap-1 border border-[var(--lumen-color-border)]/80 bg-[var(--lumen-color-surface-glass)] p-1 backdrop-blur-[5px]',
       radiusTokens.control,
+      rootSizeClasses[size],
       fullWidth && 'flex w-full',
       className,
     )}
@@ -55,7 +62,7 @@ export const SegmentedControl = <T extends string>({
           disabled={option.disabled}
           onClick={() => onChange(option.value)}
           className={cn(
-            'inline-flex min-w-0 items-center justify-center whitespace-nowrap rounded-[5px] font-normal transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-45',
+            'inline-flex h-full min-w-0 items-center justify-center whitespace-nowrap rounded-[5px] font-normal transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-45',
             itemSizeClasses[size],
             fullWidth && 'flex-1',
             active

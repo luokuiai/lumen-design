@@ -5,6 +5,8 @@ import {
   CalendarDays,
   Check,
   ChevronDown,
+  Code2,
+  Copy,
   Filter,
   MapPin,
   LogOut,
@@ -17,6 +19,7 @@ import {
   Search,
   SearchX,
   Settings,
+  Star,
   Moon,
   Sun,
   Table2,
@@ -1119,17 +1122,34 @@ export default function App() {
                   <div className="stack">
                     <DropdownMenu
                       menuMode
-                      trigger={({ toggle, open }) => (
-                        <Button type="button" variant="secondary" onClick={toggle} icon={<MoreHorizontal size={15} />}>
+                      trigger={({ toggle, open, menuId }) => (
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          icon={<MoreHorizontal size={15} />}
+                          aria-haspopup="menu"
+                          aria-expanded={open}
+                          aria-controls={menuId}
+                          onClick={toggle}
+                        >
                           {open ? '收起菜单' : '打开菜单'}
                         </Button>
                       )}
                     >
                       {({ close }) => (
                         <div className="menu-list">
-                          <button role="menuitem" onClick={close}>复制组件名称</button>
-                          <button role="menuitem" onClick={close}>查看源码路径</button>
-                          <button role="menuitem" onClick={close}>标记为常用</button>
+                          <button type="button" role="menuitem" onClick={close}>
+                            <Copy size={15} />
+                            复制组件名称
+                          </button>
+                          <button type="button" role="menuitem" onClick={close}>
+                            <Code2 size={15} />
+                            查看源码路径
+                          </button>
+                          <button type="button" role="menuitem" onClick={close}>
+                            <Star size={15} />
+                            标记为常用
+                          </button>
                         </div>
                       )}
                     </DropdownMenu>
@@ -1140,6 +1160,7 @@ export default function App() {
                     <div className="flex">
                       <SegmentedControl
                         aria-label="步骤排列方向"
+                        size="md"
                         value={stepsDirection}
                         onChange={setStepsDirection}
                         options={[
@@ -1510,6 +1531,7 @@ export default function App() {
               <DemoCard title="Skeleton + SegmentedControl">
                 <div className="stack">
                   <SegmentedControl
+                    size="md"
                     value={segment}
                     onChange={setSegment}
                     fullWidth

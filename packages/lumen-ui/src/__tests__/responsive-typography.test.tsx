@@ -75,6 +75,50 @@ describe.each(controlSizes)('%s control sizing', (size, heightClass, minHeightCl
   });
 });
 
+describe.each([
+  ['sm', 'text-[13px]'],
+  ['md', 'text-[14px]'],
+  ['lg', 'text-[15px]'],
+] as const)('%s searchable control typography', (size, textSizeClass) => {
+  it('matches Select and TreeSelect search text to the control size', async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <Select
+          size={size}
+          searchable
+          options={[{ label: '项目一', value: 'one' }]}
+          value={null}
+          onChange={() => undefined}
+          searchPlaceholder="搜索项目"
+        />
+        <TreeSelect
+          size={size}
+          searchable
+          nodes={[{ label: '节点一', value: 'one' }]}
+          value={null}
+          onChange={() => undefined}
+          getValue={(node) => node.value}
+          getLabel={(node) => node.label}
+          searchPlaceholder="搜索节点"
+        />
+      </>,
+    );
+
+    await user.click(screen.getByTestId('select-trigger'));
+    expect(screen.getByPlaceholderText('搜索项目')).toHaveClass(
+      textSizeClass,
+      'mobile:text-[16px]',
+    );
+
+    await user.click(screen.getByTestId('tree-select-trigger'));
+    expect(screen.getByPlaceholderText('搜索节点')).toHaveClass(
+      textSizeClass,
+      'mobile:text-[16px]',
+    );
+  });
+});
+
 describe('responsive typography', () => {
   it('reserves equal label metrics for required and optional fields', () => {
     render(

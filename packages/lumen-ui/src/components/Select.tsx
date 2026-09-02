@@ -116,6 +116,12 @@ const selectSizeTokens: Record<SelectSize, string> = {
   lg: 'min-h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]',
 };
 
+const selectTextSizeTokens: Record<SelectSize, string> = {
+  sm: 'text-[13px]',
+  md: 'text-[14px]',
+  lg: 'text-[15px]',
+};
+
 export const Select = <T extends string | number = string>({
   options,
   mode = 'single',
@@ -537,7 +543,10 @@ export const Select = <T extends string | number = string>({
         <Search size={14} className="shrink-0 text-[var(--lumen-color-text-placeholder)]" />
         <input
           ref={searchInputRef}
-          className="w-full bg-transparent text-[13px] text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]"
+          className={cn(
+            'w-full bg-transparent text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]',
+            selectTextSizeTokens[size],
+          )}
           placeholder={searchPlaceholder}
           value={effectiveSearchQuery}
           onChange={(e) => updateSearchQuery(e.target.value)}

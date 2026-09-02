@@ -68,7 +68,7 @@ export const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
           </span>
         ) : null}
         {title ? (
-          <div className={cn('font-medium leading-5 text-[var(--lumen-color-text)]', sizeClasses.title)}>
+          <div className={cn('font-normal leading-5 text-[var(--lumen-color-text)]', sizeClasses.title)}>
             {title}
           </div>
         ) : null}
