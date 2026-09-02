@@ -27,7 +27,7 @@
   --clarity-picker-surface: rgba(255, 255, 255, 0.92);
   --clarity-toast-surface: rgba(255, 255, 255, 0.92);
   --clarity-toast-border: rgba(228, 234, 241, 0.58);
-  --lumen-color-overlay: rgba(6, 7, 33, 0.35);
+  --lumen-color-overlay: rgba(0, 0, 0, 0.35);
   --lumen-color-border: #e4eaf1;
   --lumen-color-divider: #e7ecf2;
   --lumen-color-border-strong: #d8e1ea;

@@ -14,7 +14,8 @@ describe('List', () => {
 
     expect(screen.getByRole('list', { name: '事件列表' })).toBeVisible();
     expect(screen.getAllByRole('listitem')).toHaveLength(2);
-    expect(screen.getByText('异常停车')).toBeVisible();
+    expect(screen.getByText('异常停车')).toHaveClass('text-[14px]');
+    expect(screen.getByText('G65 K12+400')).toHaveClass('text-[14px]');
     expect(screen.getByText('设备离线').closest('li')).toHaveAttribute('data-selected', 'true');
   });
 
