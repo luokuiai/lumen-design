@@ -390,9 +390,9 @@ function DemoCard({
   wide?: boolean;
 }) {
   return (
-    <Card className={wide ? 'demo-card demo-card-wide' : 'demo-card'}>
+    <Card className={wide ? 'demo-card-wide' : undefined}>
       <CardHeader>
-        <CardTitle className="demo-card-title">{title}</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>{children}</CardContent>
     </Card>

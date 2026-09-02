@@ -414,22 +414,8 @@ body {
   gap: 14px;
 }
 
-.demo-card {
-  min-width: 0;
-  border: 1px solid var(--lumen-color-border);
-  border-radius: 8px;
-  background: var(--lumen-color-surface);
-  box-shadow: var(--lumen-shadow-card);
-}
-
 .demo-card-wide {
   grid-column: 1 / -1;
-}
-
-.demo-card-title {
-  color: var(--lumen-color-text-secondary);
-  font-size: 12px;
-  font-weight: 600;
 }
 
 .button-row,
@@ -570,8 +556,7 @@ body {
   }
 
   .gallery-section,
-  .section-grid,
-  .demo-card {
+  .section-grid {
     width: 100%;
     max-width: 100%;
     min-width: 0;
