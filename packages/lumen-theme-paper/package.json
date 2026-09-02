@@ -1,6 +1,6 @@
 {
   "name": "@luokuiai/lumen-theme-paper",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.7",
   "description": "Paper theme for Lumen UI",
   "type": "module",
   "repository": {
@@ -17,6 +17,6 @@
     "./paper.css": "./paper.css"
   },
   "peerDependencies": {
-    "@luokuiai/lumen-ui": "^1.0.0-alpha.6"
+    "@luokuiai/lumen-ui": "^1.0.0-alpha.7"
   }
 }
