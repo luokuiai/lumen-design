@@ -450,6 +450,7 @@ export default function App() {
   const [files, setFiles] = useState<File[]>([]);
   const [compactFiles, setCompactFiles] = useState<File[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalSelectValue, setModalSelectValue] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
@@ -1537,6 +1538,16 @@ export default function App() {
       >
         <h2>Modal 预览</h2>
         <p>用于确认、编辑和短流程任务。当前画廊直接使用组件库 Modal。</p>
+        <div className="mt-5">
+          <FormField label="负责人">
+            <Select
+              options={basicSelectOptions}
+              value={modalSelectValue}
+              onChange={(value) => setModalSelectValue(value as string | null)}
+              placeholder="选择负责人"
+            />
+          </FormField>
+        </div>
         <div className="modal-actions">
           <Button variant="outline" onClick={() => setModalOpen(false)}>关闭</Button>
           <Button onClick={() => setModalOpen(false)}>保存</Button>

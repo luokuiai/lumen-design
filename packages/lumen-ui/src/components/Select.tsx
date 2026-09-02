@@ -317,7 +317,7 @@ export const Select = <T extends string | number = string>({
   }, [onChange]);
 
   // 点击外部关闭
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!isOpen) return;
     const handler = (e: MouseEvent) => {
       const target = e.target as Node;
@@ -336,7 +336,7 @@ export const Select = <T extends string | number = string>({
     }
   }, [isOpen, searchable]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isOpen) return;
 
     updateDropdownPosition();
