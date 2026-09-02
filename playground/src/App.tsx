@@ -1189,11 +1189,13 @@ export default function App() {
                     ))}
                   </div>
                 </DemoCard>
-                <DemoCard title="DataTable · Default" wide>
+                <DemoCard title="DataTable · Sticky Header" wide>
                   <DataTable
-                    caption="默认公路安全事件表格"
+                    caption="固定表头公路安全事件表格"
+                    stickyHeader
+                    maxHeight={280}
                     columns={safetyEventColumns}
-                    data={safetyEvents.slice(0, 5)}
+                    data={safetyEvents}
                     getRowKey={(event) => event.id}
                   />
                 </DemoCard>
