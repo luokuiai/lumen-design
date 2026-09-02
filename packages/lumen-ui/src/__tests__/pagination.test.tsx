@@ -44,7 +44,8 @@ describe('Pagination', () => {
       .getByText('共 32 records · 第 2 / 4 页')
       .closest('[data-ui="pagination"]');
     expect(root).toHaveAttribute('data-variant', 'compact');
-    expect(root).toHaveClass('gap-1.5', 'py-1.5');
+    expect(root).toHaveClass('flex-row', 'items-center', 'justify-between', 'gap-1.5', 'py-1.5');
+    expect(root).not.toHaveClass('flex-col');
     fireEvent.click(screen.getByRole('button', { name: '上一页' }));
     expect(onPageChange).toHaveBeenCalledWith(1);
     unmount();
