@@ -15,6 +15,8 @@ describe('Empty', () => {
     );
 
     expect(screen.getByText('暂无事件')).toBeVisible();
+    expect(screen.getByText('暂无事件')).toHaveClass('font-normal');
+    expect(screen.getByText('暂无事件')).not.toHaveClass('font-medium');
     expect(screen.getByText('当前筛选条件下没有匹配记录。')).toBeVisible();
     expect(screen.getByRole('button', { name: '清除筛选' })).toBeVisible();
     expect(screen.getByText('暂无事件').closest('[data-ui="empty"]')).toHaveClass(

@@ -1160,7 +1160,7 @@ export default function App() {
                     <div className="flex">
                       <SegmentedControl
                         aria-label="步骤排列方向"
-                        size="sm"
+                        size="md"
                         value={stepsDirection}
                         onChange={setStepsDirection}
                         options={[
