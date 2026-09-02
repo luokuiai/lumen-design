@@ -1,6 +1,6 @@
 {
   "name": "@luokuiai/lumen-theme-prism",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.7",
   "description": "Colorful expressive theme for Lumen UI",
   "type": "module",
   "repository": {
@@ -17,6 +17,6 @@
     "./prism.css": "./prism.css"
   },
   "peerDependencies": {
-    "@luokuiai/lumen-ui": "^1.0.0-alpha.6"
+    "@luokuiai/lumen-ui": "^1.0.0-alpha.7"
   }
 }

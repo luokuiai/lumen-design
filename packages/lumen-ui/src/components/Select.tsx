@@ -1,6 +1,7 @@
 import React, {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -115,6 +116,12 @@ const selectSizeTokens: Record<SelectSize, string> = {
   lg: 'min-h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]',
 };
 
+const selectTextSizeTokens: Record<SelectSize, string> = {
+  sm: 'text-[13px]',
+  md: 'text-[14px]',
+  lg: 'text-[15px]',
+};
+
 export const Select = <T extends string | number = string>({
   options,
   mode = 'single',
@@ -146,6 +153,7 @@ export const Select = <T extends string | number = string>({
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const [isPreparingOpen, setIsPreparingOpen] = useState(false);
+  const [isDropdownPositioned, setIsDropdownPositioned] = useState(false);
   const [shouldDropUp, setShouldDropUp] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -228,6 +236,7 @@ export const Select = <T extends string | number = string>({
       maxWidth,
       zIndex: 9999,
     });
+    setIsDropdownPositioned(true);
   }, [mode, searchable, selectedValues.length]);
 
   // 关闭下拉（带动画）
@@ -272,6 +281,7 @@ export const Select = <T extends string | number = string>({
         setIsPreparingOpen(false);
       }
     }
+    setIsDropdownPositioned(false);
     setIsOpen(true);
     setIsAnimatingOut(false);
     updateSearchQuery('');
@@ -332,7 +342,7 @@ export const Select = <T extends string | number = string>({
     }
   }, [isOpen, searchable]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isOpen) return;
 
     updateDropdownPosition();
@@ -507,7 +517,8 @@ export const Select = <T extends string | number = string>({
             return (
               <span
                 key={String(val)}
-                className="inline-flex items-center gap-1 rounded-[6px] bg-[var(--lumen-color-primary-soft)] px-2 py-0.5 text-[13px] text-[var(--lumen-color-primary)]"
+                data-ui="select-value-chip"
+                className="inline-flex items-center gap-1 rounded-[6px] bg-[var(--lumen-color-primary-soft)] px-2 py-0.5 text-[var(--lumen-color-primary)]"
               >
                 {opt?.label ?? String(val)}
                 <X
@@ -532,7 +543,10 @@ export const Select = <T extends string | number = string>({
         <Search size={14} className="shrink-0 text-[var(--lumen-color-text-placeholder)]" />
         <input
           ref={searchInputRef}
-          className="w-full bg-transparent text-[13px] text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]"
+          className={cn(
+            'w-full bg-transparent text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]',
+            selectTextSizeTokens[size],
+          )}
           placeholder={searchPlaceholder}
           value={effectiveSearchQuery}
           onChange={(e) => updateSearchQuery(e.target.value)}
@@ -565,7 +579,7 @@ export const Select = <T extends string | number = string>({
           className={cn(
             renderOption
               ? 'block w-full text-left transition-all'
-              : 'flex w-full items-center gap-2.5 rounded-[8px] p-2 text-left text-[13px] transition-colors',
+              : 'flex w-full items-center gap-2.5 rounded-[8px] p-2 text-left text-[14px] transition-colors',
             option.disabled && 'cursor-not-allowed opacity-40',
             !renderOption &&
               (isSelected
@@ -620,7 +634,7 @@ export const Select = <T extends string | number = string>({
         className={cn(
           renderOption
             ? 'block w-full text-left transition-all'
-            : 'flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[13px] transition-colors',
+            : 'flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] transition-colors',
           option.disabled && 'cursor-not-allowed opacity-40',
           !renderOption &&
             (isSelected
@@ -738,6 +752,7 @@ export const Select = <T extends string | number = string>({
             )}
             style={{
               ...dropdownStyle,
+              visibility: isDropdownPositioned ? 'visible' : 'hidden',
               animation: isAnimatingOut
                 ? shouldDropUp
                   ? 'lumen-dropdown-out-up 0.12s ease-in forwards'

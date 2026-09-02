@@ -267,12 +267,8 @@
 }
 
 .lumen-scrollbar {
-  --lumen-scrollbar-thumb: color-mix(
-    in srgb,
-    var(--lumen-color-text-muted) 72%,
-    var(--lumen-color-border-strong)
-  );
-  --lumen-scrollbar-thumb-hover: var(--lumen-color-text-muted);
+  --lumen-scrollbar-thumb: var(--lumen-color-border-strong);
+  --lumen-scrollbar-thumb-hover: var(--lumen-color-border-hover);
   scrollbar-color: var(--lumen-scrollbar-thumb) transparent;
   scrollbar-width: thin;
 }

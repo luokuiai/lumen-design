@@ -64,6 +64,39 @@ describe('DataTable', () => {
     expect(screen.getByText('K12+400').closest('td')).toHaveClass('text-[13px]');
   });
 
+  it('keeps the header visible inside a bounded scroll area', () => {
+    render(
+      <DataTable
+        stickyHeader
+        maxHeight={240}
+        columns={columns}
+        data={rows}
+        getRowKey={(row) => row.id}
+      />,
+    );
+
+    const table = screen.getByRole('table');
+    expect(table.parentElement).toHaveAttribute('data-ui', 'data-table-scroll');
+    expect(table.parentElement).toHaveClass('overflow-auto');
+    expect(table.parentElement).toHaveStyle({ maxHeight: '240px' });
+    expect(table.querySelector('thead')).toHaveClass('sticky', 'top-0', 'z-10');
+  });
+
+  it('provides a default scroll height for sticky headers', () => {
+    render(
+      <DataTable
+        stickyHeader
+        columns={columns}
+        data={rows}
+        getRowKey={(row) => row.id}
+      />,
+    );
+
+    expect(screen.getByRole('table').parentElement).toHaveStyle({
+      maxHeight: '400px',
+    });
+  });
+
   it('removes the outer frame when embedded in another surface', () => {
     render(
       <DataTable

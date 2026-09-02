@@ -94,14 +94,14 @@ export const Pagination = ({
         data-ui="pagination"
         data-variant="compact"
         className={cn(
-          'flex shrink-0 flex-col gap-1.5 border-t border-[var(--lumen-color-border)] px-3 py-1.5 text-xs text-[var(--lumen-color-text-muted)] pad:flex-row pad:items-center pad:justify-between',
+          'flex shrink-0 flex-row items-center justify-between gap-1.5 border-t border-[var(--lumen-color-border)] px-3 py-1.5 text-xs text-[var(--lumen-color-text-muted)]',
           className,
         )}
       >
-        <span>
+        <span className="min-w-0">
           共 {totalItems} {itemLabel} · 第 {safeCurrentPage} / {safeTotalPages} 页
         </span>
-        <div className="flex gap-1.5">
+        <div className="flex shrink-0 gap-1.5">
           <Button
             disabled={safeCurrentPage <= 1 || loading}
             onClick={() => onPageChange(safeCurrentPage - 1)}

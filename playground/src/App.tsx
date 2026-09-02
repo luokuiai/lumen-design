@@ -5,6 +5,8 @@ import {
   CalendarDays,
   Check,
   ChevronDown,
+  Code2,
+  Copy,
   Filter,
   MapPin,
   LogOut,
@@ -17,6 +19,7 @@ import {
   Search,
   SearchX,
   Settings,
+  Star,
   Moon,
   Sun,
   Table2,
@@ -95,6 +98,7 @@ type Section = {
 type TreeNode = {
   id: string;
   label: string;
+  disabled?: boolean;
   children?: TreeNode[];
 };
 
@@ -205,7 +209,7 @@ const treeNodes: TreeNode[] = [
     label: '研发中心',
     children: [
       { id: 'frontend', label: '前端平台' },
-      { id: 'qa', label: '质量保障' },
+      { id: 'qa', label: '质量保障', disabled: true },
     ],
   },
 ];
@@ -390,9 +394,9 @@ function DemoCard({
   wide?: boolean;
 }) {
   return (
-    <Card className={wide ? 'demo-card demo-card-wide' : 'demo-card'}>
+    <Card className={wide ? 'demo-card-wide' : undefined}>
       <CardHeader>
-        <CardTitle className="demo-card-title">{title}</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>{children}</CardContent>
     </Card>
@@ -450,6 +454,7 @@ export default function App() {
   const [files, setFiles] = useState<File[]>([]);
   const [compactFiles, setCompactFiles] = useState<File[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalSelectValue, setModalSelectValue] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
@@ -1059,6 +1064,7 @@ export default function App() {
                       searchable
                       getValue={(node) => node.id}
                       getLabel={(node) => node.label}
+                      isNodeSelectable={(node) => !node.children?.length && !node.disabled}
                       placeholder="选择组织"
                     />
                     <TreeSelect
@@ -1071,6 +1077,7 @@ export default function App() {
                       searchable
                       getValue={(node) => node.id}
                       getLabel={(node) => node.label}
+                      isNodeSelectable={(node) => !node.children?.length && !node.disabled}
                       placeholder="选择多个组织"
                     />
                   </div>
@@ -1115,17 +1122,34 @@ export default function App() {
                   <div className="stack">
                     <DropdownMenu
                       menuMode
-                      trigger={({ toggle, open }) => (
-                        <Button type="button" variant="secondary" onClick={toggle} icon={<MoreHorizontal size={15} />}>
+                      trigger={({ toggle, open, menuId }) => (
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          icon={<MoreHorizontal size={15} />}
+                          aria-haspopup="menu"
+                          aria-expanded={open}
+                          aria-controls={menuId}
+                          onClick={toggle}
+                        >
                           {open ? '收起菜单' : '打开菜单'}
                         </Button>
                       )}
                     >
                       {({ close }) => (
                         <div className="menu-list">
-                          <button role="menuitem" onClick={close}>复制组件名称</button>
-                          <button role="menuitem" onClick={close}>查看源码路径</button>
-                          <button role="menuitem" onClick={close}>标记为常用</button>
+                          <button type="button" role="menuitem" onClick={close}>
+                            <Copy size={15} />
+                            复制组件名称
+                          </button>
+                          <button type="button" role="menuitem" onClick={close}>
+                            <Code2 size={15} />
+                            查看源码路径
+                          </button>
+                          <button type="button" role="menuitem" onClick={close}>
+                            <Star size={15} />
+                            标记为常用
+                          </button>
                         </div>
                       )}
                     </DropdownMenu>
@@ -1136,6 +1160,7 @@ export default function App() {
                     <div className="flex">
                       <SegmentedControl
                         aria-label="步骤排列方向"
+                        size="md"
                         value={stepsDirection}
                         onChange={setStepsDirection}
                         options={[
@@ -1188,11 +1213,13 @@ export default function App() {
                     ))}
                   </div>
                 </DemoCard>
-                <DemoCard title="DataTable · Default" wide>
+                <DemoCard title="DataTable · Sticky Header" wide>
                   <DataTable
-                    caption="默认公路安全事件表格"
+                    caption="固定表头公路安全事件表格"
+                    stickyHeader
+                    maxHeight={280}
                     columns={safetyEventColumns}
-                    data={safetyEvents.slice(0, 5)}
+                    data={safetyEvents}
                     getRowKey={(event) => event.id}
                   />
                 </DemoCard>
@@ -1504,6 +1531,7 @@ export default function App() {
               <DemoCard title="Skeleton + SegmentedControl">
                 <div className="stack">
                   <SegmentedControl
+                    size="md"
                     value={segment}
                     onChange={setSegment}
                     fullWidth
@@ -1537,6 +1565,16 @@ export default function App() {
       >
         <h2>Modal 预览</h2>
         <p>用于确认、编辑和短流程任务。当前画廊直接使用组件库 Modal。</p>
+        <div className="mt-5">
+          <FormField label="负责人">
+            <Select
+              options={basicSelectOptions}
+              value={modalSelectValue}
+              onChange={(value) => setModalSelectValue(value as string | null)}
+              placeholder="选择负责人"
+            />
+          </FormField>
+        </div>
         <div className="modal-actions">
           <Button variant="outline" onClick={() => setModalOpen(false)}>关闭</Button>
           <Button onClick={() => setModalOpen(false)}>保存</Button>

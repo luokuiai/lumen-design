@@ -32,6 +32,8 @@ export interface DataTableProps<T> {
   caption?: string;
   density?: DataTableDensity;
   variant?: DataTableVariant;
+  stickyHeader?: boolean;
+  maxHeight?: string | number;
   loading?: boolean;
   loadingRowCount?: number;
   emptyText?: React.ReactNode;
@@ -62,6 +64,8 @@ export function DataTable<T>({
   caption,
   density = 'default',
   variant = 'default',
+  stickyHeader = false,
+  maxHeight,
   loading = false,
   loadingRowCount = 5,
   emptyText = '暂无数据',
@@ -87,6 +91,7 @@ export function DataTable<T>({
     : 'px-4 py-3 mobile:px-3 mobile:py-2.5';
   const cellTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
   const headerTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
+  const scrollMaxHeight = maxHeight ?? (stickyHeader ? 400 : undefined);
 
   const updateVisibleSelection = (checked: boolean) => {
     const nextKeys = new Set(selectedKeys);
@@ -126,16 +131,29 @@ export function DataTable<T>({
       data-ui="data-table"
       data-density={density}
       data-variant={variant}
+      data-sticky-header={stickyHeader || undefined}
       className={cn(
         'min-w-0 overflow-hidden bg-[var(--lumen-color-surface)]',
         variantClassNames[variant],
         className,
       )}
     >
-      <div className="max-w-full overflow-x-auto">
+      <div
+        data-ui="data-table-scroll"
+        className={cn(
+          'max-w-full',
+          scrollMaxHeight === undefined ? 'overflow-x-auto' : 'overflow-auto',
+        )}
+        style={{ maxHeight: toCssSize(scrollMaxHeight) }}
+      >
         <table className={cn('w-full border-collapse text-left', tableClassName)}>
           {caption ? <caption className="sr-only">{caption}</caption> : null}
-          <thead className="bg-[var(--lumen-color-surface-subtle)]">
+          <thead
+            className={cn(
+              'bg-[var(--lumen-color-surface-subtle)]',
+              stickyHeader && 'sticky top-0 z-10',
+            )}
+          >
             <tr className="border-b border-[var(--lumen-color-divider)]">
               {selectable ? (
                 <th scope="col" className={cn('w-12', cellPadding)}>

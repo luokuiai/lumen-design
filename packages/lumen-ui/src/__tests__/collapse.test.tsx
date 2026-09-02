@@ -12,8 +12,9 @@ describe('Collapse', () => {
       </Collapse>,
     );
 
+    expect(screen.getByRole('button', { name: '第一项' })).toHaveClass('text-[14px]');
     expect(screen.getByRole('button', { name: '第一项' })).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByText('内容一')).toBeVisible();
+    expect(screen.getByText('内容一')).toHaveClass('text-[14px]');
     expect(screen.getByText('内容二').closest('[aria-hidden="true"]')).toHaveClass(
       'grid-rows-[0fr]',
       'opacity-0',

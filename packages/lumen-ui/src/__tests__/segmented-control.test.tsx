@@ -44,21 +44,45 @@ describe('SegmentedControl', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
-  it('aligns its medium size with other medium controls', () => {
+  it('uses the medium control size by default', () => {
     render(
       <SegmentedControl
-        size="md"
         value="day"
         options={[{ label: 'Day', value: 'day' }]}
         onChange={() => undefined}
       />,
     );
 
-    expect(screen.getByRole('button', { name: 'Day' })).toHaveClass(
+    expect(screen.getByRole('group')).toHaveAttribute('data-size', 'md');
+    expect(screen.getByRole('group')).toHaveClass(
       'h-[var(--lumen-control-height-md)]',
+    );
+    expect(screen.getByRole('button', { name: 'Day' })).toHaveClass(
+      'h-full',
       'px-4',
       'text-[14px]',
       'font-normal',
+    );
+  });
+
+  it('supports a compact small size', () => {
+    render(
+      <SegmentedControl
+        size="sm"
+        value="day"
+        options={[{ label: 'Day', value: 'day' }]}
+        onChange={() => undefined}
+      />,
+    );
+
+    expect(screen.getByRole('group')).toHaveAttribute('data-size', 'sm');
+    expect(screen.getByRole('group')).toHaveClass(
+      'h-[var(--lumen-control-height-sm)]',
+    );
+    expect(screen.getByRole('button', { name: 'Day' })).toHaveClass(
+      'h-full',
+      'px-3',
+      'text-[13px]',
     );
   });
 });
