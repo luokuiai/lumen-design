@@ -74,6 +74,8 @@ export function FileTypeIcon({
     >
       {title && !ariaLabel ? <title id={titleId}>{title}</title> : null}
       <path
+        fill="var(--lumen-color-file-icon-border)"
+        fillOpacity="0.18"
         stroke="var(--lumen-color-file-icon-border)"
         strokeWidth="1.5"
         d="M7.75 4A3.25 3.25 0 0 1 11 .75h16c.121 0 .238.048.323.134l10.793 10.793a.46.46 0 0 1 .134.323v24A3.25 3.25 0 0 1 35 39.25H11A3.25 3.25 0 0 1 7.75 36z"

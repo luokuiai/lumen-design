@@ -183,7 +183,7 @@ export const sideNavClassNames = {
   collapsedDivider:
     'mx-auto my-1 h-px w-8 bg-[var(--lumen-color-border)]',
   item:
-    'group relative flex min-h-[44px] w-full items-center rounded-[8px] text-left text-[15px] font-normal transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
+    'group relative flex min-h-[44px] w-full items-center rounded-[8px] text-left text-[14px] font-normal transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
   expandedItem: 'gap-3 px-3',
   collapsedItem: 'justify-center px-0',
   activeItem:
