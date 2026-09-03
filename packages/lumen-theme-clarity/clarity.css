@@ -186,6 +186,14 @@
   backdrop-filter: blur(10px) saturate(125%);
 }
 
+:where(:root:not([data-lumen-theme])) [data-ui='app-header'],
+[data-lumen-theme='clarity'] [data-ui='app-header'] {
+  background: var(--lumen-color-surface-glass);
+  background: color-mix(in srgb, var(--lumen-color-surface) 40%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+}
+
 :where(:root:not([data-lumen-theme])) [data-ui='popover'],
 :where(:root:not([data-lumen-theme])) [data-ui='select-dropdown'],
 :where(:root:not([data-lumen-theme])) [data-ui='tree-select-dropdown'],

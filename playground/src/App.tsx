@@ -31,6 +31,7 @@ import type { LucideIcon } from 'lucide-react';
 import {
   Accordion,
   Alert,
+  AppHeader,
   Avatar,
   Badge,
   Button,
@@ -656,8 +657,12 @@ export default function App() {
       </Drawer>
 
       <main className="main">
-        <header className="topbar">
-          <div className="topbar-title">
+        <AppHeader
+          className="topbar"
+          title="Lumen UI Gallery"
+          description="组件库全量预览和交互检查入口。"
+          navigation={(
+            <>
             <Button
               iconOnly
               variant="secondary"
@@ -677,12 +682,9 @@ export default function App() {
                 onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
               />
             </Tooltip>
-            <div>
-              <h1>Lumen UI Gallery</h1>
-              <p>组件库全量预览和交互检查入口。</p>
-            </div>
-          </div>
-          <div className="topbar-actions">
+            </>
+          )}
+          search={(
             <Input
               className="topbar-search"
               size="md"
@@ -691,6 +693,9 @@ export default function App() {
               prefix={<Search size={15} />}
               placeholder="搜索分类或组件"
             />
+          )}
+          actions={(
+            <>
             <DropdownMenu
               menuMode
               align="right"
@@ -890,8 +895,9 @@ export default function App() {
                 </div>
               )}
             </DropdownMenu>
-          </div>
-        </header>
+            </>
+          )}
+        />
 
         <Scrollbar ref={mainScrollRef} className="main-scrollbar" size="sm">
           <div className="main-content">

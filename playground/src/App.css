@@ -127,17 +127,8 @@ body {
   position: fixed;
   inset: 0 0 auto var(--playground-sidebar-width);
   z-index: 80;
-  display: flex;
   height: var(--playground-topbar-height);
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
   padding: 16px 28px;
-  border-bottom: 1px solid var(--lumen-color-border);
-  background: var(--lumen-color-surface-glass);
-  background: color-mix(in srgb, var(--lumen-color-surface) 52%, transparent);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
-  backdrop-filter: saturate(180%) blur(24px);
   transition: left 180ms ease;
 }
 
@@ -156,26 +147,10 @@ body {
   padding: calc(var(--playground-topbar-height) + 24px) 28px 28px;
 }
 
-.topbar-title {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  gap: 10px;
-}
-
 .sidebar-toggle-button {
   flex: 0 0 auto;
 }
 
-.topbar h1 {
-  margin: 0;
-  color: var(--lumen-color-text-strong);
-  font-size: 20px;
-  letter-spacing: 0;
-  line-height: 1.25;
-}
-
-.topbar p,
 .section-header p {
   margin: 6px 0 0;
   color: var(--lumen-color-text-muted);
@@ -183,9 +158,9 @@ body {
   line-height: 1.55;
 }
 
-.topbar-actions {
+.topbar [data-ui='app-header-end'] {
   display: grid;
-  grid-template-columns: minmax(220px, 320px) auto auto auto auto;
+  grid-template-columns: minmax(220px, 320px) auto;
   column-gap: 16px;
   row-gap: 12px;
   align-items: center;
@@ -193,11 +168,6 @@ body {
 
 .topbar-search {
   min-width: 0;
-}
-
-.topbar-accent,
-.topbar-theme-button {
-  justify-self: end;
 }
 
 .topbar-accent,
@@ -599,10 +569,6 @@ body {
     padding: calc(var(--playground-topbar-height) + 18px) 12px 24px;
   }
 
-  .topbar h1 {
-    font-size: 20px;
-  }
-
   .gallery-section {
     margin-bottom: 22px;
   }
@@ -611,27 +577,16 @@ body {
     font-size: 15px;
   }
 
-  .topbar-actions {
-    grid-template-columns: minmax(0, 1fr) auto auto auto auto;
+  .topbar [data-ui='app-header-end'] {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .topbar-search {
+  .topbar [data-ui='app-header-search'] {
     grid-column: 1 / -1;
   }
 
-  .topbar-accent {
-    grid-column: 2;
-  }
-
-  .topbar-theme-button {
-    grid-column: 3;
-  }
-
-  .topbar-notification {
-    grid-column: 4;
-  }
-
-  .topbar-avatar {
-    grid-column: 5;
+  .topbar [data-ui='app-header-actions'] {
+    grid-column: 1 / -1;
+    justify-self: end;
   }
 }
