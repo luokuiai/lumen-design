@@ -6,6 +6,7 @@ import * as Lumen from '../index';
 describe('public API', () => {
   it('exports the foundation components', () => {
     expect(Lumen.Alert).toBeTypeOf('object');
+    expect(Lumen.AppHeader).toBeTypeOf('object');
     expect(Lumen.Accordion).toBeTypeOf('object');
     expect(Lumen.Avatar).toBeTypeOf('object');
     expect(Lumen.Button).toBeTypeOf('function');

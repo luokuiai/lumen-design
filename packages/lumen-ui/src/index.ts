@@ -2,6 +2,7 @@ import './styles/base.css';
 
 export * from './theme-contract';
 export * from './components/Alert';
+export * from './components/AppHeader';
 export * from './components/Avatar';
 export * from './components/Badge';
 export * from './components/Button';
