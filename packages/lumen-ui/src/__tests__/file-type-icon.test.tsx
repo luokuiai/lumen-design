@@ -53,5 +53,10 @@ describe('FileTypeIcon', () => {
     expect(icon).toHaveAttribute('data-file-type-label', 'MP4');
     expect(icon).toHaveAttribute('width', '40');
     expect(icon).toHaveTextContent('MP4');
+    expect(icon.querySelector('path')).toHaveAttribute(
+      'fill',
+      'var(--lumen-color-file-icon-border)',
+    );
+    expect(icon.querySelector('path')).toHaveAttribute('fill-opacity', '0.18');
   });
 });
