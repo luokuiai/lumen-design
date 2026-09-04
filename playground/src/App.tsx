@@ -1,6 +1,15 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   AlertTriangle,
+  ArrowLeft,
   Bell,
   CalendarDays,
   Check,
@@ -31,9 +40,11 @@ import type { LucideIcon } from 'lucide-react';
 import {
   Accordion,
   Alert,
+  AppBar,
   AppHeader,
   Avatar,
   Badge,
+  BottomNavigation,
   Breadcrumb,
   Button,
   Calendar,
@@ -59,6 +70,7 @@ import {
   FileTypeIcon,
   FormField,
   Empty,
+  Fab,
   Input,
   List,
   ListItem,
@@ -84,6 +96,7 @@ import {
   TimePicker,
   Timeline,
   Toast,
+  Toolbar,
   Tooltip,
   Transfer,
   TreeSelect,
@@ -93,6 +106,8 @@ import type { DataTableColumn, DataTableSort, StepsDirection } from '@luokuiai/l
 import '@luokuiai/lumen-theme-clarity';
 import '@luokuiai/lumen-theme-paper';
 import '@luokuiai/lumen-theme-prism';
+import type { GeneratedPropDoc } from './generated/componentApi';
+import { demoCardCodeByTitle } from './generated/demoCardCode';
 
 type Section = {
   id: string;
@@ -100,6 +115,34 @@ type Section = {
   description: string;
   keywords: string;
   icon: LucideIcon;
+};
+
+type DemoDefinition = {
+  id: string;
+  title: string;
+  sourceSection: string;
+  code: string;
+  cardTitles: string[];
+  apiComponents: string[];
+  codeByCardTitle?: Record<string, string>;
+};
+
+type ComponentPropDoc = {
+  name: string;
+  type: string;
+  defaultValue: string;
+  description: string;
+  required?: boolean;
+};
+
+type ComponentGuide = {
+  summary: string;
+  usage: string[];
+  props: ComponentPropDoc[];
+};
+
+type GalleryCategory = Section & {
+  demos: DemoDefinition[];
 };
 
 type TreeNode = {
@@ -170,24 +213,285 @@ type SafetyEvent = {
   updatedAt: string;
 };
 
-const sections: Section[] = [
+const renderSections: Section[] = [
   { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button Badge Chip Avatar Tooltip', icon: Plus },
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input NumberInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
-  { id: 'navigation', title: 'Navigation', description: '面包屑、标签页、步骤、菜单和时间线。', keywords: 'Breadcrumb Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
+  { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
   { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、命令面板、确认和消息提示。', keywords: 'Modal Drawer CommandPalette ConfirmDialog Toast', icon: Bell },
   { id: 'feedback', title: 'Feedback', description: '页面提示、加载、进度、空状态、上传和骨架屏。', keywords: 'Alert Spinner Progress Empty FileUpload Skeleton SegmentedControl', icon: Settings },
 ];
 
-const getSectionFromHash = () => {
-  if (typeof window === 'undefined') return sections[0]!.id;
-  const sectionId = window.location.hash.slice(1);
-  return sections.some((section) => section.id === sectionId)
-    ? sectionId
-    : sections[0]!.id;
+const toDemoId = (title: string) => title
+  .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/(^-|-$)/g, '');
+
+const usageExample = (
+  imports: string,
+  jsx: string,
+  lucideIcons?: string,
+  setup?: string,
+) => `${setup ? "import { useState } from 'react';\n" : ''}${lucideIcons ? `import { ${lucideIcons} } from 'lucide-react';\n` : ''}import { ${imports} } from '@luokuiai/lumen-ui';
+
+export function Example() {
+${setup ? `  ${setup}\n\n` : ''}
+  return (
+${jsx}
+  );
+}`;
+
+const demo = (
+  title: string,
+  sourceSection: string,
+  imports: string,
+  jsx: string,
+  lucideIcons?: string,
+  setup?: string,
+  cardTitles: string[] = [title],
+  apiComponents: string[] = title.split('/').map((item) => item.trim()),
+): DemoDefinition => ({
+  id: toDemoId(title),
+  title,
+  sourceSection,
+  code: usageExample(imports, jsx, lucideIcons, setup),
+  cardTitles,
+  apiComponents,
+});
+
+const galleryCategories: GalleryCategory[] = [
+  {
+    id: 'foundations',
+    title: 'Foundations',
+    description: '字体层级与内容基础样式。',
+    keywords: 'Typography Headings Body',
+    icon: TypeIcon,
+    demos: [
+      demo('Typography', 'typography', 'Typography', '    <>\n      <Typography variant="h1">H1 运营总览</Typography>\n      <Typography variant="h2">H2 事件处置</Typography>\n      <Typography>正文用于承载主要说明和数据内容。</Typography>\n      <Typography variant="caption" tone="muted">辅助文字用于简短提示。</Typography>\n    </>', undefined, undefined, ['Headings', 'Body']),
+    ],
+  },
+  {
+    id: 'actions',
+    title: 'Actions',
+    description: '触发操作、工具组和页面主要行为。',
+    keywords: 'Button Fab Toolbar DropdownMenu',
+    icon: Plus,
+    demos: [
+      demo('Button', 'buttons', 'Button', '    <Button variant="primary">保存</Button>'),
+      {
+        ...demo('Fab', 'buttons', 'Fab', '    <Fab position="static" icon={<Plus size={18} />} aria-label="新建任务" />', 'Plus', undefined, ['Icon only', 'Extended', 'Expandable']),
+        codeByCardTitle: {
+          'Icon only': usageExample('Fab', '    <div className="flex items-center gap-4">\n      <Fab position="static" size="sm" icon={<Plus size={18} />} aria-label="新建任务" />\n      <Fab position="static" size="md" variant="secondary" icon={<Search size={18} />} aria-label="搜索" />\n      <Fab position="static" size="lg" variant="outline" icon={<Settings size={20} />} aria-label="设置" />\n    </div>', 'Plus, Search, Settings'),
+          Extended: usageExample('Fab', '    <div className="flex items-center gap-4">\n      <Fab position="static" icon={<Plus size={18} />} label="新建任务" />\n      <Fab position="static" variant="secondary" icon={<Filter size={18} />} label="筛选条件" />\n    </div>', 'Filter, Plus'),
+          Expandable: usageExample('Fab, Switch', '    <div className="flex items-center gap-5">\n      <Switch checked={extended} onChange={setExtended} label="显示文字" />\n      <Fab\n        position="static"\n        icon={<Plus size={18} />}\n        label="新建任务"\n        extended={extended}\n      />\n    </div>', 'Plus', "const [extended, setExtended] = useState(false);"),
+        },
+      },
+      demo('Toolbar', 'navigation', 'Button, Toolbar', '    <Toolbar\n      ariaLabel="列表操作"\n      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"\n    >\n      <Button size="sm" variant="ghost" icon={<Search size={15} />}>\n        搜索\n      </Button>\n      <Button size="sm" variant="ghost" icon={<Filter size={15} />}>\n        筛选\n      </Button>\n      <div className="flex-1" />\n      <Button size="sm" icon={<Plus size={15} />}>\n        新建\n      </Button>\n    </Toolbar>', 'Filter, Plus, Search'),
+      demo('DropdownMenu', 'navigation', 'Button, DropdownMenu', '    <DropdownMenu\n      trigger={({ toggle }) => <Button onClick={toggle}>打开菜单</Button>}\n    >\n      {({ close }) => <button onClick={close}>复制</button>}\n    </DropdownMenu>'),
+    ],
+  },
+  {
+    id: 'forms',
+    title: 'Forms',
+    description: '输入、选择、日期时间和文件提交。',
+    keywords: 'Input FormField Checkbox Radio Switch Slider Rating Select Cascader Date Time Calendar Transfer FileUpload',
+    icon: Check,
+    demos: [
+      demo('Input / FormField', 'forms', 'FormField, Input', '    <FormField label="项目名称" inputId="project-name">\n      {(props) => <Input {...props} />}\n    </FormField>', undefined, undefined, ['Input + FormField']),
+      demo('NumberInput', 'forms', 'FormField, NumberInput', '    <FormField label="处置时限">\n      <NumberInput defaultValue={30} min={5} max={120} suffix="分钟" />\n    </FormField>'),
+      demo('Textarea', 'forms', 'FormField, Textarea', '    <FormField label="备注">\n      <Textarea value={value} onChange={setValue} maxLength={200} showCount />\n    </FormField>'),
+      demo('Checkbox', 'forms', 'Checkbox', '    <Checkbox checked={checked} onChange={setChecked} label="同步到日历" />'),
+      demo('Radio', 'forms', 'Radio, RadioGroup', '    <RadioGroup value={value} onChange={setValue} options={options} />'),
+      demo('Switch', 'forms', 'Switch', '    <Switch checked={enabled} onChange={setEnabled} label="开启提醒" />'),
+      demo('Slider', 'forms', 'Slider', '    <Slider value={60} onChange={() => undefined} />'),
+      demo('Rating', 'forms', 'Rating', '    <Rating value={4} onChange={() => undefined} />'),
+      demo('Select', 'pickers', 'Select', '    <Select\n      value="review"\n      options={[{ label: \'设计评审\', value: \'review\' }]}\n      onChange={() => undefined}\n    />'),
+      demo('TreeSelect', 'pickers', 'TreeSelect', '    <TreeSelect nodes={nodes} value="frontend" onChange={setValue} searchable />'),
+      demo('Cascader', 'pickers', 'Cascader', '    <Cascader options={options} value={[]} onChange={() => undefined} />'),
+      demo('DatePicker', 'pickers', 'DatePicker', '    <DatePicker value="2026-09-04" onChange={setValue} />'),
+      demo('TimePicker', 'pickers', 'TimePicker', '    <TimePicker value="09:30" onChange={setValue} minuteStep={5} />'),
+      demo('DateTimePicker', 'pickers', 'DateTimePicker', '    <DateTimePicker label="开始时间" value="2026-09-04 09:30:00" onChange={setValue} />'),
+      demo('Calendar', 'pickers', 'Calendar', '    <Calendar value="2026-09-04" onChange={() => undefined} />'),
+      demo('Transfer', 'pickers', 'Transfer', '    <Transfer items={items} targetKeys={[]} onChange={() => undefined} />'),
+      demo('FileUpload', 'feedback', 'FileUpload', '    <>\n      <FileUpload value={files} onChange={setFiles} multiple />\n      <FileUpload density="compact" value={files} onChange={setFiles} multiple />\n    </>', undefined, undefined, ['FileUpload', 'FileUpload Compact']),
+    ],
+  },
+  {
+    id: 'navigation',
+    title: 'Navigation',
+    description: '应用级与页面级导航结构。',
+    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Tabs Steps Pagination',
+    icon: MoreHorizontal,
+    demos: [
+      demo('Breadcrumb', 'navigation', 'Breadcrumb', '    <Breadcrumb items={[\n      { label: \'首页\', href: \'/\' },\n      { label: \'订单详情\' },\n    ]} />'),
+      demo('AppBar', 'navigation', 'AppBar, Button, Typography', '    <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <AppBar\n        position="absolute"\n        title="订单详情"\n        leading={(\n          <Button iconOnly variant="ghost" aria-label="返回" icon={<ArrowLeft size={19} />} />\n        )}\n        actions={(\n          <Button iconOnly variant="ghost" aria-label="更多操作" icon={<MoreHorizontal size={19} />} />\n        )}\n      />\n      <div className="px-5 pt-20">\n        <Typography variant="h3">#LM-20260904</Typography>\n        <Typography variant="caption" color="muted">等待审核</Typography>\n      </div>\n    </div>', 'ArrowLeft, MoreHorizontal'),
+      demo('BottomNavigation', 'navigation', 'BottomNavigation, Typography', '    <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">\n        <Typography variant="h3">{value}</Typography>\n        <Typography variant="caption" color="muted">当前底部导航目标</Typography>\n      </div>\n      <BottomNavigation\n        position="absolute"\n        value={value}\n        onChange={setValue}\n        items={[\n          { value: \'home\', label: \'首页\', icon: Star },\n          { value: \'schedule\', label: \'日程\', icon: CalendarDays },\n          { value: \'messages\', label: \'消息\', icon: Bell, badge: 3, badgeLabel: \'3 条未读消息\' },\n          { value: \'profile\', label: \'我的\', icon: UserRound },\n        ]}\n      />\n    </div>', 'Bell, CalendarDays, Star, UserRound', "const [value, setValue] = useState('home');"),
+      demo('Pagination', 'data', 'Pagination', '    <Pagination currentPage={1} totalPages={5} onPageChange={setPage} />'),
+      demo('Tabs', 'navigation', 'Tabs', '    <Tabs\n      value="overview"\n      options={[{ value: \'overview\', label: \'总览\' }]}\n      onChange={() => undefined}\n    />'),
+      demo('Steps', 'navigation', 'Steps', '    <Steps current={1} items={[{ title: \'提交\' }, { title: \'完成\' }]} />'),
+    ],
+  },
+  {
+    id: 'data-display',
+    title: 'Data Display',
+    description: '状态、列表、表格与结构化内容。',
+    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List Scrollbar Collapse Accordion Divider',
+    icon: Table2,
+    demos: [
+      demo('Badge', 'buttons', 'Badge', '    <Badge variant="success">Success</Badge>'),
+      demo('Avatar', 'buttons', 'Avatar', '    <Avatar name="Lumen Design" />'),
+      demo('Chip', 'buttons', 'Chip', '    <Chip tone="neutral">设计系统</Chip>'),
+      demo('Timeline', 'navigation', 'Timeline', '    <Timeline items={[{ id: \'1\', title: \'已创建\' }]} />'),
+      demo('FileTypeIcon', 'data', 'FileTypeIcon', '    <FileTypeIcon fileName="proposal.pdf" />'),
+      demo('DataTable', 'data', 'DataTable', '    <>\n      <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n    </>', undefined, undefined, ['DataTable · Sticky Header', 'DataTable · Embedded']),
+      demo('List', 'data', 'List, ListItem', '    <List>\n      <ListItem title="设计评审" />\n    </List>'),
+      demo('Scrollbar', 'data', 'Scrollbar', '    <Scrollbar className="h-64">{content}</Scrollbar>'),
+      demo('Collapse', 'data', 'Collapse, CollapseItem', '    <Collapse defaultValue={[\'road\']}>\n      <CollapseItem value="road" title="路段信息">路段内容</CollapseItem>\n    </Collapse>'),
+      demo('Accordion', 'data', 'Accordion, CollapseItem', '    <Accordion defaultValue="event">\n      <CollapseItem value="event" title="事件详情">事件内容</CollapseItem>\n    </Accordion>'),
+      demo('Divider', 'data', 'Divider', '    <Divider label="更多信息" />'),
+    ],
+  },
+  {
+    id: 'feedback',
+    title: 'Feedback',
+    description: '操作结果、进度、加载与空状态。',
+    keywords: 'Alert Toast Progress Spinner Skeleton Empty SegmentedControl',
+    icon: Settings,
+    demos: [
+      demo('Alert', 'feedback', 'Alert', '    <Alert variant="success" title="保存成功" />'),
+      demo('Progress', 'feedback', 'Progress', '    <Progress value={64} />'),
+      demo('Spinner', 'feedback', 'Spinner', '    <Spinner aria-label="加载中" />'),
+      demo('Empty', 'feedback', 'Empty', '    <Empty title="暂无数据" />'),
+      demo('SegmentedControl', 'feedback', 'SegmentedControl', '    <SegmentedControl value="all" options={options} onChange={setValue} />'),
+      demo('Skeleton', 'feedback', 'Skeleton', '    <Skeleton variant="rectangular" height={96} />'),
+    ],
+  },
+  {
+    id: 'overlays',
+    title: 'Overlays',
+    description: '覆盖页面的弹层、抽屉和上下文操作。',
+    keywords: 'Modal Drawer ConfirmDialog CommandPalette Popover Tooltip',
+    icon: Bell,
+    demos: [
+      demo('CommandPalette', 'overlays', 'Button, CommandPalette', '    <Button onClick={() => setOpen(true)}>打开 CommandPalette</Button>'),
+      demo('Modal', 'overlays', 'Button, Modal', '    <Button onClick={() => setOpen(true)}>打开 Modal</Button>'),
+      demo('Drawer', 'overlays', 'Button, Drawer', '    <Button onClick={() => setOpen(true)}>打开 Drawer</Button>'),
+      demo('ConfirmDialog', 'overlays', 'Button, ConfirmDialog', '    <Button variant="destructive" onClick={() => setOpen(true)}>打开 Confirm</Button>'),
+      demo('Toast', 'overlays', 'Button, Toast', '    <Button onClick={() => Toast.success(\'组件状态已保存\')}>Toast</Button>'),
+      demo('Popover', 'overlays', 'Button, Popover', '    <Popover trigger={<Button>查看详情</Button>}>\n      上下文内容\n    </Popover>'),
+    ],
+  },
+];
+
+const allDemos = galleryCategories.flatMap((category) => category.demos);
+const componentGuides: Record<string, ComponentGuide> = {
+  fab: {
+    summary: '浮动操作按钮用于突出当前页面最重要、最常用的单一操作，适合创建、编辑或快速添加。',
+    usage: [
+      '一个页面通常只保留一个主要 Fab，避免多个高强调操作竞争注意力。',
+      '空间紧张时使用 icon-only；需要强化动作含义时使用 extended，并始终提供可访问名称。',
+      'fixed 用于应用级悬浮，absolute 用于局部容器预览，static 用于普通布局和工具区。',
+    ],
+    props: [
+      { name: 'icon', type: 'ReactNode', defaultValue: '-', description: '必填，按钮图标。' },
+      { name: 'label', type: 'ReactNode', defaultValue: '-', description: '扩展状态显示的文字，也可作为折叠状态的可访问名称。' },
+      { name: 'extended', type: 'boolean', defaultValue: '自动', description: '显式控制带文字或仅图标形态。未设置时根据 label 判断。' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'sm'", description: '控制 36、44、52px 三档高度。' },
+      { name: 'variant', type: 'ButtonVariant', defaultValue: "'primary'", description: '设置主色、次级、描边或危险操作样式。' },
+      { name: 'position', type: "'fixed' | 'absolute' | 'static'", defaultValue: "'fixed'", description: '决定相对视口、容器或普通文档流定位。' },
+      { name: 'placement', type: "'bottom-end' | 'bottom-start' | 'top-end' | 'top-start'", defaultValue: "'bottom-end'", description: '设置悬浮位置，并自动适配 RTL。' },
+      { name: 'offset', type: 'number | string', defaultValue: '16', description: '设置距定位边缘的间距。' },
+      { name: 'safeArea', type: 'boolean', defaultValue: 'true', description: '在顶部或底部叠加设备安全区。' },
+      { name: 'active', type: 'boolean', defaultValue: 'true', description: '控制是否显示。' },
+      { name: 'loading', type: 'boolean', defaultValue: 'false', description: '显示加载图标并禁止重复点击。' },
+    ],
+  },
+  toolbar: {
+    summary: '工具栏用于组织一组与当前内容直接相关的操作、筛选和视图控制。',
+    usage: ['使用方向键、Home 和 End 在工具间移动焦点。', '操作较多时开启 wrap，紧凑场景使用 sm。'],
+    props: [
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: '设置工具栏最小高度与水平留白。' },
+      { name: 'wrap', type: 'boolean', defaultValue: 'false', description: '空间不足时允许工具换行。' },
+      { name: 'ariaLabel', type: 'string', defaultValue: "'工具栏'", description: '描述这一组工具的用途。' },
+      { name: 'children', type: 'ReactNode', defaultValue: '-', description: '按钮、输入框、分隔符或其他工具。' },
+    ],
+  },
+  'app-bar': {
+    summary: '应用栏固定页面上下文，承载返回操作、当前标题和少量页面级操作。',
+    usage: ['移动页面通常使用居中标题；信息密集页面可使用 start 对齐。', 'fixed 和 sticky 会参与视口布局，局部演示使用 absolute。'],
+    props: [
+      { name: 'title', type: 'ReactNode', defaultValue: '-', description: '必填，当前页面标题。' },
+      { name: 'leading', type: 'ReactNode', defaultValue: '-', description: '标题前的返回或导航操作。' },
+      { name: 'actions', type: 'ReactNode', defaultValue: '-', description: '标题后的页面级操作。' },
+      { name: 'position', type: "'fixed' | 'absolute' | 'sticky' | 'static'", defaultValue: "'fixed'", description: '设置应用栏定位方式。' },
+      { name: 'titleAlign', type: "'start' | 'center'", defaultValue: "'center'", description: '设置标题对齐方式。' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'lg'", description: '设置栏高。' },
+      { name: 'safeArea', type: 'boolean', defaultValue: 'true', description: '为顶部刘海和状态栏预留空间。' },
+      { name: 'active', type: 'boolean', defaultValue: 'true', description: '控制是否显示。' },
+    ],
+  },
+  'bottom-navigation': {
+    summary: '底部导航用于移动端的应用级主目的地切换，适合 3 到 5 个稳定且同级的入口。',
+    usage: ['保持入口顺序稳定，不把临时操作放入底部导航。', '受控 value 决定当前项，onChange 负责同步路由或页面状态。'],
+    props: [
+      { name: 'items', type: 'BottomNavigationItem[]', defaultValue: '-', description: '必填，配置 value、label、icon、badge、href 和 disabled。' },
+      { name: 'value', type: 'string', defaultValue: '-', description: '当前选中项的 value。' },
+      { name: 'onChange', type: '(value, item) => void', defaultValue: '-', description: '选择可用项目时触发。' },
+      { name: 'position', type: "'fixed' | 'absolute' | 'static'", defaultValue: "'fixed'", description: '设置相对视口、局部容器或文档流定位。' },
+      { name: 'safeArea', type: 'boolean', defaultValue: 'true', description: '为底部手势区域增加安全间距。' },
+      { name: 'active', type: 'boolean', defaultValue: 'true', description: '控制导航是否显示。' },
+      { name: 'ariaLabel', type: 'string', defaultValue: "'底部导航'", description: '设置导航区域的可访问名称。' },
+    ],
+  },
 };
+const legacyCategoryAliases: Record<string, string> = {
+  typography: 'foundations',
+  buttons: 'actions',
+  pickers: 'forms',
+  data: 'data-display',
+};
+const legacyDemoAliases: Record<string, string> = {
+  headings: 'typography',
+  body: 'typography',
+  dropdown: 'dropdown-menu',
+  'checkbox-radio-switch': 'checkbox',
+  'date-time': 'date-picker',
+  'file-upload-compact': 'file-upload',
+  'badge-avatar': 'badge',
+  'data-table-sticky-header': 'data-table',
+  'data-table-embedded-pagination': 'data-table',
+  'collapse-accordion': 'collapse',
+  'skeleton-segmented-control': 'segmented-control',
+  'modal-drawer-confirm': 'modal',
+};
+
+const getRouteFromHash = () => {
+  const fallbackCategory = galleryCategories[0]!;
+  if (typeof window === 'undefined') {
+    return { categoryId: fallbackCategory.id, demoId: fallbackCategory.demos[0]!.id };
+  }
+
+  const [rawCategoryId, rawDemoId] = window.location.hash.slice(1).split('/');
+  const categoryId = legacyCategoryAliases[rawCategoryId ?? ''] ?? rawCategoryId;
+  const category = galleryCategories.find((item) => item.id === categoryId) ?? fallbackCategory;
+  const demoId = legacyDemoAliases[rawDemoId ?? ''] ?? rawDemoId;
+  const selectedDemo = category.demos.find((item) => item.id === demoId) ?? category.demos[0]!;
+  return { categoryId: category.id, demoId: selectedDemo.id };
+};
+
+type ActiveDemoContextValue = {
+  demo: DemoDefinition;
+  expandedCodeTitle?: string;
+  copiedCodeTitle?: string;
+  onToggleCode: (title: string) => void;
+  onCopyCode: (title: string, code: string) => void;
+};
+
+const ActiveDemoContext = createContext<ActiveDemoContextValue | null>(null);
+const initialGalleryRoute = getRouteFromHash();
 
 const basicSelectOptions = [
   { label: '设计评审', value: 'review' },
@@ -483,16 +787,140 @@ const getSafetyEventSortValue = (event: SafetyEvent, key: string) => {
 };
 
 function GallerySection({ section, children }: { section: Section; children: React.ReactNode }) {
+  const activeDemo = useContext(ActiveDemoContext);
+  const [generatedComponentApi, setGeneratedComponentApi] = useState<Record<string, GeneratedPropDoc[]>>({});
+  const guide = activeDemo ? componentGuides[activeDemo.demo.id] : undefined;
+  const apiSections = activeDemo?.demo.apiComponents.flatMap((componentName) => {
+    const generatedProps = generatedComponentApi[componentName];
+    if (!generatedProps?.length) return [];
+    if (!guide || toDemoId(componentName) !== activeDemo.demo.id) {
+      return [{ componentName, props: generatedProps }];
+    }
+
+    const manualProps = new Map(guide.props.map((prop) => [prop.name, prop]));
+    const mergedProps = generatedProps.map((prop) => ({
+      ...prop,
+      ...manualProps.get(prop.name),
+    }));
+    const generatedNames = new Set(generatedProps.map((prop) => prop.name));
+    return [{
+      componentName,
+      props: [...mergedProps, ...guide.props.filter((prop) => !generatedNames.has(prop.name))],
+    }];
+  }) ?? [];
+
+  useEffect(() => {
+    void import('./generated/componentApi').then((module) => {
+      setGeneratedComponentApi(module.generatedComponentApi);
+    });
+  }, []);
+
   return (
     <section id={section.id} className="gallery-section">
       <header className="section-header">
         <div>
           <h2>{section.title}</h2>
-          <p>{section.description}</p>
+          <p>{guide?.summary ?? section.description}</p>
         </div>
       </header>
+      {guide ? (
+        <div className="component-guidance">
+          <h3>使用建议</h3>
+          <ul>
+            {guide.usage.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </div>
+      ) : null}
+      <h3 className="document-section-title">示例</h3>
       <div className="section-grid">{children}</div>
+      {apiSections.length ? (
+        <section className="component-api" aria-labelledby={`${activeDemo!.demo.id}-api-title`}>
+          <div className="component-api-card">
+            <div className="component-api-heading">
+              <span>API</span>
+              <h3 id={`${activeDemo!.demo.id}-api-title`}>属性</h3>
+            </div>
+            {apiSections.map(({ componentName, props }) => (
+              <div key={componentName} className="component-api-group">
+                <h4>{componentName}</h4>
+                <div className="component-api-table-wrap">
+                  <table className="component-api-table">
+                    <thead>
+                      <tr>
+                        <th>属性</th>
+                        <th>类型</th>
+                        <th>默认值</th>
+                        <th>说明</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {props.map((prop) => (
+                        <tr key={prop.name}>
+                          <td>
+                            <code>{prop.name}</code>
+                            {prop.required ? <span className="component-api-required">必填</span> : null}
+                          </td>
+                          <td><code>{prop.type}</code></td>
+                          <td><code>{prop.defaultValue}</code></td>
+                          <td>{prop.description}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </section>
+  );
+}
+
+const tsxTokenPattern = /(\/\*.*?\*\/|\/\/.*|`(?:\\.|[^`\\])*`|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|<\/?[A-Za-z][\w.:-]*|\b(?:as|async|await|break|case|catch|class|const|continue|default|else|export|extends|false|finally|for|from|function|if|import|in|interface|let|new|null|of|return|switch|throw|true|try|type|undefined|while)\b|\b\d+(?:\.\d+)?\b|[A-Za-z_$][\w$-]*(?=\s*=)|[{}[\]()]|\/?>(?!\=))/g;
+
+function getTsxTokenClass(token: string) {
+  if (token.startsWith('//') || token.startsWith('/*')) return 'syntax-comment';
+  if (/^["'`]/.test(token)) return 'syntax-string';
+  if (/^<\/?/.test(token) || token === '>' || token === '/>') return 'syntax-tag';
+  if (/^\d/.test(token)) return 'syntax-number';
+  if (/^[{}[\]()]$/.test(token)) return 'syntax-punctuation';
+  if (/^(?:as|async|await|break|case|catch|class|const|continue|default|else|export|extends|false|finally|for|from|function|if|import|in|interface|let|new|null|of|return|switch|throw|true|try|type|undefined|while)$/.test(token)) {
+    return 'syntax-keyword';
+  }
+  return 'syntax-property';
+}
+
+function SyntaxCode({ code, interactive = true }: { code: string; interactive?: boolean }) {
+  return (
+    <pre className="usage-code" tabIndex={interactive ? 0 : -1}>
+      <code>
+        {code.split('\n').map((line, lineIndex) => {
+          const tokens: React.ReactNode[] = [];
+          let lastIndex = 0;
+
+          for (const match of line.matchAll(tsxTokenPattern)) {
+            const index = match.index ?? 0;
+            if (index > lastIndex) tokens.push(line.slice(lastIndex, index));
+            tokens.push(
+              <span key={`${index}-${match[0]}`} className={getTsxTokenClass(match[0])}>
+                {match[0]}
+              </span>,
+            );
+            lastIndex = index + match[0].length;
+          }
+
+          if (lastIndex < line.length) tokens.push(line.slice(lastIndex));
+
+          return (
+            <span key={lineIndex} className="usage-code-line">
+              <span className="usage-code-line-number" aria-hidden="true">{lineIndex + 1}</span>
+              <span className="usage-code-line-content">{tokens.length ? tokens : ' '}</span>
+            </span>
+          );
+        })}
+      </code>
+    </pre>
   );
 }
 
@@ -505,23 +933,163 @@ function DemoCard({
   children: React.ReactNode;
   wide?: boolean;
 }) {
+  const activeDemo = useContext(ActiveDemoContext);
+  if (activeDemo && !activeDemo.demo.cardTitles.includes(title)) return null;
+
+  const code = demoCardCodeByTitle[title]
+    ?? activeDemo?.demo.codeByCardTitle?.[title]
+    ?? activeDemo?.demo.code
+    ?? '';
+  const codePanelId = activeDemo ? `demo-code-${activeDemo.demo.id}-${toDemoId(title)}` : undefined;
+  const codeExpanded = activeDemo?.expandedCodeTitle === title;
+  const copied = activeDemo?.copiedCodeTitle === title;
+
   return (
-    <Card className={wide ? 'demo-card-wide' : undefined}>
-      <CardHeader>
+    <Card className={`${wide ? 'demo-card-wide ' : ''}demo-card`.trim()}>
+      <CardHeader className="demo-card-header">
         <CardTitle>{title}</CardTitle>
+        {activeDemo ? (
+          <Tooltip content={codeExpanded ? '隐藏代码' : '查看代码'} placement="left">
+            <Button
+              iconOnly
+              size="sm"
+              variant="ghost"
+              aria-label={codeExpanded ? '隐藏代码' : '查看代码'}
+              aria-controls={codePanelId}
+              aria-expanded={codeExpanded}
+              icon={<Code2 size={16} />}
+              onClick={() => activeDemo.onToggleCode(title)}
+            />
+          </Tooltip>
+        ) : null}
       </CardHeader>
-      <CardContent>{children}</CardContent>
+      <CardContent className="demo-preview-surface">{children}</CardContent>
+      {activeDemo ? (
+        <div
+          id={codePanelId}
+          className="demo-code-collapse"
+          data-expanded={codeExpanded || undefined}
+          data-lumen-motion
+          aria-hidden={!codeExpanded}
+        >
+          <div className="demo-code-collapse-inner">
+            <div className="demo-code-panel">
+              <div className="demo-code-header">
+                <span><Code2 aria-hidden="true" size={14} /> TSX</span>
+                <Tooltip content={copied ? '已复制' : '复制代码'} placement="left">
+                  <Button
+                    iconOnly
+                    size="sm"
+                    variant="ghost"
+                    aria-label={copied ? '代码已复制' : '复制代码'}
+                    icon={copied ? <Check size={16} /> : <Copy size={16} />}
+                    tabIndex={codeExpanded ? undefined : -1}
+                    onClick={() => activeDemo.onCopyCode(title, code)}
+                  />
+                </Tooltip>
+              </div>
+              <SyntaxCode code={code} interactive={codeExpanded} />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </Card>
+  );
+}
+
+function GalleryTreeNav({
+  categories,
+  activeCategoryId,
+  activeDemoId,
+  expandedCategoryIds,
+  collapsed = false,
+  onToggleCategory,
+  onSelectDemo,
+}: {
+  categories: GalleryCategory[];
+  activeCategoryId: string;
+  activeDemoId: string;
+  expandedCategoryIds: string[];
+  collapsed?: boolean;
+  onToggleCategory: (categoryId: string) => void;
+  onSelectDemo: (categoryId: string, demoId: string) => void;
+}) {
+  return (
+    <nav className="gallery-tree-nav" aria-label="组件目录">
+      {categories.map((category) => {
+        const Icon = category.icon;
+        const expanded = expandedCategoryIds.includes(category.id);
+        const categoryButton = (
+          <button
+            type="button"
+            className="gallery-tree-category"
+            data-active={category.id === activeCategoryId || undefined}
+            aria-expanded={collapsed ? undefined : expanded}
+            aria-controls={collapsed ? undefined : `category-${category.id}`}
+            aria-label={collapsed ? category.title : undefined}
+            onClick={() => {
+              if (collapsed) {
+                onSelectDemo(category.id, category.demos[0]!.id);
+              } else {
+                onToggleCategory(category.id);
+              }
+            }}
+          >
+            <Icon aria-hidden="true" size={19} />
+            {collapsed ? null : (
+              <>
+                <span>{category.title}</span>
+                <ChevronDown className="gallery-tree-chevron" aria-hidden="true" size={16} />
+              </>
+            )}
+          </button>
+        );
+
+        return (
+          <div key={category.id} className="gallery-tree-group" data-expanded={expanded || undefined}>
+            {collapsed ? (
+              <Tooltip content={category.title} placement="right">{categoryButton}</Tooltip>
+            ) : categoryButton}
+            {!collapsed ? (
+              <div
+                id={`category-${category.id}`}
+                className="gallery-tree-children"
+                aria-hidden={!expanded}
+              >
+                {category.demos.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className="gallery-tree-item"
+                    data-active={item.id === activeDemoId || undefined}
+                    aria-current={item.id === activeDemoId ? 'page' : undefined}
+                    tabIndex={expanded ? undefined : -1}
+                    onClick={() => onSelectDemo(category.id, item.id)}
+                  >
+                    {item.title}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        );
+      })}
+    </nav>
   );
 }
 
 function GalleryBrand({ className = '' }: { className?: string }) {
   return (
     <div className={`brand ${className}`.trim()}>
-      <img className="brand-mark" src="/favicon.svg" alt="" aria-hidden="true" />
+      <img
+        className="brand-mark"
+        src={`${import.meta.env.BASE_URL}favicon.svg`}
+        alt=""
+        aria-hidden="true"
+      />
       <div>
         <strong>Lumen Design</strong>
-        <span>Component Gallery</span>
+        <span>Development Preview</span>
       </div>
     </div>
   );
@@ -532,7 +1100,11 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [colorScheme, setColorScheme] = useState<ColorScheme>(initialColorScheme);
   const [accent, setAccent] = useState<Accent>(initialAccent);
-  const [activeSection, setActiveSection] = useState(getSectionFromHash);
+  const [activeSection, setActiveSection] = useState(initialGalleryRoute.categoryId);
+  const [activeDemoId, setActiveDemoId] = useState(initialGalleryRoute.demoId);
+  const [expandedCategoryIds, setExpandedCategoryIds] = useState([initialGalleryRoute.categoryId]);
+  const [expandedCodeTitle, setExpandedCodeTitle] = useState<string>();
+  const [copiedCodeTitle, setCopiedCodeTitle] = useState<string>();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
@@ -541,12 +1113,14 @@ export default function App() {
   const [checked, setChecked] = useState(true);
   const [enabled, setEnabled] = useState(true);
   const [priorityChipSelected, setPriorityChipSelected] = useState(false);
+  const [fabExtended, setFabExtended] = useState(false);
   const [temporaryChipVisible, setTemporaryChipVisible] = useState(true);
   const [sliderValue, setSliderValue] = useState(62);
   const [ratingValue, setRatingValue] = useState(3.5);
   const [radioValue, setRadioValue] = useState('pad');
   const [segment, setSegment] = useState<'all' | 'active' | 'archived'>('all');
   const [tab, setTab] = useState<'overview' | 'usage' | 'tokens'>('overview');
+  const [bottomNavigationValue, setBottomNavigationValue] = useState('home');
   const [currentStep, setCurrentStep] = useState(1);
   const [stepsDirection, setStepsDirection] = useState<StepsDirection>('horizontal');
   const [basicSelectValue, setBasicSelectValue] = useState<string | null>(null);
@@ -573,38 +1147,89 @@ export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const filteredNavigationSections = useMemo(
-    () => sections.filter((section) =>
-      `${section.title} ${section.description} ${section.keywords}`
+  const normalizedSearch = gallerySearch.trim().toLowerCase();
+  const activeCategory = galleryCategories.find((category) => category.id === activeSection)
+    ?? galleryCategories[0]!;
+  const activeDemo = activeCategory.demos.find((item) => item.id === activeDemoId)
+    ?? activeCategory.demos[0]!;
+  const filteredCategories = useMemo(
+    () => galleryCategories.filter((category) =>
+      `${category.title} ${category.description} ${category.keywords} ${category.demos.map((item) => item.title).join(' ')}`
         .toLowerCase()
-        .includes(gallerySearch.trim().toLowerCase()),
+        .includes(normalizedSearch),
     ),
-    [gallerySearch],
+    [normalizedSearch],
   );
-  const sideNavSections = useMemo(
-    () => [{
-      items: filteredNavigationSections.map((section) => ({
-        value: section.id,
-        label: section.title,
-        icon: section.icon,
-      })),
-    }],
-    [filteredNavigationSections],
-  );
-  const activeSections = useMemo(
-    () => sections.filter((section) => section.id === activeSection),
-    [activeSection],
-  );
+  const activeSections = useMemo(() => {
+    const sourceSection = renderSections.find((section) => section.id === activeDemo.sourceSection);
+    return sourceSection
+      ? [{
+          ...sourceSection,
+          title: activeDemo.title,
+          description: `${activeCategory.title} · ${activeCategory.description}`,
+        }]
+      : [];
+  }, [activeCategory.description, activeCategory.title, activeDemo]);
+
+  const navigateToCategory = (categoryId: string) => {
+    const category = galleryCategories.find((item) => item.id === categoryId);
+    if (!category) return;
+    const nextDemo = category.demos[0]!;
+    setActiveSection(category.id);
+    setActiveDemoId(nextDemo.id);
+    setExpandedCategoryIds((current) => current.includes(category.id) ? current : [...current, category.id]);
+    window.history.replaceState(null, '', `#${category.id}/${nextDemo.id}`);
+  };
+
+  const navigateToDemo = (categoryId: string, demoId: string) => {
+    const category = galleryCategories.find((item) => item.id === categoryId);
+    if (!category) return;
+    const selectedDemo = category.demos.find((item) => item.id === demoId);
+    if (!selectedDemo) return;
+    setActiveSection(category.id);
+    setActiveDemoId(selectedDemo.id);
+    setExpandedCategoryIds((current) => current.includes(category.id) ? current : [...current, category.id]);
+    window.history.replaceState(null, '', `#${category.id}/${selectedDemo.id}`);
+  };
+
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategoryIds((current) => current.includes(categoryId)
+      ? current.filter((item) => item !== categoryId)
+      : [...current, categoryId]);
+  };
+
+  const copyActiveDemoCode = async (title: string, code: string) => {
+    try {
+      if (!navigator.clipboard) throw new Error('Clipboard API unavailable');
+      await navigator.clipboard.writeText(code);
+    } catch {
+      const textarea = document.createElement('textarea');
+      textarea.value = code;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      textarea.remove();
+    }
+    setCopiedCodeTitle(title);
+    window.setTimeout(() => setCopiedCodeTitle(undefined), 1600);
+  };
 
   useEffect(() => {
-    const syncSectionFromHash = () => setActiveSection(getSectionFromHash());
+    const syncSectionFromHash = () => {
+      const route = getRouteFromHash();
+      setActiveSection(route.categoryId);
+      setActiveDemoId(route.demoId);
+    };
     window.addEventListener('hashchange', syncSectionFromHash);
     return () => window.removeEventListener('hashchange', syncSectionFromHash);
   }, []);
 
   useLayoutEffect(() => {
     mainScrollRef.current?.scrollTo({ top: 0 });
-  }, [activeSection]);
+    setExpandedCodeTitle(undefined);
+  }, [activeDemoId, activeSection]);
 
   useEffect(() => {
     document.documentElement.dataset.lumenTheme = theme;
@@ -662,17 +1287,17 @@ export default function App() {
     >
       <aside className="sidebar">
         <GalleryBrand />
-        <SideNav
-          ariaLabel="组件分类"
-          activeValue={activeSection}
-          collapsed={sidebarCollapsed}
-          className="gallery-side-nav"
-          sections={sideNavSections}
-          onSelect={(value) => {
-            setActiveSection(value);
-            window.history.replaceState(null, '', `#${value}`);
-          }}
-        />
+        <Scrollbar className="sidebar-navigation" size="sm" aria-label="组件目录">
+          <GalleryTreeNav
+            categories={filteredCategories}
+            activeCategoryId={activeSection}
+            activeDemoId={activeDemo.id}
+            expandedCategoryIds={expandedCategoryIds}
+            collapsed={sidebarCollapsed}
+            onToggleCategory={toggleCategory}
+            onSelectDemo={navigateToDemo}
+          />
+        </Scrollbar>
       </aside>
 
       <Drawer
@@ -692,17 +1317,19 @@ export default function App() {
             onClick={() => setMobileNavOpen(false)}
           />
         </div>
-        <SideNav
-          ariaLabel="移动端组件分类"
-          activeValue={activeSection}
-          className="mobile-side-nav"
-          sections={sideNavSections}
-          onSelect={(value) => {
-            setActiveSection(value);
-            window.history.replaceState(null, '', `#${value}`);
-            setMobileNavOpen(false);
-          }}
-        />
+        <Scrollbar className="mobile-navigation-content" size="sm" aria-label="移动端组件目录">
+          <GalleryTreeNav
+            categories={filteredCategories}
+            activeCategoryId={activeSection}
+            activeDemoId={activeDemo.id}
+            expandedCategoryIds={expandedCategoryIds}
+            onToggleCategory={toggleCategory}
+            onSelectDemo={(categoryId, demoId) => {
+              navigateToDemo(categoryId, demoId);
+              setMobileNavOpen(false);
+            }}
+          />
+        </Scrollbar>
       </Drawer>
 
       <main className="main">
@@ -950,7 +1577,16 @@ export default function App() {
 
         <Scrollbar ref={mainScrollRef} className="main-scrollbar" size="sm">
           <div className="main-content">
-            {activeSections.map((section) => {
+            <ActiveDemoContext.Provider value={{
+              demo: activeDemo,
+              expandedCodeTitle,
+              copiedCodeTitle,
+              onToggleCode: (title) => setExpandedCodeTitle((current) => current === title ? undefined : title),
+              onCopyCode: (title, code) => void copyActiveDemoCode(title, code),
+            }}>
+              <div className="gallery-workspace">
+                <div className="gallery-preview">
+                  {activeSections.map((section) => {
           if (section.id === 'typography') {
             return (
               <GallerySection key={section.id} section={section}>
@@ -993,17 +1629,42 @@ export default function App() {
                     </Tooltip>
                   </div>
                 </DemoCard>
-                <DemoCard title="Badge + Avatar">
-                  <div className="stack">
-                    <div className="button-row">
-                      <Badge variant="info">Info</Badge>
-                      <Badge variant="success">Success</Badge>
-                      <Badge variant="warning">Warning</Badge>
-                      <Badge variant="danger">Danger</Badge>
-                      <Badge variant="neutral">Neutral</Badge>
-                      <Badge variant="outline" shape="square">Outline</Badge>
-                    </div>
-                    <div className="avatar-row">
+                <DemoCard title="Icon only" wide>
+                  <div className="fab-example-row">
+                    <Fab position="static" size="sm" icon={<Plus size={18} />} aria-label="新建任务" />
+                    <Fab position="static" size="md" variant="secondary" icon={<Search size={18} />} aria-label="搜索" />
+                    <Fab position="static" size="lg" variant="outline" icon={<Settings size={20} />} aria-label="设置" />
+                  </div>
+                </DemoCard>
+                <DemoCard title="Extended" wide>
+                  <div className="fab-example-row">
+                    <Fab position="static" icon={<Plus size={18} />} label="新建任务" />
+                    <Fab position="static" variant="secondary" icon={<Filter size={18} />} label="筛选条件" />
+                  </div>
+                </DemoCard>
+                <DemoCard title="Expandable" wide>
+                  <div className="fab-example-row">
+                    <Switch checked={fabExtended} onChange={setFabExtended} label="显示文字" />
+                    <Fab
+                      position="static"
+                      icon={<Plus size={18} />}
+                      label="新建任务"
+                      extended={fabExtended}
+                    />
+                  </div>
+                </DemoCard>
+                <DemoCard title="Badge">
+                  <div className="button-row">
+                    <Badge variant="info">Info</Badge>
+                    <Badge variant="success">Success</Badge>
+                    <Badge variant="warning">Warning</Badge>
+                    <Badge variant="danger">Danger</Badge>
+                    <Badge variant="neutral">Neutral</Badge>
+                    <Badge variant="outline" shape="square">Outline</Badge>
+                  </div>
+                </DemoCard>
+                <DemoCard title="Avatar">
+                  <div className="avatar-row">
                       <Avatar name="Lumen Design" />
                       <Avatar name="Qiao Ming" shape="rounded" />
                       <Avatar
@@ -1048,8 +1709,7 @@ export default function App() {
                           color: 'var(--lumen-color-danger-text)',
                         }}
                       />
-                      <Avatar fallback={<UserRound size={18} />} />
-                    </div>
+                    <Avatar fallback={<UserRound size={18} />} />
                   </div>
                 </DemoCard>
                 <DemoCard title="Chip" wide>
@@ -1089,9 +1749,9 @@ export default function App() {
                         />
                       )}
                     </FormField>
-              <FormField label="负责人">
-                <Input placeholder="负责人姓名" suffix={<UserRound size={15} />} />
-              </FormField>
+                    <FormField label="负责人">
+                      <Input placeholder="负责人姓名" suffix={<UserRound size={15} />} />
+                    </FormField>
                     <FormField label="访问密码">
                       <Input
                         type="password"
@@ -1100,6 +1760,10 @@ export default function App() {
                         defaultValue="lumen-demo"
                       />
                     </FormField>
+                  </div>
+                </DemoCard>
+                <DemoCard title="NumberInput" wide>
+                  <div className="max-w-[420px]">
                     <FormField label="处置时限">
                       <NumberInput
                         aria-label="处置时限"
@@ -1110,22 +1774,27 @@ export default function App() {
                         suffix="分钟"
                       />
                     </FormField>
+                  </div>
+                </DemoCard>
+                <DemoCard title="Textarea" wide>
+                  <div className="max-w-[640px]">
                     <FormField label="备注" className="form-span">
                       <Textarea
-                      value={textareaText}
-                      onChange={(event) => setTextareaText(event.target.value)}
-                      maxLength={200}
-                      rows={4}
-                      showCount
+                        value={textareaText}
+                        onChange={(event) => setTextareaText(event.target.value)}
+                        maxLength={200}
+                        rows={4}
+                        showCount
                       />
                     </FormField>
                   </div>
                 </DemoCard>
-                <DemoCard title="Checkbox + Radio + Switch">
+                <DemoCard title="Checkbox">
+                  <Checkbox checked={checked} onChange={setChecked} label="同步到日历" description="创建后自动邀请成员。" />
+                </DemoCard>
+                <DemoCard title="Radio">
                   <div className="stack">
-                    <Checkbox checked={checked} onChange={setChecked} label="同步到日历" description="创建后自动邀请成员。" />
-                    <Switch checked={enabled} onChange={setEnabled} label="开启提醒" />
-                    <Radio checked label="单独 Radio" />
+                    <Radio size="md" checked label="单独 Radio · md" />
                     <RadioGroup
                       value={radioValue}
                       onChange={setRadioValue}
@@ -1137,6 +1806,9 @@ export default function App() {
                       ]}
                     />
                   </div>
+                </DemoCard>
+                <DemoCard title="Switch">
+                  <Switch checked={enabled} onChange={setEnabled} label="开启提醒" />
                 </DemoCard>
                 <DemoCard title="Slider" wide>
                   <div className="form-grid">
@@ -1207,6 +1879,10 @@ export default function App() {
                       searchable
                       placeholder="选择多个事项"
                     />
+                  </div>
+                </DemoCard>
+                <DemoCard title="TreeSelect" wide>
+                  <div className="form-grid">
                     <TreeSelect
                       nodes={treeNodes}
                       value={treeValue}
@@ -1245,11 +1921,17 @@ export default function App() {
                     </FormField>
                   </div>
                 </DemoCard>
-                <DemoCard title="Date + Time" wide>
+                <DemoCard title="DatePicker" wide>
                   <div className="form-grid">
                     <DatePicker value={dateValue} onChange={setDateValue} />
                     <DatePicker value={monthValue} onChange={setMonthValue} mode="year-month" />
-                    <TimePicker value={timeValue} onChange={setTimeValue} minuteStep={5} />
+                  </div>
+                </DemoCard>
+                <DemoCard title="TimePicker" wide>
+                  <TimePicker value={timeValue} onChange={setTimeValue} minuteStep={5} />
+                </DemoCard>
+                <DemoCard title="DateTimePicker" wide>
+                  <div className="max-w-[420px]">
                     <DateTimePicker label="开始时间" value={dateTimeValue} onChange={setDateTimeValue} minuteStep={5} />
                   </div>
                 </DemoCard>
@@ -1283,6 +1965,80 @@ export default function App() {
                     ]}
                   />
                 </DemoCard>
+                <DemoCard title="AppBar" wide>
+                  <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">
+                    <AppBar
+                      position="absolute"
+                      title="订单详情"
+                      leading={(
+                        <Button
+                          iconOnly
+                          variant="ghost"
+                          aria-label="返回"
+                          icon={<ArrowLeft size={19} />}
+                        />
+                      )}
+                      actions={(
+                        <Button
+                          iconOnly
+                          variant="ghost"
+                          aria-label="更多操作"
+                          icon={<MoreHorizontal size={19} />}
+                        />
+                      )}
+                    />
+                    <div className="px-5 pt-20">
+                      <Typography variant="h3">#LM-20260904</Typography>
+                      <Typography variant="caption" color="muted">
+                        等待审核
+                      </Typography>
+                    </div>
+                  </div>
+                </DemoCard>
+                <DemoCard title="Toolbar" wide>
+                  <Toolbar
+                    ariaLabel="列表操作"
+                    className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
+                  >
+                    <Button size="sm" variant="ghost" icon={<Search size={15} />}>
+                      搜索
+                    </Button>
+                    <Button size="sm" variant="ghost" icon={<Filter size={15} />}>
+                      筛选
+                    </Button>
+                    <div className="flex-1" />
+                    <Button size="sm" icon={<Plus size={15} />}>
+                      新建
+                    </Button>
+                  </Toolbar>
+                </DemoCard>
+                <DemoCard title="BottomNavigation" wide>
+                  <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">
+                    <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">
+                      <Typography variant="h3">{bottomNavigationValue}</Typography>
+                      <Typography variant="caption" color="muted">
+                        当前底部导航目标
+                      </Typography>
+                    </div>
+                    <BottomNavigation
+                      position="absolute"
+                      value={bottomNavigationValue}
+                      onChange={setBottomNavigationValue}
+                      items={[
+                        { value: 'home', label: '首页', icon: Star },
+                        { value: 'schedule', label: '日程', icon: CalendarDays },
+                        {
+                          value: 'messages',
+                          label: '消息',
+                          icon: Bell,
+                          badge: 3,
+                          badgeLabel: '3 条未读消息',
+                        },
+                        { value: 'profile', label: '我的', icon: UserRound },
+                      ]}
+                    />
+                  </div>
+                </DemoCard>
                 <DemoCard title="Tabs" wide>
                   <Tabs
                     value={tab}
@@ -1295,7 +2051,7 @@ export default function App() {
                     aside={<Button size="sm" variant="secondary">导出</Button>}
                   />
                 </DemoCard>
-                <DemoCard title="Dropdown">
+                <DemoCard title="DropdownMenu">
                   <div className="stack">
                     <DropdownMenu
                       menuMode
@@ -1400,7 +2156,7 @@ export default function App() {
                     getRowKey={(event) => event.id}
                   />
                 </DemoCard>
-                <DemoCard title="DataTable · Embedded + Pagination" wide>
+                <DemoCard title="DataTable · Embedded" wide>
                   <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
                     <div className="border-b border-[var(--lumen-color-border)] px-4 py-3">
                       <CardTitle>公路安全事件</CardTitle>
@@ -1422,21 +2178,23 @@ export default function App() {
                       selectedRowKeys={selectedEventKeys}
                       onSelectedRowKeysChange={setSelectedEventKeys}
                     />
-                    <Pagination
-                      currentPage={eventPage}
-                      totalPages={eventTotalPages}
-                      totalItems={safetyEvents.length}
-                      pageSize={eventPageSize}
-                      onPageSizeChange={(nextPageSize) => {
-                        setEventPageSize(nextPageSize);
-                        setEventPage(1);
-                      }}
-                      onPageChange={setEventPage}
-                    />
                   </div>
                   <p className="mt-3 text-[12px] text-[var(--lumen-color-text-muted)]">
                     已选择 {selectedEventKeys.length} 条事件
                   </p>
+                </DemoCard>
+                <DemoCard title="Pagination" wide>
+                  <Pagination
+                    currentPage={eventPage}
+                    totalPages={eventTotalPages}
+                    totalItems={safetyEvents.length}
+                    pageSize={eventPageSize}
+                    onPageSizeChange={(nextPageSize) => {
+                      setEventPageSize(nextPageSize);
+                      setEventPage(1);
+                    }}
+                    onPageChange={setEventPage}
+                  />
                 </DemoCard>
                 <DemoCard title="List" wide>
                   <List aria-label="重点事件">
@@ -1510,8 +2268,7 @@ export default function App() {
                     </Scrollbar>
                   </div>
                 </DemoCard>
-                <DemoCard title="Collapse + Accordion" wide>
-                  <div className="form-grid">
+                <DemoCard title="Collapse" wide>
                     <Collapse defaultValue={['road', 'device']}>
                       <CollapseItem value="road" title="路段信息" extra="G65 K18+900">
                         南向双车道，当前平均车速 72 km/h。
@@ -1520,6 +2277,8 @@ export default function App() {
                         摄像机、雷达和气象监测设备运行正常。
                       </CollapseItem>
                     </Collapse>
+                </DemoCard>
+                <DemoCard title="Accordion" wide>
                     <Accordion defaultValue="event">
                       <CollapseItem value="event" title="事件详情">
                         异常停车事件已持续 6 分钟，等待现场确认。
@@ -1528,7 +2287,6 @@ export default function App() {
                         10:26 已通知附近巡检人员前往现场。
                       </CollapseItem>
                     </Accordion>
-                  </div>
                 </DemoCard>
                 <DemoCard title="Divider" wide>
                   <div>
@@ -1552,18 +2310,24 @@ export default function App() {
           if (section.id === 'overlays') {
             return (
               <GallerySection key={section.id} section={section}>
-                <DemoCard title="Modal + Drawer + Confirm" wide>
-                  <div className="button-row">
+                <DemoCard title="CommandPalette" wide>
                     <Button variant="secondary" icon={<Search size={15} />} onClick={() => setCommandPaletteOpen(true)}>
                       打开 CommandPalette
                     </Button>
+                </DemoCard>
+                <DemoCard title="Modal" wide>
                     <Button onClick={() => setModalOpen(true)}>打开 Modal</Button>
+                </DemoCard>
+                <DemoCard title="Drawer" wide>
                     <Button variant="secondary" onClick={() => setDrawerOpen(true)}>打开 Drawer</Button>
+                </DemoCard>
+                <DemoCard title="ConfirmDialog" wide>
                     <Button variant="destructive" onClick={() => setConfirmOpen(true)}>打开 Confirm</Button>
+                </DemoCard>
+                <DemoCard title="Toast" wide>
                     <Button variant="outline" icon={<Bell size={15} />} onClick={() => Toast.success('组件状态已保存')}>
                       Toast
                     </Button>
-                  </div>
                 </DemoCard>
                 <DemoCard title="Popover" wide>
                   <div className="button-row">
@@ -1708,8 +2472,7 @@ export default function App() {
                   onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
                 />
               </DemoCard>
-              <DemoCard title="Skeleton + SegmentedControl">
-                <div className="stack">
+              <DemoCard title="SegmentedControl">
                   <SegmentedControl
                     size="md"
                     value={segment}
@@ -1721,6 +2484,9 @@ export default function App() {
                       { label: '归档', value: 'archived' },
                     ]}
                   />
+              </DemoCard>
+              <DemoCard title="Skeleton">
+                <div className="stack">
                   <div className="skeleton-row">
                     <Skeleton variant="circular" />
                     <div className="skeleton-lines">
@@ -1733,7 +2499,10 @@ export default function App() {
               </DemoCard>
             </GallerySection>
           );
-            })}
+                  })}
+                </div>
+              </div>
+            </ActiveDemoContext.Provider>
           </div>
         </Scrollbar>
       </main>
@@ -1768,17 +2537,31 @@ export default function App() {
         groups={[
           {
             heading: '组件分类',
-            items: sections.map((section) => ({
-              id: section.id,
-              label: section.title,
-              description: section.description,
-              keywords: section.keywords.split(' '),
-              icon: <section.icon size={16} />,
-              onSelect: () => {
-                setActiveSection(section.id);
-                window.history.replaceState(null, '', `#${section.id}`);
-              },
+            items: galleryCategories.map((category) => ({
+              id: category.id,
+              label: category.title,
+              description: category.description,
+              keywords: category.keywords.split(' '),
+              icon: <category.icon size={16} />,
+              onSelect: () => navigateToCategory(category.id),
             })),
+          },
+          {
+            heading: '组件',
+            items: allDemos.map((item) => {
+              const category = galleryCategories.find((candidate) => candidate.demos.includes(item))!;
+              return {
+                id: `component-${item.id}`,
+                label: item.title,
+                description: category.title,
+                keywords: [category.title, item.title],
+                onSelect: () => {
+                  setActiveSection(category.id);
+                  setActiveDemoId(item.id);
+                  window.history.replaceState(null, '', `#${category.id}/${item.id}`);
+                },
+              };
+            }),
           },
           {
             heading: '操作',
