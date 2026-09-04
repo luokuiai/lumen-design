@@ -130,7 +130,7 @@ body {
 }
 
 .gallery-tree-group[data-expanded] .gallery-tree-children {
-  max-height: 520px;
+  max-height: 1200px;
   margin-block: 2px 6px;
   opacity: 1;
   pointer-events: auto;
