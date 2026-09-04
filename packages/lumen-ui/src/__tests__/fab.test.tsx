@@ -18,7 +18,7 @@ describe('Fab', () => {
     const fab = screen.getByRole('button', { name: 'Create task' });
     expect(fab).toHaveAttribute('data-fab', 'icon');
     expect(fab).toHaveAttribute('data-position', 'fixed');
-    expect(fab).toHaveClass('!h-14', '!w-14', '!rounded-full');
+    expect(fab).toHaveClass('!h-12', '!w-12', '!rounded-full');
     expect(fab).toHaveStyle({ bottom: 'calc(16px + env(safe-area-inset-bottom))' });
 
     fireEvent.click(fab);

@@ -61,7 +61,7 @@ export const Fab: React.FC<FabProps> = ({
   placement = 'bottom-end',
   offset = 16,
   safeArea = true,
-  size = 'lg',
+  size = 'md',
   variant = 'primary',
   className,
   disabled,

@@ -215,9 +215,11 @@ const usageExample = (
   imports: string,
   jsx: string,
   lucideIcons?: string,
-) => `${lucideIcons ? `import { ${lucideIcons} } from 'lucide-react';\n` : ''}import { ${imports} } from '@luokuiai/lumen-ui';
+  setup?: string,
+) => `${setup ? "import { useState } from 'react';\n" : ''}${lucideIcons ? `import { ${lucideIcons} } from 'lucide-react';\n` : ''}import { ${imports} } from '@luokuiai/lumen-ui';
 
 export function Example() {
+${setup ? `  ${setup}\n\n` : ''}
   return (
 ${jsx}
   );
@@ -229,11 +231,12 @@ const demo = (
   imports: string,
   jsx: string,
   lucideIcons?: string,
+  setup?: string,
 ): DemoDefinition => ({
   id: toDemoId(title),
   title,
   sourceSection,
-  code: usageExample(imports, jsx, lucideIcons),
+  code: usageExample(imports, jsx, lucideIcons, setup),
 });
 
 const galleryCategories: GalleryCategory[] = [
@@ -256,8 +259,8 @@ const galleryCategories: GalleryCategory[] = [
     icon: Plus,
     demos: [
       demo('Button', 'buttons', 'Button', '    <Button variant="primary">保存</Button>'),
-      demo('Fab', 'buttons', 'Fab', '    <Fab icon={<Plus />} label="新建任务" position="fixed" />', 'Plus'),
-      demo('Toolbar', 'navigation', 'Button, Toolbar', '    <Toolbar ariaLabel="列表操作">\n      <Button variant="ghost">筛选</Button>\n      <Button>新建</Button>\n    </Toolbar>'),
+      demo('Fab', 'buttons', 'Fab, Typography', '    <div className="relative h-48 overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="px-5 py-4">\n        <Typography variant="h3">项目看板</Typography>\n        <Typography variant="caption" color="muted">\n          12 个进行中任务\n        </Typography>\n      </div>\n      <Fab\n        position="absolute"\n        icon={<Plus size={20} />}\n        label="新建任务"\n        aria-label="新建任务"\n      />\n    </div>', 'Plus'),
+      demo('Toolbar', 'navigation', 'Button, Toolbar', '    <Toolbar\n      ariaLabel="列表操作"\n      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"\n    >\n      <Button size="sm" variant="ghost" icon={<Search size={15} />}>\n        搜索\n      </Button>\n      <Button size="sm" variant="ghost" icon={<Filter size={15} />}>\n        筛选\n      </Button>\n      <div className="flex-1" />\n      <Button size="sm" icon={<Plus size={15} />}>\n        新建\n      </Button>\n    </Toolbar>', 'Filter, Plus, Search'),
       demo('Dropdown', 'navigation', 'Button, DropdownMenu', '    <DropdownMenu\n      trigger={({ toggle }) => <Button onClick={toggle}>打开菜单</Button>}\n    >\n      {({ close }) => <button onClick={close}>复制</button>}\n    </DropdownMenu>'),
     ],
   },
@@ -289,8 +292,8 @@ const galleryCategories: GalleryCategory[] = [
     icon: MoreHorizontal,
     demos: [
       demo('Breadcrumb', 'navigation', 'Breadcrumb', '    <Breadcrumb items={[\n      { label: \'首页\', href: \'/\' },\n      { label: \'订单详情\' },\n    ]} />'),
-      demo('AppBar', 'navigation', 'AppBar, Button', '    <AppBar\n      title="订单详情"\n      leading={<Button iconOnly aria-label="返回" icon={<ArrowLeft />} />}\n    />', 'ArrowLeft'),
-      demo('BottomNavigation', 'navigation', 'BottomNavigation', '    <BottomNavigation\n      value="home"\n      items={[{ value: \'home\', label: \'首页\' }]}\n      onChange={() => undefined}\n    />'),
+      demo('AppBar', 'navigation', 'AppBar, Button, Typography', '    <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <AppBar\n        position="absolute"\n        title="订单详情"\n        leading={(\n          <Button iconOnly variant="ghost" aria-label="返回" icon={<ArrowLeft size={19} />} />\n        )}\n        actions={(\n          <Button iconOnly variant="ghost" aria-label="更多操作" icon={<MoreHorizontal size={19} />} />\n        )}\n      />\n      <div className="px-5 pt-20">\n        <Typography variant="h3">#LM-20260904</Typography>\n        <Typography variant="caption" color="muted">等待审核</Typography>\n      </div>\n    </div>', 'ArrowLeft, MoreHorizontal'),
+      demo('BottomNavigation', 'navigation', 'BottomNavigation, Typography', '    <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">\n        <Typography variant="h3">{value}</Typography>\n        <Typography variant="caption" color="muted">当前底部导航目标</Typography>\n      </div>\n      <BottomNavigation\n        position="absolute"\n        value={value}\n        onChange={setValue}\n        items={[\n          { value: \'home\', label: \'首页\', icon: Star },\n          { value: \'schedule\', label: \'日程\', icon: CalendarDays },\n          { value: \'messages\', label: \'消息\', icon: Bell, badge: 3, badgeLabel: \'3 条未读消息\' },\n          { value: \'profile\', label: \'我的\', icon: UserRound },\n        ]}\n      />\n    </div>', 'Bell, CalendarDays, Star, UserRound', "const [value, setValue] = useState('home');"),
       demo('Tabs', 'navigation', 'Tabs', '    <Tabs\n      value="overview"\n      options={[{ value: \'overview\', label: \'总览\' }]}\n      onChange={() => undefined}\n    />'),
       demo('Steps', 'navigation', 'Steps', '    <Steps current={1} items={[{ title: \'提交\' }, { title: \'完成\' }]} />'),
     ],
@@ -794,7 +797,11 @@ function GalleryTreeNav({
               <Tooltip content={category.title} placement="right">{categoryButton}</Tooltip>
             ) : categoryButton}
             {!collapsed ? (
-              <div id={`category-${category.id}`} className="gallery-tree-children" hidden={!expanded}>
+              <div
+                id={`category-${category.id}`}
+                className="gallery-tree-children"
+                aria-hidden={!expanded}
+              >
                 {category.demos.map((item) => (
                   <button
                     key={item.id}
@@ -802,6 +809,7 @@ function GalleryTreeNav({
                     className="gallery-tree-item"
                     data-active={item.id === activeDemoId || undefined}
                     aria-current={item.id === activeDemoId ? 'page' : undefined}
+                    tabIndex={expanded ? undefined : -1}
                     onClick={() => onSelectDemo(category.id, item.id)}
                   >
                     {item.title}

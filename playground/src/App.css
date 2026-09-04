@@ -108,9 +108,17 @@ body {
 .gallery-tree-children {
   position: relative;
   display: grid;
+  max-height: 0;
   gap: 2px;
-  margin: 2px 0 6px 21px;
+  margin: 0 0 0 21px;
+  overflow: hidden;
   padding-left: 19px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    max-height 220ms ease,
+    margin 220ms ease,
+    opacity 140ms ease;
 }
 
 .gallery-tree-children::before {
@@ -121,8 +129,11 @@ body {
   content: '';
 }
 
-.gallery-tree-children[hidden] {
-  display: none;
+.gallery-tree-group[data-expanded] .gallery-tree-children {
+  max-height: 520px;
+  margin-block: 2px 6px;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .gallery-tree-item {
