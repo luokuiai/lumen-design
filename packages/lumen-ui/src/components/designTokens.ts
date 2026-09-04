@@ -49,7 +49,7 @@ export type ButtonVariant = keyof typeof buttonVariantTokens;
 export type ButtonSize = keyof typeof buttonSizeTokens;
 
 const buttonBase =
-  'inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50';
+  'relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 overflow-hidden font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50';
 
 export const getButtonClassNames = ({
   variant = 'primary',

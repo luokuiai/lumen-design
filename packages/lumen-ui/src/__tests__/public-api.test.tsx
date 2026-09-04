@@ -6,10 +6,12 @@ import * as Lumen from '../index';
 describe('public API', () => {
   it('exports the foundation components', () => {
     expect(Lumen.Alert).toBeTypeOf('object');
+    expect(Lumen.AppBar).toBeTypeOf('object');
     expect(Lumen.AppHeader).toBeTypeOf('object');
     expect(Lumen.Accordion).toBeTypeOf('object');
     expect(Lumen.Avatar).toBeTypeOf('object');
     expect(Lumen.Breadcrumb).toBeTypeOf('object');
+    expect(Lumen.BottomNavigation).toBeTypeOf('function');
     expect(Lumen.Button).toBeTypeOf('function');
     expect(Lumen.Calendar).toBeTypeOf('object');
     expect(Lumen.Card).toBeTypeOf('object');
@@ -22,6 +24,7 @@ describe('public API', () => {
     expect(Lumen.Empty).toBeTypeOf('object');
     expect('EmptyState' in Lumen).toBe(false);
     expect(Lumen.FileUpload).toBeTypeOf('object');
+    expect(Lumen.Fab).toBeTypeOf('function');
     expect(Lumen.FileTypeIcon).toBeTypeOf('function');
     expect(Lumen.Input).toBeTypeOf('object');
     expect(Lumen.List).toBeTypeOf('object');
@@ -46,6 +49,7 @@ describe('public API', () => {
     expect('Tag' in Lumen).toBe(false);
     expect(Lumen.TreeSelect).toBeTypeOf('function');
     expect(Lumen.Transfer).toBeTypeOf('function');
+    expect(Lumen.Toolbar).toBeTypeOf('object');
     expect(Lumen.Typography).toBeTypeOf('object');
     expect('CompactPagination' in Lumen).toBe(false);
     expect('TimeSelector' in Lumen).toBe(false);
