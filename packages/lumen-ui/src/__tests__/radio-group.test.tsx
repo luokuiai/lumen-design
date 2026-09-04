@@ -1,6 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { Radio } from '../components/Radio';
 import { RadioGroup } from '../components/RadioGroup';
 
 const options = [
@@ -10,6 +11,16 @@ const options = [
 ] as const;
 
 describe('RadioGroup', () => {
+  it('keeps the medium radio visually compact', () => {
+    render(<Radio size="md" checked label="Medium" />);
+
+    const radio = screen.getByRole('radio', { name: 'Medium' });
+    expect(radio.closest('label')).toHaveClass('gap-2.5');
+    expect(radio.parentElement).toHaveClass('h-[18px]', 'w-[18px]');
+    expect(radio.nextElementSibling).toHaveClass('h-[18px]', 'w-[18px]');
+    expect(radio.nextElementSibling?.querySelector('svg')).toHaveAttribute('width', '9');
+  });
+
   it('manages an uncontrolled value and shares one input name', () => {
     const onChange = vi.fn();
     render(
