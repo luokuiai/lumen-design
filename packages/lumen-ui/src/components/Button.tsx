@@ -1,12 +1,23 @@
 import React from 'react';
 import { getButtonClassNames, type ButtonSize, type ButtonVariant } from './designTokens';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonBaseProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  icon?: React.ReactNode;
-  iconOnly?: boolean;
 }
+
+export type ButtonProps =
+  | (ButtonBaseProps & {
+    iconOnly: true;
+    icon: React.ReactNode;
+    children?: never;
+    'aria-label': string;
+  })
+  | (ButtonBaseProps & {
+    iconOnly?: false;
+    icon?: React.ReactNode;
+    children: React.ReactNode;
+  });
 
 export const Button: React.FC<ButtonProps> = ({
   children,

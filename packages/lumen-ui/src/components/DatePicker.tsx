@@ -6,7 +6,8 @@ import React, {
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar } from './calendar/Calendar';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 
@@ -46,7 +47,6 @@ export interface DatePickerProps {
 
 // ─── 常量 ──────────────────────────────────────────────
 
-const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
 const MONTHS = [
   '1月',
   '2月',
@@ -70,11 +70,6 @@ const DROPDOWN_VIEWPORT_MARGIN = 8;
 // ─── 工具函数 ──────────────────────────────────────────
 
 const pad = (n: number) => String(n).padStart(2, '0');
-
-const getDaysInMonth = (year: number, month: number) =>
-  new Date(year, month + 1, 0).getDate();
-const getFirstDayOfWeek = (year: number, month: number) =>
-  new Date(year, month, 1).getDay();
 
 /** 格式化显示值 */
 export const formatValue = (
@@ -111,13 +106,6 @@ const parseDate = (value: string) => {
     month: month - 1,
     day: parts[2] ?? null,
   };
-};
-
-/** 比较两个 YYYY-MM 或 YYYY-MM-DD 字符串，返回 -1/0/1 */
-const compareDateStr = (a: string, b: string): number => {
-  if (a < b) return -1;
-  if (a > b) return 1;
-  return 0;
 };
 
 const getYearPageStart = (year: number) =>
@@ -190,15 +178,10 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(
     null,
   );
-  const [isAnimating, setIsAnimating] = useState(false);
 
   // 年月选择模式的视图状态
   const [showYearPicker, setShowYearPicker] = useState(false);
   const [yearPickerStart, setYearPickerStart] = useState(0);
-
-  // 年月日模式下的子视图
-  const [dayView, setDayView] = useState<'day' | 'month' | 'year'>('day');
-  const [dayYearPickerStart, setDayYearPickerStart] = useState(0);
 
   // 下拉面板定位（portal 模式）
   const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({
@@ -257,10 +240,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     return { year: d.getFullYear(), month: d.getMonth(), day: d.getDate() };
   }, []);
 
-  const todayStr = useMemo(() => {
-    return `${todayDate.year}-${pad(todayDate.month + 1)}-${pad(todayDate.day)}`;
-  }, [todayDate]);
-
   const currentYearPageStart = useMemo(
     () => getYearPageStart(todayDate.year),
     [todayDate.year],
@@ -292,13 +271,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   // 视图年月
   const [viewYear, setViewYear] = useState(parsed?.year ?? todayDate.year);
-  const [viewMonth, setViewMonth] = useState(parsed?.month ?? todayDate.month);
 
   // 从 value 同步视图
   useEffect(() => {
     if (parsed) {
       setViewYear(parsed.year);
-      setViewMonth(parsed.month);
     }
   }, [parsed]);
 
@@ -322,19 +299,15 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   // 打开弹窗时初始化：有 value 定位到 value 的年月，否则定位到当月
   useEffect(() => {
     if (open) {
-      setDayView('day');
       setShowYearPicker(false);
       if (parsed) {
         setViewYear(parsed.year);
-        setViewMonth(parsed.month);
       } else {
         setViewYear(todayDate.year);
-        setViewMonth(todayDate.month);
       }
       const initialYearPageStart = getYearPageStart(
         parsed?.year ?? todayDate.year,
       );
-      setDayYearPickerStart(initialYearPageStart);
       setYearPickerStart(initialYearPageStart);
       updateDropdownPosition();
     }
@@ -374,7 +347,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       window.cancelAnimationFrame(frameId);
       observer.disconnect();
     };
-  }, [open, updateDropdownPosition, dayView, showYearPicker]);
+  }, [open, updateDropdownPosition, showYearPicker]);
 
   // 清理定时器
   useEffect(() => {
@@ -400,27 +373,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   // ─── 范围限制工具 ──────────────────────────────────
 
-  const isDateDisabled = useCallback(
-    (dateStr: string) => {
-      if (!minDate && !maxDate) return false;
-      const d = dateStr.length > 7 ? dateStr : dateStr + '-01';
-      const min = minDate
-        ? minDate.length === 7
-          ? minDate + '-01'
-          : minDate
-        : null;
-      const max = maxDate
-        ? maxDate.length === 7
-          ? maxDate + '-31'
-          : maxDate
-        : null;
-      if (min && d < min) return true;
-      if (max && d > max) return true;
-      return false;
-    },
-    [minDate, maxDate],
-  );
-
   const isMonthDisabled = useCallback(
     (year: number, month: number) => {
       const str = `${year}-${pad(month + 1)}`;
@@ -444,67 +396,14 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   const animateSlide = useCallback((direction: 'left' | 'right') => {
     setSlideDirection(direction);
-    setIsAnimating(true);
   }, []);
 
   const handleAnimationEnd = useCallback(() => {
     setSlideDirection(null);
-    setIsAnimating(false);
   }, []);
-
-  const canGoPrevMonth = useMemo(() => {
-    if (!minDate) return true;
-    const prevMonth = viewMonth === 0 ? 11 : viewMonth - 1;
-    const prevYear = viewMonth === 0 ? viewYear - 1 : viewYear;
-    return (
-      !isMonthDisabled(prevYear, prevMonth) ||
-      compareDateStr(
-        `${prevYear}-${pad(prevMonth + 1)}`,
-        minDate.substring(0, 7),
-      ) >= 0
-    );
-  }, [viewYear, viewMonth, minDate, isMonthDisabled]);
-
-  const canGoNextMonth = useMemo(() => {
-    if (!maxDate) return true;
-    const nextMonth = viewMonth === 11 ? 0 : viewMonth + 1;
-    const nextYear = viewMonth === 11 ? viewYear + 1 : viewYear;
-    return (
-      !isMonthDisabled(nextYear, nextMonth) ||
-      compareDateStr(
-        `${nextYear}-${pad(nextMonth + 1)}`,
-        maxDate.substring(0, 7),
-      ) <= 0
-    );
-  }, [viewYear, viewMonth, maxDate, isMonthDisabled]);
 
   const canGoPrevYearRange = yearPickerStart > resolvedMinYearPageStart;
   const canGoNextYearRange = yearPickerStart < resolvedMaxYearPageStart;
-  const canGoPrevDayYearRange = dayYearPickerStart > resolvedMinYearPageStart;
-  const canGoNextDayYearRange = dayYearPickerStart < resolvedMaxYearPageStart;
-
-  // year-month-day 模式导航
-  const prevMonth = useCallback(() => {
-    if (isAnimating) return;
-    if (viewMonth === 0) {
-      setViewMonth(11);
-      setViewYear((y) => y - 1);
-    } else {
-      setViewMonth((m) => m - 1);
-    }
-    animateSlide('right');
-  }, [viewMonth, isAnimating, animateSlide]);
-
-  const nextMonth = useCallback(() => {
-    if (isAnimating) return;
-    if (viewMonth === 11) {
-      setViewMonth(0);
-      setViewYear((y) => y + 1);
-    } else {
-      setViewMonth((m) => m + 1);
-    }
-    animateSlide('left');
-  }, [viewMonth, isAnimating, animateSlide]);
 
   // year-month 模式导航
   const prevYear = useCallback(() => {
@@ -529,27 +428,14 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     );
   }, [resolvedMaxYearPageStart]);
 
-  const prevDayYearRange = useCallback(() => {
-    setDayYearPickerStart((s) =>
-      Math.max(resolvedMinYearPageStart, s - YEAR_PAGE_SIZE),
-    );
-  }, [resolvedMinYearPageStart]);
-
-  const nextDayYearRange = useCallback(() => {
-    setDayYearPickerStart((s) =>
-      Math.min(resolvedMaxYearPageStart, s + YEAR_PAGE_SIZE),
-    );
-  }, [resolvedMaxYearPageStart]);
-
   // ─── 选择处理 ──────────────────────────────────────
 
   const selectDate = useCallback(
     (dateStr: string) => {
-      if (isDateDisabled(dateStr)) return;
       onChange(dateStr);
       closeDropdownImmediate();
     },
-    [onChange, isDateDisabled, closeDropdownImmediate],
+    [onChange, closeDropdownImmediate],
   );
 
   const selectMonth = useCallback(
@@ -573,73 +459,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     [isYearDisabled],
   );
 
-  // 年月日模式下选年份后回到月份选择
-  const selectYearInDayMode = useCallback(
-    (year: number) => {
-      if (isYearDisabled(year)) return;
-      setViewYear(year);
-      setDayYearPickerStart(getYearPageStart(year));
-      setDayView('month');
-    },
-    [isYearDisabled],
-  );
-
-  // 年月日模式下选月份后回到日历
-  const selectMonthInDayMode = useCallback((month: number) => {
-    setViewMonth(month);
-    setDayView('day');
-  }, []);
-
   // ─── 显示值 ────────────────────────────────────────
 
   const displayValue = useMemo(() => {
     return formatValue(value, mode, format);
   }, [value, mode, format]);
-
-  // ─── 日历数据 ──────────────────────────────────────
-
-  const days = useMemo(() => {
-    const total = getDaysInMonth(viewYear, viewMonth);
-    const firstDay = getFirstDayOfWeek(viewYear, viewMonth);
-    const prevTotal =
-      viewMonth === 0
-        ? getDaysInMonth(viewYear - 1, 11)
-        : getDaysInMonth(viewYear, viewMonth - 1);
-
-    const cells: Array<{ day: number; current: boolean; dateStr: string }> = [];
-
-    for (let i = firstDay - 1; i >= 0; i--) {
-      const d = prevTotal - i;
-      const m = viewMonth === 0 ? 11 : viewMonth - 1;
-      const y = viewMonth === 0 ? viewYear - 1 : viewYear;
-      cells.push({
-        day: d,
-        current: false,
-        dateStr: `${y}-${pad(m + 1)}-${pad(d)}`,
-      });
-    }
-
-    for (let d = 1; d <= total; d++) {
-      cells.push({
-        day: d,
-        current: true,
-        dateStr: `${viewYear}-${pad(viewMonth + 1)}-${pad(d)}`,
-      });
-    }
-
-    const remaining = 42 - cells.length;
-    for (let d = 1; d <= remaining; d++) {
-      const m = viewMonth === 11 ? 0 : viewMonth + 1;
-      const y = viewMonth === 11 ? viewYear + 1 : viewYear;
-      cells.push({
-        day: d,
-        current: false,
-        dateStr: `${y}-${pad(m + 1)}-${pad(d)}`,
-      });
-    }
-
-    return cells;
-  }, [viewYear, viewMonth]);
 
   // 选中值解析（year-month 模式）
   const selectedMonth = useMemo(() => {
@@ -681,7 +505,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         ) : (
           <span className="text-[var(--lumen-color-text-placeholder)]">{placeholder}</span>
         )}
-        <Calendar
+        <CalendarIcon
           size={tokens.icon}
           className="ml-auto shrink-0 text-[var(--lumen-color-text-placeholder)]"
         />
@@ -708,42 +532,14 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             }}
           >
             {mode === 'year-month-day' ? (
-              <DayModeContent
-                tokens={tokens}
-                viewYear={viewYear}
-                viewMonth={viewMonth}
-                days={days}
+              <Calendar
                 value={value}
-                todayStr={todayStr}
-                todayDate={todayDate}
-                slideDirection={slideDirection}
-                dayView={dayView}
-                dayYearPickerStart={dayYearPickerStart}
-                canGoPrevDayYearRange={canGoPrevDayYearRange}
-                canGoNextDayYearRange={canGoNextDayYearRange}
-                selectDate={selectDate}
-                prevDayYearRange={prevDayYearRange}
-                nextDayYearRange={nextDayYearRange}
-                prevMonth={prevMonth}
-                nextMonth={nextMonth}
-                onAnimationEnd={handleAnimationEnd}
+                onChange={selectDate}
+                size={size}
                 showToday={showToday}
                 clearable={clearable}
-                onClear={() => {
-                  onChange('');
-                  closeDropdown();
-                }}
-                onSelectToday={() => selectDate(todayStr)}
-                isDateDisabled={isDateDisabled}
-                canGoPrevMonth={canGoPrevMonth}
-                canGoNextMonth={canGoNextMonth}
-                setDayView={setDayView}
-                selectYearInDayMode={selectYearInDayMode}
-                selectMonthInDayMode={selectMonthInDayMode}
-                prevYear={prevYear}
-                nextYear={nextYear}
-                isYearDisabled={isYearDisabled}
-                isMonthDisabled={isMonthDisabled}
+                minDate={minDate}
+                maxDate={maxDate}
               />
             ) : (
               <MonthModeContent
@@ -783,351 +579,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     </div>
   );
 };
-
-// ─── 年月日模式内容 ────────────────────────────────────
-
-interface DayModeContentProps {
-  tokens: SizeToken;
-  viewYear: number;
-  viewMonth: number;
-  days: Array<{ day: number; current: boolean; dateStr: string }>;
-  value: string;
-  todayStr: string;
-  todayDate: { year: number; month: number; day: number };
-  slideDirection: 'left' | 'right' | null;
-  dayView: 'day' | 'month' | 'year';
-  dayYearPickerStart: number;
-  canGoPrevDayYearRange: boolean;
-  canGoNextDayYearRange: boolean;
-  selectDate: (dateStr: string) => void;
-  prevDayYearRange: () => void;
-  nextDayYearRange: () => void;
-  prevMonth: () => void;
-  nextMonth: () => void;
-  onAnimationEnd: () => void;
-  showToday: boolean;
-  clearable: boolean;
-  onClear: () => void;
-  onSelectToday: () => void;
-  isDateDisabled: (dateStr: string) => boolean;
-  canGoPrevMonth: boolean;
-  canGoNextMonth: boolean;
-  setDayView: (v: 'day' | 'month' | 'year') => void;
-  selectYearInDayMode: (year: number) => void;
-  selectMonthInDayMode: (month: number) => void;
-  prevYear: () => void;
-  nextYear: () => void;
-  isYearDisabled: (year: number) => boolean;
-  isMonthDisabled: (year: number, month: number) => boolean;
-}
-
-const DayModeContent: React.FC<DayModeContentProps> = ({
-  tokens,
-  viewYear,
-  viewMonth,
-  days,
-  value,
-  todayStr,
-  todayDate,
-  slideDirection,
-  dayView,
-  dayYearPickerStart,
-  canGoPrevDayYearRange,
-  canGoNextDayYearRange,
-  selectDate,
-  prevDayYearRange,
-  nextDayYearRange,
-  prevMonth,
-  nextMonth,
-  onAnimationEnd,
-  showToday,
-  clearable,
-  onClear,
-  onSelectToday,
-  isDateDisabled,
-  canGoPrevMonth,
-  canGoNextMonth,
-  setDayView,
-  selectYearInDayMode,
-  selectMonthInDayMode,
-  prevYear,
-  nextYear,
-  isYearDisabled,
-  isMonthDisabled,
-}) => (
-  <>
-    <div className={cn(tokens.dropdown, 'pb-0')}>
-      {dayView === 'year' ? (
-        /* ─── 年份选择器 ────────────────────────── */
-        <>
-          <div className="mb-3 flex items-center justify-between">
-            <button
-              type="button"
-              disabled={!canGoPrevDayYearRange}
-              onClick={prevDayYearRange}
-              className={cn(
-                pickerIconButtonClassName,
-                !canGoPrevDayYearRange && 'opacity-40',
-              )}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <span className={cn(tokens.header, 'font-semibold text-[var(--lumen-color-text)]')}>
-              {dayYearPickerStart} - {dayYearPickerStart + 19}
-            </span>
-            <button
-              type="button"
-              disabled={!canGoNextDayYearRange}
-              onClick={nextDayYearRange}
-              className={cn(
-                pickerIconButtonClassName,
-                !canGoNextDayYearRange && 'opacity-40',
-              )}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-          <div className="grid grid-cols-5 gap-1 text-center">
-            {Array.from({ length: 20 }, (_, i) => dayYearPickerStart + i).map(
-              (y) => {
-                const disabled = isYearDisabled(y);
-                const isCurrent = y === todayDate.year;
-                const isSelected = y === viewYear;
-                return (
-                  <button
-                    key={y}
-                    type="button"
-                    disabled={disabled}
-                    onClick={() => selectYearInDayMode(y)}
-                    className={cn(
-                      'mx-auto flex h-10 w-12 items-center justify-center rounded-full text-[13px] transition-all',
-                      pickerOptionFocusClassName,
-                      isSelected &&
-                        'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
-                      !isSelected &&
-                        isCurrent &&
-                        'font-semibold text-[var(--lumen-color-primary)]',
-                      !isSelected &&
-                        !isCurrent &&
-                        !disabled &&
-                        'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)]',
-                      disabled && 'cursor-not-allowed text-[var(--lumen-color-border-hover)]',
-                    )}
-                  >
-                    {y}
-                  </button>
-                );
-              },
-            )}
-          </div>
-        </>
-      ) : dayView === 'month' ? (
-        /* ─── 月份选择器 ────────────────────────── */
-        <>
-          <div className="mb-3 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={prevYear}
-              className={pickerIconButtonClassName}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setDayView('year')}
-              className={cn(
-                tokens.header,
-                pickerHeaderButtonClassName,
-              )}
-            >
-              {viewYear}年
-            </button>
-            <button
-              type="button"
-              onClick={nextYear}
-              className={pickerIconButtonClassName}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-          <div className="grid grid-cols-4 gap-2">
-            {MONTHS.map((label, idx) => {
-              const isCurrent =
-                viewYear === todayDate.year && idx === todayDate.month;
-              const isSelected =
-                viewYear === todayDate.year && idx === viewMonth;
-              const disabled = isMonthDisabled(viewYear, idx);
-              return (
-                <button
-                  key={idx}
-                  type="button"
-                  disabled={disabled}
-                  onClick={() => selectMonthInDayMode(idx)}
-                  className={cn(
-                    'relative mx-auto flex h-10 w-10 items-center justify-center rounded-full text-[13px] transition-all',
-                    pickerOptionFocusClassName,
-                    isSelected &&
-                      'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
-                    !isSelected && isCurrent && 'font-semibold text-[var(--lumen-color-primary)]',
-                    !isSelected &&
-                      !isCurrent &&
-                      !disabled &&
-                      'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
-                    disabled && 'cursor-not-allowed text-[var(--lumen-color-border-hover)]',
-                  )}
-                >
-                  {label}
-                  {isCurrent && !isSelected && (
-                    <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[var(--lumen-color-primary)]" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </>
-      ) : (
-        /* ─── 日期选择器（默认视图） ────────────── */
-        <>
-          <div className="mb-3 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={prevMonth}
-              disabled={!canGoPrevMonth}
-              className={pickerIconButtonClassName}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <div className="flex items-center gap-1">
-              <button
-                type="button"
-                onClick={() => setDayView('year')}
-                className={cn(
-                  tokens.header,
-                  pickerHeaderButtonClassName,
-                )}
-              >
-                {viewYear}年
-              </button>
-              <button
-                type="button"
-                onClick={() => setDayView('month')}
-                className={cn(
-                  tokens.header,
-                  pickerHeaderButtonClassName,
-                )}
-              >
-                {MONTHS[viewMonth]}
-              </button>
-            </div>
-            <button
-              type="button"
-              onClick={nextMonth}
-              disabled={!canGoNextMonth}
-              className={pickerIconButtonClassName}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-
-          {/* 星期标题 + 日期网格（含翻页动画） */}
-          <div className="overflow-hidden">
-            <div
-              onAnimationEnd={onAnimationEnd}
-              style={
-                slideDirection === 'left'
-                  ? { animation: 'calendarSlideLeft 0.2s ease-out' }
-                  : slideDirection === 'right'
-                    ? { animation: 'calendarSlideRight 0.2s ease-out' }
-                    : undefined
-              }
-            >
-              {/* 星期标题 */}
-              <div className="mb-1 grid grid-cols-7 text-center">
-                {WEEKDAYS.map((w) => (
-                  <div
-                    key={w}
-                    className="py-1.5 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]"
-                  >
-                    {w}
-                  </div>
-                ))}
-              </div>
-
-              {/* 日期网格 */}
-              <div className="grid grid-cols-7 text-center">
-                {days.map((cell, i) => {
-                  const isSelected = cell.dateStr === value;
-                  const isToday = cell.dateStr === todayStr;
-                  const isDisabled =
-                    cell.current && isDateDisabled(cell.dateStr);
-                  return (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => selectDate(cell.dateStr)}
-                      className={cn(
-                        'relative mx-auto flex items-center justify-center rounded-full transition-all',
-                        pickerOptionFocusClassName,
-                        tokens.cell,
-                        !cell.current && 'text-[var(--lumen-color-border-hover)]',
-                        isDisabled && 'pointer-events-none text-[var(--lumen-color-border-hover)]',
-                        cell.current &&
-                          !isSelected &&
-                          !isDisabled &&
-                          'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
-                        isSelected &&
-                          'bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)] font-medium shadow-sm',
-                        isToday &&
-                          !isSelected &&
-                          !isDisabled &&
-                          'font-semibold text-[var(--lumen-color-primary)]',
-                      )}
-                    >
-                      {cell.day}
-                      {isToday && !isSelected && (
-                        <span className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[var(--lumen-color-primary)]" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-
-    {/* 底部操作 */}
-    {(showToday || (clearable && value)) && (
-      <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-4 py-3">
-        {showToday && (
-          <button
-            type="button"
-            onClick={onSelectToday}
-            className={cn(
-              tokens.footer,
-              'font-medium text-[var(--lumen-color-primary)] hover:text-[var(--lumen-color-primary-active)] transition-colors',
-            )}
-          >
-            今天
-          </button>
-        )}
-        {clearable && value && (
-          <button
-            type="button"
-            onClick={onClear}
-            className={cn(
-              tokens.footer,
-              'text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)] transition-colors ml-auto',
-            )}
-          >
-            清除
-          </button>
-        )}
-      </div>
-    )}
-  </>
-);
 
 // ─── 年月模式内容 ──────────────────────────────────────
 

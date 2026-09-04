@@ -1,8 +1,14 @@
-import React from 'react';
+import { Eye, EyeOff } from 'lucide-react';
+import React, { useState } from 'react';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 
 export type InputSize = 'sm' | 'md' | 'lg';
+
+export interface PasswordToggleLabels {
+  show: string;
+  hide: string;
+}
 
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'prefix' | 'size'> {
@@ -11,7 +17,14 @@ export interface InputProps
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   inputClassName?: string;
+  passwordToggle?: boolean;
+  passwordToggleLabels?: PasswordToggleLabels;
 }
+
+const defaultPasswordToggleLabels: PasswordToggleLabels = {
+  show: '显示密码',
+  hide: '隐藏密码',
+};
 
 const inputSizeTokens: Record<InputSize, string> = {
   sm: 'h-[var(--lumen-control-height-sm)] px-2.5 text-[13px] mobile:text-[16px]',
@@ -48,11 +61,18 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       className,
       inputClassName,
       disabled,
+      type,
+      passwordToggle = false,
+      passwordToggleLabels = defaultPasswordToggleLabels,
       ...props
     },
     ref,
   ) => {
-    if (prefix || suffix) {
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const showPasswordToggle = passwordToggle && type === 'password';
+    const resolvedType = showPasswordToggle && passwordVisible ? 'text' : type;
+
+    if (prefix || suffix || showPasswordToggle) {
       return (
         <div
           data-ui="input"
@@ -76,17 +96,32 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             disabled={disabled}
+            type={resolvedType}
             className={cn(
               'min-w-0 flex-1 border-0 bg-transparent p-0 text-inherit outline-none placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed',
               inputClassName,
             )}
             {...props}
-            autoComplete="off"
           />
           {suffix && (
             <span className="flex shrink-0 items-center text-[var(--lumen-color-text-placeholder)]">
               {suffix}
             </span>
+          )}
+          {showPasswordToggle && (
+            <button
+              type="button"
+              aria-label={passwordVisible ? passwordToggleLabels.hide : passwordToggleLabels.show}
+              aria-pressed={passwordVisible}
+              disabled={disabled}
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[var(--lumen-radius-icon)] text-[var(--lumen-color-text-placeholder)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed"
+              onPointerDown={(event) => event.preventDefault()}
+              onClick={() => setPasswordVisible((visible) => !visible)}
+            >
+              {passwordVisible
+                ? <EyeOff aria-hidden="true" size={16} />
+                : <Eye aria-hidden="true" size={16} />}
+            </button>
           )}
         </div>
       );
@@ -96,6 +131,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         ref={ref}
         disabled={disabled}
+        type={resolvedType}
         {...props}
         data-ui="input"
         data-invalid={invalid || undefined}
@@ -107,7 +143,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           getStateClassName(invalid),
           className,
         )}
-        autoComplete="off"
       />
     );
   },

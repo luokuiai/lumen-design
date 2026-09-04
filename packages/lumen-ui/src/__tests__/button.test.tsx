@@ -20,4 +20,11 @@ describe('Button', () => {
       'lg',
     );
   });
+
+  it('renders an accessible square button in icon-only mode', () => {
+    render(<Button iconOnly aria-label="Search" icon={<span>icon</span>} />);
+
+    expect(screen.getByRole('button', { name: 'Search' })).toHaveClass('h-9', 'w-9');
+    expect(screen.queryByText('icon')).toBeInTheDocument();
+  });
 });

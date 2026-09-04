@@ -9,8 +9,11 @@ describe('public API', () => {
     expect(Lumen.AppHeader).toBeTypeOf('object');
     expect(Lumen.Accordion).toBeTypeOf('object');
     expect(Lumen.Avatar).toBeTypeOf('object');
+    expect(Lumen.Breadcrumb).toBeTypeOf('object');
     expect(Lumen.Button).toBeTypeOf('function');
+    expect(Lumen.Calendar).toBeTypeOf('object');
     expect(Lumen.Card).toBeTypeOf('object');
+    expect(Lumen.Cascader).toBeTypeOf('function');
     expect(Lumen.CardHeader).toBeTypeOf('object');
     expect(Lumen.Collapse).toBeTypeOf('object');
     expect(Lumen.CollapseItem).toBeTypeOf('object');
@@ -25,10 +28,12 @@ describe('public API', () => {
     expect(Lumen.ListItem).toBeTypeOf('object');
     expect(Lumen.Select).toBeTypeOf('function');
     expect(Lumen.Modal).toBeTypeOf('function');
+    expect(Lumen.NumberInput).toBeTypeOf('object');
     expect(Lumen.Pagination).toBeTypeOf('function');
     expect(Lumen.Popover).toBeTypeOf('function');
     expect(Lumen.Progress).toBeTypeOf('object');
     expect(Lumen.RadioGroup).toBeTypeOf('function');
+    expect(Lumen.Rating).toBeTypeOf('object');
     expect(Lumen.Scrollbar).toBeTypeOf('object');
     expect(Lumen.SegmentedControl).toBeTypeOf('function');
     expect(Lumen.SideNav).toBeTypeOf('function');
@@ -37,6 +42,7 @@ describe('public API', () => {
     expect(Lumen.Spinner).toBeTypeOf('object');
     expect(Lumen.Steps).toBeTypeOf('object');
     expect(Lumen.Chip).toBeTypeOf('function');
+    expect(Lumen.CommandPalette).toBeTypeOf('function');
     expect('Tag' in Lumen).toBe(false);
     expect(Lumen.TreeSelect).toBeTypeOf('function');
     expect(Lumen.Transfer).toBeTypeOf('function');
