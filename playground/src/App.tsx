@@ -106,6 +106,7 @@ import type { DataTableColumn, DataTableSort, StepsDirection } from '@luokuiai/l
 import '@luokuiai/lumen-theme-clarity';
 import '@luokuiai/lumen-theme-paper';
 import '@luokuiai/lumen-theme-prism';
+import type { GeneratedPropDoc } from './generated/componentApi';
 import { demoCardCodeByTitle } from './generated/demoCardCode';
 
 type Section = {
@@ -122,6 +123,7 @@ type DemoDefinition = {
   sourceSection: string;
   code: string;
   cardTitles: string[];
+  apiComponents: string[];
   codeByCardTitle?: Record<string, string>;
 };
 
@@ -130,6 +132,7 @@ type ComponentPropDoc = {
   type: string;
   defaultValue: string;
   description: string;
+  required?: boolean;
 };
 
 type ComponentGuide = {
@@ -255,6 +258,7 @@ const demo = (
   sourceSection,
   code: usageExample(imports, jsx, lucideIcons, setup),
   cardTitles,
+  apiComponents: imports.split(',').map((item) => item.trim()),
 });
 
 const galleryCategories: GalleryCategory[] = [
@@ -783,7 +787,32 @@ const getSafetyEventSortValue = (event: SafetyEvent, key: string) => {
 
 function GallerySection({ section, children }: { section: Section; children: React.ReactNode }) {
   const activeDemo = useContext(ActiveDemoContext);
+  const [generatedComponentApi, setGeneratedComponentApi] = useState<Record<string, GeneratedPropDoc[]>>({});
   const guide = activeDemo ? componentGuides[activeDemo.demo.id] : undefined;
+  const apiSections = activeDemo?.demo.apiComponents.flatMap((componentName) => {
+    const generatedProps = generatedComponentApi[componentName];
+    if (!generatedProps?.length) return [];
+    if (!guide || toDemoId(componentName) !== activeDemo.demo.id) {
+      return [{ componentName, props: generatedProps }];
+    }
+
+    const manualProps = new Map(guide.props.map((prop) => [prop.name, prop]));
+    const mergedProps = generatedProps.map((prop) => ({
+      ...prop,
+      ...manualProps.get(prop.name),
+    }));
+    const generatedNames = new Set(generatedProps.map((prop) => prop.name));
+    return [{
+      componentName,
+      props: [...mergedProps, ...guide.props.filter((prop) => !generatedNames.has(prop.name))],
+    }];
+  }) ?? [];
+
+  useEffect(() => {
+    void import('./generated/componentApi').then((module) => {
+      setGeneratedComponentApi(module.generatedComponentApi);
+    });
+  }, []);
 
   return (
     <section id={section.id} className="gallery-section">
@@ -803,34 +832,42 @@ function GallerySection({ section, children }: { section: Section; children: Rea
       ) : null}
       <h3 className="document-section-title">示例</h3>
       <div className="section-grid">{children}</div>
-      {guide ? (
+      {apiSections.length ? (
         <section className="component-api" aria-labelledby={`${activeDemo!.demo.id}-api-title`}>
           <div className="component-api-heading">
             <span>API</span>
             <h3 id={`${activeDemo!.demo.id}-api-title`}>属性</h3>
           </div>
-          <div className="component-api-table-wrap">
-            <table className="component-api-table">
-              <thead>
-                <tr>
-                  <th>属性</th>
-                  <th>类型</th>
-                  <th>默认值</th>
-                  <th>说明</th>
-                </tr>
-              </thead>
-              <tbody>
-                {guide.props.map((prop) => (
-                  <tr key={prop.name}>
-                    <td><code>{prop.name}</code></td>
-                    <td><code>{prop.type}</code></td>
-                    <td><code>{prop.defaultValue}</code></td>
-                    <td>{prop.description}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {apiSections.map(({ componentName, props }) => (
+            <div key={componentName} className="component-api-group">
+              <h4>{componentName}</h4>
+              <div className="component-api-table-wrap">
+                <table className="component-api-table">
+                  <thead>
+                    <tr>
+                      <th>属性</th>
+                      <th>类型</th>
+                      <th>默认值</th>
+                      <th>说明</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {props.map((prop) => (
+                      <tr key={prop.name}>
+                        <td>
+                          <code>{prop.name}</code>
+                          {prop.required ? <span className="component-api-required">必填</span> : null}
+                        </td>
+                        <td><code>{prop.type}</code></td>
+                        <td><code>{prop.defaultValue}</code></td>
+                        <td>{prop.description}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
         </section>
       ) : null}
     </section>

@@ -759,6 +759,17 @@ body {
   text-transform: uppercase;
 }
 
+.component-api-group + .component-api-group {
+  margin-top: 24px;
+}
+
+.component-api-group h4 {
+  margin: 0 0 10px;
+  color: var(--lumen-color-text-strong);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .component-api-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--lumen-color-border);
@@ -801,6 +812,14 @@ body {
   color: var(--lumen-color-primary);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 12px;
+}
+
+.component-api-required {
+  display: inline-block;
+  margin-left: 8px;
+  color: var(--lumen-color-danger-text);
+  font-size: 11px;
+  white-space: nowrap;
 }
 
 .button-row,
