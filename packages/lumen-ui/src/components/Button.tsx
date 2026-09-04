@@ -32,6 +32,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       {...props}
       data-ui="button"
+      data-icon-only={iconOnly || undefined}
       data-variant={variant}
       data-size={size}
       className={getButtonClassNames({ variant, size, iconOnly, className })}

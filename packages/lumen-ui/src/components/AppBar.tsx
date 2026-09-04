@@ -65,7 +65,7 @@ export const AppBar = React.forwardRef<HTMLElement, AppBarProps>(
         size={size}
         ariaLabel={ariaLabel}
         className={cn(
-          '!grid w-full overflow-visible',
+          '!grid w-full overflow-visible [&_[data-icon-only]]:!rounded-full',
           titleAlign === 'center'
             ? 'grid-cols-[minmax(48px,1fr)_minmax(0,auto)_minmax(48px,1fr)]'
             : 'grid-cols-[auto_minmax(0,1fr)_auto]',
