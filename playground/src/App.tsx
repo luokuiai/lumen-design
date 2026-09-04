@@ -1,6 +1,15 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   AlertTriangle,
+  ArrowLeft,
   Bell,
   CalendarDays,
   Check,
@@ -31,9 +40,11 @@ import type { LucideIcon } from 'lucide-react';
 import {
   Accordion,
   Alert,
+  AppBar,
   AppHeader,
   Avatar,
   Badge,
+  BottomNavigation,
   Breadcrumb,
   Button,
   Calendar,
@@ -59,6 +70,7 @@ import {
   FileTypeIcon,
   FormField,
   Empty,
+  Fab,
   Input,
   List,
   ListItem,
@@ -84,6 +96,7 @@ import {
   TimePicker,
   Timeline,
   Toast,
+  Toolbar,
   Tooltip,
   Transfer,
   TreeSelect,
@@ -100,6 +113,17 @@ type Section = {
   description: string;
   keywords: string;
   icon: LucideIcon;
+};
+
+type DemoDefinition = {
+  id: string;
+  title: string;
+  sourceSection: string;
+  code: string;
+};
+
+type GalleryCategory = Section & {
+  demos: DemoDefinition[];
 };
 
 type TreeNode = {
@@ -170,24 +194,176 @@ type SafetyEvent = {
   updatedAt: string;
 };
 
-const sections: Section[] = [
+const renderSections: Section[] = [
   { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button Badge Chip Avatar Tooltip', icon: Plus },
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input NumberInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
-  { id: 'navigation', title: 'Navigation', description: '面包屑、标签页、步骤、菜单和时间线。', keywords: 'Breadcrumb Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
+  { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
   { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、命令面板、确认和消息提示。', keywords: 'Modal Drawer CommandPalette ConfirmDialog Toast', icon: Bell },
   { id: 'feedback', title: 'Feedback', description: '页面提示、加载、进度、空状态、上传和骨架屏。', keywords: 'Alert Spinner Progress Empty FileUpload Skeleton SegmentedControl', icon: Settings },
 ];
 
-const getSectionFromHash = () => {
-  if (typeof window === 'undefined') return sections[0]!.id;
-  const sectionId = window.location.hash.slice(1);
-  return sections.some((section) => section.id === sectionId)
-    ? sectionId
-    : sections[0]!.id;
+const toDemoId = (title: string) => title
+  .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/(^-|-$)/g, '');
+
+const usageExample = (
+  imports: string,
+  jsx: string,
+  lucideIcons?: string,
+) => `${lucideIcons ? `import { ${lucideIcons} } from 'lucide-react';\n` : ''}import { ${imports} } from '@luokuiai/lumen-ui';
+
+export function Example() {
+  return (
+${jsx}
+  );
+}`;
+
+const demo = (
+  title: string,
+  sourceSection: string,
+  imports: string,
+  jsx: string,
+  lucideIcons?: string,
+): DemoDefinition => ({
+  id: toDemoId(title),
+  title,
+  sourceSection,
+  code: usageExample(imports, jsx, lucideIcons),
+});
+
+const galleryCategories: GalleryCategory[] = [
+  {
+    id: 'foundations',
+    title: 'Foundations',
+    description: '字体层级与内容基础样式。',
+    keywords: 'Typography Headings Body',
+    icon: TypeIcon,
+    demos: [
+      demo('Headings', 'typography', 'Typography', '    <>\n      <Typography variant="h1">H1 运营总览</Typography>\n      <Typography variant="h2">H2 事件处置</Typography>\n    </>'),
+      demo('Body', 'typography', 'Typography', '    <>\n      <Typography>正文内容</Typography>\n      <Typography variant="caption" tone="muted">辅助文字</Typography>\n    </>'),
+    ],
+  },
+  {
+    id: 'actions',
+    title: 'Actions',
+    description: '触发操作、工具组和页面主要行为。',
+    keywords: 'Button Fab Toolbar DropdownMenu',
+    icon: Plus,
+    demos: [
+      demo('Button', 'buttons', 'Button', '    <Button variant="primary">保存</Button>'),
+      demo('Fab', 'buttons', 'Fab', '    <Fab icon={<Plus />} label="新建任务" position="fixed" />', 'Plus'),
+      demo('Toolbar', 'navigation', 'Button, Toolbar', '    <Toolbar ariaLabel="列表操作">\n      <Button variant="ghost">筛选</Button>\n      <Button>新建</Button>\n    </Toolbar>'),
+      demo('Dropdown', 'navigation', 'Button, DropdownMenu', '    <DropdownMenu\n      trigger={({ toggle }) => <Button onClick={toggle}>打开菜单</Button>}\n    >\n      {({ close }) => <button onClick={close}>复制</button>}\n    </DropdownMenu>'),
+    ],
+  },
+  {
+    id: 'forms',
+    title: 'Forms',
+    description: '输入、选择、日期时间和文件提交。',
+    keywords: 'Input FormField Checkbox Radio Switch Slider Rating Select Cascader Date Time Calendar Transfer FileUpload',
+    icon: Check,
+    demos: [
+      demo('Input + FormField', 'forms', 'FormField, Input', '    <FormField label="项目名称" inputId="project-name">\n      {(props) => <Input {...props} />}\n    </FormField>'),
+      demo('Checkbox + Radio + Switch', 'forms', 'Checkbox, Radio, Switch', '    <>\n      <Checkbox label="接收通知" />\n      <Radio label="公开" value="public" />\n      <Switch label="启用" />\n    </>'),
+      demo('Slider', 'forms', 'Slider', '    <Slider value={60} onChange={() => undefined} />'),
+      demo('Rating', 'forms', 'Rating', '    <Rating value={4} onChange={() => undefined} />'),
+      demo('Select', 'pickers', 'Select', '    <Select\n      value="review"\n      options={[{ label: \'设计评审\', value: \'review\' }]}\n      onChange={() => undefined}\n    />'),
+      demo('Cascader', 'pickers', 'Cascader', '    <Cascader options={options} value={[]} onChange={() => undefined} />'),
+      demo('Date + Time', 'pickers', 'DatePicker, TimePicker', '    <>\n      <DatePicker value="2026-09-04" onChange={() => undefined} />\n      <TimePicker value="09:30" onChange={() => undefined} />\n    </>'),
+      demo('Calendar', 'pickers', 'Calendar', '    <Calendar value="2026-09-04" onChange={() => undefined} />'),
+      demo('Transfer', 'pickers', 'Transfer', '    <Transfer items={items} targetKeys={[]} onChange={() => undefined} />'),
+      demo('FileUpload', 'feedback', 'FileUpload', '    <FileUpload files={[]} onChange={() => undefined} />'),
+      demo('FileUpload Compact', 'feedback', 'FileUpload', '    <FileUpload compact files={[]} onChange={() => undefined} />'),
+    ],
+  },
+  {
+    id: 'navigation',
+    title: 'Navigation',
+    description: '应用级与页面级导航结构。',
+    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Tabs Steps Pagination',
+    icon: MoreHorizontal,
+    demos: [
+      demo('Breadcrumb', 'navigation', 'Breadcrumb', '    <Breadcrumb items={[\n      { label: \'首页\', href: \'/\' },\n      { label: \'订单详情\' },\n    ]} />'),
+      demo('AppBar', 'navigation', 'AppBar, Button', '    <AppBar\n      title="订单详情"\n      leading={<Button iconOnly aria-label="返回" icon={<ArrowLeft />} />}\n    />', 'ArrowLeft'),
+      demo('BottomNavigation', 'navigation', 'BottomNavigation', '    <BottomNavigation\n      value="home"\n      items={[{ value: \'home\', label: \'首页\' }]}\n      onChange={() => undefined}\n    />'),
+      demo('Tabs', 'navigation', 'Tabs', '    <Tabs\n      value="overview"\n      options={[{ value: \'overview\', label: \'总览\' }]}\n      onChange={() => undefined}\n    />'),
+      demo('Steps', 'navigation', 'Steps', '    <Steps current={1} items={[{ title: \'提交\' }, { title: \'完成\' }]} />'),
+    ],
+  },
+  {
+    id: 'data-display',
+    title: 'Data Display',
+    description: '状态、列表、表格与结构化内容。',
+    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List Scrollbar Collapse Accordion Divider',
+    icon: Table2,
+    demos: [
+      demo('Badge + Avatar', 'buttons', 'Avatar, Badge', '    <>\n      <Badge variant="success">已完成</Badge>\n      <Avatar name="Lumen Design" />\n    </>'),
+      demo('Chip', 'buttons', 'Chip', '    <Chip tone="neutral">设计系统</Chip>'),
+      demo('Timeline', 'navigation', 'Timeline', '    <Timeline items={[{ id: \'1\', title: \'已创建\' }]} />'),
+      demo('FileTypeIcon', 'data', 'FileTypeIcon', '    <FileTypeIcon fileName="proposal.pdf" />'),
+      demo('DataTable · Sticky Header', 'data', 'DataTable', '    <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />'),
+      demo('DataTable · Embedded + Pagination', 'data', 'DataTable, Pagination', '    <>\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <Pagination page={1} totalPages={5} onChange={() => undefined} />\n    </>'),
+      demo('List', 'data', 'List, ListItem', '    <List>\n      <ListItem title="设计评审" />\n    </List>'),
+      demo('Scrollbar', 'data', 'Scrollbar', '    <Scrollbar className="h-64">{content}</Scrollbar>'),
+      demo('Collapse + Accordion', 'data', 'Accordion, Collapse', '    <Accordion items={items} />'),
+      demo('Divider', 'data', 'Divider', '    <Divider label="更多信息" />'),
+    ],
+  },
+  {
+    id: 'feedback',
+    title: 'Feedback',
+    description: '操作结果、进度、加载与空状态。',
+    keywords: 'Alert Toast Progress Spinner Skeleton Empty SegmentedControl',
+    icon: Settings,
+    demos: [
+      demo('Alert', 'feedback', 'Alert', '    <Alert variant="success" title="保存成功" />'),
+      demo('Progress', 'feedback', 'Progress', '    <Progress value={64} />'),
+      demo('Spinner', 'feedback', 'Spinner', '    <Spinner aria-label="加载中" />'),
+      demo('Empty', 'feedback', 'Empty', '    <Empty title="暂无数据" />'),
+      demo('Skeleton + SegmentedControl', 'feedback', 'SegmentedControl, Skeleton', '    <>\n      <Skeleton className="h-10 w-full" />\n      <SegmentedControl value="all" options={options} onChange={() => undefined} />\n    </>'),
+    ],
+  },
+  {
+    id: 'overlays',
+    title: 'Overlays',
+    description: '覆盖页面的弹层、抽屉和上下文操作。',
+    keywords: 'Modal Drawer ConfirmDialog CommandPalette Popover Tooltip',
+    icon: Bell,
+    demos: [
+      demo('Modal + Drawer + Confirm', 'overlays', 'Button, ConfirmDialog, Drawer, Modal', '    <Modal open={open} onRequestClose={() => setOpen(false)}>\n      弹窗内容\n    </Modal>'),
+      demo('Popover', 'overlays', 'Button, Popover', '    <Popover trigger={<Button>查看详情</Button>}>\n      上下文内容\n    </Popover>'),
+    ],
+  },
+];
+
+const allDemos = galleryCategories.flatMap((category) => category.demos);
+const legacyCategoryAliases: Record<string, string> = {
+  typography: 'foundations',
+  buttons: 'actions',
+  pickers: 'forms',
+  data: 'data-display',
 };
+
+const getRouteFromHash = () => {
+  const fallbackCategory = galleryCategories[0]!;
+  if (typeof window === 'undefined') {
+    return { categoryId: fallbackCategory.id, demoId: fallbackCategory.demos[0]!.id };
+  }
+
+  const [rawCategoryId, rawDemoId] = window.location.hash.slice(1).split('/');
+  const categoryId = legacyCategoryAliases[rawCategoryId ?? ''] ?? rawCategoryId;
+  const category = galleryCategories.find((item) => item.id === categoryId) ?? fallbackCategory;
+  const selectedDemo = category.demos.find((item) => item.id === rawDemoId) ?? category.demos[0]!;
+  return { categoryId: category.id, demoId: selectedDemo.id };
+};
+
+const ActiveDemoContext = createContext<string | null>(null);
+const initialGalleryRoute = getRouteFromHash();
 
 const basicSelectOptions = [
   { label: '设计评审', value: 'review' },
@@ -505,6 +681,9 @@ function DemoCard({
   children: React.ReactNode;
   wide?: boolean;
 }) {
+  const activeDemoId = useContext(ActiveDemoContext);
+  if (activeDemoId && toDemoId(title) !== activeDemoId) return null;
+
   return (
     <Card className={wide ? 'demo-card-wide' : undefined}>
       <CardHeader>
@@ -515,13 +694,52 @@ function DemoCard({
   );
 }
 
+function UsagePanel({
+  demo: selectedDemo,
+  copied,
+  onCopy,
+}: {
+  demo: DemoDefinition;
+  copied: boolean;
+  onCopy: () => void;
+}) {
+  return (
+    <aside className="usage-panel" aria-label={`${selectedDemo.title} 使用示例`}>
+      <div className="usage-panel-header">
+        <div>
+          <span>Usage</span>
+          <strong>{selectedDemo.title}</strong>
+        </div>
+        <Tooltip content={copied ? '已复制' : '复制代码'} placement="left">
+          <Button
+            iconOnly
+            size="sm"
+            variant="ghost"
+            aria-label={copied ? '代码已复制' : '复制代码'}
+            icon={copied ? <Check size={16} /> : <Copy size={16} />}
+            onClick={onCopy}
+          />
+        </Tooltip>
+      </div>
+      <pre className="usage-code" tabIndex={0}>
+        <code>{selectedDemo.code}</code>
+      </pre>
+    </aside>
+  );
+}
+
 function GalleryBrand({ className = '' }: { className?: string }) {
   return (
     <div className={`brand ${className}`.trim()}>
-      <img className="brand-mark" src="/favicon.svg" alt="" aria-hidden="true" />
+      <img
+        className="brand-mark"
+        src={`${import.meta.env.BASE_URL}favicon.svg`}
+        alt=""
+        aria-hidden="true"
+      />
       <div>
         <strong>Lumen Design</strong>
-        <span>Component Gallery</span>
+        <span>Development Preview</span>
       </div>
     </div>
   );
@@ -532,7 +750,9 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [colorScheme, setColorScheme] = useState<ColorScheme>(initialColorScheme);
   const [accent, setAccent] = useState<Accent>(initialAccent);
-  const [activeSection, setActiveSection] = useState(getSectionFromHash);
+  const [activeSection, setActiveSection] = useState(initialGalleryRoute.categoryId);
+  const [activeDemoId, setActiveDemoId] = useState(initialGalleryRoute.demoId);
+  const [copiedDemoId, setCopiedDemoId] = useState<string>();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
@@ -547,6 +767,7 @@ export default function App() {
   const [radioValue, setRadioValue] = useState('pad');
   const [segment, setSegment] = useState<'all' | 'active' | 'archived'>('all');
   const [tab, setTab] = useState<'overview' | 'usage' | 'tokens'>('overview');
+  const [bottomNavigationValue, setBottomNavigationValue] = useState('home');
   const [currentStep, setCurrentStep] = useState(1);
   const [stepsDirection, setStepsDirection] = useState<StepsDirection>('horizontal');
   const [basicSelectValue, setBasicSelectValue] = useState<string | null>(null);
@@ -573,38 +794,106 @@ export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const filteredNavigationSections = useMemo(
-    () => sections.filter((section) =>
-      `${section.title} ${section.description} ${section.keywords}`
+  const normalizedSearch = gallerySearch.trim().toLowerCase();
+  const activeCategory = galleryCategories.find((category) => category.id === activeSection)
+    ?? galleryCategories[0]!;
+  const activeDemo = activeCategory.demos.find((item) => item.id === activeDemoId)
+    ?? activeCategory.demos[0]!;
+  const filteredCategories = useMemo(
+    () => galleryCategories.filter((category) =>
+      `${category.title} ${category.description} ${category.keywords} ${category.demos.map((item) => item.title).join(' ')}`
         .toLowerCase()
-        .includes(gallerySearch.trim().toLowerCase()),
+        .includes(normalizedSearch),
     ),
-    [gallerySearch],
+    [normalizedSearch],
   );
-  const sideNavSections = useMemo(
+  const filteredActiveDemos = useMemo(() => {
+    if (!normalizedSearch) return activeCategory.demos;
+    const categoryMatches = `${activeCategory.title} ${activeCategory.description} ${activeCategory.keywords}`
+      .toLowerCase()
+      .includes(normalizedSearch);
+    return categoryMatches
+      ? activeCategory.demos
+      : activeCategory.demos.filter((item) => item.title.toLowerCase().includes(normalizedSearch));
+  }, [activeCategory, normalizedSearch]);
+  const categoryNavSections = useMemo(
     () => [{
-      items: filteredNavigationSections.map((section) => ({
-        value: section.id,
-        label: section.title,
-        icon: section.icon,
+      items: filteredCategories.map((category) => ({
+        value: category.id,
+        label: category.title,
+        icon: category.icon,
       })),
     }],
-    [filteredNavigationSections],
+    [filteredCategories],
   );
-  const activeSections = useMemo(
-    () => sections.filter((section) => section.id === activeSection),
-    [activeSection],
+  const componentNavSections = useMemo(
+    () => [{
+      title: activeCategory.title,
+      items: filteredActiveDemos.map((item) => ({
+        value: item.id,
+        label: item.title,
+      })),
+    }],
+    [activeCategory.title, filteredActiveDemos],
   );
+  const activeSections = useMemo(() => {
+    const sourceSection = renderSections.find((section) => section.id === activeDemo.sourceSection);
+    return sourceSection
+      ? [{
+          ...sourceSection,
+          title: activeDemo.title,
+          description: `${activeCategory.title} · ${activeCategory.description}`,
+        }]
+      : [];
+  }, [activeCategory.description, activeCategory.title, activeDemo]);
+
+  const navigateToCategory = (categoryId: string) => {
+    const category = galleryCategories.find((item) => item.id === categoryId);
+    if (!category) return;
+    const nextDemo = category.demos[0]!;
+    setActiveSection(category.id);
+    setActiveDemoId(nextDemo.id);
+    window.history.replaceState(null, '', `#${category.id}/${nextDemo.id}`);
+  };
+
+  const navigateToDemo = (demoId: string) => {
+    const selectedDemo = activeCategory.demos.find((item) => item.id === demoId);
+    if (!selectedDemo) return;
+    setActiveDemoId(selectedDemo.id);
+    window.history.replaceState(null, '', `#${activeCategory.id}/${selectedDemo.id}`);
+  };
+
+  const copyActiveDemoCode = async () => {
+    try {
+      if (!navigator.clipboard) throw new Error('Clipboard API unavailable');
+      await navigator.clipboard.writeText(activeDemo.code);
+    } catch {
+      const textarea = document.createElement('textarea');
+      textarea.value = activeDemo.code;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      textarea.remove();
+    }
+    setCopiedDemoId(activeDemo.id);
+    window.setTimeout(() => setCopiedDemoId(undefined), 1600);
+  };
 
   useEffect(() => {
-    const syncSectionFromHash = () => setActiveSection(getSectionFromHash());
+    const syncSectionFromHash = () => {
+      const route = getRouteFromHash();
+      setActiveSection(route.categoryId);
+      setActiveDemoId(route.demoId);
+    };
     window.addEventListener('hashchange', syncSectionFromHash);
     return () => window.removeEventListener('hashchange', syncSectionFromHash);
   }, []);
 
   useLayoutEffect(() => {
     mainScrollRef.current?.scrollTo({ top: 0 });
-  }, [activeSection]);
+  }, [activeDemoId, activeSection]);
 
   useEffect(() => {
     document.documentElement.dataset.lumenTheme = theme;
@@ -662,17 +951,25 @@ export default function App() {
     >
       <aside className="sidebar">
         <GalleryBrand />
-        <SideNav
-          ariaLabel="组件分类"
-          activeValue={activeSection}
-          collapsed={sidebarCollapsed}
-          className="gallery-side-nav"
-          sections={sideNavSections}
-          onSelect={(value) => {
-            setActiveSection(value);
-            window.history.replaceState(null, '', `#${value}`);
-          }}
-        />
+        <div className="sidebar-navigation">
+          <SideNav
+            ariaLabel="组件分类"
+            activeValue={activeSection}
+            collapsed={sidebarCollapsed}
+            className="gallery-side-nav"
+            sections={categoryNavSections}
+            onSelect={navigateToCategory}
+          />
+          {!sidebarCollapsed ? (
+            <SideNav
+              ariaLabel={`${activeCategory.title} 组件`}
+              activeValue={activeDemo.id}
+              className="gallery-component-nav"
+              sections={componentNavSections}
+              onSelect={navigateToDemo}
+            />
+          ) : null}
+        </div>
       </aside>
 
       <Drawer
@@ -692,17 +989,25 @@ export default function App() {
             onClick={() => setMobileNavOpen(false)}
           />
         </div>
-        <SideNav
-          ariaLabel="移动端组件分类"
-          activeValue={activeSection}
-          className="mobile-side-nav"
-          sections={sideNavSections}
-          onSelect={(value) => {
-            setActiveSection(value);
-            window.history.replaceState(null, '', `#${value}`);
-            setMobileNavOpen(false);
-          }}
-        />
+        <div className="mobile-navigation-content">
+          <SideNav
+            ariaLabel="移动端组件分类"
+            activeValue={activeSection}
+            className="mobile-side-nav"
+            sections={categoryNavSections}
+            onSelect={navigateToCategory}
+          />
+          <SideNav
+            ariaLabel={`${activeCategory.title} 组件`}
+            activeValue={activeDemo.id}
+            className="mobile-component-nav"
+            sections={componentNavSections}
+            onSelect={(value) => {
+              navigateToDemo(value);
+              setMobileNavOpen(false);
+            }}
+          />
+        </div>
       </Drawer>
 
       <main className="main">
@@ -950,7 +1255,10 @@ export default function App() {
 
         <Scrollbar ref={mainScrollRef} className="main-scrollbar" size="sm">
           <div className="main-content">
-            {activeSections.map((section) => {
+            <ActiveDemoContext.Provider value={activeDemo.id}>
+              <div className="gallery-workspace">
+                <div className="gallery-preview">
+                  {activeSections.map((section) => {
           if (section.id === 'typography') {
             return (
               <GallerySection key={section.id} section={section}>
@@ -991,6 +1299,22 @@ export default function App() {
                     <Tooltip content="仅图标按钮">
                       <Button iconOnly aria-label="设置" icon={<Settings size={15} />} />
                     </Tooltip>
+                  </div>
+                </DemoCard>
+                <DemoCard title="Fab" wide>
+                  <div className="relative h-48 overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">
+                    <div className="px-5 py-4">
+                      <Typography variant="h3">项目看板</Typography>
+                      <Typography variant="caption" color="muted">
+                        12 个进行中任务
+                      </Typography>
+                    </div>
+                    <Fab
+                      position="absolute"
+                      icon={<Plus size={20} />}
+                      label="新建任务"
+                      aria-label="新建任务"
+                    />
                   </div>
                 </DemoCard>
                 <DemoCard title="Badge + Avatar">
@@ -1282,6 +1606,80 @@ export default function App() {
                       { label: '事件详情' },
                     ]}
                   />
+                </DemoCard>
+                <DemoCard title="AppBar" wide>
+                  <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">
+                    <AppBar
+                      position="absolute"
+                      title="订单详情"
+                      leading={(
+                        <Button
+                          iconOnly
+                          variant="ghost"
+                          aria-label="返回"
+                          icon={<ArrowLeft size={19} />}
+                        />
+                      )}
+                      actions={(
+                        <Button
+                          iconOnly
+                          variant="ghost"
+                          aria-label="更多操作"
+                          icon={<MoreHorizontal size={19} />}
+                        />
+                      )}
+                    />
+                    <div className="px-5 pt-20">
+                      <Typography variant="h3">#LM-20260904</Typography>
+                      <Typography variant="caption" color="muted">
+                        等待审核
+                      </Typography>
+                    </div>
+                  </div>
+                </DemoCard>
+                <DemoCard title="Toolbar" wide>
+                  <Toolbar
+                    ariaLabel="列表操作"
+                    className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
+                  >
+                    <Button size="sm" variant="ghost" icon={<Search size={15} />}>
+                      搜索
+                    </Button>
+                    <Button size="sm" variant="ghost" icon={<Filter size={15} />}>
+                      筛选
+                    </Button>
+                    <div className="flex-1" />
+                    <Button size="sm" icon={<Plus size={15} />}>
+                      新建
+                    </Button>
+                  </Toolbar>
+                </DemoCard>
+                <DemoCard title="BottomNavigation" wide>
+                  <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">
+                    <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">
+                      <Typography variant="h3">{bottomNavigationValue}</Typography>
+                      <Typography variant="caption" color="muted">
+                        当前底部导航目标
+                      </Typography>
+                    </div>
+                    <BottomNavigation
+                      position="absolute"
+                      value={bottomNavigationValue}
+                      onChange={setBottomNavigationValue}
+                      items={[
+                        { value: 'home', label: '首页', icon: Star },
+                        { value: 'schedule', label: '日程', icon: CalendarDays },
+                        {
+                          value: 'messages',
+                          label: '消息',
+                          icon: Bell,
+                          badge: 3,
+                          badgeLabel: '3 条未读消息',
+                        },
+                        { value: 'profile', label: '我的', icon: UserRound },
+                      ]}
+                    />
+                  </div>
                 </DemoCard>
                 <DemoCard title="Tabs" wide>
                   <Tabs
@@ -1733,7 +2131,15 @@ export default function App() {
               </DemoCard>
             </GallerySection>
           );
-            })}
+                  })}
+                </div>
+                <UsagePanel
+                  demo={activeDemo}
+                  copied={copiedDemoId === activeDemo.id}
+                  onCopy={() => void copyActiveDemoCode()}
+                />
+              </div>
+            </ActiveDemoContext.Provider>
           </div>
         </Scrollbar>
       </main>
@@ -1768,17 +2174,31 @@ export default function App() {
         groups={[
           {
             heading: '组件分类',
-            items: sections.map((section) => ({
-              id: section.id,
-              label: section.title,
-              description: section.description,
-              keywords: section.keywords.split(' '),
-              icon: <section.icon size={16} />,
-              onSelect: () => {
-                setActiveSection(section.id);
-                window.history.replaceState(null, '', `#${section.id}`);
-              },
+            items: galleryCategories.map((category) => ({
+              id: category.id,
+              label: category.title,
+              description: category.description,
+              keywords: category.keywords.split(' '),
+              icon: <category.icon size={16} />,
+              onSelect: () => navigateToCategory(category.id),
             })),
+          },
+          {
+            heading: '组件',
+            items: allDemos.map((item) => {
+              const category = galleryCategories.find((candidate) => candidate.demos.includes(item))!;
+              return {
+                id: `component-${item.id}`,
+                label: item.title,
+                description: category.title,
+                keywords: [category.title, item.title],
+                onSelect: () => {
+                  setActiveSection(category.id);
+                  setActiveDemoId(item.id);
+                  window.history.replaceState(null, '', `#${category.id}/${item.id}`);
+                },
+              };
+            }),
           },
           {
             heading: '操作',
