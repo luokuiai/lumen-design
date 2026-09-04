@@ -322,6 +322,29 @@ body {
   padding-block: 28px;
 }
 
+.demo-code-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    grid-template-rows 220ms cubic-bezier(.2, .7, .2, 1),
+    opacity 160ms ease,
+    visibility 0s linear 220ms;
+}
+
+.demo-code-collapse[data-expanded] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s;
+}
+
+.demo-code-collapse-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .demo-code-panel {
   border-top: 1px solid var(--lumen-color-divider);
   background: #111827;
@@ -425,6 +448,13 @@ body {
 .usage-code:focus-visible {
   outline: 2px solid var(--lumen-color-focus-ring);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-code-collapse {
+    transition-duration: 1ms;
+    transition-delay: 0s;
+  }
 }
 
 .sidebar-toggle-button {

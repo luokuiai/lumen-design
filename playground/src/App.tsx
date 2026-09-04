@@ -851,9 +851,9 @@ function getTsxTokenClass(token: string) {
   return 'syntax-property';
 }
 
-function SyntaxCode({ code }: { code: string }) {
+function SyntaxCode({ code, interactive = true }: { code: string; interactive?: boolean }) {
   return (
-    <pre className="usage-code" tabIndex={0}>
+    <pre className="usage-code" tabIndex={interactive ? 0 : -1}>
       <code>
         {code.split('\n').map((line, lineIndex) => {
           const tokens: React.ReactNode[] = [];
@@ -925,9 +925,15 @@ function DemoCard({
       </CardHeader>
       <CardContent className="demo-preview-surface">{children}</CardContent>
       {activeDemo ? (
-        <>
-          {codeExpanded ? (
-            <div id={codePanelId} className="demo-code-panel">
+        <div
+          id={codePanelId}
+          className="demo-code-collapse"
+          data-expanded={codeExpanded || undefined}
+          data-lumen-motion
+          aria-hidden={!codeExpanded}
+        >
+          <div className="demo-code-collapse-inner">
+            <div className="demo-code-panel">
               <div className="demo-code-header">
                 <span><Code2 aria-hidden="true" size={14} /> TSX</span>
                 <Tooltip content={copied ? '已复制' : '复制代码'} placement="left">
@@ -937,14 +943,15 @@ function DemoCard({
                     variant="ghost"
                     aria-label={copied ? '代码已复制' : '复制代码'}
                     icon={copied ? <Check size={16} /> : <Copy size={16} />}
+                    tabIndex={codeExpanded ? undefined : -1}
                     onClick={() => activeDemo.onCopyCode(title, code)}
                   />
                 </Tooltip>
               </div>
-              <SyntaxCode code={code} />
+              <SyntaxCode code={code} interactive={codeExpanded} />
             </div>
-          ) : null}
-        </>
+          </div>
+        </div>
       ) : null}
     </Card>
   );
