@@ -1240,7 +1240,7 @@ export default function App() {
     >
       <aside className="sidebar">
         <GalleryBrand />
-        <div className="sidebar-navigation">
+        <Scrollbar className="sidebar-navigation" size="sm" aria-label="组件目录">
           <GalleryTreeNav
             categories={filteredCategories}
             activeCategoryId={activeSection}
@@ -1250,7 +1250,7 @@ export default function App() {
             onToggleCategory={toggleCategory}
             onSelectDemo={navigateToDemo}
           />
-        </div>
+        </Scrollbar>
       </aside>
 
       <Drawer
@@ -1270,7 +1270,7 @@ export default function App() {
             onClick={() => setMobileNavOpen(false)}
           />
         </div>
-        <div className="mobile-navigation-content">
+        <Scrollbar className="mobile-navigation-content" size="sm" aria-label="移动端组件目录">
           <GalleryTreeNav
             categories={filteredCategories}
             activeCategoryId={activeSection}
@@ -1282,7 +1282,7 @@ export default function App() {
               setMobileNavOpen(false);
             }}
           />
-        </div>
+        </Scrollbar>
       </Drawer>
 
       <main className="main">
