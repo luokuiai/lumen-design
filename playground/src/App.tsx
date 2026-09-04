@@ -1747,7 +1747,7 @@ export default function App() {
                 </DemoCard>
                 <DemoCard title="Radio">
                   <div className="stack">
-                    <Radio checked label="单独 Radio" />
+                    <Radio size="md" checked label="单独 Radio · md" />
                     <RadioGroup
                       value={radioValue}
                       onChange={setRadioValue}

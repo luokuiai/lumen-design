@@ -50,7 +50,7 @@ export const Radio: React.FC<RadioProps> = ({
     <label
       htmlFor={inputId}
       className={cn(
-        'inline-flex gap-3',
+        'inline-flex gap-2.5',
         hasDescription ? 'items-start' : 'items-center',
         isSmall && 'gap-2',
         disabled ? 'cursor-not-allowed opacity-55' : 'cursor-pointer',
@@ -61,7 +61,7 @@ export const Radio: React.FC<RadioProps> = ({
         className={cn(
           'relative inline-flex shrink-0 items-center justify-center',
           hasDescription && 'mt-0.5',
-          isSmall ? 'h-4 w-4' : 'h-5 w-5',
+          isSmall ? 'h-4 w-4' : 'h-[18px] w-[18px]',
         )}
       >
         <input
@@ -80,7 +80,7 @@ export const Radio: React.FC<RadioProps> = ({
           aria-hidden="true"
           className={cn(
             'flex items-center justify-center rounded-full border transition-all',
-            isSmall ? 'h-4 w-4' : 'h-5 w-5',
+            isSmall ? 'h-4 w-4' : 'h-[18px] w-[18px]',
             currentChecked
               ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]'
               : 'border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-transparent',
@@ -89,7 +89,7 @@ export const Radio: React.FC<RadioProps> = ({
           )}
         >
           <Circle
-            size={isSmall ? 8 : 10}
+            size={isSmall ? 8 : 9}
             className={currentChecked ? 'fill-current text-current' : 'text-transparent'}
           />
         </span>
