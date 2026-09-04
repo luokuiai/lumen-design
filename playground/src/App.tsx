@@ -835,40 +835,42 @@ function GallerySection({ section, children }: { section: Section; children: Rea
       <div className="section-grid">{children}</div>
       {apiSections.length ? (
         <section className="component-api" aria-labelledby={`${activeDemo!.demo.id}-api-title`}>
-          <div className="component-api-heading">
-            <span>API</span>
-            <h3 id={`${activeDemo!.demo.id}-api-title`}>属性</h3>
-          </div>
-          {apiSections.map(({ componentName, props }) => (
-            <div key={componentName} className="component-api-group">
-              <h4>{componentName}</h4>
-              <div className="component-api-table-wrap">
-                <table className="component-api-table">
-                  <thead>
-                    <tr>
-                      <th>属性</th>
-                      <th>类型</th>
-                      <th>默认值</th>
-                      <th>说明</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {props.map((prop) => (
-                      <tr key={prop.name}>
-                        <td>
-                          <code>{prop.name}</code>
-                          {prop.required ? <span className="component-api-required">必填</span> : null}
-                        </td>
-                        <td><code>{prop.type}</code></td>
-                        <td><code>{prop.defaultValue}</code></td>
-                        <td>{prop.description}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+          <div className="component-api-card">
+            <div className="component-api-heading">
+              <span>API</span>
+              <h3 id={`${activeDemo!.demo.id}-api-title`}>属性</h3>
             </div>
-          ))}
+            {apiSections.map(({ componentName, props }) => (
+              <div key={componentName} className="component-api-group">
+                <h4>{componentName}</h4>
+                <div className="component-api-table-wrap">
+                  <table className="component-api-table">
+                    <thead>
+                      <tr>
+                        <th>属性</th>
+                        <th>类型</th>
+                        <th>默认值</th>
+                        <th>说明</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {props.map((prop) => (
+                        <tr key={prop.name}>
+                          <td>
+                            <code>{prop.name}</code>
+                            {prop.required ? <span className="component-api-required">必填</span> : null}
+                          </td>
+                          <td><code>{prop.type}</code></td>
+                          <td><code>{prop.defaultValue}</code></td>
+                          <td>{prop.description}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
       ) : null}
     </section>

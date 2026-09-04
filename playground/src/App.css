@@ -743,13 +743,24 @@ body {
 }
 
 .component-api {
-  margin-top: 40px;
+  margin-top: 32px;
+}
+
+.component-api-card {
+  overflow: hidden;
+  border: 1px solid var(--lumen-color-border);
+  border-radius: 8px;
+  background: var(--lumen-color-surface);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--lumen-color-text-strong) 6%, transparent);
 }
 
 .component-api-heading {
-  display: grid;
-  gap: 4px;
-  margin-bottom: 12px;
+  display: flex;
+  min-height: 60px;
+  align-items: baseline;
+  gap: 9px;
+  border-bottom: 1px solid var(--lumen-color-divider);
+  padding: 18px 20px;
 }
 
 .component-api-heading > span {
@@ -760,11 +771,12 @@ body {
 }
 
 .component-api-group + .component-api-group {
-  margin-top: 24px;
+  border-top: 1px solid var(--lumen-color-border);
 }
 
 .component-api-group h4 {
-  margin: 0 0 10px;
+  margin: 0;
+  padding: 14px 20px 10px;
   color: var(--lumen-color-text-strong);
   font-size: 13px;
   font-weight: 600;
@@ -772,9 +784,6 @@ body {
 
 .component-api-table-wrap {
   overflow-x: auto;
-  border: 1px solid var(--lumen-color-border);
-  border-radius: 8px;
-  background: var(--lumen-color-surface);
 }
 
 .component-api-table {
@@ -786,7 +795,7 @@ body {
 
 .component-api-table th,
 .component-api-table td {
-  padding: 12px 14px;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--lumen-color-divider);
   vertical-align: top;
   font-size: 13px;
@@ -794,7 +803,7 @@ body {
 }
 
 .component-api-table th {
-  background: var(--lumen-color-surface-muted);
+  background: var(--lumen-color-surface-subtle);
   color: var(--lumen-color-text-secondary);
   font-size: 12px;
   font-weight: 600;
