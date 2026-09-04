@@ -252,13 +252,14 @@ const demo = (
   lucideIcons?: string,
   setup?: string,
   cardTitles: string[] = [title],
+  apiComponents: string[] = title.split('/').map((item) => item.trim()),
 ): DemoDefinition => ({
   id: toDemoId(title),
   title,
   sourceSection,
   code: usageExample(imports, jsx, lucideIcons, setup),
   cardTitles,
-  apiComponents: imports.split(',').map((item) => item.trim()),
+  apiComponents,
 });
 
 const galleryCategories: GalleryCategory[] = [
