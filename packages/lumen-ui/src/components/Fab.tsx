@@ -11,6 +11,7 @@ interface FabBaseProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children'> {
   icon: React.ReactNode;
   active?: boolean;
+  extended?: boolean;
   loading?: boolean;
   loadingLabel?: string;
   position?: FabPosition;
@@ -55,13 +56,14 @@ export const Fab: React.FC<FabProps> = ({
   icon,
   label,
   active = true,
+  extended: extendedProp,
   loading = false,
   loadingLabel = '加载中',
   position = 'fixed',
   placement = 'bottom-end',
   offset = 16,
   safeArea = true,
-  size = 'md',
+  size = 'sm',
   variant = 'primary',
   className,
   disabled,
@@ -69,7 +71,7 @@ export const Fab: React.FC<FabProps> = ({
   'aria-label': ariaLabel,
   ...props
 }) => {
-  const extended = label !== undefined && label !== null;
+  const extended = extendedProp ?? (label !== undefined && label !== null);
   const offsetValue = toCssLength(offset);
   const positioned = position !== 'static';
   const placementStyle: React.CSSProperties = {};
@@ -113,7 +115,7 @@ export const Fab: React.FC<FabProps> = ({
     <Button
       {...sharedProps}
       iconOnly
-      aria-label={loading ? loadingLabel : ariaLabel!}
+      aria-label={loading ? loadingLabel : ariaLabel ?? (typeof label === 'string' ? label : '浮动操作')}
     />
   );
 };

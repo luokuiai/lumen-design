@@ -121,6 +121,20 @@ type DemoDefinition = {
   sourceSection: string;
   code: string;
   cardTitles: string[];
+  codeByCardTitle?: Record<string, string>;
+};
+
+type ComponentPropDoc = {
+  name: string;
+  type: string;
+  defaultValue: string;
+  description: string;
+};
+
+type ComponentGuide = {
+  summary: string;
+  usage: string[];
+  props: ComponentPropDoc[];
 };
 
 type GalleryCategory = Section & {
@@ -261,7 +275,14 @@ const galleryCategories: GalleryCategory[] = [
     icon: Plus,
     demos: [
       demo('Button', 'buttons', 'Button', '    <Button variant="primary">保存</Button>'),
-      demo('Fab', 'buttons', 'Fab, Typography', '    <div className="relative h-48 overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="px-5 py-4">\n        <Typography variant="h3">项目看板</Typography>\n        <Typography variant="caption" color="muted">\n          12 个进行中任务\n        </Typography>\n      </div>\n      <Fab\n        position="absolute"\n        icon={<Plus size={20} />}\n        label="新建任务"\n        aria-label="新建任务"\n      />\n    </div>', 'Plus'),
+      {
+        ...demo('Fab', 'buttons', 'Fab', '    <Fab position="static" icon={<Plus size={18} />} aria-label="新建任务" />', 'Plus', undefined, ['Icon only', 'Extended', 'Expandable']),
+        codeByCardTitle: {
+          'Icon only': usageExample('Fab', '    <div className="flex items-center gap-4">\n      <Fab position="static" size="sm" icon={<Plus size={18} />} aria-label="新建任务" />\n      <Fab position="static" size="md" variant="secondary" icon={<Search size={18} />} aria-label="搜索" />\n      <Fab position="static" size="lg" variant="outline" icon={<Settings size={20} />} aria-label="设置" />\n    </div>', 'Plus, Search, Settings'),
+          Extended: usageExample('Fab', '    <div className="flex items-center gap-4">\n      <Fab position="static" icon={<Plus size={18} />} label="新建任务" />\n      <Fab position="static" variant="secondary" icon={<Filter size={18} />} label="筛选条件" />\n    </div>', 'Filter, Plus'),
+          Expandable: usageExample('Fab, Switch', '    <div className="flex items-center gap-5">\n      <Switch checked={extended} onChange={setExtended} label="显示文字" />\n      <Fab\n        position="static"\n        icon={<Plus size={18} />}\n        label="新建任务"\n        extended={extended}\n      />\n    </div>', 'Plus', "const [extended, setExtended] = useState(false);"),
+        },
+      },
       demo('Toolbar', 'navigation', 'Button, Toolbar', '    <Toolbar\n      ariaLabel="列表操作"\n      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"\n    >\n      <Button size="sm" variant="ghost" icon={<Search size={15} />}>\n        搜索\n      </Button>\n      <Button size="sm" variant="ghost" icon={<Filter size={15} />}>\n        筛选\n      </Button>\n      <div className="flex-1" />\n      <Button size="sm" icon={<Plus size={15} />}>\n        新建\n      </Button>\n    </Toolbar>', 'Filter, Plus, Search'),
       demo('DropdownMenu', 'navigation', 'Button, DropdownMenu', '    <DropdownMenu\n      trigger={({ toggle }) => <Button onClick={toggle}>打开菜单</Button>}\n    >\n      {({ close }) => <button onClick={close}>复制</button>}\n    </DropdownMenu>', undefined, undefined, ['Dropdown']),
     ],
@@ -360,6 +381,66 @@ const galleryCategories: GalleryCategory[] = [
 ];
 
 const allDemos = galleryCategories.flatMap((category) => category.demos);
+const componentGuides: Record<string, ComponentGuide> = {
+  fab: {
+    summary: '浮动操作按钮用于突出当前页面最重要、最常用的单一操作，适合创建、编辑或快速添加。',
+    usage: [
+      '一个页面通常只保留一个主要 Fab，避免多个高强调操作竞争注意力。',
+      '空间紧张时使用 icon-only；需要强化动作含义时使用 extended，并始终提供可访问名称。',
+      'fixed 用于应用级悬浮，absolute 用于局部容器预览，static 用于普通布局和工具区。',
+    ],
+    props: [
+      { name: 'icon', type: 'ReactNode', defaultValue: '-', description: '必填，按钮图标。' },
+      { name: 'label', type: 'ReactNode', defaultValue: '-', description: '扩展状态显示的文字，也可作为折叠状态的可访问名称。' },
+      { name: 'extended', type: 'boolean', defaultValue: '自动', description: '显式控制带文字或仅图标形态。未设置时根据 label 判断。' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'sm'", description: '控制 40、48、56px 三档高度。' },
+      { name: 'variant', type: 'ButtonVariant', defaultValue: "'primary'", description: '设置主色、次级、描边或危险操作样式。' },
+      { name: 'position', type: "'fixed' | 'absolute' | 'static'", defaultValue: "'fixed'", description: '决定相对视口、容器或普通文档流定位。' },
+      { name: 'placement', type: "'bottom-end' | 'bottom-start' | 'top-end' | 'top-start'", defaultValue: "'bottom-end'", description: '设置悬浮位置，并自动适配 RTL。' },
+      { name: 'offset', type: 'number | string', defaultValue: '16', description: '设置距定位边缘的间距。' },
+      { name: 'safeArea', type: 'boolean', defaultValue: 'true', description: '在顶部或底部叠加设备安全区。' },
+      { name: 'active', type: 'boolean', defaultValue: 'true', description: '控制是否显示。' },
+      { name: 'loading', type: 'boolean', defaultValue: 'false', description: '显示加载图标并禁止重复点击。' },
+    ],
+  },
+  toolbar: {
+    summary: '工具栏用于组织一组与当前内容直接相关的操作、筛选和视图控制。',
+    usage: ['使用方向键、Home 和 End 在工具间移动焦点。', '操作较多时开启 wrap，紧凑场景使用 sm。'],
+    props: [
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'md'", description: '设置工具栏最小高度与水平留白。' },
+      { name: 'wrap', type: 'boolean', defaultValue: 'false', description: '空间不足时允许工具换行。' },
+      { name: 'ariaLabel', type: 'string', defaultValue: "'工具栏'", description: '描述这一组工具的用途。' },
+      { name: 'children', type: 'ReactNode', defaultValue: '-', description: '按钮、输入框、分隔符或其他工具。' },
+    ],
+  },
+  'app-bar': {
+    summary: '应用栏固定页面上下文，承载返回操作、当前标题和少量页面级操作。',
+    usage: ['移动页面通常使用居中标题；信息密集页面可使用 start 对齐。', 'fixed 和 sticky 会参与视口布局，局部演示使用 absolute。'],
+    props: [
+      { name: 'title', type: 'ReactNode', defaultValue: '-', description: '必填，当前页面标题。' },
+      { name: 'leading', type: 'ReactNode', defaultValue: '-', description: '标题前的返回或导航操作。' },
+      { name: 'actions', type: 'ReactNode', defaultValue: '-', description: '标题后的页面级操作。' },
+      { name: 'position', type: "'fixed' | 'absolute' | 'sticky' | 'static'", defaultValue: "'fixed'", description: '设置应用栏定位方式。' },
+      { name: 'titleAlign', type: "'start' | 'center'", defaultValue: "'center'", description: '设置标题对齐方式。' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'lg'", description: '设置栏高。' },
+      { name: 'safeArea', type: 'boolean', defaultValue: 'true', description: '为顶部刘海和状态栏预留空间。' },
+      { name: 'active', type: 'boolean', defaultValue: 'true', description: '控制是否显示。' },
+    ],
+  },
+  'bottom-navigation': {
+    summary: '底部导航用于移动端的应用级主目的地切换，适合 3 到 5 个稳定且同级的入口。',
+    usage: ['保持入口顺序稳定，不把临时操作放入底部导航。', '受控 value 决定当前项，onChange 负责同步路由或页面状态。'],
+    props: [
+      { name: 'items', type: 'BottomNavigationItem[]', defaultValue: '-', description: '必填，配置 value、label、icon、badge、href 和 disabled。' },
+      { name: 'value', type: 'string', defaultValue: '-', description: '当前选中项的 value。' },
+      { name: 'onChange', type: '(value, item) => void', defaultValue: '-', description: '选择可用项目时触发。' },
+      { name: 'position', type: "'fixed' | 'absolute' | 'static'", defaultValue: "'fixed'", description: '设置相对视口、局部容器或文档流定位。' },
+      { name: 'safeArea', type: 'boolean', defaultValue: 'true', description: '为底部手势区域增加安全间距。' },
+      { name: 'active', type: 'boolean', defaultValue: 'true', description: '控制导航是否显示。' },
+      { name: 'ariaLabel', type: 'string', defaultValue: "'底部导航'", description: '设置导航区域的可访问名称。' },
+    ],
+  },
+};
 const legacyCategoryAliases: Record<string, string> = {
   typography: 'foundations',
   buttons: 'actions',
@@ -397,10 +478,10 @@ const getRouteFromHash = () => {
 
 type ActiveDemoContextValue = {
   demo: DemoDefinition;
-  codeExpanded: boolean;
-  copied: boolean;
-  onToggleCode: () => void;
-  onCopyCode: () => void;
+  expandedCodeTitle?: string;
+  copiedCodeTitle?: string;
+  onToggleCode: (title: string) => void;
+  onCopyCode: (title: string, code: string) => void;
 };
 
 const ActiveDemoContext = createContext<ActiveDemoContextValue | null>(null);
@@ -700,15 +781,57 @@ const getSafetyEventSortValue = (event: SafetyEvent, key: string) => {
 };
 
 function GallerySection({ section, children }: { section: Section; children: React.ReactNode }) {
+  const activeDemo = useContext(ActiveDemoContext);
+  const guide = activeDemo ? componentGuides[activeDemo.demo.id] : undefined;
+
   return (
     <section id={section.id} className="gallery-section">
       <header className="section-header">
         <div>
           <h2>{section.title}</h2>
-          <p>{section.description}</p>
+          <p>{guide?.summary ?? section.description}</p>
         </div>
       </header>
+      {guide ? (
+        <div className="component-guidance">
+          <h3>使用建议</h3>
+          <ul>
+            {guide.usage.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </div>
+      ) : null}
+      <h3 className="document-section-title">示例</h3>
       <div className="section-grid">{children}</div>
+      {guide ? (
+        <section className="component-api" aria-labelledby={`${activeDemo!.demo.id}-api-title`}>
+          <div className="component-api-heading">
+            <span>API</span>
+            <h3 id={`${activeDemo!.demo.id}-api-title`}>属性</h3>
+          </div>
+          <div className="component-api-table-wrap">
+            <table className="component-api-table">
+              <thead>
+                <tr>
+                  <th>属性</th>
+                  <th>类型</th>
+                  <th>默认值</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                {guide.props.map((prop) => (
+                  <tr key={prop.name}>
+                    <td><code>{prop.name}</code></td>
+                    <td><code>{prop.type}</code></td>
+                    <td><code>{prop.defaultValue}</code></td>
+                    <td>{prop.description}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
     </section>
   );
 }
@@ -725,8 +848,10 @@ function DemoCard({
   const activeDemo = useContext(ActiveDemoContext);
   if (activeDemo && !activeDemo.demo.cardTitles.includes(title)) return null;
 
-  const codePanelId = activeDemo ? `demo-code-${activeDemo.demo.id}` : undefined;
-  const showCodeControls = activeDemo?.demo.cardTitles[0] === title;
+  const code = activeDemo?.demo.codeByCardTitle?.[title] ?? activeDemo?.demo.code ?? '';
+  const codePanelId = activeDemo ? `demo-code-${activeDemo.demo.id}-${toDemoId(title)}` : undefined;
+  const codeExpanded = activeDemo?.expandedCodeTitle === title;
+  const copied = activeDemo?.copiedCodeTitle === title;
 
   return (
     <Card className={`${wide ? 'demo-card-wide ' : ''}demo-card`.trim()}>
@@ -734,7 +859,7 @@ function DemoCard({
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent className="demo-preview-surface">{children}</CardContent>
-      {activeDemo && showCodeControls ? (
+      {activeDemo ? (
         <>
           <div className="demo-card-toolbar">
             <Button
@@ -742,29 +867,29 @@ function DemoCard({
               variant="ghost"
               icon={<Code2 size={16} />}
               aria-controls={codePanelId}
-              aria-expanded={activeDemo.codeExpanded}
-              onClick={activeDemo.onToggleCode}
+              aria-expanded={codeExpanded}
+              onClick={() => activeDemo.onToggleCode(title)}
             >
-              {activeDemo.codeExpanded ? '隐藏代码' : '查看代码'}
+              {codeExpanded ? '隐藏代码' : '查看代码'}
             </Button>
           </div>
-          {activeDemo.codeExpanded ? (
+          {codeExpanded ? (
             <div id={codePanelId} className="demo-code-panel">
               <div className="demo-code-header">
-                <span>React</span>
-                <Tooltip content={activeDemo.copied ? '已复制' : '复制代码'} placement="left">
+                <span><Code2 aria-hidden="true" size={14} /> TSX</span>
+                <Tooltip content={copied ? '已复制' : '复制代码'} placement="left">
                   <Button
                     iconOnly
                     size="sm"
                     variant="ghost"
-                    aria-label={activeDemo.copied ? '代码已复制' : '复制代码'}
-                    icon={activeDemo.copied ? <Check size={16} /> : <Copy size={16} />}
-                    onClick={activeDemo.onCopyCode}
+                    aria-label={copied ? '代码已复制' : '复制代码'}
+                    icon={copied ? <Check size={16} /> : <Copy size={16} />}
+                    onClick={() => activeDemo.onCopyCode(title, code)}
                   />
                 </Tooltip>
               </div>
               <pre className="usage-code" tabIndex={0}>
-                <code>{activeDemo.demo.code}</code>
+                <code>{code}</code>
               </pre>
             </div>
           ) : null}
@@ -880,8 +1005,8 @@ export default function App() {
   const [activeSection, setActiveSection] = useState(initialGalleryRoute.categoryId);
   const [activeDemoId, setActiveDemoId] = useState(initialGalleryRoute.demoId);
   const [expandedCategoryIds, setExpandedCategoryIds] = useState([initialGalleryRoute.categoryId]);
-  const [codeExpanded, setCodeExpanded] = useState(false);
-  const [copiedDemoId, setCopiedDemoId] = useState<string>();
+  const [expandedCodeTitle, setExpandedCodeTitle] = useState<string>();
+  const [copiedCodeTitle, setCopiedCodeTitle] = useState<string>();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
@@ -890,6 +1015,7 @@ export default function App() {
   const [checked, setChecked] = useState(true);
   const [enabled, setEnabled] = useState(true);
   const [priorityChipSelected, setPriorityChipSelected] = useState(false);
+  const [fabExtended, setFabExtended] = useState(false);
   const [temporaryChipVisible, setTemporaryChipVisible] = useState(true);
   const [sliderValue, setSliderValue] = useState(62);
   const [ratingValue, setRatingValue] = useState(3.5);
@@ -974,13 +1100,13 @@ export default function App() {
       : [...current, categoryId]);
   };
 
-  const copyActiveDemoCode = async () => {
+  const copyActiveDemoCode = async (title: string, code: string) => {
     try {
       if (!navigator.clipboard) throw new Error('Clipboard API unavailable');
-      await navigator.clipboard.writeText(activeDemo.code);
+      await navigator.clipboard.writeText(code);
     } catch {
       const textarea = document.createElement('textarea');
-      textarea.value = activeDemo.code;
+      textarea.value = code;
       textarea.style.position = 'fixed';
       textarea.style.opacity = '0';
       document.body.appendChild(textarea);
@@ -988,8 +1114,8 @@ export default function App() {
       document.execCommand('copy');
       textarea.remove();
     }
-    setCopiedDemoId(activeDemo.id);
-    window.setTimeout(() => setCopiedDemoId(undefined), 1600);
+    setCopiedCodeTitle(title);
+    window.setTimeout(() => setCopiedCodeTitle(undefined), 1600);
   };
 
   useEffect(() => {
@@ -1004,7 +1130,7 @@ export default function App() {
 
   useLayoutEffect(() => {
     mainScrollRef.current?.scrollTo({ top: 0 });
-    setCodeExpanded(false);
+    setExpandedCodeTitle(undefined);
   }, [activeDemoId, activeSection]);
 
   useEffect(() => {
@@ -1355,10 +1481,10 @@ export default function App() {
           <div className="main-content">
             <ActiveDemoContext.Provider value={{
               demo: activeDemo,
-              codeExpanded,
-              copied: copiedDemoId === activeDemo.id,
-              onToggleCode: () => setCodeExpanded((expanded) => !expanded),
-              onCopyCode: () => void copyActiveDemoCode(),
+              expandedCodeTitle,
+              copiedCodeTitle,
+              onToggleCode: (title) => setExpandedCodeTitle((current) => current === title ? undefined : title),
+              onCopyCode: (title, code) => void copyActiveDemoCode(title, code),
             }}>
               <div className="gallery-workspace">
                 <div className="gallery-preview">
@@ -1405,19 +1531,27 @@ export default function App() {
                     </Tooltip>
                   </div>
                 </DemoCard>
-                <DemoCard title="Fab" wide>
-                  <div className="relative h-48 overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">
-                    <div className="px-5 py-4">
-                      <Typography variant="h3">项目看板</Typography>
-                      <Typography variant="caption" color="muted">
-                        12 个进行中任务
-                      </Typography>
-                    </div>
+                <DemoCard title="Icon only" wide>
+                  <div className="fab-example-row">
+                    <Fab position="static" size="sm" icon={<Plus size={18} />} aria-label="新建任务" />
+                    <Fab position="static" size="md" variant="secondary" icon={<Search size={18} />} aria-label="搜索" />
+                    <Fab position="static" size="lg" variant="outline" icon={<Settings size={20} />} aria-label="设置" />
+                  </div>
+                </DemoCard>
+                <DemoCard title="Extended" wide>
+                  <div className="fab-example-row">
+                    <Fab position="static" icon={<Plus size={18} />} label="新建任务" />
+                    <Fab position="static" variant="secondary" icon={<Filter size={18} />} label="筛选条件" />
+                  </div>
+                </DemoCard>
+                <DemoCard title="Expandable" wide>
+                  <div className="fab-example-row">
+                    <Switch checked={fabExtended} onChange={setFabExtended} label="显示文字" />
                     <Fab
-                      position="absolute"
-                      icon={<Plus size={20} />}
+                      position="static"
+                      icon={<Plus size={18} />}
                       label="新建任务"
-                      aria-label="新建任务"
+                      extended={fabExtended}
                     />
                   </div>
                 </DemoCard>

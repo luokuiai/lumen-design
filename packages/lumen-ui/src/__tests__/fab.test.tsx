@@ -18,7 +18,7 @@ describe('Fab', () => {
     const fab = screen.getByRole('button', { name: 'Create task' });
     expect(fab).toHaveAttribute('data-fab', 'icon');
     expect(fab).toHaveAttribute('data-position', 'fixed');
-    expect(fab).toHaveClass('!h-12', '!w-12', '!rounded-full');
+    expect(fab).toHaveClass('!h-10', '!w-10', '!rounded-full');
     expect(fab).toHaveStyle({ bottom: 'calc(16px + env(safe-area-inset-bottom))' });
 
     fireEvent.click(fab);
@@ -33,6 +33,16 @@ describe('Fab', () => {
     expect(fab).toHaveAttribute('aria-busy', 'true');
     expect(fab).toBeDisabled();
     expect(fab).toHaveClass('!rounded-[var(--lumen-radius-pill)]');
+  });
+
+  it('can collapse an extended action to an icon', () => {
+    const { rerender } = render(
+      <Fab icon={<Plus />} label="Create task" extended position="static" />,
+    );
+    expect(screen.getByRole('button', { name: 'Create task' })).toHaveAttribute('data-fab', 'extended');
+
+    rerender(<Fab icon={<Plus />} label="Create task" extended={false} position="static" />);
+    expect(screen.getByRole('button', { name: 'Create task' })).toHaveAttribute('data-fab', 'icon');
   });
 
   it('lets the layout control visibility and bottom offset', () => {
