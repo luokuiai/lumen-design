@@ -655,14 +655,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "tone",
       "type": "\"default\" | \"secondary\" | \"placeholder\" | \"strong\" | \"muted\" | \"inherit\"",
       "defaultValue": "undefined",
-      "description": "设置 tone。",
+      "description": "设置内容的语义色调。",
       "required": false
     },
     {
       "name": "as",
       "type": "React.ElementType<any, keyof React.JSX.IntrinsicElements>",
       "defaultValue": "undefined",
-      "description": "设置 as。",
+      "description": "设置最终渲染的 HTML 元素或 React 组件。",
       "required": false
     }
   ],
@@ -764,7 +764,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "tone",
       "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
       "defaultValue": "'info'",
-      "description": "设置 tone。",
+      "description": "设置内容的语义色调。",
       "required": false
     },
     {
@@ -2564,7 +2564,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "tone",
       "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
       "defaultValue": "'neutral'",
-      "description": "设置 tone。",
+      "description": "设置内容的语义色调。",
       "required": false
     },
     {

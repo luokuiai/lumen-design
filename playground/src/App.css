@@ -16,7 +16,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: var(--lumen-color-surface-muted);
+  background: var(--lumen-color-surface);
   font-size: 14px;
 }
 
@@ -26,7 +26,7 @@ body {
   height: 100dvh;
   overflow: hidden;
   color: var(--lumen-color-text);
-  background: var(--lumen-color-surface-muted);
+  background: var(--lumen-color-surface);
 }
 
 .app-shell.sidebar-collapsed {
