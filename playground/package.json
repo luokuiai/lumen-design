@@ -4,9 +4,10 @@
   "version": "1.0.0-alpha.7",
   "type": "module",
   "scripts": {
-    "build": "vite build",
-    "dev": "vite --host 0.0.0.0",
-    "typecheck": "tsc --noEmit"
+    "build": "bun run generate:examples && vite build",
+    "dev": "bun run generate:examples && vite --host 0.0.0.0",
+    "generate:examples": "bun ../scripts/generate-playground-examples.ts",
+    "typecheck": "bun run generate:examples && tsc --noEmit"
   },
   "dependencies": {
     "@luokuiai/lumen-theme-clarity": "workspace:*",

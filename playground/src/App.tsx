@@ -106,6 +106,7 @@ import type { DataTableColumn, DataTableSort, StepsDirection } from '@luokuiai/l
 import '@luokuiai/lumen-theme-clarity';
 import '@luokuiai/lumen-theme-paper';
 import '@luokuiai/lumen-theme-prism';
+import { demoCardCodeByTitle } from './generated/demoCardCode';
 
 type Section = {
   id: string;
@@ -284,7 +285,7 @@ const galleryCategories: GalleryCategory[] = [
         },
       },
       demo('Toolbar', 'navigation', 'Button, Toolbar', '    <Toolbar\n      ariaLabel="列表操作"\n      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"\n    >\n      <Button size="sm" variant="ghost" icon={<Search size={15} />}>\n        搜索\n      </Button>\n      <Button size="sm" variant="ghost" icon={<Filter size={15} />}>\n        筛选\n      </Button>\n      <div className="flex-1" />\n      <Button size="sm" icon={<Plus size={15} />}>\n        新建\n      </Button>\n    </Toolbar>', 'Filter, Plus, Search'),
-      demo('DropdownMenu', 'navigation', 'Button, DropdownMenu', '    <DropdownMenu\n      trigger={({ toggle }) => <Button onClick={toggle}>打开菜单</Button>}\n    >\n      {({ close }) => <button onClick={close}>复制</button>}\n    </DropdownMenu>', undefined, undefined, ['Dropdown']),
+      demo('DropdownMenu', 'navigation', 'Button, DropdownMenu', '    <DropdownMenu\n      trigger={({ toggle }) => <Button onClick={toggle}>打开菜单</Button>}\n    >\n      {({ close }) => <button onClick={close}>复制</button>}\n    </DropdownMenu>'),
     ],
   },
   {
@@ -895,7 +896,10 @@ function DemoCard({
   const activeDemo = useContext(ActiveDemoContext);
   if (activeDemo && !activeDemo.demo.cardTitles.includes(title)) return null;
 
-  const code = activeDemo?.demo.codeByCardTitle?.[title] ?? activeDemo?.demo.code ?? '';
+  const code = demoCardCodeByTitle[title]
+    ?? activeDemo?.demo.codeByCardTitle?.[title]
+    ?? activeDemo?.demo.code
+    ?? '';
   const codePanelId = activeDemo ? `demo-code-${activeDemo.demo.id}-${toDemoId(title)}` : undefined;
   const codeExpanded = activeDemo?.expandedCodeTitle === title;
   const copied = activeDemo?.copiedCodeTitle === title;
@@ -1658,7 +1662,7 @@ export default function App() {
                           color: 'var(--lumen-color-danger-text)',
                         }}
                       />
-                      <Avatar fallback={<UserRound size={18} />} />
+                    <Avatar fallback={<UserRound size={18} />} />
                   </div>
                 </DemoCard>
                 <DemoCard title="Chip" wide>
@@ -1698,9 +1702,9 @@ export default function App() {
                         />
                       )}
                     </FormField>
-              <FormField label="负责人">
-                <Input placeholder="负责人姓名" suffix={<UserRound size={15} />} />
-              </FormField>
+                    <FormField label="负责人">
+                      <Input placeholder="负责人姓名" suffix={<UserRound size={15} />} />
+                    </FormField>
                     <FormField label="访问密码">
                       <Input
                         type="password"
@@ -1729,11 +1733,11 @@ export default function App() {
                   <div className="max-w-[640px]">
                     <FormField label="备注" className="form-span">
                       <Textarea
-                      value={textareaText}
-                      onChange={(event) => setTextareaText(event.target.value)}
-                      maxLength={200}
-                      rows={4}
-                      showCount
+                        value={textareaText}
+                        onChange={(event) => setTextareaText(event.target.value)}
+                        maxLength={200}
+                        rows={4}
+                        showCount
                       />
                     </FormField>
                   </div>
