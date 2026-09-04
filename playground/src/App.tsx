@@ -362,7 +362,15 @@ const getRouteFromHash = () => {
   return { categoryId: category.id, demoId: selectedDemo.id };
 };
 
-const ActiveDemoContext = createContext<string | null>(null);
+type ActiveDemoContextValue = {
+  demo: DemoDefinition;
+  codeExpanded: boolean;
+  copied: boolean;
+  onToggleCode: () => void;
+  onCopyCode: () => void;
+};
+
+const ActiveDemoContext = createContext<ActiveDemoContextValue | null>(null);
 const initialGalleryRoute = getRouteFromHash();
 
 const basicSelectOptions = [
@@ -681,50 +689,130 @@ function DemoCard({
   children: React.ReactNode;
   wide?: boolean;
 }) {
-  const activeDemoId = useContext(ActiveDemoContext);
-  if (activeDemoId && toDemoId(title) !== activeDemoId) return null;
+  const activeDemo = useContext(ActiveDemoContext);
+  if (activeDemo && toDemoId(title) !== activeDemo.demo.id) return null;
+
+  const codePanelId = activeDemo ? `demo-code-${activeDemo.demo.id}` : undefined;
 
   return (
-    <Card className={wide ? 'demo-card-wide' : undefined}>
+    <Card className={`${wide ? 'demo-card-wide ' : ''}demo-card`.trim()}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent>{children}</CardContent>
+      <CardContent className="demo-preview-surface">{children}</CardContent>
+      {activeDemo ? (
+        <>
+          <div className="demo-card-toolbar">
+            <Button
+              size="sm"
+              variant="ghost"
+              icon={<Code2 size={16} />}
+              aria-controls={codePanelId}
+              aria-expanded={activeDemo.codeExpanded}
+              onClick={activeDemo.onToggleCode}
+            >
+              {activeDemo.codeExpanded ? '隐藏代码' : '查看代码'}
+            </Button>
+          </div>
+          {activeDemo.codeExpanded ? (
+            <div id={codePanelId} className="demo-code-panel">
+              <div className="demo-code-header">
+                <span>React</span>
+                <Tooltip content={activeDemo.copied ? '已复制' : '复制代码'} placement="left">
+                  <Button
+                    iconOnly
+                    size="sm"
+                    variant="ghost"
+                    aria-label={activeDemo.copied ? '代码已复制' : '复制代码'}
+                    icon={activeDemo.copied ? <Check size={16} /> : <Copy size={16} />}
+                    onClick={activeDemo.onCopyCode}
+                  />
+                </Tooltip>
+              </div>
+              <pre className="usage-code" tabIndex={0}>
+                <code>{activeDemo.demo.code}</code>
+              </pre>
+            </div>
+          ) : null}
+        </>
+      ) : null}
     </Card>
   );
 }
 
-function UsagePanel({
-  demo: selectedDemo,
-  copied,
-  onCopy,
+function GalleryTreeNav({
+  categories,
+  activeCategoryId,
+  activeDemoId,
+  expandedCategoryIds,
+  collapsed = false,
+  onToggleCategory,
+  onSelectDemo,
 }: {
-  demo: DemoDefinition;
-  copied: boolean;
-  onCopy: () => void;
+  categories: GalleryCategory[];
+  activeCategoryId: string;
+  activeDemoId: string;
+  expandedCategoryIds: string[];
+  collapsed?: boolean;
+  onToggleCategory: (categoryId: string) => void;
+  onSelectDemo: (categoryId: string, demoId: string) => void;
 }) {
   return (
-    <aside className="usage-panel" aria-label={`${selectedDemo.title} 使用示例`}>
-      <div className="usage-panel-header">
-        <div>
-          <span>Usage</span>
-          <strong>{selectedDemo.title}</strong>
-        </div>
-        <Tooltip content={copied ? '已复制' : '复制代码'} placement="left">
-          <Button
-            iconOnly
-            size="sm"
-            variant="ghost"
-            aria-label={copied ? '代码已复制' : '复制代码'}
-            icon={copied ? <Check size={16} /> : <Copy size={16} />}
-            onClick={onCopy}
-          />
-        </Tooltip>
-      </div>
-      <pre className="usage-code" tabIndex={0}>
-        <code>{selectedDemo.code}</code>
-      </pre>
-    </aside>
+    <nav className="gallery-tree-nav" aria-label="组件目录">
+      {categories.map((category) => {
+        const Icon = category.icon;
+        const expanded = expandedCategoryIds.includes(category.id);
+        const categoryButton = (
+          <button
+            type="button"
+            className="gallery-tree-category"
+            data-active={category.id === activeCategoryId || undefined}
+            aria-expanded={collapsed ? undefined : expanded}
+            aria-controls={collapsed ? undefined : `category-${category.id}`}
+            aria-label={collapsed ? category.title : undefined}
+            onClick={() => {
+              if (collapsed) {
+                onSelectDemo(category.id, category.demos[0]!.id);
+              } else {
+                onToggleCategory(category.id);
+              }
+            }}
+          >
+            <Icon aria-hidden="true" size={19} />
+            {collapsed ? null : (
+              <>
+                <span>{category.title}</span>
+                <ChevronDown className="gallery-tree-chevron" aria-hidden="true" size={16} />
+              </>
+            )}
+          </button>
+        );
+
+        return (
+          <div key={category.id} className="gallery-tree-group" data-expanded={expanded || undefined}>
+            {collapsed ? (
+              <Tooltip content={category.title} placement="right">{categoryButton}</Tooltip>
+            ) : categoryButton}
+            {!collapsed ? (
+              <div id={`category-${category.id}`} className="gallery-tree-children" hidden={!expanded}>
+                {category.demos.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className="gallery-tree-item"
+                    data-active={item.id === activeDemoId || undefined}
+                    aria-current={item.id === activeDemoId ? 'page' : undefined}
+                    onClick={() => onSelectDemo(category.id, item.id)}
+                  >
+                    {item.title}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        );
+      })}
+    </nav>
   );
 }
 
@@ -752,6 +840,8 @@ export default function App() {
   const [accent, setAccent] = useState<Accent>(initialAccent);
   const [activeSection, setActiveSection] = useState(initialGalleryRoute.categoryId);
   const [activeDemoId, setActiveDemoId] = useState(initialGalleryRoute.demoId);
+  const [expandedCategoryIds, setExpandedCategoryIds] = useState([initialGalleryRoute.categoryId]);
+  const [codeExpanded, setCodeExpanded] = useState(false);
   const [copiedDemoId, setCopiedDemoId] = useState<string>();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -807,35 +897,6 @@ export default function App() {
     ),
     [normalizedSearch],
   );
-  const filteredActiveDemos = useMemo(() => {
-    if (!normalizedSearch) return activeCategory.demos;
-    const categoryMatches = `${activeCategory.title} ${activeCategory.description} ${activeCategory.keywords}`
-      .toLowerCase()
-      .includes(normalizedSearch);
-    return categoryMatches
-      ? activeCategory.demos
-      : activeCategory.demos.filter((item) => item.title.toLowerCase().includes(normalizedSearch));
-  }, [activeCategory, normalizedSearch]);
-  const categoryNavSections = useMemo(
-    () => [{
-      items: filteredCategories.map((category) => ({
-        value: category.id,
-        label: category.title,
-        icon: category.icon,
-      })),
-    }],
-    [filteredCategories],
-  );
-  const componentNavSections = useMemo(
-    () => [{
-      title: activeCategory.title,
-      items: filteredActiveDemos.map((item) => ({
-        value: item.id,
-        label: item.title,
-      })),
-    }],
-    [activeCategory.title, filteredActiveDemos],
-  );
   const activeSections = useMemo(() => {
     const sourceSection = renderSections.find((section) => section.id === activeDemo.sourceSection);
     return sourceSection
@@ -853,14 +914,25 @@ export default function App() {
     const nextDemo = category.demos[0]!;
     setActiveSection(category.id);
     setActiveDemoId(nextDemo.id);
+    setExpandedCategoryIds((current) => current.includes(category.id) ? current : [...current, category.id]);
     window.history.replaceState(null, '', `#${category.id}/${nextDemo.id}`);
   };
 
-  const navigateToDemo = (demoId: string) => {
-    const selectedDemo = activeCategory.demos.find((item) => item.id === demoId);
+  const navigateToDemo = (categoryId: string, demoId: string) => {
+    const category = galleryCategories.find((item) => item.id === categoryId);
+    if (!category) return;
+    const selectedDemo = category.demos.find((item) => item.id === demoId);
     if (!selectedDemo) return;
+    setActiveSection(category.id);
     setActiveDemoId(selectedDemo.id);
-    window.history.replaceState(null, '', `#${activeCategory.id}/${selectedDemo.id}`);
+    setExpandedCategoryIds((current) => current.includes(category.id) ? current : [...current, category.id]);
+    window.history.replaceState(null, '', `#${category.id}/${selectedDemo.id}`);
+  };
+
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategoryIds((current) => current.includes(categoryId)
+      ? current.filter((item) => item !== categoryId)
+      : [...current, categoryId]);
   };
 
   const copyActiveDemoCode = async () => {
@@ -893,6 +965,7 @@ export default function App() {
 
   useLayoutEffect(() => {
     mainScrollRef.current?.scrollTo({ top: 0 });
+    setCodeExpanded(false);
   }, [activeDemoId, activeSection]);
 
   useEffect(() => {
@@ -952,23 +1025,15 @@ export default function App() {
       <aside className="sidebar">
         <GalleryBrand />
         <div className="sidebar-navigation">
-          <SideNav
-            ariaLabel="组件分类"
-            activeValue={activeSection}
+          <GalleryTreeNav
+            categories={filteredCategories}
+            activeCategoryId={activeSection}
+            activeDemoId={activeDemo.id}
+            expandedCategoryIds={expandedCategoryIds}
             collapsed={sidebarCollapsed}
-            className="gallery-side-nav"
-            sections={categoryNavSections}
-            onSelect={navigateToCategory}
+            onToggleCategory={toggleCategory}
+            onSelectDemo={navigateToDemo}
           />
-          {!sidebarCollapsed ? (
-            <SideNav
-              ariaLabel={`${activeCategory.title} 组件`}
-              activeValue={activeDemo.id}
-              className="gallery-component-nav"
-              sections={componentNavSections}
-              onSelect={navigateToDemo}
-            />
-          ) : null}
         </div>
       </aside>
 
@@ -990,20 +1055,14 @@ export default function App() {
           />
         </div>
         <div className="mobile-navigation-content">
-          <SideNav
-            ariaLabel="移动端组件分类"
-            activeValue={activeSection}
-            className="mobile-side-nav"
-            sections={categoryNavSections}
-            onSelect={navigateToCategory}
-          />
-          <SideNav
-            ariaLabel={`${activeCategory.title} 组件`}
-            activeValue={activeDemo.id}
-            className="mobile-component-nav"
-            sections={componentNavSections}
-            onSelect={(value) => {
-              navigateToDemo(value);
+          <GalleryTreeNav
+            categories={filteredCategories}
+            activeCategoryId={activeSection}
+            activeDemoId={activeDemo.id}
+            expandedCategoryIds={expandedCategoryIds}
+            onToggleCategory={toggleCategory}
+            onSelectDemo={(categoryId, demoId) => {
+              navigateToDemo(categoryId, demoId);
               setMobileNavOpen(false);
             }}
           />
@@ -1255,7 +1314,13 @@ export default function App() {
 
         <Scrollbar ref={mainScrollRef} className="main-scrollbar" size="sm">
           <div className="main-content">
-            <ActiveDemoContext.Provider value={activeDemo.id}>
+            <ActiveDemoContext.Provider value={{
+              demo: activeDemo,
+              codeExpanded,
+              copied: copiedDemoId === activeDemo.id,
+              onToggleCode: () => setCodeExpanded((expanded) => !expanded),
+              onCopyCode: () => void copyActiveDemoCode(),
+            }}>
               <div className="gallery-workspace">
                 <div className="gallery-preview">
                   {activeSections.map((section) => {
@@ -2133,11 +2198,6 @@ export default function App() {
           );
                   })}
                 </div>
-                <UsagePanel
-                  demo={activeDemo}
-                  copied={copiedDemoId === activeDemo.id}
-                  onCopy={() => void copyActiveDemoCode()}
-                />
               </div>
             </ActiveDemoContext.Provider>
           </div>
