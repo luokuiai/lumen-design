@@ -34,16 +34,20 @@ import {
   AppHeader,
   Avatar,
   Badge,
+  Breadcrumb,
   Button,
+  Calendar,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+  Cascader,
   Checkbox,
   Chip,
   Collapse,
   CollapseItem,
+  CommandPalette,
   ConfirmDialog,
   DatePicker,
   DateTimePicker,
@@ -59,11 +63,13 @@ import {
   List,
   ListItem,
   Modal,
+  NumberInput,
   Pagination,
   Popover,
   Progress,
   Radio,
   RadioGroup,
+  Rating,
   Scrollbar,
   SegmentedControl,
   Select,
@@ -167,11 +173,11 @@ type SafetyEvent = {
 const sections: Section[] = [
   { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button Badge Chip Avatar Tooltip', icon: Plus },
-  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input FormField Textarea Checkbox Radio RadioGroup Switch Slider', icon: Check },
-  { id: 'pickers', title: 'Pickers', description: '选择器、树选择、穿梭框、日期和时间选择。', keywords: 'Select TreeSelect Transfer DatePicker TimePicker DateTimePicker', icon: CalendarDays },
+  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input NumberInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
+  { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
-  { id: 'navigation', title: 'Navigation', description: '标签页、步骤、菜单和时间线。', keywords: 'Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
-  { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、确认和消息提示。', keywords: 'Modal Drawer ConfirmDialog Toast', icon: Bell },
+  { id: 'navigation', title: 'Navigation', description: '面包屑、标签页、步骤、菜单和时间线。', keywords: 'Breadcrumb Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
+  { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、命令面板、确认和消息提示。', keywords: 'Modal Drawer CommandPalette ConfirmDialog Toast', icon: Bell },
   { id: 'feedback', title: 'Feedback', description: '页面提示、加载、进度、空状态、上传和骨架屏。', keywords: 'Alert Spinner Progress Empty FileUpload Skeleton SegmentedControl', icon: Settings },
 ];
 
@@ -195,6 +201,46 @@ const selectOptions = [
   { label: '需求同步', value: 'sync', group: '会议', description: '业务与研发对齐' },
   { label: '线上发布', value: 'release', group: '变更', description: '生产环境发布窗口' },
   { label: '回归测试', value: 'qa', group: '变更', disabled: true },
+];
+
+const cascaderOptions = [
+  {
+    value: 'east',
+    label: '华东区域',
+    children: [
+      {
+        value: 'shanghai',
+        label: '上海市',
+        children: [
+          { value: 'pudong', label: '浦东新区', keywords: ['陆家嘴'] },
+          { value: 'xuhui', label: '徐汇区' },
+        ],
+      },
+      {
+        value: 'hangzhou',
+        label: '杭州市',
+        children: [
+          { value: 'xihu', label: '西湖区' },
+          { value: 'binjiang', label: '滨江区' },
+        ],
+      },
+    ],
+  },
+  {
+    value: 'north',
+    label: '华北区域',
+    children: [
+      {
+        value: 'beijing',
+        label: '北京市',
+        children: [
+          { value: 'chaoyang', label: '朝阳区' },
+          { value: 'haidian', label: '海淀区' },
+        ],
+      },
+      { value: 'offline', label: '暂未开通', disabled: true },
+    ],
+  },
 ];
 
 const treeNodes: TreeNode[] = [
@@ -497,6 +543,7 @@ export default function App() {
   const [priorityChipSelected, setPriorityChipSelected] = useState(false);
   const [temporaryChipVisible, setTemporaryChipVisible] = useState(true);
   const [sliderValue, setSliderValue] = useState(62);
+  const [ratingValue, setRatingValue] = useState(3.5);
   const [radioValue, setRadioValue] = useState('pad');
   const [segment, setSegment] = useState<'all' | 'active' | 'archived'>('all');
   const [tab, setTab] = useState<'overview' | 'usage' | 'tokens'>('overview');
@@ -505,6 +552,7 @@ export default function App() {
   const [basicSelectValue, setBasicSelectValue] = useState<string | null>(null);
   const [selectValue, setSelectValue] = useState<string | null>('review');
   const [multiSelectValue, setMultiSelectValue] = useState<Array<string | number>>(['review', 'release']);
+  const [cascaderValue, setCascaderValue] = useState<string[]>(['east', 'shanghai', 'pudong']);
   const [treeValue, setTreeValue] = useState<string | null>('frontend');
   const [treeValues, setTreeValues] = useState(['product-design', 'frontend']);
   const [transferTargetKeys, setTransferTargetKeys] = useState<React.Key[]>(['camera-north', 'radar']);
@@ -520,6 +568,7 @@ export default function App() {
   const [files, setFiles] = useState<File[]>([]);
   const [compactFiles, setCompactFiles] = useState<File[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [modalSelectValue, setModalSelectValue] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -1043,6 +1092,24 @@ export default function App() {
               <FormField label="负责人">
                 <Input placeholder="负责人姓名" suffix={<UserRound size={15} />} />
               </FormField>
+                    <FormField label="访问密码">
+                      <Input
+                        type="password"
+                        passwordToggle
+                        autoComplete="current-password"
+                        defaultValue="lumen-demo"
+                      />
+                    </FormField>
+                    <FormField label="处置时限">
+                      <NumberInput
+                        aria-label="处置时限"
+                        defaultValue={30}
+                        min={5}
+                        max={120}
+                        step={5}
+                        suffix="分钟"
+                      />
+                    </FormField>
                     <FormField label="备注" className="form-span">
                       <Textarea
                       value={textareaText}
@@ -1096,6 +1163,18 @@ export default function App() {
                       status="warning"
                       showValue
                     />
+                  </div>
+                </DemoCard>
+                <DemoCard title="Rating" wide>
+                  <div className="max-w-[320px]">
+                    <FormField label="服务评分">
+                      <Rating
+                        aria-label="服务评分"
+                        value={ratingValue}
+                        onChange={setRatingValue}
+                        allowHalf
+                      />
+                    </FormField>
                   </div>
                 </DemoCard>
               </GallerySection>
@@ -1153,12 +1232,30 @@ export default function App() {
                     />
                   </div>
                 </DemoCard>
+                <DemoCard title="Cascader" wide>
+                  <div className="max-w-[420px]">
+                    <FormField label="所属区域">
+                      <Cascader
+                        options={cascaderOptions}
+                        value={cascaderValue}
+                        onChange={setCascaderValue}
+                        searchable
+                        aria-label="选择所属区域"
+                      />
+                    </FormField>
+                  </div>
+                </DemoCard>
                 <DemoCard title="Date + Time" wide>
                   <div className="form-grid">
                     <DatePicker value={dateValue} onChange={setDateValue} />
                     <DatePicker value={monthValue} onChange={setMonthValue} mode="year-month" />
                     <TimePicker value={timeValue} onChange={setTimeValue} minuteStep={5} />
                     <DateTimePicker label="开始时间" value={dateTimeValue} onChange={setDateTimeValue} minuteStep={5} />
+                  </div>
+                </DemoCard>
+                <DemoCard title="Calendar" wide>
+                  <div className="max-w-[320px]">
+                    <Calendar value={dateValue} onChange={setDateValue} />
                   </div>
                 </DemoCard>
                 <DemoCard title="Transfer" wide>
@@ -1177,6 +1274,15 @@ export default function App() {
           if (section.id === 'navigation') {
             return (
               <GallerySection key={section.id} section={section}>
+                <DemoCard title="Breadcrumb" wide>
+                  <Breadcrumb
+                    items={[
+                      { label: '运营中心', href: '#navigation' },
+                      { label: '事件管理', href: '#navigation' },
+                      { label: '事件详情' },
+                    ]}
+                  />
+                </DemoCard>
                 <DemoCard title="Tabs" wide>
                   <Tabs
                     value={tab}
@@ -1448,6 +1554,9 @@ export default function App() {
               <GallerySection key={section.id} section={section}>
                 <DemoCard title="Modal + Drawer + Confirm" wide>
                   <div className="button-row">
+                    <Button variant="secondary" icon={<Search size={15} />} onClick={() => setCommandPaletteOpen(true)}>
+                      打开 CommandPalette
+                    </Button>
                     <Button onClick={() => setModalOpen(true)}>打开 Modal</Button>
                     <Button variant="secondary" onClick={() => setDrawerOpen(true)}>打开 Drawer</Button>
                     <Button variant="destructive" onClick={() => setConfirmOpen(true)}>打开 Confirm</Button>
@@ -1651,6 +1760,40 @@ export default function App() {
           <Button onClick={() => setModalOpen(false)}>保存</Button>
         </div>
       </Modal>
+
+      <CommandPalette
+        open={commandPaletteOpen}
+        onOpenChange={setCommandPaletteOpen}
+        enableShortcut
+        groups={[
+          {
+            heading: '组件分类',
+            items: sections.map((section) => ({
+              id: section.id,
+              label: section.title,
+              description: section.description,
+              keywords: section.keywords.split(' '),
+              icon: <section.icon size={16} />,
+              onSelect: () => {
+                setActiveSection(section.id);
+                window.history.replaceState(null, '', `#${section.id}`);
+              },
+            })),
+          },
+          {
+            heading: '操作',
+            items: [
+              {
+                id: 'toggle-theme',
+                label: colorScheme === 'dark' ? '切换到浅色模式' : '切换到深色模式',
+                icon: colorScheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />,
+                shortcut: 'T',
+                onSelect: () => setColorScheme((scheme) => (scheme === 'dark' ? 'light' : 'dark')),
+              },
+            ],
+          },
+        ]}
+      />
 
       <Drawer
         open={drawerOpen}
