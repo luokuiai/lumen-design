@@ -836,6 +836,53 @@ function GallerySection({ section, children }: { section: Section; children: Rea
   );
 }
 
+const tsxTokenPattern = /(\/\*.*?\*\/|\/\/.*|`(?:\\.|[^`\\])*`|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|<\/?[A-Za-z][\w.:-]*|\b(?:as|async|await|break|case|catch|class|const|continue|default|else|export|extends|false|finally|for|from|function|if|import|in|interface|let|new|null|of|return|switch|throw|true|try|type|undefined|while)\b|\b\d+(?:\.\d+)?\b|[A-Za-z_$][\w$-]*(?=\s*=)|[{}[\]()]|\/?>(?!\=))/g;
+
+function getTsxTokenClass(token: string) {
+  if (token.startsWith('//') || token.startsWith('/*')) return 'syntax-comment';
+  if (/^["'`]/.test(token)) return 'syntax-string';
+  if (/^<\/?/.test(token) || token === '>' || token === '/>') return 'syntax-tag';
+  if (/^\d/.test(token)) return 'syntax-number';
+  if (/^[{}[\]()]$/.test(token)) return 'syntax-punctuation';
+  if (/^(?:as|async|await|break|case|catch|class|const|continue|default|else|export|extends|false|finally|for|from|function|if|import|in|interface|let|new|null|of|return|switch|throw|true|try|type|undefined|while)$/.test(token)) {
+    return 'syntax-keyword';
+  }
+  return 'syntax-property';
+}
+
+function SyntaxCode({ code }: { code: string }) {
+  return (
+    <pre className="usage-code" tabIndex={0}>
+      <code>
+        {code.split('\n').map((line, lineIndex) => {
+          const tokens: React.ReactNode[] = [];
+          let lastIndex = 0;
+
+          for (const match of line.matchAll(tsxTokenPattern)) {
+            const index = match.index ?? 0;
+            if (index > lastIndex) tokens.push(line.slice(lastIndex, index));
+            tokens.push(
+              <span key={`${index}-${match[0]}`} className={getTsxTokenClass(match[0])}>
+                {match[0]}
+              </span>,
+            );
+            lastIndex = index + match[0].length;
+          }
+
+          if (lastIndex < line.length) tokens.push(line.slice(lastIndex));
+
+          return (
+            <span key={lineIndex} className="usage-code-line">
+              <span className="usage-code-line-number" aria-hidden="true">{lineIndex + 1}</span>
+              <span className="usage-code-line-content">{tokens.length ? tokens : ' '}</span>
+            </span>
+          );
+        })}
+      </code>
+    </pre>
+  );
+}
+
 function DemoCard({
   title,
   children,
@@ -855,24 +902,26 @@ function DemoCard({
 
   return (
     <Card className={`${wide ? 'demo-card-wide ' : ''}demo-card`.trim()}>
-      <CardHeader>
+      <CardHeader className="demo-card-header">
         <CardTitle>{title}</CardTitle>
+        {activeDemo ? (
+          <Tooltip content={codeExpanded ? '隐藏代码' : '查看代码'} placement="left">
+            <Button
+              iconOnly
+              size="sm"
+              variant="ghost"
+              aria-label={codeExpanded ? '隐藏代码' : '查看代码'}
+              aria-controls={codePanelId}
+              aria-expanded={codeExpanded}
+              icon={<Code2 size={16} />}
+              onClick={() => activeDemo.onToggleCode(title)}
+            />
+          </Tooltip>
+        ) : null}
       </CardHeader>
       <CardContent className="demo-preview-surface">{children}</CardContent>
       {activeDemo ? (
         <>
-          <div className="demo-card-toolbar">
-            <Button
-              size="sm"
-              variant="ghost"
-              icon={<Code2 size={16} />}
-              aria-controls={codePanelId}
-              aria-expanded={codeExpanded}
-              onClick={() => activeDemo.onToggleCode(title)}
-            >
-              {codeExpanded ? '隐藏代码' : '查看代码'}
-            </Button>
-          </div>
           {codeExpanded ? (
             <div id={codePanelId} className="demo-code-panel">
               <div className="demo-code-header">
@@ -888,9 +937,7 @@ function DemoCard({
                   />
                 </Tooltip>
               </div>
-              <pre className="usage-code" tabIndex={0}>
-                <code>{code}</code>
-              </pre>
+              <SyntaxCode code={code} />
             </div>
           ) : null}
         </>

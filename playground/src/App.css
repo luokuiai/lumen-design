@@ -296,18 +296,25 @@ body {
   overflow: hidden;
 }
 
+.demo-card-header {
+  min-height: 60px;
+  align-items: center;
+  border-bottom: 1px solid var(--lumen-color-divider);
+}
+
+.demo-card-header [data-ui='button'] {
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+
+.demo-card-header [data-ui='button'][aria-expanded='true'] {
+  background: var(--lumen-color-primary-soft);
+  color: var(--lumen-color-primary);
+}
+
 .demo-preview-surface {
   min-height: 152px;
   padding-block: 28px;
-}
-
-.demo-card-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-height: 48px;
-  border-top: 1px solid var(--lumen-color-divider);
-  padding: 6px 12px;
 }
 
 .demo-code-panel {
@@ -349,13 +356,65 @@ body {
   overflow: auto;
   border: 0;
   background: #0f172a;
-  padding: 20px;
-  color: #dbeafe;
+  padding: 16px 0 20px;
+  color: #d8dee9;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 12px;
-  line-height: 1.65;
+  line-height: 1.75;
   tab-size: 2;
   white-space: pre;
+}
+
+.usage-code-line {
+  display: grid;
+  min-width: max-content;
+  grid-template-columns: 48px minmax(0, 1fr);
+  padding-right: 20px;
+}
+
+.usage-code-line:hover {
+  background: rgb(255 255 255 / 4%);
+}
+
+.usage-code-line-number {
+  padding-right: 14px;
+  color: #536076;
+  text-align: right;
+  user-select: none;
+}
+
+.usage-code-line-content {
+  padding-left: 16px;
+  border-left: 1px solid #263244;
+}
+
+.syntax-comment {
+  color: #7d899c;
+  font-style: italic;
+}
+
+.syntax-keyword {
+  color: #c792ea;
+}
+
+.syntax-string {
+  color: #a8d78d;
+}
+
+.syntax-number {
+  color: #f3b875;
+}
+
+.syntax-tag {
+  color: #82aaff;
+}
+
+.syntax-property {
+  color: #f1c47b;
+}
+
+.syntax-punctuation {
+  color: #89ddff;
 }
 
 .usage-code:focus-visible {
@@ -897,6 +956,20 @@ body {
   .demo-preview-surface {
     min-height: 132px;
     padding-block: 24px;
+  }
+
+  .demo-card-header {
+    min-height: 56px;
+    padding: 10px 12px 10px 16px;
+  }
+
+  .usage-code-line {
+    grid-template-columns: 40px minmax(0, 1fr);
+    padding-right: 16px;
+  }
+
+  .usage-code-line-content {
+    padding-left: 12px;
   }
 
   .component-guidance {
