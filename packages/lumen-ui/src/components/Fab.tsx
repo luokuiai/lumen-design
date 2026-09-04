@@ -36,16 +36,16 @@ const fabPositionClassNames: Record<FabPosition, string> = {
 
 const fabSizeClassNames: Record<ButtonSize, { icon: string; extended: string }> = {
   sm: {
-    icon: '!h-10 !w-10 !rounded-full p-0',
-    extended: '!h-10 !rounded-[var(--lumen-radius-pill)] px-4 text-[13px]',
+    icon: '!h-9 !w-9 !rounded-full p-0',
+    extended: '!h-9 !rounded-[var(--lumen-radius-pill)] px-3.5 text-[13px]',
   },
   md: {
-    icon: '!h-12 !w-12 !rounded-full p-0',
-    extended: '!h-12 !rounded-[var(--lumen-radius-pill)] px-5 text-[14px]',
+    icon: '!h-11 !w-11 !rounded-full p-0',
+    extended: '!h-11 !rounded-[var(--lumen-radius-pill)] px-[18px] text-[14px]',
   },
   lg: {
-    icon: '!h-14 !w-14 !rounded-full p-0',
-    extended: '!h-14 !rounded-[var(--lumen-radius-pill)] px-6 text-[15px]',
+    icon: '!h-[52px] !w-[52px] !rounded-full p-0',
+    extended: '!h-[52px] !rounded-[var(--lumen-radius-pill)] px-[22px] text-[15px]',
   },
 };
 

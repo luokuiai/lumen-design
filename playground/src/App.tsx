@@ -393,7 +393,7 @@ const componentGuides: Record<string, ComponentGuide> = {
       { name: 'icon', type: 'ReactNode', defaultValue: '-', description: '必填，按钮图标。' },
       { name: 'label', type: 'ReactNode', defaultValue: '-', description: '扩展状态显示的文字，也可作为折叠状态的可访问名称。' },
       { name: 'extended', type: 'boolean', defaultValue: '自动', description: '显式控制带文字或仅图标形态。未设置时根据 label 判断。' },
-      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'sm'", description: '控制 40、48、56px 三档高度。' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'sm'", description: '控制 36、44、52px 三档高度。' },
       { name: 'variant', type: 'ButtonVariant', defaultValue: "'primary'", description: '设置主色、次级、描边或危险操作样式。' },
       { name: 'position', type: "'fixed' | 'absolute' | 'static'", defaultValue: "'fixed'", description: '决定相对视口、容器或普通文档流定位。' },
       { name: 'placement', type: "'bottom-end' | 'bottom-start' | 'top-end' | 'top-start'", defaultValue: "'bottom-end'", description: '设置悬浮位置，并自动适配 RTL。' },
