@@ -61,7 +61,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const restoreFocusRef = useRef<HTMLElement | null>(null);
   const listboxId = useId();
   const optionIdPrefix = useId();
   const effectiveSearchValue = searchValue ?? internalSearchValue;
@@ -113,17 +112,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   }, [activeIndex]);
 
   useEffect(() => {
-    if (!open) return;
-    restoreFocusRef.current = document.activeElement as HTMLElement | null;
-    const frameId = window.requestAnimationFrame(() => inputRef.current?.focus());
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      restoreFocusRef.current?.focus();
-    };
-  }, [open]);
-
-  useEffect(() => {
     if (!enableShortcut) return;
     const handleShortcut = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLocaleLowerCase() === shortcutKey.toLocaleLowerCase()) {
@@ -162,10 +150,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   );
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      onOpenChange(false);
-    } else if (event.key === 'ArrowDown') {
+    if (event.key === 'ArrowDown') {
       event.preventDefault();
       moveActiveItem(1);
     } else if (event.key === 'ArrowUp') {
@@ -180,26 +165,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     }
   };
 
-  const handlePanelKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== 'Tab') {
-      handleKeyDown(event as React.KeyboardEvent<HTMLInputElement>);
-      return;
-    }
-    const focusable = Array.from(
-      panelRef.current?.querySelectorAll<HTMLElement>('input, button:not(:disabled)') ?? [],
-    );
-    if (focusable.length === 0) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last?.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first?.focus();
-    }
-  };
-
   let itemIndex = -1;
 
   return (
@@ -207,20 +172,19 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       open={open}
       onRequestClose={() => onOpenChange(false)}
       modalId="command-palette"
+      aria-label={label}
+      initialFocusRef={inputRef}
       overlayClassName="items-start pt-[max(12vh,3rem)]"
       panelClassName="w-full max-w-[640px]"
     >
       <div
         ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label={label}
         data-ui="command-palette"
         className={cn(
           'isolate w-full overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] shadow-[var(--lumen-shadow-modal)]',
           className,
         )}
-        onKeyDown={handlePanelKeyDown}
+        onKeyDown={(event) => handleKeyDown(event as React.KeyboardEvent<HTMLInputElement>)}
       >
         <div className="flex h-12 items-center gap-3 border-b border-[var(--lumen-color-border)] px-4">
           <Search aria-hidden="true" className="shrink-0 text-[var(--lumen-color-text-muted)]" size={18} />

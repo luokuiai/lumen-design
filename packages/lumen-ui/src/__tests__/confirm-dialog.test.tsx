@@ -25,5 +25,8 @@ describe('ConfirmDialog', () => {
     expect(panel).toHaveClass('w-full', 'max-w-[420px]');
     expect(panel).not.toHaveClass('max-w-full');
     expect(actions).toHaveClass('l:flex-row', 'l:items-center', 'l:justify-end');
+    const dialog = screen.getByRole('alertdialog', { name: 'Confirm action' });
+    expect(dialog).toHaveAccessibleDescription('This action cannot be undone.');
+    expect(dialog).toHaveAttribute('aria-modal', 'true');
   });
 });

@@ -10,6 +10,7 @@ import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-reac
 import { Calendar } from './calendar/Calendar';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
+import { useOverlayPortalScope } from './useOverlayBehavior';
 
 // ─── 类型定义 ────────────────────────────────────────────
 
@@ -168,6 +169,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   minDate,
   maxDate,
 }) => {
+  const overlayScopeId = useOverlayPortalScope();
   const [open, setOpen] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -475,7 +477,17 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   // ─── 渲染 ──────────────────────────────────────────
 
   return (
-    <div ref={ref} className={cn('relative', className)}>
+    <div
+      ref={ref}
+      className={cn('relative', className)}
+      onKeyDown={(event) => {
+        if (!open || event.key !== 'Escape') return;
+        event.preventDefault();
+        event.stopPropagation();
+        closeDropdown();
+        triggerRef.current?.focus();
+      }}
+    >
       {/* 触发按钮 */}
       <button
         ref={triggerRef}
@@ -518,6 +530,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             ref={portalRef}
             data-ui="date-picker-panel"
             data-date-picker-portal
+            data-lumen-overlay-scope={overlayScopeId ?? undefined}
             className="rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-xl"
             style={{
               ...dropdownStyle,

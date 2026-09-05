@@ -11,6 +11,7 @@ import { Check, ChevronDown, LoaderCircle, Search, X } from 'lucide-react';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { dropdownTransformOrigin } from './dropdownMotion';
+import { useOverlayPortalScope } from './useOverlayBehavior';
 
 const DROPDOWN_CLOSE_ANIMATION_MS = 120;
 const SHOULD_SKIP_CLOSE_ANIMATION_IN_TEST = import.meta.env.MODE === 'test';
@@ -150,6 +151,7 @@ export const Select = <T extends string | number = string>({
   optionClassName,
   'aria-label': ariaLabel,
 }: SelectProps<T>) => {
+  const overlayScopeId = useOverlayPortalScope();
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const [isPreparingOpen, setIsPreparingOpen] = useState(false);
@@ -410,6 +412,8 @@ export const Select = <T extends string | number = string>({
 
       switch (e.key) {
         case 'Escape':
+          e.preventDefault();
+          e.stopPropagation();
           closeDropdownImmediate();
           break;
         case 'Enter':
@@ -746,6 +750,7 @@ export const Select = <T extends string | number = string>({
             ref={portalRef}
             data-ui="select-dropdown"
             data-testid="select-dropdown"
+            data-lumen-overlay-scope={overlayScopeId ?? undefined}
             className={cn(
               radiusTokens.card,
               'border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]',

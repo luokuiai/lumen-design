@@ -12,6 +12,7 @@ import {
   announceFloatingLayerOpen,
   FLOATING_LAYER_OPEN_EVENT,
 } from './floatingEvents';
+import { useOverlayPortalScope } from './useOverlayBehavior';
 import {
   computePosition,
   type TooltipPlacement,
@@ -90,6 +91,7 @@ export const Popover: React.FC<PopoverProps> = ({
   contentRole = 'dialog',
   ariaLabel,
 }) => {
+  const overlayScopeId = useOverlayPortalScope();
   const popoverId = useId();
   const controlled = typeof open === 'boolean';
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
@@ -262,10 +264,18 @@ export const Popover: React.FC<PopoverProps> = ({
           ref={popoverRef}
           role={contentRole}
           aria-label={ariaLabel}
+          data-lumen-overlay-scope={overlayScopeId ?? undefined}
           data-state={phase}
           data-placement={actualPlacement}
           style={popoverStyle}
           className="z-50 outline-none"
+          onKeyDown={(event) => {
+            if (event.key !== 'Escape' || !closeOnEscape) return;
+            event.preventDefault();
+            event.stopPropagation();
+            close();
+            triggerElementRef.current?.focus();
+          }}
         >
           <div
             data-lumen-motion

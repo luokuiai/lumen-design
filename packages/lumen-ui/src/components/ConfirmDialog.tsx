@@ -40,19 +40,15 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       modalId="confirm-dialog"
       overlayId="confirm-dialog-overlay"
       closeOnOverlayClick={closeOnOverlayClick}
+      role="alertdialog"
+      title={title}
+      description={message}
       panelClassName="w-full max-w-[420px] rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4 shadow-[0_24px_70px_var(--lumen-color-shadow)] pad:p-5 l:p-6"
     >
-      <div role="dialog" aria-label={title}>
-        <div className="text-[16px] font-semibold leading-6 text-[var(--lumen-color-text)]">
-          {title}
-        </div>
-        <div className="mt-3 text-[14px] leading-6 text-[var(--lumen-color-text-secondary)]">
-          {message}
-        </div>
-        <div
-          data-confirm-dialog-actions
-          className="mt-5 flex flex-col-reverse gap-2.5 pad:mt-6 pad:flex-row pad:items-center pad:justify-end l:mt-6 l:flex-row l:items-center l:justify-end"
-        >
+      <div
+        data-confirm-dialog-actions
+        className="mt-5 flex flex-col-reverse gap-2.5 pad:mt-6 pad:flex-row pad:items-center pad:justify-end l:mt-6 l:flex-row l:items-center l:justify-end"
+      >
           <Button
             disabled={cancelDisabled}
             variant="outline"
@@ -73,7 +69,6 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             )}
             {confirmText}
           </Button>
-        </div>
       </div>
     </Modal>
   );

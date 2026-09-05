@@ -2,7 +2,7 @@ import React, { useId, useState } from 'react';
 import { Circle } from 'lucide-react';
 import { cn } from './classNames';
 
-export type RadioSize = 'sm' | 'md';
+export type RadioSize = 'sm' | 'md' | 'lg';
 
 export interface RadioProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type' | 'onChange'> {
@@ -16,7 +16,7 @@ export interface RadioProps
 }
 
 export const Radio: React.FC<RadioProps> = ({
-  size = 'sm',
+  size = 'md',
   checked,
   defaultChecked = false,
   disabled = false,
@@ -35,6 +35,8 @@ export const Radio: React.FC<RadioProps> = ({
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const currentChecked = isControlled ? checked : internalChecked;
   const isSmall = size === 'sm';
+  const controlSize = size === 'sm' ? 'h-3.5 w-3.5' : size === 'lg' ? 'h-[18px] w-[18px]' : 'h-4 w-4';
+  const dotSize = size === 'sm' ? 6 : size === 'lg' ? 10 : 8;
   const hasDescription = Boolean(description);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +63,7 @@ export const Radio: React.FC<RadioProps> = ({
         className={cn(
           'relative inline-flex shrink-0 items-center justify-center',
           hasDescription && 'mt-0.5',
-          isSmall ? 'h-4 w-4' : 'h-[18px] w-[18px]',
+          controlSize,
         )}
       >
         <input
@@ -80,7 +82,7 @@ export const Radio: React.FC<RadioProps> = ({
           aria-hidden="true"
           className={cn(
             'flex items-center justify-center rounded-full border transition-all',
-            isSmall ? 'h-4 w-4' : 'h-[18px] w-[18px]',
+            controlSize,
             currentChecked
               ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]'
               : 'border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-transparent',
@@ -89,7 +91,7 @@ export const Radio: React.FC<RadioProps> = ({
           )}
         >
           <Circle
-            size={isSmall ? 8 : 9}
+            size={dotSize}
             className={currentChecked ? 'fill-current text-current' : 'text-transparent'}
           />
         </span>

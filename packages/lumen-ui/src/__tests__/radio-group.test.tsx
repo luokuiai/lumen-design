@@ -11,14 +11,33 @@ const options = [
 ] as const;
 
 describe('RadioGroup', () => {
-  it('keeps the medium radio visually compact', () => {
-    render(<Radio size="md" checked label="Medium" />);
+  it('uses the compact medium size by default', () => {
+    render(<Radio checked label="Medium" />);
 
     const radio = screen.getByRole('radio', { name: 'Medium' });
     expect(radio.closest('label')).toHaveClass('gap-2.5');
+    expect(radio.parentElement).toHaveClass('h-4', 'w-4');
+    expect(radio.nextElementSibling).toHaveClass('h-4', 'w-4');
+    expect(radio.nextElementSibling?.querySelector('svg')).toHaveAttribute('width', '8');
+  });
+
+  it('keeps the small radio visibly denser than medium', () => {
+    render(<Radio size="sm" checked label="Small" />);
+
+    const radio = screen.getByRole('radio', { name: 'Small' });
+    expect(radio.closest('label')).toHaveClass('gap-2');
+    expect(radio.parentElement).toHaveClass('h-3.5', 'w-3.5');
+    expect(radio.nextElementSibling).toHaveClass('h-3.5', 'w-3.5');
+    expect(radio.nextElementSibling?.querySelector('svg')).toHaveAttribute('width', '6');
+  });
+
+  it('provides a larger radio size', () => {
+    render(<Radio size="lg" checked label="Large" />);
+
+    const radio = screen.getByRole('radio', { name: 'Large' });
     expect(radio.parentElement).toHaveClass('h-[18px]', 'w-[18px]');
     expect(radio.nextElementSibling).toHaveClass('h-[18px]', 'w-[18px]');
-    expect(radio.nextElementSibling?.querySelector('svg')).toHaveAttribute('width', '9');
+    expect(radio.nextElementSibling?.querySelector('svg')).toHaveAttribute('width', '10');
   });
 
   it('manages an uncontrolled value and shares one input name', () => {

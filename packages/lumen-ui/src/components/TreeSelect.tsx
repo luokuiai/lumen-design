@@ -16,6 +16,7 @@ import {
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { dropdownTransformOrigin } from './dropdownMotion';
+import { useOverlayPortalScope } from './useOverlayBehavior';
 
 const DROPDOWN_CLOSE_ANIMATION_MS = 120;
 const SHOULD_SKIP_CLOSE_ANIMATION_IN_TEST = import.meta.env.MODE === 'test';
@@ -234,6 +235,7 @@ export const TreeSelect = <TNode,>({
   className,
   size = 'md',
 }: TreeSelectProps<TNode>) => {
+  const overlayScopeId = useOverlayPortalScope();
   const lockedValueSet = useMemo(() => new Set(lockedValues), [lockedValues]);
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
@@ -573,6 +575,7 @@ export const TreeSelect = <TNode,>({
         }
         if (isOpen && event.key === 'Escape') {
           event.preventDefault();
+          event.stopPropagation();
           closeDropdownImmediate();
         }
       }}
@@ -666,6 +669,7 @@ export const TreeSelect = <TNode,>({
             ref={portalRef}
             data-ui="tree-select-dropdown"
             data-testid="tree-select-dropdown"
+            data-lumen-overlay-scope={overlayScopeId ?? undefined}
             className={cn(
               radiusTokens.card,
               'border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]',
