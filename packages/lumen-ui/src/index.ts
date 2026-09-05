@@ -44,6 +44,7 @@ export * from './components/Radio';
 export * from './components/RadioGroup';
 export * from './components/rating/Rating';
 export * from './components/Scrollbar';
+export * from './components/ScrollToEdge';
 export * from './components/SegmentedControl';
 export * from './components/Select';
 export * from './components/SideNav';

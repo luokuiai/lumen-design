@@ -88,6 +88,7 @@ import {
   RadioGroup,
   Rating,
   Scrollbar,
+  ScrollToEdge,
   SegmentedControl,
   Select,
   SideNav,
@@ -344,12 +345,13 @@ const galleryCategories: GalleryCategory[] = [
     id: 'navigation',
     title: 'Navigation',
     description: '应用级与页面级导航结构。',
-    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Tabs Steps Pagination',
+    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Tabs Steps Pagination ScrollToEdge',
     icon: MoreHorizontal,
     demos: [
       demo('Breadcrumb', 'navigation', 'Breadcrumb', '    <Breadcrumb items={[\n      { label: \'首页\', href: \'/\' },\n      { label: \'订单详情\' },\n    ]} />'),
       demo('AppBar', 'navigation', 'AppBar, Button, Typography', '    <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <AppBar\n        position="absolute"\n        title="订单详情"\n        leading={(\n          <Button iconOnly variant="ghost" aria-label="返回" icon={<ArrowLeft size={19} />} />\n        )}\n        actions={(\n          <Button iconOnly variant="ghost" aria-label="更多操作" icon={<MoreHorizontal size={19} />} />\n        )}\n      />\n      <div className="px-5 pt-20">\n        <Typography variant="h3">#LM-20260904</Typography>\n        <Typography variant="caption" color="muted">等待审核</Typography>\n      </div>\n    </div>', 'ArrowLeft, MoreHorizontal'),
       demo('BottomNavigation', 'navigation', 'BottomNavigation, Typography', '    <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">\n        <Typography variant="h3">{value}</Typography>\n        <Typography variant="caption" color="muted">当前底部导航目标</Typography>\n      </div>\n      <BottomNavigation\n        position="absolute"\n        value={value}\n        onChange={setValue}\n        items={[\n          { value: \'home\', label: \'首页\', icon: Star },\n          { value: \'schedule\', label: \'日程\', icon: CalendarDays },\n          { value: \'messages\', label: \'消息\', icon: Bell, badge: 3, badgeLabel: \'3 条未读消息\' },\n          { value: \'profile\', label: \'我的\', icon: UserRound },\n        ]}\n      />\n    </div>', 'Bell, CalendarDays, Star, UserRound', "const [value, setValue] = useState('home');"),
+      demo('ScrollToEdge', 'navigation', 'ScrollToEdge', '    <ScrollToEdge direction="top" threshold={240} />'),
       demo('Pagination', 'data', 'Pagination', '    <Pagination currentPage={1} totalPages={5} onPageChange={setPage} />'),
       demo('Tabs', 'navigation', 'Tabs', '    <Tabs\n      value="overview"\n      options={[{ value: \'overview\', label: \'总览\' }]}\n      onChange={() => undefined}\n    />'),
       demo('Steps', 'navigation', 'Steps', '    <Steps current={1} items={[{ title: \'提交\' }, { title: \'完成\' }]} />'),
@@ -527,6 +529,7 @@ const zhDemoNames: Record<string, string> = {
   DataTable: '数据表格',
   List: '列表',
   Scrollbar: '滚动条',
+  ScrollToEdge: '滚动到边缘',
   Collapse: '折叠面板',
   Accordion: '手风琴',
   Divider: '分隔线',
@@ -1336,6 +1339,7 @@ export default function App() {
   }, [locale]);
 
   const mainScrollRef = useRef<HTMLDivElement>(null);
+  const scrollToEdgeDemoRef = useRef<HTMLDivElement>(null);
   const mobileSearchInputRef = useRef<HTMLInputElement>(null);
   const mobileNavigationScrollTopRef = useRef(0);
   const [theme, setTheme] = useState<Theme>(initialTheme);
@@ -2611,6 +2615,38 @@ export default function App() {
                         { value: 'profile', label: '我的', icon: UserRound },
                       ]}
                     />
+                  </div>
+                </DemoCard>
+                <DemoCard title="ScrollToEdge" wide>
+                  <div className="isolate relative mx-auto w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
+                    <div
+                      ref={scrollToEdgeDemoRef}
+                      className="relative z-0 h-[320px] overflow-y-auto p-4 pb-20"
+                    >
+                      <div className="space-y-3">
+                        {Array.from({ length: 16 }, (_, index) => (
+                          <div
+                            key={index}
+                            className="rounded-[8px] bg-[var(--lumen-color-surface-muted)] px-4 py-3 text-[13px] text-[var(--lumen-color-text-secondary)]"
+                          >
+                            滚动内容 {index + 1}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="absolute bottom-3 right-3 z-20 flex flex-col gap-2">
+                      <ScrollToEdge
+                        containerRef={scrollToEdgeDemoRef}
+                        position="static"
+                        size="sm"
+                      />
+                      <ScrollToEdge
+                        containerRef={scrollToEdgeDemoRef}
+                        direction="bottom"
+                        position="static"
+                        size="sm"
+                      />
+                    </div>
                   </div>
                 </DemoCard>
                 <DemoCard title="Tabs" wide>

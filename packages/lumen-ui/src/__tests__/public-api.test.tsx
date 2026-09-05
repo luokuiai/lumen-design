@@ -43,6 +43,7 @@ describe('public API', () => {
     expect(Lumen.RadioGroup).toBeTypeOf('function');
     expect(Lumen.Rating).toBeTypeOf('object');
     expect(Lumen.Scrollbar).toBeTypeOf('object');
+    expect(Lumen.ScrollToEdge).toBeTypeOf('function');
     expect(Lumen.SegmentedControl).toBeTypeOf('function');
     expect(Lumen.SideNav).toBeTypeOf('function');
     expect(Lumen.Slider).toBeTypeOf('object');

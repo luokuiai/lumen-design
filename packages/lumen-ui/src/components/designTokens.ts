@@ -48,6 +48,12 @@ export const buttonVariantTokens = {
 export type ButtonVariant = keyof typeof buttonVariantTokens;
 export type ButtonSize = keyof typeof buttonSizeTokens;
 
+export const floatingButtonIconSizeTokens: Record<ButtonSize, string> = {
+  sm: '!h-9 !w-9 !rounded-full p-0',
+  md: '!h-11 !w-11 !rounded-full p-0',
+  lg: '!h-[52px] !w-[52px] !rounded-full p-0',
+};
+
 const buttonBase =
   'relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 overflow-hidden font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50';
 
