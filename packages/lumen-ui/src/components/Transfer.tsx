@@ -10,6 +10,7 @@ import { Button } from './Button';
 import { Checkbox } from './Checkbox';
 import { Input } from './Input';
 import { cn } from './classNames';
+import { useLumenLocale } from '../i18n';
 
 export interface TransferItem {
   key: React.Key;
@@ -42,16 +43,21 @@ export const Transfer: React.FC<TransferProps> = ({
   items,
   targetKeys,
   onChange,
-  sourceTitle = '可选项',
-  targetTitle = '已选项',
+  sourceTitle: sourceTitleProp,
+  targetTitle: targetTitleProp,
   searchable = true,
-  searchPlaceholder = '搜索',
-  emptyText = '暂无数据',
+  searchPlaceholder: searchPlaceholderProp,
+  emptyText: emptyTextProp,
   disabled = false,
   filterOption = defaultFilterOption,
   renderItem,
   className,
 }) => {
+  const locale = useLumenLocale();
+  const sourceTitle = sourceTitleProp === undefined ? locale.transfer.sourceTitle : sourceTitleProp;
+  const targetTitle = targetTitleProp === undefined ? locale.transfer.targetTitle : targetTitleProp;
+  const searchPlaceholder = searchPlaceholderProp ?? locale.transfer.searchPlaceholder;
+  const emptyText = emptyTextProp === undefined ? locale.transfer.emptyText : emptyTextProp;
   const [sourceQuery, setSourceQuery] = useState('');
   const [targetQuery, setTargetQuery] = useState('');
   const [selectedSourceKeys, setSelectedSourceKeys] = useState<React.Key[]>([]);
@@ -122,7 +128,7 @@ export const Transfer: React.FC<TransferProps> = ({
       <section className="flex min-h-0 min-w-0 flex-col overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
         <header className="flex h-11 shrink-0 items-center gap-2 border-b border-[var(--lumen-color-divider)] px-3">
           <Checkbox
-            aria-label={`选择${side === 'source' ? '可选' : '已选'}列表全部可见项`}
+            aria-label={locale.transfer.selectAll(side)}
             checked={allVisibleSelected}
             indeterminate={someVisibleSelected}
             disabled={disabled || selectableItems.length === 0}
@@ -145,7 +151,7 @@ export const Transfer: React.FC<TransferProps> = ({
         {searchable ? (
           <div className="shrink-0 px-2 pb-1 pt-3.5">
             <Input
-              aria-label={`${side === 'source' ? '可选' : '已选'}列表搜索`}
+              aria-label={locale.transfer.search(side)}
               size="md"
               value={query}
               prefix={<Search aria-hidden="true" size={15} />}
@@ -156,7 +162,7 @@ export const Transfer: React.FC<TransferProps> = ({
           </div>
         ) : null}
         <ul
-          aria-label={`${side === 'source' ? '可选' : '已选'}列表`}
+          aria-label={locale.transfer.list(side)}
           className="h-64 overflow-y-auto p-1.5"
         >
           {panelItems.length === 0 ? (
@@ -208,7 +214,7 @@ export const Transfer: React.FC<TransferProps> = ({
           iconOnly
           size="sm"
           variant="secondary"
-          aria-label="移到右侧"
+          aria-label={locale.transfer.moveToTarget}
           disabled={disabled || movableSourceKeys.length === 0}
           icon={(
             <>
@@ -225,7 +231,7 @@ export const Transfer: React.FC<TransferProps> = ({
           iconOnly
           size="sm"
           variant="outline"
-          aria-label="移到左侧"
+          aria-label={locale.transfer.moveToSource}
           disabled={disabled || movableTargetKeys.length === 0}
           icon={(
             <>

@@ -3,6 +3,7 @@ import { Loader2 } from 'lucide-react';
 import { Modal } from './Modal';
 import { Button } from './Button';
 import type { ButtonVariant } from './designTokens';
+import { useLumenLocale } from '../i18n';
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -23,9 +24,9 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   open,
   title,
   message,
-  confirmText = '确认',
+  confirmText,
   confirmVariant = 'primary',
-  cancelText = '取消',
+  cancelText,
   confirmDisabled = false,
   confirmLoading = false,
   cancelDisabled = false,
@@ -33,6 +34,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onConfirm,
   onCancel,
 }) => {
+  const locale = useLumenLocale();
   return (
     <Modal
       open={open}
@@ -47,7 +49,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     >
       <div
         data-confirm-dialog-actions
-        className="mt-5 flex flex-col-reverse gap-2.5 pad:mt-6 pad:flex-row pad:items-center pad:justify-end l:mt-6 l:flex-row l:items-center l:justify-end"
+        className="mt-5 flex items-center justify-end gap-2.5 pad:mt-6 l:mt-6"
       >
           <Button
             disabled={cancelDisabled}
@@ -55,7 +57,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             type="button"
             onClick={onCancel}
           >
-            {cancelText}
+            {cancelText ?? locale.confirmDialog.cancel}
           </Button>
           <Button
             aria-busy={confirmLoading}
@@ -67,7 +69,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             {confirmLoading && (
               <Loader2 aria-hidden="true" className="animate-spin" size={14} />
             )}
-            {confirmText}
+            {confirmText ?? locale.confirmDialog.confirm}
           </Button>
       </div>
     </Modal>

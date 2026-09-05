@@ -1,6 +1,7 @@
 import React from 'react';
 import { Inbox } from 'lucide-react';
 import { cn } from './classNames';
+import { useLumenLocale } from '../i18n';
 
 export type EmptySize = 'sm' | 'md' | 'lg';
 
@@ -28,7 +29,7 @@ const emptySizeClassNames: Record<EmptySize, {
 export const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
   (
     {
-      title = '暂无数据',
+      title,
       description,
       icon,
       action,
@@ -39,6 +40,8 @@ export const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
     },
     ref,
   ) => {
+    const locale = useLumenLocale();
+    const resolvedTitle = title === undefined ? locale.accessibility.empty : title;
     const sizeClasses = emptySizeClassNames[size];
     const iconNode = icon === false
       ? null
@@ -67,9 +70,9 @@ export const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
             {iconNode}
           </span>
         ) : null}
-        {title ? (
+        {resolvedTitle ? (
           <div className={cn('font-normal leading-5 text-[var(--lumen-color-text)]', sizeClasses.title)}>
-            {title}
+            {resolvedTitle}
           </div>
         ) : null}
         {description ? (

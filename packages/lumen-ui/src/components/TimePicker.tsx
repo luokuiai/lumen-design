@@ -6,6 +6,7 @@ import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { TimeSelector } from './TimeSelector';
 import { useOverlayPortalScope } from './useOverlayBehavior';
+import { useLumenLocale } from '../i18n';
 
 export type TimePickerSize = 'sm' | 'md' | 'lg';
 
@@ -55,7 +56,7 @@ const getTimeInSeconds = (value?: string) => {
 export const TimePicker: React.FC<TimePickerProps> = ({
   value,
   onChange,
-  placeholder = '请选择时间',
+  placeholder: placeholderProp,
   className,
   size = 'md',
   precision = 'minute',
@@ -63,6 +64,8 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   minExclusiveTime,
   disabled = false,
 }) => {
+  const locale = useLumenLocale();
+  const placeholder = placeholderProp ?? locale.timePicker.placeholder;
   const overlayScopeId = useOverlayPortalScope();
   const initialTime = resolveInitialTime(value);
   const [draftHour, setDraftHour] = useState(initialTime.hour);
@@ -266,7 +269,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
                   }}
                   className="text-[12px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"
                 >
-                  清除
+                  {locale.common.clear}
                 </button>
                 <div className="flex items-center gap-2">
                   <button
@@ -274,7 +277,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
                     onClick={selectNow}
                     className="text-[12px] font-medium text-[var(--lumen-color-primary)]"
                   >
-                    此刻
+                    {locale.common.now}
                   </button>
                   <Button
                     type="button"
@@ -285,7 +288,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
                       closeImmediate();
                     }}
                   >
-                    确定
+                    {locale.common.confirm}
                   </Button>
                 </div>
               </div>

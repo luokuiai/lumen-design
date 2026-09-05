@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { cn } from '../classNames';
+import { useLumenLocale } from '../../i18n';
 
 export type CalendarSize = 'sm' | 'md' | 'lg';
 
@@ -21,8 +22,6 @@ export interface CalendarProps
   months?: readonly string[];
 }
 
-const DEFAULT_WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
-const DEFAULT_MONTHS = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 const YEAR_PAGE_SIZE = 20;
 
 const sizeTokens = {
@@ -67,15 +66,20 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
       showToday = true,
       clearable = true,
       showOutsideDays = true,
-      todayText = '今天',
-      clearText = '清除',
-      weekdays = DEFAULT_WEEKDAYS,
-      months = DEFAULT_MONTHS,
+      todayText,
+      clearText,
+      weekdays: weekdaysProp,
+      months: monthsProp,
       className,
       ...props
     },
     ref,
   ) => {
+    const locale = useLumenLocale();
+    const weekdays = weekdaysProp ?? locale.calendar.weekdays;
+    const months = monthsProp ?? locale.calendar.months;
+    const resolvedTodayText = todayText === undefined ? locale.common.today : todayText;
+    const resolvedClearText = clearText === undefined ? locale.common.clear : clearText;
     const [internalValue, setInternalValue] = useState(defaultValue);
     const selectedValue = value ?? internalValue;
     const today = useMemo(() => {
@@ -196,13 +200,13 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
           {view === 'year' ? (
             <>
               <div className="mb-3 flex items-center justify-between">
-                <button type="button" aria-label="上一组年份" onClick={() => setYearPageStart((start) => start - YEAR_PAGE_SIZE)} className={iconButtonClassName}>
+                <button type="button" aria-label={locale.calendar.previousYearPage} onClick={() => setYearPageStart((start) => start - YEAR_PAGE_SIZE)} className={iconButtonClassName}>
                   <ChevronLeft size={18} />
                 </button>
                 <span className={cn(tokens.header, 'font-semibold text-[var(--lumen-color-text)]')}>
                   {yearPageStart} - {yearPageStart + YEAR_PAGE_SIZE - 1}
                 </span>
-                <button type="button" aria-label="下一组年份" onClick={() => setYearPageStart((start) => start + YEAR_PAGE_SIZE)} className={iconButtonClassName}>
+                <button type="button" aria-label={locale.calendar.nextYearPage} onClick={() => setYearPageStart((start) => start + YEAR_PAGE_SIZE)} className={iconButtonClassName}>
                   <ChevronRight size={18} />
                 </button>
               </div>
@@ -238,13 +242,13 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
           ) : view === 'month' ? (
             <>
               <div className="mb-3 flex items-center justify-between">
-                <button type="button" aria-label="上一年" onClick={() => setViewYear((year) => year - 1)} className={iconButtonClassName}>
+                <button type="button" aria-label={locale.calendar.previousYear} onClick={() => setViewYear((year) => year - 1)} className={iconButtonClassName}>
                   <ChevronLeft size={18} />
                 </button>
                 <button type="button" onClick={() => { setYearPageStart(getYearPageStart(viewYear)); setView('year'); }} className={cn(tokens.header, headerButtonClassName)}>
-                  {viewYear}年
+                  {locale.calendar.year(viewYear)}
                 </button>
-                <button type="button" aria-label="下一年" onClick={() => setViewYear((year) => year + 1)} className={iconButtonClassName}>
+                <button type="button" aria-label={locale.calendar.nextYear} onClick={() => setViewYear((year) => year + 1)} className={iconButtonClassName}>
                   <ChevronRight size={18} />
                 </button>
               </div>
@@ -278,14 +282,14 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
           ) : (
             <>
               <div className="mb-3 flex items-center justify-between">
-                <button type="button" aria-label="上个月" disabled={!canGoPrevious} onClick={() => changeMonth(-1)} className={iconButtonClassName}>
+                <button type="button" aria-label={locale.calendar.previousMonth} disabled={!canGoPrevious} onClick={() => changeMonth(-1)} className={iconButtonClassName}>
                   <ChevronLeft size={18} />
                 </button>
                 <div className="flex items-center gap-1">
-                  <button type="button" onClick={() => { setYearPageStart(getYearPageStart(viewYear)); setView('year'); }} className={cn(tokens.header, headerButtonClassName)}>{viewYear}年</button>
+                  <button type="button" onClick={() => { setYearPageStart(getYearPageStart(viewYear)); setView('year'); }} className={cn(tokens.header, headerButtonClassName)}>{locale.calendar.year(viewYear)}</button>
                   <button type="button" onClick={() => setView('month')} className={cn(tokens.header, headerButtonClassName)}>{months[viewMonth]}</button>
                 </div>
-                <button type="button" aria-label="下个月" disabled={!canGoNext} onClick={() => changeMonth(1)} className={iconButtonClassName}>
+                <button type="button" aria-label={locale.calendar.nextMonth} disabled={!canGoNext} onClick={() => changeMonth(1)} className={iconButtonClassName}>
                   <ChevronRight size={18} />
                 </button>
               </div>
@@ -298,7 +302,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                       ? { animation: 'calendarSlideRight 0.2s ease-out' }
                       : undefined}
                 >
-                  <div role="grid" aria-label={`${viewYear}年${viewMonth + 1}月`} className="grid grid-cols-7 text-center">
+                  <div role="grid" aria-label={locale.calendar.month(viewYear, viewMonth + 1)} className="grid grid-cols-7 text-center">
                     <div role="row" className="contents">
                       {weekdays.map((weekday, index) => (
                         <div key={`${weekday}-${index}`} role="columnheader" className="mb-1 py-1.5 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]">{weekday}</div>
@@ -354,12 +358,12 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
           <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-4 py-3">
             {showToday ? (
               <button type="button" disabled={isDateDisabled(todayValue)} onClick={() => commitValue(todayValue)} className={cn(tokens.footer, 'font-medium text-[var(--lumen-color-primary)] transition-colors hover:text-[var(--lumen-color-primary-active)] disabled:cursor-not-allowed disabled:opacity-40')}>
-                {todayText}
+                {resolvedTodayText}
               </button>
             ) : null}
             {clearable && selectedValue ? (
               <button type="button" onClick={() => commitValue('')} className={cn(tokens.footer, 'ml-auto text-[var(--lumen-color-text-placeholder)] transition-colors hover:text-[var(--lumen-color-text-muted)]')}>
-                {clearText}
+                {resolvedClearText}
               </button>
             ) : null}
           </div>

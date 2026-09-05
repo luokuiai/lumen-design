@@ -1,6 +1,7 @@
 import React from 'react';
 import { LoaderCircle } from 'lucide-react';
 import { cn } from './classNames';
+import { useLumenLocale } from '../i18n';
 
 export type SpinnerSize = 'sm' | 'md' | 'lg';
 export type SpinnerTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
@@ -27,6 +28,7 @@ const spinnerToneClassNames: Record<SpinnerTone, string> = {
 
 export const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
   ({ size = 'md', tone = 'info', label, className, role, ...props }, ref) => {
+    const locale = useLumenLocale();
     const sizeToken = spinnerSizeTokens[size];
     return (
       <div
@@ -51,7 +53,7 @@ export const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
             {label}
           </span>
         ) : (
-          <span className="sr-only">加载中</span>
+          <span className="sr-only">{locale.accessibility.loading}</span>
         )}
       </div>
     );

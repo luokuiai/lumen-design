@@ -5,6 +5,7 @@ import { Popover } from '../Popover';
 import { Scrollbar } from '../Scrollbar';
 import { cn } from '../classNames';
 import { radiusTokens } from '../designTokens';
+import { useLumenLocale } from '../../i18n';
 
 export type CascaderSize = 'sm' | 'md' | 'lg';
 
@@ -85,14 +86,14 @@ export const Cascader = <T extends string | number = string>({
   value,
   defaultValue = [],
   onChange,
-  placeholder = '请选择',
+  placeholder: placeholderProp,
   disabled = false,
   clearable = true,
   searchable = false,
-  searchPlaceholder = '搜索选项',
-  emptyText = '无匹配选项',
+  searchPlaceholder: searchPlaceholderProp,
+  emptyText: emptyTextProp,
   loading = false,
-  loadingText = '加载中...',
+  loadingText: loadingTextProp,
   size = 'md',
   separator = '/',
   displayRender,
@@ -103,6 +104,11 @@ export const Cascader = <T extends string | number = string>({
   panelClassName,
   'aria-label': ariaLabel,
 }: CascaderProps<T>) => {
+  const locale = useLumenLocale();
+  const placeholder = placeholderProp ?? locale.cascader.placeholder;
+  const searchPlaceholder = searchPlaceholderProp ?? locale.cascader.searchPlaceholder;
+  const emptyText = emptyTextProp === undefined ? locale.cascader.emptyText : emptyTextProp;
+  const loadingText = loadingTextProp ?? locale.cascader.loadingText;
   const controlled = value !== undefined;
   const [internalValue, setInternalValue] = useState<readonly T[]>(defaultValue);
   const selectedValues = value ?? internalValue;
@@ -236,7 +242,7 @@ export const Cascader = <T extends string | number = string>({
         panelClassName,
       )}
       contentRole="dialog"
-      ariaLabel={ariaLabel ?? '级联选择'}
+      ariaLabel={ariaLabel ?? locale.cascader.label}
       trigger={({ open: triggerOpen, popoverId, toggle }) => (
         <div
           data-ui="cascader"
@@ -271,7 +277,7 @@ export const Cascader = <T extends string | number = string>({
             <ChevronDown aria-hidden="true" size={15} className={cn('shrink-0 text-[var(--lumen-color-text-muted)] transition-transform', triggerOpen && 'rotate-180')} />
           </button>
           {clearable && selectedPath.length > 0 && !disabled ? (
-            <button type="button" aria-label="清除选择" className="mr-2 flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-[6px] text-[var(--lumen-color-text-placeholder)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-text-muted)]" onClick={clearValue}>
+            <button type="button" aria-label={locale.cascader.clear} className="mr-2 flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-[6px] text-[var(--lumen-color-text-placeholder)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-text-muted)]" onClick={clearValue}>
               <X aria-hidden="true" size={14} />
             </button>
           ) : null}
@@ -297,7 +303,7 @@ export const Cascader = <T extends string | number = string>({
           {loading ? (
             <div role="status" className="px-4 py-10 text-center text-[13px] text-[var(--lumen-color-text-muted)]">{loadingText}</div>
           ) : searchable && searchValue.trim() ? (
-            <Scrollbar size="sm" autoHide tabIndex={-1} className="max-h-64 p-2" role="listbox" aria-label="搜索结果">
+            <Scrollbar size="sm" autoHide tabIndex={-1} className="max-h-64 p-2" role="listbox" aria-label={locale.cascader.searchResults}>
               {searchResults.length ? searchResults.map((path) => {
                 const pathDisabled = path.some((option) => option.disabled);
                 const pathKey = path.map((option) => String(option.value)).join('/');
@@ -330,7 +336,7 @@ export const Cascader = <T extends string | number = string>({
                     autoHide
                     tabIndex={-1}
                     role="listbox"
-                    aria-label={`第 ${columnIndex + 1} 级选项`}
+                    aria-label={locale.cascader.column(columnIndex + 1)}
                     className="h-64 w-48 shrink-0 border-r border-[var(--lumen-color-border)] p-1.5 last:border-r-0"
                   >
                     {column.map((option, optionIndex) => {

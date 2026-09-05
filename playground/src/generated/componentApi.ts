@@ -48,7 +48,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "itemLabel",
       "type": "string",
-      "defaultValue": "'条'",
+      "defaultValue": "undefined",
       "description": "设置 itemLabel。",
       "required": false
     },
@@ -190,7 +190,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "inputAriaLabel",
       "type": "string",
-      "defaultValue": "'文件上传'",
+      "defaultValue": "undefined",
       "description": "设置 inputAriaLabel。",
       "required": false
     }
@@ -227,7 +227,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "loadingLabel",
       "type": "string",
-      "defaultValue": "'加载中'",
+      "defaultValue": "undefined",
       "description": "设置 loadingLabel。",
       "required": false
     },
@@ -357,7 +357,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "ariaLabel",
       "type": "string",
-      "defaultValue": "'工具栏'",
+      "defaultValue": "undefined",
       "description": "设置组件的可访问名称。",
       "required": false
     }
@@ -503,14 +503,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "sourceTitle",
       "type": "React.ReactNode",
-      "defaultValue": "'可选项'",
+      "defaultValue": "undefined",
       "description": "设置 sourceTitle。",
       "required": false
     },
     {
       "name": "targetTitle",
       "type": "React.ReactNode",
-      "defaultValue": "'已选项'",
+      "defaultValue": "undefined",
       "description": "设置 targetTitle。",
       "required": false
     },
@@ -524,14 +524,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "searchPlaceholder",
       "type": "string",
-      "defaultValue": "'搜索'",
+      "defaultValue": "undefined",
       "description": "设置 searchPlaceholder。",
       "required": false
     },
     {
       "name": "emptyText",
       "type": "React.ReactNode",
-      "defaultValue": "'暂无数据'",
+      "defaultValue": "undefined",
       "description": "设置 emptyText。",
       "required": false
     },
@@ -624,7 +624,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "ariaLabel",
       "type": "string",
-      "defaultValue": "'应用栏'",
+      "defaultValue": "undefined",
       "description": "设置组件的可访问名称。",
       "required": false
     },
@@ -1413,7 +1413,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "emptyText",
       "type": "React.ReactNode",
-      "defaultValue": "'暂无数据'",
+      "defaultValue": "undefined",
       "description": "设置 emptyText。",
       "required": false
     },
@@ -1506,7 +1506,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "closeLabel",
       "type": "string",
-      "defaultValue": "'关闭提示'",
+      "defaultValue": "undefined",
       "description": "设置 closeLabel。",
       "required": false
     },
@@ -1837,7 +1837,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "placeholder",
       "type": "string",
-      "defaultValue": "'请选择日期'",
+      "defaultValue": "undefined",
       "description": "输入框占位提示",
       "required": false
     },
@@ -1930,7 +1930,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "placeholder",
       "type": "string",
-      "defaultValue": "'请选择时间'",
+      "defaultValue": "undefined",
       "description": "未选择或未输入时显示的提示。",
       "required": false
     },
@@ -2011,7 +2011,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "ariaLabel",
       "type": "string",
-      "defaultValue": "'侧边导航'",
+      "defaultValue": "undefined",
       "description": "设置组件的可访问名称。",
       "required": false
     },
@@ -2034,6 +2034,22 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "(value: T, item: SideNavItem<T>) => void",
       "defaultValue": "undefined",
       "description": "组件执行 Select 对应操作时触发。",
+      "required": false
+    }
+  ],
+  "LumenProvider": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "defaultValue": "-",
+      "description": "组件承载的子内容。",
+      "required": true
+    },
+    {
+      "name": "locale",
+      "type": "LumenLocale",
+      "defaultValue": "zhCN",
+      "description": "设置组件树使用的语言包。",
       "required": false
     }
   ],
@@ -2083,7 +2099,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "passwordToggleLabels",
       "type": "PasswordToggleLabels",
-      "defaultValue": "{\n  show: '显示密码',\n  hide: '隐藏密码',\n}",
+      "defaultValue": "undefined",
       "description": "设置 passwordToggleLabels。",
       "required": false
     }
@@ -2250,7 +2266,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "searchPlaceholder",
       "type": "string",
-      "defaultValue": "'搜索组织节点'",
+      "defaultValue": "undefined",
       "description": "设置 searchPlaceholder。",
       "required": false
     },
@@ -2299,7 +2315,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "placeholder",
       "type": "string",
-      "defaultValue": "'请选择'",
+      "defaultValue": "undefined",
       "description": "未选择或未输入时显示的提示。",
       "required": false
     },
@@ -2320,7 +2336,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "emptyText",
       "type": "string",
-      "defaultValue": "'无可选节点'",
+      "defaultValue": "undefined",
       "description": "设置 emptyText。",
       "required": false
     },
@@ -2545,7 +2561,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "placeholder",
       "type": "string",
-      "defaultValue": "'请选择日期时间'",
+      "defaultValue": "undefined",
       "description": "未选择或未输入时显示的提示。",
       "required": false
     },
@@ -2810,7 +2826,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "closeLabel",
       "type": "string",
-      "defaultValue": "'移除标签'",
+      "defaultValue": "undefined",
       "description": "设置 closeLabel。",
       "required": false
     },
@@ -2991,7 +3007,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "placeholder",
       "type": "string",
-      "defaultValue": "'请选择'",
+      "defaultValue": "undefined",
       "description": "占位提示文本",
       "required": false
     },
@@ -3019,7 +3035,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "multipleCountLabel",
       "type": "(count: number) => string",
-      "defaultValue": "(count) => `已选择 ${count} 项`",
+      "defaultValue": "undefined",
       "description": "多选计数文案",
       "required": false
     },
@@ -3068,14 +3084,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "searchPlaceholder",
       "type": "string",
-      "defaultValue": "'搜索...'",
+      "defaultValue": "undefined",
       "description": "搜索输入框占位文本",
       "required": false
     },
     {
       "name": "emptyText",
       "type": "string",
-      "defaultValue": "'无匹配选项'",
+      "defaultValue": "undefined",
       "description": "空状态文本",
       "required": false
     },
@@ -3089,7 +3105,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "loadingText",
       "type": "string",
-      "defaultValue": "'加载中...'",
+      "defaultValue": "undefined",
       "description": "加载状态文本",
       "required": false
     },
@@ -3154,7 +3170,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "title",
       "type": "React.ReactNode",
-      "defaultValue": "'暂无数据'",
+      "defaultValue": "undefined",
       "description": "设置组件标题。",
       "required": false
     },
@@ -3240,7 +3256,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "ariaLabel",
       "type": "string",
-      "defaultValue": "'底部导航'",
+      "defaultValue": "undefined",
       "description": "设置组件的可访问名称。",
       "required": false
     },
@@ -3277,21 +3293,21 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "label",
       "type": "string",
-      "defaultValue": "'命令面板'",
+      "defaultValue": "undefined",
       "description": "设置可见标签或标题。",
       "required": false
     },
     {
       "name": "placeholder",
       "type": "string",
-      "defaultValue": "'搜索命令...'",
+      "defaultValue": "undefined",
       "description": "未选择或未输入时显示的提示。",
       "required": false
     },
     {
       "name": "emptyText",
       "type": "React.ReactNode",
-      "defaultValue": "'没有匹配的命令'",
+      "defaultValue": "undefined",
       "description": "设置 emptyText。",
       "required": false
     },
@@ -3305,7 +3321,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "loadingText",
       "type": "React.ReactNode",
-      "defaultValue": "'加载中...'",
+      "defaultValue": "undefined",
       "description": "设置 loadingText。",
       "required": false
     },
@@ -3421,14 +3437,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "incrementLabel",
       "type": "string",
-      "defaultValue": "'增加'",
+      "defaultValue": "undefined",
       "description": "设置 incrementLabel。",
       "required": false
     },
     {
       "name": "decrementLabel",
       "type": "string",
-      "defaultValue": "'减少'",
+      "defaultValue": "undefined",
       "description": "设置 decrementLabel。",
       "required": false
     },
@@ -3614,28 +3630,28 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "todayText",
       "type": "React.ReactNode",
-      "defaultValue": "'今天'",
+      "defaultValue": "undefined",
       "description": "设置 todayText。",
       "required": false
     },
     {
       "name": "clearText",
       "type": "React.ReactNode",
-      "defaultValue": "'清除'",
+      "defaultValue": "undefined",
       "description": "设置 clearText。",
       "required": false
     },
     {
       "name": "weekdays",
       "type": "readonly string[]",
-      "defaultValue": "['日', '一', '二', '三', '四', '五', '六']",
+      "defaultValue": "undefined",
       "description": "设置 weekdays。",
       "required": false
     },
     {
       "name": "months",
       "type": "readonly string[]",
-      "defaultValue": "['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']",
+      "defaultValue": "undefined",
       "description": "设置 months。",
       "required": false
     }
@@ -3723,7 +3739,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "placeholder",
       "type": "string",
-      "defaultValue": "'请选择'",
+      "defaultValue": "undefined",
       "description": "未选择或未输入时显示的提示。",
       "required": false
     },
@@ -3751,14 +3767,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "searchPlaceholder",
       "type": "string",
-      "defaultValue": "'搜索选项'",
+      "defaultValue": "undefined",
       "description": "设置 searchPlaceholder。",
       "required": false
     },
     {
       "name": "emptyText",
       "type": "React.ReactNode",
-      "defaultValue": "'无匹配选项'",
+      "defaultValue": "undefined",
       "description": "设置 emptyText。",
       "required": false
     },
@@ -3772,7 +3788,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "loadingText",
       "type": "React.ReactNode",
-      "defaultValue": "'加载中...'",
+      "defaultValue": "undefined",
       "description": "设置 loadingText。",
       "required": false
     },

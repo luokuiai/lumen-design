@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 
 import { Modal } from '../Modal';
 import { Scrollbar } from '../Scrollbar';
 import { cn } from '../classNames';
+import { useLumenLocale } from '../../i18n';
 
 export interface CommandPaletteItem {
   id: string;
@@ -44,11 +45,11 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   open,
   onOpenChange,
   groups,
-  label = '命令面板',
-  placeholder = '搜索命令...',
-  emptyText = '没有匹配的命令',
+  label: labelProp,
+  placeholder: placeholderProp,
+  emptyText: emptyTextProp,
   loading = false,
-  loadingText = '加载中...',
+  loadingText: loadingTextProp,
   searchValue,
   onSearchValueChange,
   closeOnSelect = true,
@@ -57,6 +58,11 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   shortcutKey = 'k',
   className,
 }) => {
+  const locale = useLumenLocale();
+  const label = labelProp ?? locale.commandPalette.label;
+  const placeholder = placeholderProp ?? locale.commandPalette.placeholder;
+  const emptyText = emptyTextProp === undefined ? locale.commandPalette.emptyText : emptyTextProp;
+  const loadingText = loadingTextProp ?? locale.commandPalette.loadingText;
   const [internalSearchValue, setInternalSearchValue] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);

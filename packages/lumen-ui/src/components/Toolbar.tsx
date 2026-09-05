@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from './classNames';
+import { useLumenLocale } from '../i18n';
 
 export type ToolbarSize = 'sm' | 'md' | 'lg';
 
@@ -29,7 +30,7 @@ export const Toolbar = React.forwardRef<HTMLDivElement, ToolbarProps>(
     {
       size = 'md',
       wrap = false,
-      ariaLabel = '工具栏',
+      ariaLabel,
       className,
       children,
       onKeyDown,
@@ -38,6 +39,7 @@ export const Toolbar = React.forwardRef<HTMLDivElement, ToolbarProps>(
     },
     ref,
   ) => {
+    const locale = useLumenLocale();
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
       onKeyDown?.(event);
       if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
@@ -77,7 +79,7 @@ export const Toolbar = React.forwardRef<HTMLDivElement, ToolbarProps>(
         {...props}
         ref={ref}
         role={role}
-        aria-label={ariaLabel}
+        aria-label={ariaLabel ?? locale.navigation.toolbar}
         aria-orientation={role === 'toolbar' ? 'horizontal' : undefined}
         data-size={size}
         data-ui="toolbar"

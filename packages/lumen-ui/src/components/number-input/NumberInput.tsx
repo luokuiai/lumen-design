@@ -2,6 +2,7 @@ import { Minus, Plus } from 'lucide-react';
 import React, { useCallback, useRef, useState } from 'react';
 import { cn } from '../classNames';
 import { Input, type InputProps } from '../Input';
+import { useLumenLocale } from '../../i18n';
 
 export interface NumberInputProps
   extends Omit<
@@ -28,8 +29,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       onChange,
       onValueChange,
       controls = true,
-      incrementLabel = '增加',
-      decrementLabel = '减少',
+      incrementLabel,
+      decrementLabel,
       prefix,
       suffix,
       disabled,
@@ -39,6 +40,9 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     },
     forwardedRef,
   ) => {
+    const locale = useLumenLocale();
+    const resolvedIncrementLabel = incrementLabel ?? locale.accessibility.increment;
+    const resolvedDecrementLabel = decrementLabel ?? locale.accessibility.decrement;
     const inputRef = useRef<HTMLInputElement | null>(null);
     const controlled = value !== undefined;
     const [internalValue, setInternalValue] = useState<number | null>(defaultValue ?? null);
@@ -88,7 +92,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           <span className="flex items-center gap-0.5">
             <button
               type="button"
-              aria-label={decrementLabel}
+              aria-label={resolvedDecrementLabel}
               disabled={decrementDisabled}
               className="flex h-6 w-6 items-center justify-center rounded-[var(--lumen-radius-icon)] text-[var(--lumen-color-text-muted)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-40"
               onPointerDown={(event) => event.preventDefault()}
@@ -98,7 +102,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             </button>
             <button
               type="button"
-              aria-label={incrementLabel}
+              aria-label={resolvedIncrementLabel}
               disabled={incrementDisabled}
               className="flex h-6 w-6 items-center justify-center rounded-[var(--lumen-radius-icon)] text-[var(--lumen-color-text-muted)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-40"
               onPointerDown={(event) => event.preventDefault()}

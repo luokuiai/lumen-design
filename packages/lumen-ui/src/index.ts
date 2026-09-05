@@ -1,6 +1,8 @@
 import './styles/base.css';
 
 export * from './theme-contract';
+export { enUS, useLumenLocale, zhCN } from './i18n';
+export type { LumenLocale } from './i18n';
 export * from './components/Alert';
 export * from './components/AppBar';
 export * from './components/AppHeader';
@@ -30,6 +32,7 @@ export * from './components/file-type-icon';
 export * from './components/FormField';
 export * from './components/Input';
 export * from './components/List';
+export * from './components/LumenProvider';
 export * from './components/Modal';
 export * from './components/number-input/NumberInput';
 export * from './components/Pagination';

@@ -1,6 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import React from 'react';
 import { cn } from '../classNames';
+import { useLumenLocale } from '../../i18n';
 
 export type BreadcrumbSize = 'sm' | 'md' | 'lg';
 
@@ -33,15 +34,17 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
       separator = <ChevronRight aria-hidden="true" size={14} strokeWidth={1.75} />,
       size = 'md',
       className,
-      'aria-label': ariaLabel = '面包屑',
+      'aria-label': ariaLabel,
       ...props
     },
     ref,
-  ) => (
+  ) => {
+    const locale = useLumenLocale();
+    return (
     <nav
       {...props}
       ref={ref}
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? locale.navigation.breadcrumb}
       data-ui="breadcrumb"
       data-size={size}
       className={cn('max-w-full overflow-x-auto', sizeClassNames[size], className)}
@@ -109,7 +112,8 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
         })}
       </ol>
     </nav>
-  ),
+    );
+  },
 );
 
 Breadcrumb.displayName = 'Breadcrumb';
