@@ -1,6 +1,7 @@
 import { Star } from 'lucide-react';
 import React, { useState } from 'react';
 import { cn } from '../classNames';
+import { useLumenLocale } from '../../i18n';
 
 export type RatingSize = 'sm' | 'md' | 'lg';
 
@@ -44,11 +45,12 @@ export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
       formatValue = (current, total) => `${current} / ${total}`,
       className,
       onKeyDown,
-      'aria-label': ariaLabel = '评分',
+      'aria-label': ariaLabel,
       ...props
     },
     ref,
   ) => {
+    const locale = useLumenLocale();
     const resolvedMax = Math.max(1, Math.floor(max));
     const step = allowHalf ? 0.5 : 1;
     const controlled = value !== undefined;
@@ -104,7 +106,7 @@ export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
         ref={ref}
         role="slider"
         tabIndex={disabled ? -1 : 0}
-        aria-label={ariaLabel}
+        aria-label={ariaLabel ?? locale.accessibility.rating}
         aria-valuemin={0}
         aria-valuemax={resolvedMax}
         aria-valuenow={currentValue}

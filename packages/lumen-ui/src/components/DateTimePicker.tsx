@@ -12,6 +12,7 @@ import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { TimeSelector } from './TimeSelector';
 import { useOverlayPortalScope } from './useOverlayBehavior';
+import { useLumenLocale } from '../i18n';
 
 export type DateTimePickerSize = 'sm' | 'md' | 'lg';
 
@@ -29,22 +30,6 @@ export interface DateTimePickerProps {
   defaultToNow?: boolean;
   size?: DateTimePickerSize;
 }
-
-const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
-const MONTHS = [
-  '1月',
-  '2月',
-  '3月',
-  '4月',
-  '5月',
-  '6月',
-  '7月',
-  '8月',
-  '9月',
-  '10月',
-  '11月',
-  '12月',
-];
 
 const pad = (value: number) => String(value).padStart(2, '0');
 
@@ -187,13 +172,17 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   disabled = false,
   className,
   minuteStep = 1,
-  placeholder = '请选择日期时间',
+  placeholder: placeholderProp,
   precision = 'second',
   minDate,
   minDateTime,
   defaultToNow = false,
   size = 'md',
 }) => {
+  const locale = useLumenLocale();
+  const placeholder = placeholderProp ?? locale.dateTimePicker.placeholder;
+  const weekdays = locale.calendar.weekdays;
+  const months = locale.calendar.months;
   const overlayScopeId = useOverlayPortalScope();
   const parsed = useMemo(() => parseDateTime(value), [value]);
   const today = useMemo(() => new Date(), []);
@@ -452,7 +441,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
       }}
     >
       <input
-        aria-label={`${label}值`}
+        aria-label={locale.dateTimePicker.valueLabel(label)}
         className="sr-only"
         value={value}
         onChange={(event) => onChange(event.target.value)}
@@ -532,7 +521,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                       <ChevronLeft size={18} />
                     </button>
                     <div className="text-[14px] font-semibold text-[var(--lumen-color-text)]">
-                      {viewYear}年{MONTHS[viewMonth]}
+                      {locale.calendar.year(viewYear)} {months[viewMonth]}
                     </div>
                     <button
                       type="button"
@@ -543,7 +532,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                     </button>
                   </div>
                   <div className="grid grid-cols-7 text-center text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]">
-                    {WEEKDAYS.map((weekday) => (
+                    {weekdays.map((weekday) => (
                       <div key={weekday} className="py-1.5">
                         {weekday}
                       </div>
@@ -557,7 +546,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                         <button
                           key={cell.date}
                           type="button"
-                          aria-label={`选择日期 ${cell.date}`}
+                          aria-label={locale.calendar.selectDate(cell.date)}
                           disabled={dateDisabled}
                           onClick={() => setDraftDate(cell.date)}
                           className={cn(
@@ -614,7 +603,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                     'text-[var(--lumen-color-text-placeholder)] hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-muted)]',
                   )}
                 >
-                  清除
+                  {locale.common.clear}
                 </button>
                 <div className="flex items-center gap-2">
                   <button
@@ -625,10 +614,10 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                       'font-medium text-[var(--lumen-color-primary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary-active)]',
                     )}
                   >
-                    此刻
+                    {locale.common.now}
                   </button>
                   <Button type="button" size="sm" onClick={confirm}>
-                    确定
+                    {locale.common.confirm}
                   </Button>
                 </div>
               </div>

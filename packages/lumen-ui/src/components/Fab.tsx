@@ -3,6 +3,7 @@ import { LoaderCircle } from 'lucide-react';
 import { Button } from './Button';
 import { cn } from './classNames';
 import type { ButtonSize, ButtonVariant } from './designTokens';
+import { useLumenLocale } from '../i18n';
 
 export type FabPosition = 'fixed' | 'absolute' | 'static';
 export type FabPlacement = 'bottom-end' | 'bottom-start' | 'top-end' | 'top-start';
@@ -58,7 +59,7 @@ export const Fab: React.FC<FabProps> = ({
   active = true,
   extended: extendedProp,
   loading = false,
-  loadingLabel = '加载中',
+  loadingLabel,
   position = 'fixed',
   placement = 'bottom-end',
   offset = 16,
@@ -71,6 +72,8 @@ export const Fab: React.FC<FabProps> = ({
   'aria-label': ariaLabel,
   ...props
 }) => {
+  const locale = useLumenLocale();
+  const resolvedLoadingLabel = loadingLabel ?? locale.accessibility.loading;
   const extended = extendedProp ?? (label !== undefined && label !== null);
   const offsetValue = toCssLength(offset);
   const positioned = position !== 'static';
@@ -108,14 +111,14 @@ export const Fab: React.FC<FabProps> = ({
   } as const;
 
   return extended ? (
-    <Button {...sharedProps} aria-label={loading ? loadingLabel : ariaLabel}>
+    <Button {...sharedProps} aria-label={loading ? resolvedLoadingLabel : ariaLabel}>
       {label}
     </Button>
   ) : (
     <Button
       {...sharedProps}
       iconOnly
-      aria-label={loading ? loadingLabel : ariaLabel ?? (typeof label === 'string' ? label : '浮动操作')}
+      aria-label={loading ? resolvedLoadingLabel : ariaLabel ?? (typeof label === 'string' ? label : locale.accessibility.fab)}
     />
   );
 };

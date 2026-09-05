@@ -11,6 +11,7 @@ import { Calendar } from './calendar/Calendar';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { useOverlayPortalScope } from './useOverlayBehavior';
+import { type LumenLocale, useLumenLocale, zhCN } from '../i18n';
 
 // ─── 类型定义 ────────────────────────────────────────────
 
@@ -48,20 +49,6 @@ export interface DatePickerProps {
 
 // ─── 常量 ──────────────────────────────────────────────
 
-const MONTHS = [
-  '1月',
-  '2月',
-  '3月',
-  '4月',
-  '5月',
-  '6月',
-  '7月',
-  '8月',
-  '9月',
-  '10月',
-  '11月',
-  '12月',
-];
 const YEAR_PAGE_SIZE = 20;
 const DEFAULT_YEAR_RANGE_PREV_PAGES = 2;
 const DEFAULT_YEAR_RANGE_NEXT_PAGES = 1;
@@ -77,14 +64,15 @@ export const formatValue = (
   value: string,
   mode: DatePickerMode,
   fmt?: string,
+  locale: LumenLocale['datePicker'] = zhCN.datePicker,
 ): string => {
   if (!value) return '';
   const parts = value.split('-').map(Number);
   if (!fmt) {
     if (mode === 'year-month') {
-      return `${parts[0]}年${parts[1]}月`;
+      return locale.formatYearMonth(parts[0]!, parts[1]!);
     }
-    return `${parts[0]}年${parts[1]}月${parts[2]}日`;
+    return locale.formatDate(parts[0]!, parts[1]!, parts[2]!);
   }
   // 自定义格式（注意 replace 顺序 — MM 必须在 M 之前替换，否则 MM 会被 M 替换破坏）
   return fmt
@@ -157,7 +145,7 @@ const pickerOptionFocusClassName =
 export const DatePicker: React.FC<DatePickerProps> = ({
   value,
   onChange,
-  placeholder = '请选择日期',
+  placeholder: placeholderProp,
   triggerAriaLabel,
   className,
   mode = 'year-month-day' as DatePickerMode,
@@ -169,6 +157,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   minDate,
   maxDate,
 }) => {
+  const locale = useLumenLocale();
+  const placeholder = placeholderProp ?? locale.datePicker.placeholder;
   const overlayScopeId = useOverlayPortalScope();
   const [open, setOpen] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
@@ -464,8 +454,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   // ─── 显示值 ────────────────────────────────────────
 
   const displayValue = useMemo(() => {
-    return formatValue(value, mode, format);
-  }, [value, mode, format]);
+    return formatValue(value, mode, format, locale.datePicker);
+  }, [value, mode, format, locale.datePicker]);
 
   // 选中值解析（year-month 模式）
   const selectedMonth = useMemo(() => {
@@ -645,7 +635,9 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
   onSelectToday,
   isMonthDisabled,
   isYearDisabled,
-}) => (
+}) => {
+  const locale = useLumenLocale();
+  return (
   <>
     <div className={cn(tokens.dropdown, 'pb-0')}>
       {showYearPicker ? (
@@ -731,7 +723,7 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
                 pickerHeaderButtonClassName,
               )}
             >
-              {viewYear}年
+              {locale.calendar.year(viewYear)}
             </button>
             <button
               type="button"
@@ -753,7 +745,7 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
               }
             >
               <div className="grid grid-cols-4 gap-2">
-                {MONTHS.map((label, idx) => {
+                {locale.calendar.months.map((label, idx) => {
                   const isSelected =
                     selectedMonth?.year === viewYear &&
                     selectedMonth?.month === idx;
@@ -807,7 +799,7 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
               'font-medium text-[var(--lumen-color-primary)] hover:text-[var(--lumen-color-primary-active)] transition-colors',
             )}
           >
-            今天
+            {locale.common.today}
           </button>
         )}
         {clearable && selectedMonth && (
@@ -819,10 +811,11 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
               'text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)] transition-colors ml-auto',
             )}
           >
-            清除
+            {locale.common.clear}
           </button>
         )}
       </div>
     )}
   </>
-);
+  );
+};

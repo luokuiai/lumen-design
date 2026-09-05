@@ -17,6 +17,7 @@ import {
   Code2,
   Copy,
   Filter,
+  Languages,
   MapPin,
   LogOut,
   MoreHorizontal,
@@ -74,6 +75,7 @@ import {
   Input,
   List,
   ListItem,
+  LumenProvider,
   Modal,
   NumberInput,
   Pagination,
@@ -101,6 +103,8 @@ import {
   Transfer,
   TreeSelect,
   Typography,
+  enUS,
+  zhCN,
 } from '@luokuiai/lumen-ui';
 import type { DataTableColumn, DataTableSort, StepsDirection } from '@luokuiai/lumen-ui';
 import '@luokuiai/lumen-theme-clarity';
@@ -160,6 +164,16 @@ type Theme = 'clarity' | 'paper' | 'prism';
 const themeStorageKey = 'lumen-playground-theme';
 const colorSchemeStorageKey = 'lumen-playground-color-scheme';
 const accentStorageKey = 'lumen-playground-accent';
+const localeStorageKey = 'lumen-playground-locale';
+
+const getInitialLocale = () => {
+  if (typeof window === 'undefined') return zhCN;
+  try {
+    return window.localStorage.getItem(localeStorageKey) === 'en-US' ? enUS : zhCN;
+  } catch {
+    return zhCN;
+  }
+};
 
 const initialTheme: Theme = (() => {
   if (typeof window === 'undefined') return 'clarity';
@@ -271,6 +285,7 @@ const galleryCategories: GalleryCategory[] = [
     icon: TypeIcon,
     demos: [
       demo('Typography', 'typography', 'Typography', '    <>\n      <Typography variant="h1">H1 运营总览</Typography>\n      <Typography variant="h2">H2 事件处置</Typography>\n      <Typography>正文用于承载主要说明和数据内容。</Typography>\n      <Typography variant="caption" tone="muted">辅助文字用于简短提示。</Typography>\n    </>', undefined, undefined, ['Headings', 'Body']),
+      demo('Locale', 'typography', 'LumenProvider, Pagination, Select, enUS', '    <LumenProvider locale={enUS}>\n      <div className="space-y-4">\n        <Select options={[]} value={null} onChange={() => undefined} />\n        <Pagination currentPage={2} totalPages={8} totalItems={72} onPageChange={() => undefined} />\n      </div>\n    </LumenProvider>', undefined, undefined, ['Locale'], ['LumenProvider']),
     ],
   },
   {
@@ -385,6 +400,133 @@ const galleryCategories: GalleryCategory[] = [
     ],
   },
 ];
+
+const playgroundMessages = {
+  'zh-CN': {
+    appDescription: '组件库全量预览和交互检查入口。',
+    navigationLabel: '组件目录',
+    mobileNavigationLabel: '移动端组件目录',
+    openNavigation: '打开导航',
+    closeNavigation: '关闭导航',
+    expandSidebar: '展开侧栏',
+    collapseSidebar: '折叠侧栏',
+    searchPlaceholder: '搜索分类或组件',
+    brandSubtitle: '开发预览',
+    usageTips: '使用建议',
+    examples: '示例',
+    properties: '属性',
+    property: '属性',
+    type: '类型',
+    defaultValue: '默认值',
+    description: '说明',
+    required: '必填',
+    hideCode: '隐藏代码',
+    viewCode: '查看代码',
+    copied: '已复制',
+    copyCode: '复制代码',
+    codeCopied: '代码已复制',
+    categories: {
+      foundations: { title: '基础', description: '字体层级与内容基础样式。' },
+      actions: { title: '操作', description: '触发操作、工具组和页面主要行为。' },
+      forms: { title: '表单', description: '输入、选择、日期时间和文件提交。' },
+      navigation: { title: '导航', description: '应用级与页面级导航结构。' },
+      'data-display': { title: '数据展示', description: '状态、列表、表格与结构化内容。' },
+      feedback: { title: '反馈', description: '操作结果、进度、加载与空状态。' },
+      overlays: { title: '浮层', description: '覆盖页面的弹层、抽屉和上下文操作。' },
+    },
+  },
+  'en-US': {
+    appDescription: 'A complete preview and interaction-checking workspace for the component library.',
+    navigationLabel: 'Component catalog',
+    mobileNavigationLabel: 'Mobile component catalog',
+    openNavigation: 'Open navigation',
+    closeNavigation: 'Close navigation',
+    expandSidebar: 'Expand sidebar',
+    collapseSidebar: 'Collapse sidebar',
+    searchPlaceholder: 'Search categories or components',
+    brandSubtitle: 'Development Preview',
+    usageTips: 'Usage',
+    examples: 'Examples',
+    properties: 'Properties',
+    property: 'Property',
+    type: 'Type',
+    defaultValue: 'Default',
+    description: 'Description',
+    required: 'Required',
+    hideCode: 'Hide code',
+    viewCode: 'View code',
+    copied: 'Copied',
+    copyCode: 'Copy code',
+    codeCopied: 'Code copied',
+    categories: {
+      foundations: { title: 'Foundations', description: 'Typography and foundational content styles.' },
+      actions: { title: 'Actions', description: 'Triggers, tool groups, and primary page actions.' },
+      forms: { title: 'Forms', description: 'Inputs, selections, date and time controls, and file submission.' },
+      navigation: { title: 'Navigation', description: 'Application-level and page-level navigation structures.' },
+      'data-display': { title: 'Data Display', description: 'Status, lists, tables, and structured content.' },
+      feedback: { title: 'Feedback', description: 'Results, progress, loading, and empty states.' },
+      overlays: { title: 'Overlays', description: 'Modals, drawers, and contextual actions above the page.' },
+    },
+  },
+} as const;
+
+type PlaygroundMessages = (typeof playgroundMessages)[keyof typeof playgroundMessages];
+const PlaygroundMessagesContext = createContext<PlaygroundMessages>(playgroundMessages['zh-CN']);
+
+const zhDemoNames: Record<string, string> = {
+  Typography: '排版',
+  Locale: '国际化',
+  Button: '按钮',
+  Fab: '浮动操作按钮',
+  Toolbar: '工具栏',
+  DropdownMenu: '下拉菜单',
+  'Input / FormField': '输入框 / 表单字段',
+  NumberInput: '数字输入框',
+  Textarea: '多行文本框',
+  Checkbox: '复选框',
+  Radio: '单选框',
+  Switch: '开关',
+  Slider: '滑块',
+  Rating: '评分',
+  Select: '选择器',
+  TreeSelect: '树选择器',
+  Cascader: '级联选择器',
+  DatePicker: '日期选择器',
+  TimePicker: '时间选择器',
+  DateTimePicker: '日期时间选择器',
+  Calendar: '日历',
+  Transfer: '穿梭框',
+  FileUpload: '文件上传',
+  Breadcrumb: '面包屑',
+  AppBar: '应用栏',
+  BottomNavigation: '底部导航',
+  Pagination: '分页',
+  Tabs: '标签页',
+  Steps: '步骤条',
+  Badge: '徽标',
+  Avatar: '头像',
+  Chip: '标签',
+  Timeline: '时间线',
+  FileTypeIcon: '文件类型图标',
+  DataTable: '数据表格',
+  List: '列表',
+  Scrollbar: '滚动条',
+  Collapse: '折叠面板',
+  Accordion: '手风琴',
+  Divider: '分隔线',
+  Alert: '提示',
+  Progress: '进度条',
+  Spinner: '加载指示器',
+  Empty: '空状态',
+  SegmentedControl: '分段控制器',
+  Skeleton: '骨架屏',
+  CommandPalette: '命令面板',
+  Modal: '模态框',
+  Drawer: '抽屉',
+  ConfirmDialog: '确认对话框',
+  Toast: '消息提示',
+  Popover: '弹出框',
+};
 
 const allDemos = galleryCategories.flatMap((category) => category.demos);
 const componentGuides: Record<string, ComponentGuide> = {
@@ -788,6 +930,7 @@ const getSafetyEventSortValue = (event: SafetyEvent, key: string) => {
 
 function GallerySection({ section, children }: { section: Section; children: React.ReactNode }) {
   const activeDemo = useContext(ActiveDemoContext);
+  const messages = useContext(PlaygroundMessagesContext);
   const [generatedComponentApi, setGeneratedComponentApi] = useState<Record<string, GeneratedPropDoc[]>>({});
   const guide = activeDemo ? componentGuides[activeDemo.demo.id] : undefined;
   const apiSections = activeDemo?.demo.apiComponents.flatMap((componentName) => {
@@ -825,32 +968,32 @@ function GallerySection({ section, children }: { section: Section; children: Rea
       </header>
       {guide ? (
         <div className="component-guidance">
-          <h3>使用建议</h3>
+          <h3>{messages.usageTips}</h3>
           <ul>
             {guide.usage.map((item) => <li key={item}>{item}</li>)}
           </ul>
         </div>
       ) : null}
-      <h3 className="document-section-title">示例</h3>
+      <h3 className="document-section-title">{messages.examples}</h3>
       <div className="section-grid">{children}</div>
       {apiSections.length ? (
         <section className="component-api" aria-labelledby={`${activeDemo!.demo.id}-api-title`}>
           <div className="component-api-card">
             <div className="component-api-heading">
               <span>API</span>
-              <h3 id={`${activeDemo!.demo.id}-api-title`}>属性</h3>
+              <h3 id={`${activeDemo!.demo.id}-api-title`}>{messages.properties}</h3>
             </div>
             {apiSections.map(({ componentName, props }) => (
               <div key={componentName} className="component-api-group">
                 <h4>{componentName}</h4>
-                <div className="component-api-table-wrap">
+                <div className="component-api-table-wrap lumen-scrollbar" data-size="sm">
                   <table className="component-api-table">
                     <thead>
                       <tr>
-                        <th>属性</th>
-                        <th>类型</th>
-                        <th>默认值</th>
-                        <th>说明</th>
+                        <th>{messages.property}</th>
+                        <th>{messages.type}</th>
+                        <th>{messages.defaultValue}</th>
+                        <th>{messages.description}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -858,7 +1001,7 @@ function GallerySection({ section, children }: { section: Section; children: Rea
                         <tr key={prop.name}>
                           <td>
                             <code>{prop.name}</code>
-                            {prop.required ? <span className="component-api-required">必填</span> : null}
+                            {prop.required ? <span className="component-api-required">{messages.required}</span> : null}
                           </td>
                           <td><code>{prop.type}</code></td>
                           <td><code>{prop.defaultValue}</code></td>
@@ -934,6 +1077,7 @@ function DemoCard({
   wide?: boolean;
 }) {
   const activeDemo = useContext(ActiveDemoContext);
+  const messages = useContext(PlaygroundMessagesContext);
   if (activeDemo && !activeDemo.demo.cardTitles.includes(title)) return null;
 
   const code = demoCardCodeByTitle[title]
@@ -949,12 +1093,12 @@ function DemoCard({
       <CardHeader className="demo-card-header">
         <CardTitle>{title}</CardTitle>
         {activeDemo ? (
-          <Tooltip content={codeExpanded ? '隐藏代码' : '查看代码'} placement="left">
+          <Tooltip content={codeExpanded ? messages.hideCode : messages.viewCode} placement="left">
             <Button
               iconOnly
               size="sm"
               variant="ghost"
-              aria-label={codeExpanded ? '隐藏代码' : '查看代码'}
+              aria-label={codeExpanded ? messages.hideCode : messages.viewCode}
               aria-controls={codePanelId}
               aria-expanded={codeExpanded}
               icon={<Code2 size={16} />}
@@ -976,12 +1120,12 @@ function DemoCard({
             <div className="demo-code-panel">
               <div className="demo-code-header">
                 <span><Code2 aria-hidden="true" size={14} /> TSX</span>
-                <Tooltip content={copied ? '已复制' : '复制代码'} placement="left">
+                <Tooltip content={copied ? messages.copied : messages.copyCode} placement="left">
                   <Button
                     iconOnly
                     size="sm"
                     variant="ghost"
-                    aria-label={copied ? '代码已复制' : '复制代码'}
+                    aria-label={copied ? messages.codeCopied : messages.copyCode}
                     icon={copied ? <Check size={16} /> : <Copy size={16} />}
                     tabIndex={codeExpanded ? undefined : -1}
                     onClick={() => activeDemo.onCopyCode(title, code)}
@@ -1003,6 +1147,8 @@ function GalleryTreeNav({
   activeDemoId,
   expandedCategoryIds,
   collapsed = false,
+  ariaLabel,
+  getDemoLabel,
   onToggleCategory,
   onSelectDemo,
 }: {
@@ -1011,11 +1157,13 @@ function GalleryTreeNav({
   activeDemoId: string;
   expandedCategoryIds: string[];
   collapsed?: boolean;
+  ariaLabel: string;
+  getDemoLabel: (title: string) => string;
   onToggleCategory: (categoryId: string) => void;
   onSelectDemo: (categoryId: string, demoId: string) => void;
 }) {
   return (
-    <nav className="gallery-tree-nav" aria-label="组件目录">
+    <nav className="gallery-tree-nav" aria-label={ariaLabel}>
       {categories.map((category) => {
         const Icon = category.icon;
         const expanded = expandedCategoryIds.includes(category.id);
@@ -1066,7 +1214,7 @@ function GalleryTreeNav({
                     tabIndex={expanded ? undefined : -1}
                     onClick={() => onSelectDemo(category.id, item.id)}
                   >
-                    {item.title}
+                    {getDemoLabel(item.title)}
                   </button>
                 ))}
               </div>
@@ -1078,7 +1226,7 @@ function GalleryTreeNav({
   );
 }
 
-function GalleryBrand({ className = '' }: { className?: string }) {
+function GalleryBrand({ className = '', subtitle }: { className?: string; subtitle: string }) {
   return (
     <div className={`brand ${className}`.trim()}>
       <img
@@ -1089,14 +1237,25 @@ function GalleryBrand({ className = '' }: { className?: string }) {
       />
       <div>
         <strong>Lumen Design</strong>
-        <span>Development Preview</span>
+        <span>{subtitle}</span>
       </div>
     </div>
   );
 }
 
 export default function App() {
+  const [locale, setLocale] = useState(getInitialLocale);
+  useEffect(() => {
+    document.documentElement.lang = locale.locale;
+    try {
+      window.localStorage.setItem(localeStorageKey, locale.locale);
+    } catch {
+      // Storage can be unavailable in restricted browsing contexts.
+    }
+  }, [locale]);
+
   const mainScrollRef = useRef<HTMLDivElement>(null);
+  const mobileNavigationScrollTopRef = useRef(0);
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [colorScheme, setColorScheme] = useState<ColorScheme>(initialColorScheme);
   const [accent, setAccent] = useState<Accent>(initialAccent);
@@ -1147,18 +1306,37 @@ export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
+  const language = locale.locale === enUS.locale ? 'en-US' : 'zh-CN';
+  const messages = playgroundMessages[language];
+  const localizedCategories = useMemo(
+    () => galleryCategories.map((category) => ({
+      ...category,
+      ...messages.categories[category.id as keyof typeof messages.categories],
+    })),
+    [messages],
+  );
+  const demoLabels = useMemo<Record<string, string>>(
+    () => Object.fromEntries(allDemos.map(({ title }) => [
+      title,
+      language === 'zh-CN' && zhDemoNames[title]
+        ? `${zhDemoNames[title]}（${title}）`
+        : title,
+    ])),
+    [language],
+  );
+
   const normalizedSearch = gallerySearch.trim().toLowerCase();
-  const activeCategory = galleryCategories.find((category) => category.id === activeSection)
-    ?? galleryCategories[0]!;
+  const activeCategory = localizedCategories.find((category) => category.id === activeSection)
+    ?? localizedCategories[0]!;
   const activeDemo = activeCategory.demos.find((item) => item.id === activeDemoId)
     ?? activeCategory.demos[0]!;
   const filteredCategories = useMemo(
-    () => galleryCategories.filter((category) =>
-      `${category.title} ${category.description} ${category.keywords} ${category.demos.map((item) => item.title).join(' ')}`
+    () => localizedCategories.filter((category) =>
+      `${category.title} ${category.description} ${category.keywords} ${category.demos.map((item) => demoLabels[item.title]).join(' ')}`
         .toLowerCase()
         .includes(normalizedSearch),
     ),
-    [normalizedSearch],
+    [demoLabels, localizedCategories, normalizedSearch],
   );
   const activeSections = useMemo(() => {
     const sourceSection = renderSections.find((section) => section.id === activeDemo.sourceSection);
@@ -1278,6 +1456,8 @@ export default function App() {
   );
 
   return (
+    <LumenProvider locale={locale}>
+    <PlaygroundMessagesContext.Provider value={messages}>
     <div
       data-lumen-theme={theme}
       data-color-scheme={colorScheme}
@@ -1286,10 +1466,12 @@ export default function App() {
       className={`app-shell${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}
     >
       <aside className="sidebar">
-        <GalleryBrand />
-        <Scrollbar className="sidebar-navigation" size="sm" aria-label="组件目录">
+        <GalleryBrand subtitle={messages.brandSubtitle} />
+        <Scrollbar className="sidebar-navigation" size="sm" aria-label={messages.navigationLabel}>
           <GalleryTreeNav
             categories={filteredCategories}
+            ariaLabel={messages.navigationLabel}
+            getDemoLabel={(title) => demoLabels[title] ?? title}
             activeCategoryId={activeSection}
             activeDemoId={activeDemo.id}
             expandedCategoryIds={expandedCategoryIds}
@@ -1305,23 +1487,35 @@ export default function App() {
         placement="left"
         closeOnSwipe
         drawerId="mobile-navigation"
-        aria-label="组件目录"
+        aria-label={messages.navigationLabel}
         panelClassName="mobile-nav-panel"
         onRequestClose={() => setMobileNavOpen(false)}
       >
         <div className="mobile-nav-header">
-          <GalleryBrand className="mobile-nav-brand" />
+          <GalleryBrand className="mobile-nav-brand" subtitle={messages.brandSubtitle} />
           <Button
             iconOnly
             variant="ghost"
-            aria-label="关闭导航"
+            aria-label={messages.closeNavigation}
             icon={<X size={18} />}
             onClick={() => setMobileNavOpen(false)}
           />
         </div>
-        <Scrollbar className="mobile-navigation-content" size="sm" aria-label="移动端组件目录">
+        <Scrollbar
+          ref={(element) => {
+            if (element) element.scrollTop = mobileNavigationScrollTopRef.current;
+          }}
+          className="mobile-navigation-content"
+          size="sm"
+          aria-label={messages.mobileNavigationLabel}
+          onScroll={(event) => {
+            mobileNavigationScrollTopRef.current = event.currentTarget.scrollTop;
+          }}
+        >
           <GalleryTreeNav
             categories={filteredCategories}
+            ariaLabel={messages.navigationLabel}
+            getDemoLabel={(title) => demoLabels[title] ?? title}
             activeCategoryId={activeSection}
             activeDemoId={activeDemo.id}
             expandedCategoryIds={expandedCategoryIds}
@@ -1338,23 +1532,23 @@ export default function App() {
         <AppHeader
           className="topbar"
           title="Lumen UI Gallery"
-          description="组件库全量预览和交互检查入口。"
+          description={messages.appDescription}
           navigation={(
             <>
             <Button
               iconOnly
               variant="secondary"
               className="mobile-menu-button"
-              aria-label="打开导航"
+              aria-label={messages.openNavigation}
               icon={<Menu size={18} />}
               onClick={() => setMobileNavOpen(true)}
             />
-            <Tooltip content={sidebarCollapsed ? '展开侧栏' : '折叠侧栏'} placement="bottom">
+            <Tooltip content={sidebarCollapsed ? messages.expandSidebar : messages.collapseSidebar} placement="bottom">
               <Button
                 iconOnly
                 variant="ghost"
                 className="sidebar-toggle-button"
-                aria-label={sidebarCollapsed ? '展开侧栏' : '折叠侧栏'}
+                aria-label={sidebarCollapsed ? messages.expandSidebar : messages.collapseSidebar}
                 aria-expanded={!sidebarCollapsed}
                 icon={sidebarCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
                 onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
@@ -1369,14 +1563,54 @@ export default function App() {
               value={gallerySearch}
               onChange={(event) => setGallerySearch(event.target.value)}
               prefix={<Search size={15} />}
-              placeholder="搜索分类或组件"
+              placeholder={messages.searchPlaceholder}
             />
           )}
           actions={(
             <>
             <DropdownMenu
               menuMode
-              align="right"
+              menuClassName="locale-menu"
+              trigger={({ open, menuId, toggle }) => (
+                <Button
+                  iconOnly
+                  size="sm"
+                  variant="ghost"
+                  aria-label={locale === zhCN ? '选择语言' : 'Select language'}
+                  aria-controls={menuId}
+                  aria-expanded={open}
+                  aria-haspopup="menu"
+                  icon={<Languages size={18} />}
+                  onClick={toggle}
+                />
+              )}
+            >
+              {({ close }) => (
+                <div className="locale-options">
+                  {([
+                    [zhCN, '简体中文'],
+                    [enUS, 'English'],
+                  ] as const).map(([option, label]) => (
+                    <button
+                      key={option.locale}
+                      type="button"
+                      role="menuitemradio"
+                      aria-checked={locale === option}
+                      className="locale-option"
+                      onClick={() => {
+                        setLocale(option);
+                        close();
+                      }}
+                    >
+                      <span>{label}</span>
+                      {locale === option ? <Check aria-hidden="true" size={15} /> : null}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </DropdownMenu>
+            <DropdownMenu
+              menuMode
               className="topbar-accent"
               menuClassName="accent-menu"
               trigger={({ open, menuId, toggle }) => (
@@ -1508,7 +1742,6 @@ export default function App() {
             </DropdownMenu>
             <DropdownMenu
               menuMode
-              align="right"
               className="topbar-avatar"
               menuClassName="account-menu"
               trigger={({ open, menuId, toggle }) => (
@@ -1612,6 +1845,12 @@ export default function App() {
                       辅助文字用于时间、状态补充和简短提示。
                     </Typography>
                   </div>
+                </DemoCard>
+                <DemoCard title="Locale" wide>
+                    <div className="max-w-[640px] space-y-4">
+                      <Select options={[]} value={null} onChange={() => undefined} />
+                      <Pagination currentPage={2} totalPages={8} totalItems={72} onPageChange={() => undefined} />
+                    </div>
                 </DemoCard>
               </GallerySection>
             );
@@ -2627,5 +2866,7 @@ export default function App() {
         }}
       />
     </div>
+    </PlaygroundMessagesContext.Provider>
+    </LumenProvider>
   );
 }

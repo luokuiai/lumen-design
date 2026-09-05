@@ -1,6 +1,7 @@
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from './classNames';
+import { useLumenLocale } from '../i18n';
 
 export type BottomNavigationPosition = 'fixed' | 'absolute' | 'static';
 
@@ -39,14 +40,16 @@ export const BottomNavigation = <T extends string = string>({
   active = true,
   position = 'fixed',
   safeArea = true,
-  ariaLabel = '底部导航',
+  ariaLabel,
   className,
   itemClassName,
   ...props
-}: BottomNavigationProps<T>) => (
+}: BottomNavigationProps<T>) => {
+  const locale = useLumenLocale();
+  return (
   <nav
     {...props}
-    aria-label={ariaLabel}
+    aria-label={ariaLabel ?? locale.navigation.bottomNavigation}
     data-active={active}
     data-position={position}
     data-ui="bottom-navigation"
@@ -63,7 +66,7 @@ export const BottomNavigation = <T extends string = string>({
         const selected = item.value === value;
         const Icon = item.icon;
         const itemClasses = cn(
-          'relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 text-center text-[11px] font-normal leading-none transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/25',
+          'relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 text-center text-[12px] font-normal leading-none transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/25',
           selected
             ? 'text-[var(--lumen-color-primary)]'
             : 'text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-text)]',
@@ -121,4 +124,5 @@ export const BottomNavigation = <T extends string = string>({
       })}
     </div>
   </nav>
-);
+  );
+};

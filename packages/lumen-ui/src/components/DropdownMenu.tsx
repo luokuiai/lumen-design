@@ -361,7 +361,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             className={cn(
               'rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] py-1 shadow-[var(--lumen-shadow-dropdown)]',
               resolvedAlign === 'right' ? 'origin-top-right' : 'origin-top-left',
-              menuMode && 'min-w-max whitespace-nowrap [&_svg]:shrink-0',
+              menuMode && 'min-w-40 max-w-[320px] whitespace-nowrap [&_svg]:shrink-0',
               menuClassName,
             )}
             style={{

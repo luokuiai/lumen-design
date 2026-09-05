@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from './classNames';
 import { Toolbar, type ToolbarSize } from './Toolbar';
+import { useLumenLocale } from '../i18n';
 
 export type AppBarPosition = 'fixed' | 'absolute' | 'sticky' | 'static';
 export type AppBarTitleAlign = 'start' | 'center';
@@ -38,14 +39,16 @@ export const AppBar = React.forwardRef<HTMLElement, AppBarProps>(
       titleAlign = 'center',
       size = 'lg',
       safeArea = true,
-      ariaLabel = '应用栏',
+      ariaLabel,
       className,
       toolbarClassName,
       titleClassName,
       ...props
     },
     ref,
-  ) => (
+  ) => {
+    const locale = useLumenLocale();
+    return (
     <header
       {...props}
       ref={ref}
@@ -63,7 +66,7 @@ export const AppBar = React.forwardRef<HTMLElement, AppBarProps>(
     >
       <Toolbar
         size={size}
-        ariaLabel={ariaLabel}
+        ariaLabel={ariaLabel ?? locale.navigation.appBar}
         className={cn(
           '!grid w-full overflow-visible [&_[data-icon-only]]:!rounded-full',
           titleAlign === 'center'
@@ -90,7 +93,8 @@ export const AppBar = React.forwardRef<HTMLElement, AppBarProps>(
         </div>
       </Toolbar>
     </header>
-  ),
+    );
+  },
 );
 
 AppBar.displayName = 'AppBar';

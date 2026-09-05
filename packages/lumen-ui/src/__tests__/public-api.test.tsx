@@ -29,6 +29,9 @@ describe('public API', () => {
     expect(Lumen.Input).toBeTypeOf('object');
     expect(Lumen.List).toBeTypeOf('object');
     expect(Lumen.ListItem).toBeTypeOf('object');
+    expect(Lumen.LumenProvider).toBeTypeOf('function');
+    expect(Lumen.zhCN.locale).toBe('zh-CN');
+    expect(Lumen.enUS.locale).toBe('en-US');
     expect(Lumen.Select).toBeTypeOf('function');
     expect(Lumen.Modal).toBeTypeOf('function');
     expect(Lumen.NumberInput).toBeTypeOf('object');

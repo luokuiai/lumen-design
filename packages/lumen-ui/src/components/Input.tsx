@@ -2,6 +2,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import React, { useState } from 'react';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
+import { useLumenLocale } from '../i18n';
 
 export type InputSize = 'sm' | 'md' | 'lg';
 
@@ -20,11 +21,6 @@ export interface InputProps
   passwordToggle?: boolean;
   passwordToggleLabels?: PasswordToggleLabels;
 }
-
-const defaultPasswordToggleLabels: PasswordToggleLabels = {
-  show: '显示密码',
-  hide: '隐藏密码',
-};
 
 const inputSizeTokens: Record<InputSize, string> = {
   sm: 'h-[var(--lumen-control-height-sm)] px-2.5 text-[13px] mobile:text-[16px]',
@@ -63,11 +59,16 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       disabled,
       type,
       passwordToggle = false,
-      passwordToggleLabels = defaultPasswordToggleLabels,
+      passwordToggleLabels,
       ...props
     },
     ref,
   ) => {
+    const locale = useLumenLocale();
+    const resolvedPasswordToggleLabels = passwordToggleLabels ?? {
+      show: locale.accessibility.passwordShow,
+      hide: locale.accessibility.passwordHide,
+    };
     const [passwordVisible, setPasswordVisible] = useState(false);
     const showPasswordToggle = passwordToggle && type === 'password';
     const resolvedType = showPasswordToggle && passwordVisible ? 'text' : type;
@@ -111,7 +112,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {showPasswordToggle && (
             <button
               type="button"
-              aria-label={passwordVisible ? passwordToggleLabels.hide : passwordToggleLabels.show}
+              aria-label={passwordVisible ? resolvedPasswordToggleLabels.hide : resolvedPasswordToggleLabels.show}
               aria-pressed={passwordVisible}
               disabled={disabled}
               className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[var(--lumen-radius-icon)] text-[var(--lumen-color-text-placeholder)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed"

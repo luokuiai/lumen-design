@@ -286,9 +286,32 @@
   animation: lumen-skeleton-pulse 1.6s ease-in-out infinite;
 }
 
+[data-ui='dropdown-surface'] [role='menuitemradio'][aria-checked='true'] {
+  background: color-mix(
+    in srgb,
+    var(--lumen-color-primary) 7%,
+    var(--lumen-color-surface)
+  );
+  color: var(--lumen-color-primary);
+}
+
+[data-ui='dropdown-surface']
+  [role='menuitemradio'][aria-checked='true']
+  > svg:last-child {
+  color: var(--lumen-color-primary);
+}
+
 .lumen-scrollbar {
-  --lumen-scrollbar-thumb: var(--lumen-color-border-strong);
-  --lumen-scrollbar-thumb-hover: var(--lumen-color-border-hover);
+  --lumen-scrollbar-thumb: color-mix(
+    in srgb,
+    var(--lumen-color-text) 18%,
+    transparent
+  );
+  --lumen-scrollbar-thumb-hover: color-mix(
+    in srgb,
+    var(--lumen-color-text) 28%,
+    transparent
+  );
   scrollbar-color: var(--lumen-scrollbar-thumb) transparent;
   scrollbar-width: thin;
 }

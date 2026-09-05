@@ -141,7 +141,7 @@ body {
   position: relative;
   min-height: 34px;
   padding: 7px 10px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .gallery-tree-item[data-active] {
@@ -216,7 +216,10 @@ body {
 }
 
 .mobile-nav-panel {
+  display: flex;
+  flex-direction: column;
   width: min(276px, 86vw);
+  overflow-y: hidden;
   border-right: 1px solid var(--lumen-color-border);
   background: var(--lumen-color-surface);
   box-shadow: var(--lumen-shadow-modal);
@@ -240,7 +243,8 @@ body {
 }
 
 .mobile-navigation-content {
-  max-height: calc(100dvh - 72px);
+  flex: 1;
+  min-height: 0;
   padding: 0 12px 20px;
 }
 
@@ -491,8 +495,43 @@ body {
 }
 
 .accent-menu {
-  width: 176px;
   padding: 6px;
+}
+
+.locale-menu {
+  padding: 6px;
+}
+
+.locale-options {
+  display: grid;
+  gap: 2px;
+}
+
+.locale-option {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 36px;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: var(--lumen-radius-control);
+  background: transparent;
+  color: var(--lumen-color-text-secondary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.locale-option:hover,
+.locale-option:focus-visible {
+  background: var(--lumen-color-surface-muted);
+  color: var(--lumen-color-text-strong);
+}
+
+.locale-option:focus-visible {
+  outline: 2px solid var(--lumen-color-primary);
+  outline-offset: -2px;
 }
 
 .accent-options {
@@ -961,6 +1000,17 @@ body {
 
   .sidebar {
     display: none;
+  }
+
+  .mobile-navigation-content .gallery-tree-category,
+  .mobile-navigation-content .gallery-tree-item {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .mobile-navigation-content .gallery-tree-item {
+    min-height: 40px;
+    padding-block: 8px;
   }
 
   .mobile-menu-button {

@@ -17,6 +17,7 @@ import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { dropdownTransformOrigin } from './dropdownMotion';
 import { useOverlayPortalScope } from './useOverlayBehavior';
+import { useLumenLocale } from '../i18n';
 
 const DROPDOWN_CLOSE_ANIMATION_MS = 120;
 const SHOULD_SKIP_CLOSE_ANIMATION_IN_TEST = import.meta.env.MODE === 'test';
@@ -221,20 +222,24 @@ export const TreeSelect = <TNode,>({
   exclusiveHierarchySelection = false,
   searchable = false,
   expandSearchResults = false,
-  searchPlaceholder = '搜索组织节点',
+  searchPlaceholder: searchPlaceholderProp,
   getValue,
   getLabel,
   getChildren,
   isNodeSelectable,
   renderPrefix,
   defaultExpandedDepth = 1,
-  placeholder = '请选择',
+  placeholder: placeholderProp,
   disabled = false,
   loading = false,
-  emptyText = '无可选节点',
+  emptyText: emptyTextProp,
   className,
   size = 'md',
 }: TreeSelectProps<TNode>) => {
+  const locale = useLumenLocale();
+  const searchPlaceholder = searchPlaceholderProp ?? locale.treeSelect.searchPlaceholder;
+  const placeholder = placeholderProp ?? locale.treeSelect.placeholder;
+  const emptyText = emptyTextProp ?? locale.treeSelect.emptyText;
   const overlayScopeId = useOverlayPortalScope();
   const lockedValueSet = useMemo(() => new Set(lockedValues), [lockedValues]);
   const [isOpen, setIsOpen] = useState(false);
@@ -618,7 +623,7 @@ export const TreeSelect = <TNode,>({
                   {!lockedValueSet.has(nodeValue) ? (
                     <X
                       size={12}
-                      aria-label={`移除 ${getLabel(node)}`}
+                      aria-label={locale.treeSelect.removeItem(getLabel(node))}
                       className="cursor-pointer text-[var(--lumen-color-primary)]/60 hover:text-[var(--lumen-color-primary)]"
                       onClick={(event) => {
                         event.stopPropagation();
@@ -707,7 +712,7 @@ export const TreeSelect = <TNode,>({
             <div className="max-h-[280px] overflow-y-auto px-2.5 py-1.5">
               {loading ? (
                 <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
-                  加载中...
+                  {locale.treeSelect.loadingText}
                 </div>
               ) : visibleNodes.length === 0 ? (
                 <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
@@ -719,7 +724,7 @@ export const TreeSelect = <TNode,>({
             </div>
             {multiple && selectedValues.some((item) => !lockedValueSet.has(item)) ? (
               <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-3 py-2.5">
-                <span className="text-[12px] text-[var(--lumen-color-text-placeholder)]">已选 {selectedValues.length} 项</span>
+                <span className="text-[12px] text-[var(--lumen-color-text-placeholder)]">{locale.treeSelect.selectedCount(selectedValues.length)}</span>
                 <button
                   type="button"
                   className="text-[12px] text-[var(--lumen-color-text-placeholder)] transition-colors hover:text-[var(--lumen-color-text-muted)]"
@@ -734,7 +739,7 @@ export const TreeSelect = <TNode,>({
                     onMultiChange?.(nextValues, nextNodes);
                   }}
                 >
-                  清空
+                  {locale.common.clear}
                 </button>
               </div>
             ) : null}

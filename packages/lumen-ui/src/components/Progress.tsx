@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from './classNames';
+import { useLumenLocale } from '../i18n';
 
 export type ProgressType = 'line' | 'circle';
 export type ProgressSize = 'sm' | 'md' | 'lg';
@@ -54,13 +55,14 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     },
     ref,
   ) => {
+    const locale = useLumenLocale();
     const safeMax = max > 0 ? max : 100;
     const safeValue = Math.min(safeMax, Math.max(0, value));
     const percentage = Math.round((safeValue / safeMax) * 100);
     const valueLabel = formatValue?.(percentage, safeValue, safeMax) ?? `${percentage}%`;
     const color = progressColorVariables[status];
     const ariaProps = indeterminate
-      ? { 'aria-valuetext': '加载中' }
+      ? { 'aria-valuetext': locale.accessibility.loading }
       : { 'aria-valuemin': 0, 'aria-valuemax': safeMax, 'aria-valuenow': safeValue };
 
     if (type === 'circle') {
