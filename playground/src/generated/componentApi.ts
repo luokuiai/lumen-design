@@ -240,11 +240,27 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     },
     {
+      "name": "color",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 color。",
+      "descriptionEn": "Configures color.",
+      "required": false
+    },
+    {
       "name": "extended",
       "type": "boolean",
       "defaultValue": "undefined",
       "description": "设置 extended。",
       "descriptionEn": "Configures extended.",
+      "required": false
+    },
+    {
+      "name": "foregroundColor",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 foregroundColor。",
+      "descriptionEn": "Configures foreground color.",
       "required": false
     },
     {
@@ -261,6 +277,46 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "设置 loadingLabel。",
       "descriptionEn": "Configures loading label.",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "readonly FabAction[]",
+      "defaultValue": "[]",
+      "description": "设置 actions。",
+      "descriptionEn": "Configures actions.",
+      "required": false
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "控制浮层或面板是否打开。",
+      "descriptionEn": "Controls whether the overlay or panel is open.",
+      "required": false
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "非受控模式下是否默认打开。",
+      "descriptionEn": "Sets the initial open state in uncontrolled mode.",
+      "required": false
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "defaultValue": "undefined",
+      "description": "打开状态发生变化时触发。",
+      "descriptionEn": "Called when the open state changes.",
+      "required": false
+    },
+    {
+      "name": "menuDirection",
+      "type": "\"up\" | \"down\" | \"start\" | \"end\"",
+      "defaultValue": "undefined",
+      "description": "设置 menuDirection。",
+      "descriptionEn": "Configures menu direction.",
       "required": false
     },
     {

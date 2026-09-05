@@ -301,11 +301,12 @@ const galleryCategories: GalleryCategory[] = [
     demos: [
       demo('Button', 'buttons', 'Button', '    <Button variant="primary">保存</Button>'),
       {
-        ...demo('Fab', 'buttons', 'Fab', '    <Fab position="static" icon={<Plus size={18} />} aria-label="新建任务" />', 'Plus', undefined, ['Icon only', 'Extended', 'Expandable']),
+        ...demo('Fab', 'buttons', 'Fab', '    <Fab position="static" icon={<Plus size={18} />} aria-label="新建任务" />', 'Plus', undefined, ['Icon only', 'Extended', 'Expandable', 'Submenu']),
         codeByCardTitle: {
           'Icon only': usageExample('Fab', '    <div className="flex items-center gap-4">\n      <Fab position="static" size="sm" icon={<Plus size={18} />} aria-label="新建任务" />\n      <Fab position="static" size="md" variant="secondary" icon={<Search size={18} />} aria-label="搜索" />\n      <Fab position="static" size="lg" variant="outline" icon={<Settings size={20} />} aria-label="设置" />\n    </div>', 'Plus, Search, Settings'),
           Extended: usageExample('Fab', '    <div className="flex items-center gap-4">\n      <Fab position="static" icon={<Plus size={18} />} label="新建任务" />\n      <Fab position="static" variant="secondary" icon={<Filter size={18} />} label="筛选条件" />\n    </div>', 'Filter, Plus'),
           Expandable: usageExample('Fab, Switch', '    <div className="flex items-center gap-5">\n      <Switch checked={extended} onChange={setExtended} label="显示文字" />\n      <Fab\n        position="static"\n        icon={<Plus size={18} />}\n        label="新建任务"\n        extended={extended}\n      />\n    </div>', 'Plus', "const [extended, setExtended] = useState(false);"),
+          Submenu: usageExample('Fab', '    <div className="relative h-44">\n      <Fab\n        position="absolute"\n        placement="bottom-end"\n        size="md"\n        color="#7c3aed"\n        icon={<Plus size={20} />}\n        aria-label="快速新建"\n        actions={[\n          { icon: <Bell size={16} />, label: \'创建告警\', color: \'#dc2626\' },\n          { icon: <MapPin size={16} />, label: \'添加地点\', color: \'#2563eb\' },\n        ]}\n      />\n    </div>', 'Bell, MapPin, Plus'),
         },
       },
       demo('Toolbar', 'navigation', 'Button, Toolbar', '    <Toolbar\n      ariaLabel="列表操作"\n      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"\n    >\n      <Button size="sm" variant="ghost" icon={<Search size={15} />}>\n        搜索\n      </Button>\n      <Button size="sm" variant="ghost" icon={<Filter size={15} />}>\n        筛选\n      </Button>\n      <div className="flex-1" />\n      <Button size="sm" icon={<Plus size={15} />}>\n        新建\n      </Button>\n    </Toolbar>', 'Filter, Plus, Search'),
@@ -548,6 +549,7 @@ const zhExampleNames: Record<string, string> = {
   'Icon only': '仅图标',
   Extended: '扩展形态',
   Expandable: '可展开',
+  Submenu: '子菜单',
   'Input + FormField': '输入框与表单字段',
   'DataTable · Sticky Header': '数据表格 · 固定表头',
   'DataTable · Embedded': '数据表格 · 嵌入式',
@@ -561,10 +563,13 @@ const componentGuides: Record<string, ComponentGuide> = {
     usage: [
       '一个页面通常只保留一个主要 Fab，避免多个高强调操作竞争注意力。',
       '空间紧张时使用 icon-only；需要强化动作含义时使用 extended，并始终提供可访问名称。',
+      '提供 actions 后，点击主 Fab 会展开子 Fab；选择动作、点击外部或按 Escape 会自动收起。',
       'fixed 用于应用级悬浮，absolute 用于局部容器预览，static 用于普通布局和工具区。',
     ],
     props: [
       { name: 'icon', type: 'ReactNode', defaultValue: '-', description: '必填，按钮图标。' },
+      { name: 'color', type: 'string', defaultValue: '-', description: '设置任意 CSS 背景色，并覆盖 variant 的背景。' },
+      { name: 'foregroundColor', type: 'string', defaultValue: 'on-primary', description: '设置文字与图标颜色。' },
       { name: 'label', type: 'ReactNode', defaultValue: '-', description: '扩展状态显示的文字，也可作为折叠状态的可访问名称。' },
       { name: 'extended', type: 'boolean', defaultValue: '自动', description: '显式控制带文字或仅图标形态。未设置时根据 label 判断。' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", defaultValue: "'sm'", description: '控制 36、44、52px 三档高度。' },
@@ -575,6 +580,11 @@ const componentGuides: Record<string, ComponentGuide> = {
       { name: 'safeArea', type: 'boolean', defaultValue: 'true', description: '在顶部或底部叠加设备安全区。' },
       { name: 'active', type: 'boolean', defaultValue: 'true', description: '控制是否显示。' },
       { name: 'loading', type: 'boolean', defaultValue: 'false', description: '显示加载图标并禁止重复点击。' },
+      { name: 'actions', type: 'readonly FabAction[]', defaultValue: '[]', description: '配置点击主按钮后展开的子 Fab。' },
+      { name: 'open', type: 'boolean', defaultValue: '-', description: '受控设置子菜单是否展开。' },
+      { name: 'defaultOpen', type: 'boolean', defaultValue: 'false', description: '设置非受控子菜单初始状态。' },
+      { name: 'onOpenChange', type: '(open: boolean) => void', defaultValue: '-', description: '子菜单展开状态变化时触发。' },
+      { name: 'menuDirection', type: "'up' | 'down' | 'start' | 'end'", defaultValue: '自动', description: '设置子 Fab 展开方向；默认根据 placement 向页面内部展开。' },
     ],
   },
   toolbar: {
@@ -627,6 +637,7 @@ const enGuideUsage: Record<string, string[]> = {
   fab: [
     'Keep one primary Fab per page so high-emphasis actions do not compete for attention.',
     'Use icon-only in tight spaces and extended when the action needs a clearer label; always provide an accessible name.',
+    'Provide actions to expand child Fabs; selecting an action, clicking outside, or pressing Escape closes the menu.',
     'Use fixed for app-level floating actions, absolute for local previews, and static for normal layout or tool areas.',
   ],
   toolbar: [
@@ -2180,6 +2191,22 @@ export default function App() {
                       icon={<Plus size={18} />}
                       label="新建任务"
                       extended={fabExtended}
+                    />
+                  </div>
+                </DemoCard>
+                <DemoCard title="Submenu" wide>
+                  <div className="relative h-44">
+                    <Fab
+                      position="absolute"
+                      placement="bottom-end"
+                      size="md"
+                      color="#7c3aed"
+                      icon={<Plus size={20} />}
+                      aria-label="快速新建"
+                      actions={[
+                        { icon: <Bell size={16} />, label: '创建告警', color: '#dc2626' },
+                        { icon: <MapPin size={16} />, label: '添加地点', color: '#2563eb' },
+                      ]}
                     />
                   </div>
                 </DemoCard>
