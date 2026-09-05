@@ -18,7 +18,8 @@ describe('Fab', () => {
     const fab = screen.getByRole('button', { name: 'Create task' });
     expect(fab).toHaveAttribute('data-fab', 'icon');
     expect(fab).toHaveAttribute('data-position', 'fixed');
-    expect(fab).toHaveClass('!h-9', '!w-9', '!rounded-full');
+    expect(fab).toHaveClass('!h-9', '!w-9', '!rounded-full', '!border-0');
+    expect(fab).toHaveClass('shadow-[0_3px_10px_var(--lumen-color-shadow)]');
     expect(fab).toHaveStyle({ bottom: 'calc(16px + env(safe-area-inset-bottom))' });
 
     fireEvent.click(fab);
@@ -33,6 +34,23 @@ describe('Fab', () => {
     expect(fab).toHaveAttribute('aria-busy', 'true');
     expect(fab).toBeDisabled();
     expect(fab).toHaveClass('!rounded-[var(--lumen-radius-pill)]');
+  });
+
+  it('supports custom background and foreground colors', () => {
+    render(
+      <Fab
+        position="static"
+        icon={<Plus />}
+        aria-label="Create"
+        color="#7c3aed"
+        foregroundColor="#ffffff"
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: 'Create' })).toHaveStyle({
+      backgroundColor: '#7c3aed',
+      color: '#ffffff',
+    });
   });
 
   it('can collapse an extended action to an icon', () => {
@@ -62,5 +80,88 @@ describe('Fab', () => {
       />,
     );
     expect(screen.getByRole('button', { name: 'Create' })).toHaveStyle({ bottom: '80px' });
+  });
+
+  it('expands child actions and closes after an action is selected', () => {
+    const onActionClick = vi.fn();
+    render(
+      <Fab
+        position="static"
+        icon={<Plus />}
+        aria-label="Create"
+        actions={[
+          { icon: <Plus />, label: 'Create task', onClick: onActionClick },
+          { icon: <Plus />, label: 'Create note' },
+        ]}
+      />,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Create' });
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(trigger);
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('group', { name: 'Create' })).toBeVisible();
+    expect(trigger.querySelector('.lucide-plus')).toBeInTheDocument();
+    expect(trigger).toHaveClass('[&>span:first-child]:rotate-45');
+
+    const childAction = screen.getByRole('button', { name: 'Create task' });
+    expect(childAction).toHaveAttribute('data-fab', 'icon');
+    expect(childAction).toHaveClass('scale-100', 'opacity-100', '!rounded-full');
+
+    fireEvent.click(childAction);
+    expect(onActionClick).toHaveBeenCalledOnce();
+    expect(screen.queryByRole('group', { name: 'Create' })).not.toBeInTheDocument();
+    expect(childAction).toHaveClass('scale-50', 'opacity-0');
+  });
+
+  it('supports controlled submenu state', () => {
+    const onOpenChange = vi.fn();
+    const { rerender } = render(
+      <Fab
+        position="static"
+        icon={<Plus />}
+        aria-label="Create"
+        actions={[{ icon: <Plus />, label: 'Create task' }]}
+        open={false}
+        onOpenChange={onOpenChange}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Create' }));
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+    expect(screen.queryByRole('group', { name: 'Create' })).not.toBeInTheDocument();
+
+    rerender(
+      <Fab
+        position="static"
+        icon={<Plus />}
+        aria-label="Create"
+        actions={[{ icon: <Plus />, label: 'Create task' }]}
+        open
+        onOpenChange={onOpenChange}
+      />,
+    );
+    expect(screen.getByRole('group', { name: 'Create' })).toBeVisible();
+  });
+
+  it('closes an open submenu on outside interaction or Escape', () => {
+    render(
+      <Fab
+        position="static"
+        icon={<Plus />}
+        aria-label="Create"
+        defaultOpen
+        actions={[{ icon: <Plus />, label: 'Create task' }]}
+      />,
+    );
+
+    fireEvent.pointerDown(document.body);
+    expect(screen.queryByRole('group', { name: 'Create' })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Create' }));
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByRole('group', { name: 'Create' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Create' })).toHaveFocus();
   });
 });
