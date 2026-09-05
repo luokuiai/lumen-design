@@ -303,9 +303,9 @@ const galleryCategories: GalleryCategory[] = [
       demo('Input / FormField', 'forms', 'FormField, Input', '    <FormField label="项目名称" inputId="project-name">\n      {(props) => <Input {...props} />}\n    </FormField>', undefined, undefined, ['Input + FormField']),
       demo('NumberInput', 'forms', 'FormField, NumberInput', '    <FormField label="处置时限">\n      <NumberInput defaultValue={30} min={5} max={120} suffix="分钟" />\n    </FormField>'),
       demo('Textarea', 'forms', 'FormField, Textarea', '    <FormField label="备注">\n      <Textarea value={value} onChange={setValue} maxLength={200} showCount />\n    </FormField>'),
-      demo('Checkbox', 'forms', 'Checkbox', '    <Checkbox checked={checked} onChange={setChecked} label="同步到日历" />'),
-      demo('Radio', 'forms', 'Radio, RadioGroup', '    <RadioGroup value={value} onChange={setValue} options={options} />'),
-      demo('Switch', 'forms', 'Switch', '    <Switch checked={enabled} onChange={setEnabled} label="开启提醒" />'),
+      demo('Checkbox', 'forms', 'Checkbox', '    <div className="flex items-center gap-5">\n      <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />\n      <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />\n      <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />\n    </div>'),
+      demo('Radio', 'forms', 'Radio, RadioGroup', '    <div className="space-y-4">\n      <div className="flex items-center gap-5">\n        <Radio size="sm" checked label="Small" />\n        <Radio size="md" checked label="Medium" />\n        <Radio size="lg" checked label="Large" />\n      </div>\n      <RadioGroup size="md" value={value} onChange={setValue} options={options} />\n    </div>'),
+      demo('Switch', 'forms', 'Switch', '    <div className="flex items-center gap-5">\n      <Switch size="sm" checked={enabled} onChange={setEnabled} label="Small" />\n      <Switch size="md" checked={enabled} onChange={setEnabled} label="Medium" />\n      <Switch size="lg" checked={enabled} onChange={setEnabled} label="Large" />\n    </div>'),
       demo('Slider', 'forms', 'Slider', '    <Slider value={60} onChange={() => undefined} />'),
       demo('Rating', 'forms', 'Rating', '    <Rating value={4} onChange={() => undefined} />'),
       demo('Select', 'pickers', 'Select', '    <Select\n      value="review"\n      options={[{ label: \'设计评审\', value: \'review\' }]}\n      onChange={() => undefined}\n    />'),
@@ -377,8 +377,8 @@ const galleryCategories: GalleryCategory[] = [
     icon: Bell,
     demos: [
       demo('CommandPalette', 'overlays', 'Button, CommandPalette', '    <Button onClick={() => setOpen(true)}>打开 CommandPalette</Button>'),
-      demo('Modal', 'overlays', 'Button, Modal', '    <Button onClick={() => setOpen(true)}>打开 Modal</Button>'),
-      demo('Drawer', 'overlays', 'Button, Drawer', '    <Button onClick={() => setOpen(true)}>打开 Drawer</Button>'),
+      demo('Modal', 'overlays', 'Button, Modal', '    <Modal open={open} title="编辑配置" description="修改当前配置项。" onRequestClose={() => setOpen(false)}>{content}</Modal>'),
+      demo('Drawer', 'overlays', 'Button, Drawer', '    <Drawer open={open} closeOnSwipe title="配置面板" description="调整页面配置。" onRequestClose={() => setOpen(false)}>{content}</Drawer>'),
       demo('ConfirmDialog', 'overlays', 'Button, ConfirmDialog', '    <Button variant="destructive" onClick={() => setOpen(true)}>打开 Confirm</Button>'),
       demo('Toast', 'overlays', 'Button, Toast', '    <Button onClick={() => Toast.success(\'组件状态已保存\')}>Toast</Button>'),
       demo('Popover', 'overlays', 'Button, Popover', '    <Popover trigger={<Button>查看详情</Button>}>\n      上下文内容\n    </Popover>'),
@@ -1303,7 +1303,9 @@ export default function App() {
       <Drawer
         open={mobileNavOpen}
         placement="left"
+        closeOnSwipe
         drawerId="mobile-navigation"
+        aria-label="组件目录"
         panelClassName="mobile-nav-panel"
         onRequestClose={() => setMobileNavOpen(false)}
       >
@@ -1790,12 +1792,21 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="Checkbox">
-                  <Checkbox checked={checked} onChange={setChecked} label="同步到日历" description="创建后自动邀请成员。" />
+                  <div className="flex flex-wrap items-center gap-5">
+                    <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />
+                    <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />
+                    <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />
+                  </div>
                 </DemoCard>
                 <DemoCard title="Radio">
                   <div className="stack">
-                    <Radio size="md" checked label="单独 Radio · md" />
+                    <div className="flex flex-wrap items-center gap-5">
+                      <Radio size="sm" checked label="Small" />
+                      <Radio size="md" checked label="Medium" />
+                      <Radio size="lg" checked label="Large" />
+                    </div>
                     <RadioGroup
+                      size="md"
                       value={radioValue}
                       onChange={setRadioValue}
                       direction="horizontal"
@@ -1808,7 +1819,11 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="Switch">
-                  <Switch checked={enabled} onChange={setEnabled} label="开启提醒" />
+                  <div className="flex flex-wrap items-center gap-5">
+                    <Switch size="sm" checked={enabled} onChange={setEnabled} label="Small" />
+                    <Switch size="md" checked={enabled} onChange={setEnabled} label="Medium" />
+                    <Switch size="lg" checked={enabled} onChange={setEnabled} label="Large" />
+                  </div>
                 </DemoCard>
                 <DemoCard title="Slider" wide>
                   <div className="form-grid">
@@ -2510,10 +2525,10 @@ export default function App() {
       <Modal
         open={modalOpen}
         onRequestClose={() => setModalOpen(false)}
+        title="Modal 预览"
+        description="用于确认、编辑和短流程任务。当前画廊直接使用组件库 Modal。"
         panelClassName="modal-panel"
       >
-        <h2>Modal 预览</h2>
-        <p>用于确认、编辑和短流程任务。当前画廊直接使用组件库 Modal。</p>
         <div className="mt-5">
           <FormField label="负责人">
             <Select
@@ -2580,7 +2595,9 @@ export default function App() {
 
       <Drawer
         open={drawerOpen}
+        closeOnSwipe
         onRequestClose={() => setDrawerOpen(false)}
+        aria-label="Drawer 预览"
         panelClassName="drawer-panel"
       >
         <div className="drawer-head">

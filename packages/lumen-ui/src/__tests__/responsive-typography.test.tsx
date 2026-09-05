@@ -236,13 +236,13 @@ describe('compact Switch', () => {
     const track = document.querySelector('[data-switch-track]');
     const knob = document.querySelector('[data-switch-knob]');
 
-    expect(track).toHaveClass('h-5', 'w-9');
-    expect(knob).toHaveClass('h-4', 'w-4');
+    expect(track).toHaveClass('h-[18px]', 'w-8');
+    expect(knob).toHaveClass('h-3.5', 'w-3.5');
     expect(screen.getByText('开启提醒')).toHaveClass('font-normal');
 
     await user.click(screen.getByText('开启提醒'));
 
     expect(control).toBeChecked();
-    expect(knob).toHaveClass('translate-x-4');
+    expect(knob).toHaveClass('translate-x-3.5');
   });
 });

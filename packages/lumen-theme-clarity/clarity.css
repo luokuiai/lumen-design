@@ -21,11 +21,11 @@
   --lumen-color-surface-subtle: #fcfdfe;
   --lumen-color-surface-hover: #f8fbff;
   --lumen-color-surface-glass: rgba(255, 255, 255, 0.92);
-  --clarity-dropdown-surface: rgba(255, 255, 255, 0.92);
+  --clarity-dropdown-surface: rgba(255, 255, 255, 0.87);
   --clarity-dropdown-border: rgba(228, 234, 241, 0.76);
-  --clarity-floating-surface: rgba(255, 255, 255, 0.92);
-  --clarity-picker-surface: rgba(255, 255, 255, 0.92);
-  --clarity-toast-surface: rgba(255, 255, 255, 0.92);
+  --clarity-floating-surface: rgba(255, 255, 255, 0.87);
+  --clarity-picker-surface: rgba(255, 255, 255, 0.87);
+  --clarity-toast-surface: rgba(255, 255, 255, 0.78);
   --clarity-toast-border: rgba(228, 234, 241, 0.58);
   --lumen-color-overlay: rgba(0, 0, 0, 0.35);
   --lumen-color-border: #e4eaf1;
@@ -93,11 +93,11 @@
   --lumen-color-surface-subtle: #1d2025;
   --lumen-color-surface-hover: #292d35;
   --lumen-color-surface-glass: rgba(24, 26, 31, 0.9);
-  --clarity-dropdown-surface: rgba(24, 26, 31, 0.92);
+  --clarity-dropdown-surface: rgba(24, 26, 31, 0.88);
   --clarity-dropdown-border: rgba(52, 56, 64, 0.76);
-  --clarity-floating-surface: rgba(24, 26, 31, 0.92);
-  --clarity-picker-surface: rgba(24, 26, 31, 0.92);
-  --clarity-toast-surface: rgba(24, 26, 31, 0.92);
+  --clarity-floating-surface: rgba(24, 26, 31, 0.88);
+  --clarity-picker-surface: rgba(24, 26, 31, 0.88);
+  --clarity-toast-surface: rgba(24, 26, 31, 0.82);
   --clarity-toast-border: rgba(69, 75, 85, 0.62);
   --lumen-color-overlay: rgba(0, 0, 0, 0.68);
   --lumen-color-border: #343840;
@@ -172,8 +172,8 @@
   inset: 0;
   border-radius: inherit;
   background: var(--clarity-dropdown-surface);
-  -webkit-backdrop-filter: blur(10px) saturate(120%);
-  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(115%);
+  backdrop-filter: blur(12px) saturate(115%);
   clip-path: inset(0 round var(--lumen-radius-icon));
   content: '';
   pointer-events: none;
@@ -184,8 +184,8 @@
   border-color: var(--clarity-toast-border);
   background: var(--clarity-toast-surface);
   box-shadow: 0 8px 28px var(--lumen-color-shadow);
-  -webkit-backdrop-filter: blur(10px) saturate(125%);
-  backdrop-filter: blur(10px) saturate(125%);
+  -webkit-backdrop-filter: blur(8px) saturate(115%);
+  backdrop-filter: blur(8px) saturate(115%);
 }
 
 :where(:root:not([data-lumen-theme])) [data-ui='app-header'],
@@ -204,8 +204,8 @@
 [data-lumen-theme='clarity'] [data-ui='tree-select-dropdown'] {
   border-color: var(--clarity-dropdown-border);
   background: var(--clarity-floating-surface);
-  -webkit-backdrop-filter: blur(10px) saturate(115%);
-  backdrop-filter: blur(10px) saturate(115%);
+  -webkit-backdrop-filter: blur(12px) saturate(115%);
+  backdrop-filter: blur(12px) saturate(115%);
 }
 
 :where(:root:not([data-lumen-theme])) [data-ui='date-picker-panel'],
@@ -214,6 +214,6 @@
 [data-lumen-theme='clarity'] [data-ui='time-picker-panel'] {
   border-color: var(--clarity-dropdown-border);
   background: var(--clarity-picker-surface);
-  -webkit-backdrop-filter: blur(10px) saturate(115%);
-  backdrop-filter: blur(10px) saturate(115%);
+  -webkit-backdrop-filter: blur(12px) saturate(115%);
+  backdrop-filter: blur(12px) saturate(115%);
 }

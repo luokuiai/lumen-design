@@ -291,7 +291,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
   "Switch": [
     {
       "name": "size",
-      "type": "\"sm\" | \"md\"",
+      "type": "\"sm\" | \"md\" | \"lg\"",
       "defaultValue": "'md'",
       "description": "设置组件尺寸。",
       "required": false
@@ -678,7 +678,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "onRequestClose",
       "type": "() => void",
       "defaultValue": "-",
-      "description": "组件执行 RequestClose 对应操作时触发。",
+      "description": "请求关闭浮层时触发。",
       "required": true
     },
     {
@@ -694,6 +694,20 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "-",
       "description": "组件承载的子内容。",
       "required": true
+    },
+    {
+      "name": "title",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置组件标题。",
+      "required": false
+    },
+    {
+      "name": "description",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "补充说明内容。",
+      "required": false
     },
     {
       "name": "drawerId",
@@ -734,7 +748,63 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "closeOnOverlayClick",
       "type": "boolean",
       "defaultValue": "true",
-      "description": "设置 closeOnOverlayClick。",
+      "description": "点击遮罩区域时关闭浮层。",
+      "required": false
+    },
+    {
+      "name": "closeOnEscape",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "按 Escape 键时关闭浮层。",
+      "required": false
+    },
+    {
+      "name": "closeOnSwipe",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "允许在触摸设备上沿退出方向滑动关闭抽屉。",
+      "required": false
+    },
+    {
+      "name": "lockScroll",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "浮层显示期间锁定页面滚动。",
+      "required": false
+    },
+    {
+      "name": "initialFocusRef",
+      "type": "React.RefObject<HTMLElement>",
+      "defaultValue": "undefined",
+      "description": "浮层打开后优先聚焦的元素引用。",
+      "required": false
+    },
+    {
+      "name": "finalFocusRef",
+      "type": "React.RefObject<HTMLElement>",
+      "defaultValue": "undefined",
+      "description": "浮层关闭后恢复焦点的元素引用。",
+      "required": false
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置供辅助技术读取的名称。",
+      "required": false
+    },
+    {
+      "name": "aria-labelledby",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "关联用于命名组件的元素 ID。",
+      "required": false
+    },
+    {
+      "name": "aria-describedby",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "关联用于补充说明组件内容的元素 ID。",
       "required": false
     },
     {
@@ -1163,8 +1233,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
   "Radio": [
     {
       "name": "size",
-      "type": "\"sm\" | \"md\"",
-      "defaultValue": "'sm'",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
       "description": "设置组件尺寸。",
       "required": false
     },
@@ -1694,8 +1764,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
   "Checkbox": [
     {
       "name": "size",
-      "type": "\"sm\" | \"md\"",
-      "defaultValue": "'sm'",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
       "description": "设置组件尺寸。",
       "required": false
     },
@@ -2395,8 +2465,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     },
     {
       "name": "size",
-      "type": "\"sm\" | \"md\"",
-      "defaultValue": "'sm'",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
       "description": "设置组件尺寸。",
       "required": false
     },
@@ -2512,6 +2582,141 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "\"sm\" | \"md\" | \"lg\"",
       "defaultValue": "'md'",
       "description": "设置组件尺寸。",
+      "required": false
+    }
+  ],
+  "Modal": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "defaultValue": "-",
+      "description": "控制浮层或面板是否打开。",
+      "required": true
+    },
+    {
+      "name": "onRequestClose",
+      "type": "() => void",
+      "defaultValue": "-",
+      "description": "请求关闭浮层时触发。",
+      "required": true
+    },
+    {
+      "name": "onExited",
+      "type": "() => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 Exited 对应操作时触发。",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "defaultValue": "-",
+      "description": "组件承载的子内容。",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置组件标题。",
+      "required": false
+    },
+    {
+      "name": "description",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "补充说明内容。",
+      "required": false
+    },
+    {
+      "name": "modalId",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 modalId。",
+      "required": false
+    },
+    {
+      "name": "overlayId",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 overlayId。",
+      "required": false
+    },
+    {
+      "name": "overlayClassName",
+      "type": "string",
+      "defaultValue": "''",
+      "description": "设置 overlayClassName。",
+      "required": false
+    },
+    {
+      "name": "panelClassName",
+      "type": "string",
+      "defaultValue": "''",
+      "description": "设置 panelClassName。",
+      "required": false
+    },
+    {
+      "name": "closeOnOverlayClick",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "点击遮罩区域时关闭浮层。",
+      "required": false
+    },
+    {
+      "name": "closeOnEscape",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "按 Escape 键时关闭浮层。",
+      "required": false
+    },
+    {
+      "name": "lockScroll",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "浮层显示期间锁定页面滚动。",
+      "required": false
+    },
+    {
+      "name": "initialFocusRef",
+      "type": "React.RefObject<HTMLElement>",
+      "defaultValue": "undefined",
+      "description": "浮层打开后优先聚焦的元素引用。",
+      "required": false
+    },
+    {
+      "name": "finalFocusRef",
+      "type": "React.RefObject<HTMLElement>",
+      "defaultValue": "undefined",
+      "description": "浮层关闭后恢复焦点的元素引用。",
+      "required": false
+    },
+    {
+      "name": "role",
+      "type": "\"dialog\" | \"alertdialog\"",
+      "defaultValue": "'dialog'",
+      "description": "设置 dialog 或 alertdialog 无障碍语义。",
+      "required": false
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置供辅助技术读取的名称。",
+      "required": false
+    },
+    {
+      "name": "aria-labelledby",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "关联用于命名组件的元素 ID。",
+      "required": false
+    },
+    {
+      "name": "aria-describedby",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "关联用于补充说明组件内容的元素 ID。",
       "required": false
     }
   ],

@@ -3,7 +3,7 @@ import { cn } from './classNames';
 
 export interface SwitchProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type' | 'onChange'> {
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'lg';
   checked?: boolean;
   defaultChecked?: boolean;
   disabled?: boolean;
@@ -31,8 +31,6 @@ export const Switch: React.FC<SwitchProps> = ({
   const isControlled = typeof checked === 'boolean';
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const currentChecked = isControlled ? checked : internalChecked;
-  const isSmall = size === 'sm';
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (disabled) return;
     const nextChecked = event.target.checked;
@@ -68,7 +66,7 @@ export const Switch: React.FC<SwitchProps> = ({
       <span
         className={cn(
           'relative inline-flex shrink-0 items-center',
-          isSmall ? 'h-4 w-7' : 'h-5 w-9',
+          size === 'sm' ? 'h-4 w-7' : size === 'lg' ? 'h-5 w-9' : 'h-[18px] w-8',
         )}
         data-switch-track
         data-checked={currentChecked ? 'true' : 'false'}
@@ -99,8 +97,14 @@ export const Switch: React.FC<SwitchProps> = ({
           data-switch-knob
           className={cn(
             'absolute top-1/2 -translate-y-1/2 rounded-full border border-[var(--lumen-color-surface)]/80 bg-[var(--lumen-color-surface)] shadow-[0_2px_8px_var(--lumen-color-shadow)] transition-transform duration-200 ease-out',
-            isSmall ? 'left-[2px] h-3 w-3' : 'left-[2px] h-4 w-4',
-            currentChecked ? (isSmall ? 'translate-x-3' : 'translate-x-4') : 'translate-x-0',
+            size === 'sm' ? 'left-[2px] h-3 w-3' : size === 'lg' ? 'left-[2px] h-4 w-4' : 'left-[2px] h-3.5 w-3.5',
+            currentChecked
+              ? size === 'sm'
+                ? 'translate-x-3'
+                : size === 'lg'
+                  ? 'translate-x-4'
+                  : 'translate-x-3.5'
+              : 'translate-x-0',
           )}
         />
       </span>

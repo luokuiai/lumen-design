@@ -12,6 +12,7 @@ import {
   announceFloatingLayerOpen,
   FLOATING_LAYER_OPEN_EVENT,
 } from './floatingEvents';
+import { useOverlayPortalScope } from './useOverlayBehavior';
 
 interface DropdownMenuRenderState {
   open: boolean;
@@ -54,6 +55,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   menuMode = false,
   onOpenChange,
 }) => {
+  const overlayScopeId = useOverlayPortalScope();
   const menuId = useId();
   const [phase, setPhase] = useState<DropdownMenuPhase>('closed');
   const [resolvedAlign, setResolvedAlign] = useState<'left' | 'right'>(
@@ -155,13 +157,13 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
   const handleMenuKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (!menuMode) return;
       if (event.key === 'Escape') {
         event.preventDefault();
         event.stopPropagation();
         closeMenu();
         return;
       }
+      if (!menuMode) return;
 
       const menuItems = getMenuItems();
       if (menuItems.length === 0) return;
@@ -347,8 +349,9 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
           data-testid="dropdown-menu"
           data-state={phase}
           data-align={resolvedAlign}
+          data-lumen-overlay-scope={overlayScopeId ?? undefined}
           ref={menuRef}
-          onKeyDown={menuMode ? handleMenuKeyDown : undefined}
+          onKeyDown={handleMenuKeyDown}
           style={menuStyle}
           className="z-[90] outline-none"
         >

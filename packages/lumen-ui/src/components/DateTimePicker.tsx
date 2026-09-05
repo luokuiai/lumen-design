@@ -11,6 +11,7 @@ import { Button } from './Button';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { TimeSelector } from './TimeSelector';
+import { useOverlayPortalScope } from './useOverlayBehavior';
 
 export type DateTimePickerSize = 'sm' | 'md' | 'lg';
 
@@ -193,6 +194,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   defaultToNow = false,
   size = 'md',
 }) => {
+  const overlayScopeId = useOverlayPortalScope();
   const parsed = useMemo(() => parseDateTime(value), [value]);
   const today = useMemo(() => new Date(), []);
   const initialDate = parsed?.date ?? formatDate(today);
@@ -438,7 +440,17 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   };
 
   return (
-    <div ref={wrapperRef} className={cn('relative', className)}>
+    <div
+      ref={wrapperRef}
+      className={cn('relative', className)}
+      onKeyDown={(event) => {
+        if (!open || event.key !== 'Escape') return;
+        event.preventDefault();
+        event.stopPropagation();
+        closePanel();
+        triggerRef.current?.focus();
+      }}
+    >
       <input
         aria-label={`${label}值`}
         className="sr-only"
@@ -490,6 +502,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
             <div
               ref={panelRef}
               data-date-time-picker-panel
+              data-lumen-overlay-scope={overlayScopeId ?? undefined}
               className="overflow-x-auto overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
               style={{
                 ...panelStyle,

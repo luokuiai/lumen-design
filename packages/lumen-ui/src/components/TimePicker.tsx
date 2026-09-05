@@ -5,6 +5,7 @@ import { Button } from './Button';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { TimeSelector } from './TimeSelector';
+import { useOverlayPortalScope } from './useOverlayBehavior';
 
 export type TimePickerSize = 'sm' | 'md' | 'lg';
 
@@ -62,6 +63,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   minExclusiveTime,
   disabled = false,
 }) => {
+  const overlayScopeId = useOverlayPortalScope();
   const initialTime = resolveInitialTime(value);
   const [draftHour, setDraftHour] = useState(initialTime.hour);
   const [draftMinute, setDraftMinute] = useState(initialTime.minute);
@@ -183,7 +185,17 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     : '';
 
   return (
-    <div ref={wrapperRef} className={cn('relative', className)}>
+    <div
+      ref={wrapperRef}
+      className={cn('relative', className)}
+      onKeyDown={(event) => {
+        if (!open || event.key !== 'Escape') return;
+        event.preventDefault();
+        event.stopPropagation();
+        close();
+        triggerRef.current?.focus();
+      }}
+    >
       <button
         ref={triggerRef}
         type="button"
@@ -221,6 +233,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
               ref={panelRef}
               data-ui="time-picker-panel"
               data-time-picker-panel
+              data-lumen-overlay-scope={overlayScopeId ?? undefined}
               className="overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
               style={{
                 ...panelStyle,

@@ -21,7 +21,11 @@ describe('CommandPalette', () => {
     const onOpenChange = vi.fn();
     render(<CommandPalette open onOpenChange={onOpenChange} groups={groups} label="Quick actions" />);
 
-    expect(screen.getByRole('dialog', { name: 'Quick actions' })).toHaveClass(
+    expect(screen.getByRole('dialog', { name: 'Quick actions' })).toHaveAttribute(
+      'aria-modal',
+      'true',
+    );
+    expect(document.querySelector('[data-ui="command-palette"]')).toHaveClass(
       'bg-[var(--lumen-color-surface)]',
     );
     expect(screen.getByRole('option', { name: 'Home' })).toHaveClass(
