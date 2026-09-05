@@ -211,8 +211,14 @@ body {
   padding-right: 4px;
 }
 
-.mobile-menu-button {
+.mobile-menu-button,
+.mobile-search-button,
+.mobile-more-button {
   display: none;
+}
+
+.desktop-header-actions {
+  display: contents;
 }
 
 .mobile-nav-panel {
@@ -285,6 +291,10 @@ body {
   margin-top: var(--playground-topbar-height);
 }
 
+.main-scrollbar > [data-pull-to-refresh-indicator] {
+  top: var(--playground-topbar-height);
+}
+
 .main-content {
   min-width: 0;
   padding: calc(var(--playground-topbar-height) + 24px) 28px 28px;
@@ -324,6 +334,10 @@ body {
 .demo-preview-surface {
   min-height: 152px;
   padding-block: 28px;
+}
+
+.demo-preview-surface-flush {
+  padding-inline: 0;
 }
 
 .demo-code-collapse {
@@ -483,6 +497,10 @@ body {
 
 .topbar-search {
   min-width: 0;
+}
+
+.topbar [data-ui='button'][data-icon-only] {
+  border-radius: 9999px;
 }
 
 .topbar-accent,
@@ -995,7 +1013,7 @@ body {
 
 @media (max-width: 900px) {
   .app-shell {
-    --playground-topbar-height: 168px;
+    --playground-topbar-height: 64px;
   }
 
   .sidebar {
@@ -1004,7 +1022,7 @@ body {
 
   .mobile-navigation-content .gallery-tree-category,
   .mobile-navigation-content .gallery-tree-item {
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.5;
   }
 
@@ -1015,6 +1033,18 @@ body {
 
   .mobile-menu-button {
     display: inline-flex;
+  }
+
+  .mobile-search-button {
+    display: inline-flex;
+  }
+
+  .mobile-more-button {
+    display: inline-flex;
+  }
+
+  .desktop-header-actions {
+    display: none;
   }
 
   .sidebar-toggle-button {
@@ -1053,9 +1083,23 @@ body {
   .topbar {
     left: 0;
     display: grid;
-    gap: 14px;
-    padding: 12px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 8px 12px;
     transition: none;
+  }
+
+  .topbar [data-ui='app-header-heading'] {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .topbar [data-ui='app-header-description'] {
+    display: none;
+  }
+
+  .topbar [data-ui='app-header-end'] {
+    display: contents;
   }
 
   .main-content {
@@ -1093,16 +1137,15 @@ body {
     font-size: 15px;
   }
 
-  .topbar [data-ui='app-header-end'] {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .topbar [data-ui='app-header-search'] {
+    display: none;
     grid-column: 1 / -1;
+    grid-row: 2;
   }
 
   .topbar [data-ui='app-header-actions'] {
-    grid-column: 1 / -1;
+    grid-column: 2;
+    grid-row: 1;
     justify-self: end;
   }
 }

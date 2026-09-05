@@ -14,6 +14,7 @@ import {
   CalendarDays,
   Check,
   ChevronDown,
+  ChevronRight,
   Code2,
   Copy,
   Filter,
@@ -81,6 +82,7 @@ import {
   Pagination,
   Popover,
   Progress,
+  PullToRefresh,
   Radio,
   RadioGroup,
   Rating,
@@ -112,6 +114,7 @@ import '@luokuiai/lumen-theme-paper';
 import '@luokuiai/lumen-theme-prism';
 import type { GeneratedPropDoc } from './generated/componentApi';
 import { demoCardCodeByTitle } from './generated/demoCardCode';
+import { localizeDemoNode, translateDemoText } from './demoI18n';
 
 type Section = {
   id: string;
@@ -136,6 +139,7 @@ type ComponentPropDoc = {
   type: string;
   defaultValue: string;
   description: string;
+  descriptionEn?: string;
   required?: boolean;
 };
 
@@ -373,12 +377,13 @@ const galleryCategories: GalleryCategory[] = [
     id: 'feedback',
     title: 'Feedback',
     description: '操作结果、进度、加载与空状态。',
-    keywords: 'Alert Toast Progress Spinner Skeleton Empty SegmentedControl',
+    keywords: 'Alert Toast Progress Spinner PullToRefresh Skeleton Empty SegmentedControl',
     icon: Settings,
     demos: [
       demo('Alert', 'feedback', 'Alert', '    <Alert variant="success" title="保存成功" />'),
       demo('Progress', 'feedback', 'Progress', '    <Progress value={64} />'),
       demo('Spinner', 'feedback', 'Spinner', '    <Spinner aria-label="加载中" />'),
+      demo('PullToRefresh', 'feedback', 'PullToRefresh', '    <PullToRefresh\n      className="h-72 overflow-y-auto"\n      onRefresh={() => new Promise((resolve) => {\n        window.setTimeout(() => {\n          setRefreshCount((count) => count + 1);\n          resolve();\n        }, 800);\n      })}\n    >\n      <div>已刷新 {refreshCount} 次</div>\n    </PullToRefresh>', undefined, 'const [refreshCount, setRefreshCount] = useState(0);'),
       demo('Empty', 'feedback', 'Empty', '    <Empty title="暂无数据" />'),
       demo('SegmentedControl', 'feedback', 'SegmentedControl', '    <SegmentedControl value="all" options={options} onChange={setValue} />'),
       demo('Skeleton', 'feedback', 'Skeleton', '    <Skeleton variant="rectangular" height={96} />'),
@@ -403,11 +408,15 @@ const galleryCategories: GalleryCategory[] = [
 
 const playgroundMessages = {
   'zh-CN': {
+    locale: 'zh-CN',
     appDescription: '组件库全量预览和交互检查入口。',
     navigationLabel: '组件目录',
     mobileNavigationLabel: '移动端组件目录',
     openNavigation: '打开导航',
     closeNavigation: '关闭导航',
+    openSearch: '打开搜索',
+    closeSearch: '关闭搜索',
+    moreActions: '更多操作',
     expandSidebar: '展开侧栏',
     collapseSidebar: '折叠侧栏',
     searchPlaceholder: '搜索分类或组件',
@@ -436,11 +445,15 @@ const playgroundMessages = {
     },
   },
   'en-US': {
+    locale: 'en-US',
     appDescription: 'A complete preview and interaction-checking workspace for the component library.',
     navigationLabel: 'Component catalog',
     mobileNavigationLabel: 'Mobile component catalog',
     openNavigation: 'Open navigation',
     closeNavigation: 'Close navigation',
+    openSearch: 'Open search',
+    closeSearch: 'Close search',
+    moreActions: 'More actions',
     expandSidebar: 'Expand sidebar',
     collapseSidebar: 'Collapse sidebar',
     searchPlaceholder: 'Search categories or components',
@@ -517,6 +530,7 @@ const zhDemoNames: Record<string, string> = {
   Alert: '提示',
   Progress: '进度条',
   Spinner: '加载指示器',
+  PullToRefresh: '下拉刷新',
   Empty: '空状态',
   SegmentedControl: '分段控制器',
   Skeleton: '骨架屏',
@@ -526,6 +540,18 @@ const zhDemoNames: Record<string, string> = {
   ConfirmDialog: '确认对话框',
   Toast: '消息提示',
   Popover: '弹出框',
+};
+
+const zhExampleNames: Record<string, string> = {
+  Headings: '标题',
+  Body: '正文',
+  'Icon only': '仅图标',
+  Extended: '扩展形态',
+  Expandable: '可展开',
+  'Input + FormField': '输入框与表单字段',
+  'DataTable · Sticky Header': '数据表格 · 固定表头',
+  'DataTable · Embedded': '数据表格 · 嵌入式',
+  'FileUpload Compact': '文件上传 · 紧凑模式',
 };
 
 const allDemos = galleryCategories.flatMap((category) => category.demos);
@@ -588,6 +614,33 @@ const componentGuides: Record<string, ComponentGuide> = {
       { name: 'ariaLabel', type: 'string', defaultValue: "'底部导航'", description: '设置导航区域的可访问名称。' },
     ],
   },
+};
+
+const enGuideSummaries: Record<string, string> = {
+  fab: 'Floating action buttons highlight the single most important and frequent action on a page, such as creating, editing, or quickly adding an item.',
+  toolbar: 'Toolbars organize actions, filters, and view controls that directly relate to the current content.',
+  'app-bar': 'App bars establish page context with navigation, a title, and a small set of page-level actions.',
+  'bottom-navigation': 'Bottom navigation switches between three to five stable, top-level destinations in a mobile application.',
+};
+
+const enGuideUsage: Record<string, string[]> = {
+  fab: [
+    'Keep one primary Fab per page so high-emphasis actions do not compete for attention.',
+    'Use icon-only in tight spaces and extended when the action needs a clearer label; always provide an accessible name.',
+    'Use fixed for app-level floating actions, absolute for local previews, and static for normal layout or tool areas.',
+  ],
+  toolbar: [
+    'Use the arrow keys, Home, and End to move focus between tools.',
+    'Enable wrap when there are many actions, and use sm in compact layouts.',
+  ],
+  'app-bar': [
+    'Mobile pages usually use a centered title; information-dense pages can align the title to the start.',
+    'Fixed and sticky positioning participate in viewport layout; use absolute for local previews.',
+  ],
+  'bottom-navigation': [
+    'Keep destination order stable and do not place temporary actions in bottom navigation.',
+    'The controlled value identifies the current destination; use onChange to synchronize routing or page state.',
+  ],
 };
 const legacyCategoryAliases: Record<string, string> = {
   typography: 'foundations',
@@ -933,6 +986,12 @@ function GallerySection({ section, children }: { section: Section; children: Rea
   const messages = useContext(PlaygroundMessagesContext);
   const [generatedComponentApi, setGeneratedComponentApi] = useState<Record<string, GeneratedPropDoc[]>>({});
   const guide = activeDemo ? componentGuides[activeDemo.demo.id] : undefined;
+  const guideUsage = guide && messages.locale === 'en-US'
+    ? (enGuideUsage[activeDemo!.demo.id] ?? guide.usage)
+    : guide?.usage;
+  const localizedChildren = messages.locale === 'en-US'
+    ? localizeDemoNode(children)
+    : children;
   const apiSections = activeDemo?.demo.apiComponents.flatMap((componentName) => {
     const generatedProps = generatedComponentApi[componentName];
     if (!generatedProps?.length) return [];
@@ -963,19 +1022,19 @@ function GallerySection({ section, children }: { section: Section; children: Rea
       <header className="section-header">
         <div>
           <h2>{section.title}</h2>
-          <p>{guide?.summary ?? section.description}</p>
+          <p>{section.description}</p>
         </div>
       </header>
       {guide ? (
         <div className="component-guidance">
           <h3>{messages.usageTips}</h3>
           <ul>
-            {guide.usage.map((item) => <li key={item}>{item}</li>)}
+            {guideUsage!.map((item) => <li key={item}>{item}</li>)}
           </ul>
         </div>
       ) : null}
       <h3 className="document-section-title">{messages.examples}</h3>
-      <div className="section-grid">{children}</div>
+      <div className="section-grid">{localizedChildren}</div>
       {apiSections.length ? (
         <section className="component-api" aria-labelledby={`${activeDemo!.demo.id}-api-title`}>
           <div className="component-api-card">
@@ -1005,7 +1064,7 @@ function GallerySection({ section, children }: { section: Section; children: Rea
                           </td>
                           <td><code>{prop.type}</code></td>
                           <td><code>{prop.defaultValue}</code></td>
-                          <td>{prop.description}</td>
+                          <td>{messages.locale === 'en-US' ? prop.descriptionEn : prop.description}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -1071,10 +1130,12 @@ function DemoCard({
   title,
   children,
   wide = false,
+  flush = false,
 }: {
   title: string;
   children: React.ReactNode;
   wide?: boolean;
+  flush?: boolean;
 }) {
   const activeDemo = useContext(ActiveDemoContext);
   const messages = useContext(PlaygroundMessagesContext);
@@ -1084,6 +1145,10 @@ function DemoCard({
     ?? activeDemo?.demo.codeByCardTitle?.[title]
     ?? activeDemo?.demo.code
     ?? '';
+  const localizedCode = messages.locale === 'en-US' ? translateDemoText(code) : code;
+  const localizedTitle = messages.locale === 'zh-CN'
+    ? (zhExampleNames[title] ?? zhDemoNames[title] ?? title)
+    : title;
   const codePanelId = activeDemo ? `demo-code-${activeDemo.demo.id}-${toDemoId(title)}` : undefined;
   const codeExpanded = activeDemo?.expandedCodeTitle === title;
   const copied = activeDemo?.copiedCodeTitle === title;
@@ -1091,7 +1156,7 @@ function DemoCard({
   return (
     <Card className={`${wide ? 'demo-card-wide ' : ''}demo-card`.trim()}>
       <CardHeader className="demo-card-header">
-        <CardTitle>{title}</CardTitle>
+        <CardTitle>{localizedTitle}</CardTitle>
         {activeDemo ? (
           <Tooltip content={codeExpanded ? messages.hideCode : messages.viewCode} placement="left">
             <Button
@@ -1107,7 +1172,9 @@ function DemoCard({
           </Tooltip>
         ) : null}
       </CardHeader>
-      <CardContent className="demo-preview-surface">{children}</CardContent>
+      <CardContent className={`demo-preview-surface${flush ? ' demo-preview-surface-flush' : ''}`}>
+        {children}
+      </CardContent>
       {activeDemo ? (
         <div
           id={codePanelId}
@@ -1132,7 +1199,7 @@ function DemoCard({
                   />
                 </Tooltip>
               </div>
-              <SyntaxCode code={code} interactive={codeExpanded} />
+              <SyntaxCode code={localizedCode} interactive={codeExpanded} />
             </div>
           </div>
         </div>
@@ -1255,6 +1322,7 @@ export default function App() {
   }, [locale]);
 
   const mainScrollRef = useRef<HTMLDivElement>(null);
+  const mobileSearchInputRef = useRef<HTMLInputElement>(null);
   const mobileNavigationScrollTopRef = useRef(0);
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [colorScheme, setColorScheme] = useState<ColorScheme>(initialColorScheme);
@@ -1265,6 +1333,8 @@ export default function App() {
   const [expandedCodeTitle, setExpandedCodeTitle] = useState<string>();
   const [copiedCodeTitle, setCopiedCodeTitle] = useState<string>();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [mobileMoreView, setMobileMoreView] = useState<'root' | 'language' | 'theme'>('root');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
   const [meetingName, setMeetingName] = useState('项目周会');
@@ -1298,6 +1368,7 @@ export default function App() {
   const [eventSort, setEventSort] = useState<DataTableSort>();
   const [selectedEventKeys, setSelectedEventKeys] = useState<React.Key[]>([]);
   const [warningAlertVisible, setWarningAlertVisible] = useState(true);
+  const [pullRefreshCount, setPullRefreshCount] = useState(0);
   const [files, setFiles] = useState<File[]>([]);
   const [compactFiles, setCompactFiles] = useState<File[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -1343,11 +1414,13 @@ export default function App() {
     return sourceSection
       ? [{
           ...sourceSection,
-          title: activeDemo.title,
-          description: `${activeCategory.title} · ${activeCategory.description}`,
+          title: demoLabels[activeDemo.title] ?? activeDemo.title,
+          description: language === 'zh-CN'
+            ? (componentGuides[activeDemo.id]?.summary ?? `${activeCategory.title} · ${activeCategory.description}`)
+            : (enGuideSummaries[activeDemo.id] ?? `${activeCategory.title} · ${activeCategory.description}`),
         }]
       : [];
-  }, [activeCategory.description, activeCategory.title, activeDemo]);
+  }, [activeCategory.description, activeCategory.title, activeDemo, demoLabels, language]);
 
   const navigateToCategory = (categoryId: string) => {
     const category = galleryCategories.find((item) => item.id === categoryId);
@@ -1366,6 +1439,7 @@ export default function App() {
     if (!selectedDemo) return;
     setActiveSection(category.id);
     setActiveDemoId(selectedDemo.id);
+    setMobileSearchOpen(false);
     setExpandedCategoryIds((current) => current.includes(category.id) ? current : [...current, category.id]);
     window.history.replaceState(null, '', `#${category.id}/${selectedDemo.id}`);
   };
@@ -1408,6 +1482,10 @@ export default function App() {
     mainScrollRef.current?.scrollTo({ top: 0 });
     setExpandedCodeTitle(undefined);
   }, [activeDemoId, activeSection]);
+
+  useEffect(() => {
+    if (mobileSearchOpen) mobileSearchInputRef.current?.focus();
+  }, [mobileSearchOpen]);
 
   useEffect(() => {
     document.documentElement.dataset.lumenTheme = theme;
@@ -1537,7 +1615,7 @@ export default function App() {
             <>
             <Button
               iconOnly
-              variant="secondary"
+              variant="ghost"
               className="mobile-menu-button"
               aria-label={messages.openNavigation}
               icon={<Menu size={18} />}
@@ -1558,6 +1636,7 @@ export default function App() {
           )}
           search={(
             <Input
+              id="gallery-search"
               className="topbar-search"
               size="md"
               value={gallerySearch}
@@ -1568,6 +1647,200 @@ export default function App() {
           )}
           actions={(
             <>
+            <DropdownMenu
+              className="mobile-search-button"
+              menuClassName="w-[min(360px,calc(100vw-16px))] p-3"
+              align="right"
+              onOpenChange={setMobileSearchOpen}
+              trigger={({ open, menuId, toggle }) => (
+                <Button
+                  iconOnly
+                  size="sm"
+                  variant="ghost"
+                  aria-label={open ? messages.closeSearch : messages.openSearch}
+                  aria-controls={menuId}
+                  aria-expanded={open}
+                  aria-haspopup="dialog"
+                  icon={open ? <X size={18} /> : <Search size={18} />}
+                  onClick={toggle}
+                />
+              )}
+            >
+              <Input
+                ref={mobileSearchInputRef}
+                id="mobile-gallery-search"
+                size="md"
+                value={gallerySearch}
+                onChange={(event) => setGallerySearch(event.target.value)}
+                prefix={<Search size={15} />}
+                placeholder={messages.searchPlaceholder}
+                aria-label={messages.searchPlaceholder}
+              />
+            </DropdownMenu>
+            <DropdownMenu
+              menuMode
+              className="mobile-more-button"
+              menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden p-0"
+              align="right"
+              onOpenChange={(open) => {
+                if (!open) setMobileMoreView('root');
+              }}
+              trigger={({ open, menuId, toggle }) => (
+                <Button
+                  iconOnly
+                  size="sm"
+                  variant="ghost"
+                  aria-label={messages.moreActions}
+                  aria-controls={menuId}
+                  aria-expanded={open}
+                  aria-haspopup="dialog"
+                  icon={<MoreHorizontal size={19} />}
+                  onClick={toggle}
+                />
+              )}
+            >
+              {({ close }) => (
+                <div className="mobile-more-content">
+                  {mobileMoreView !== 'root' ? (
+                    <div className="flex min-h-12 items-center gap-2 border-b border-[var(--lumen-color-border)] px-2 py-1.5 text-[14px] font-medium text-[var(--lumen-color-text-strong)]">
+                      <button
+                        type="button"
+                        role="menuitem"
+                        className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-[var(--lumen-color-surface-muted)]"
+                        aria-label={language === 'zh-CN' ? '返回更多操作' : 'Back to more actions'}
+                        onClick={() => setMobileMoreView('root')}
+                      >
+                        <ArrowLeft size={17} />
+                      </button>
+                      <span>
+                      {mobileMoreView === 'language'
+                        ? (language === 'zh-CN' ? '语言' : 'Language')
+                        : (language === 'zh-CN' ? '主题' : 'Theme')}
+                      </span>
+                    </div>
+                  ) : null}
+                  {mobileMoreView === 'language' ? (
+                    <div className="p-2">
+                      {([
+                        [zhCN, '简体中文'],
+                        [enUS, 'English'],
+                      ] as const).map(([option, label]) => (
+                        <button
+                          key={option.locale}
+                          type="button"
+                          role="menuitemradio"
+                          aria-checked={locale === option}
+                          className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] hover:bg-[var(--lumen-color-surface-muted)]"
+                          onClick={() => {
+                            setLocale(option);
+                            close();
+                          }}
+                        >
+                          <span className="flex-1">{label}</span>
+                          {locale === option ? <Check size={16} /> : null}
+                        </button>
+                      ))}
+                    </div>
+                  ) : mobileMoreView === 'theme' ? (
+                    <div className="p-2">
+                      {([
+                        ['clarity', 'blue', 'Clarity Blue'],
+                        ['clarity', 'purple', 'Clarity Purple'],
+                        ['paper', null, 'Paper'],
+                        ['prism', null, 'Prism'],
+                      ] as const).map(([themeValue, accentValue, label]) => {
+                        const selected = theme === themeValue
+                          && (themeValue !== 'clarity' || accent === accentValue);
+                        return (
+                          <button
+                            key={`${themeValue}-${accentValue ?? 'default'}`}
+                            type="button"
+                            role="menuitemradio"
+                            aria-checked={selected}
+                            className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] hover:bg-[var(--lumen-color-surface-muted)]"
+                            onClick={() => {
+                              setTheme(themeValue);
+                              if (accentValue) setAccent(accentValue);
+                              close();
+                            }}
+                          >
+                            <span className="flex-1">{label}</span>
+                            {selected ? <Check size={16} /> : null}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                  <div className="p-2">
+                    <button
+                      type="button"
+                      role="menuitem"
+                      aria-haspopup="menu"
+                      className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
+                      onClick={() => setMobileMoreView('language')}
+                    >
+                      <Languages size={17} />
+                      <span className="flex-1">{language === 'zh-CN' ? '语言' : 'Language'}</span>
+                      <span className="text-[12px] text-[var(--lumen-color-text-muted)]">
+                        {locale === zhCN ? '简体中文' : 'English'}
+                      </span>
+                      <ChevronRight size={16} />
+                    </button>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      aria-haspopup="menu"
+                      className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
+                      onClick={() => setMobileMoreView('theme')}
+                    >
+                      <Palette size={17} />
+                      <span className="flex-1">{language === 'zh-CN' ? '主题' : 'Theme'}</span>
+                      <span className="text-[12px] text-[var(--lumen-color-text-muted)]">
+                        {theme === 'clarity' ? `Clarity ${accent === 'blue' ? 'Blue' : 'Purple'}` : theme === 'paper' ? 'Paper' : 'Prism'}
+                      </span>
+                      <ChevronRight size={16} />
+                    </button>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
+                      onClick={() => setColorScheme((scheme) => scheme === 'dark' ? 'light' : 'dark')}
+                    >
+                      {colorScheme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+                      <span className="flex-1">
+                        {colorScheme === 'dark'
+                          ? (language === 'zh-CN' ? '切换浅色模式' : 'Use light mode')
+                          : (language === 'zh-CN' ? '切换深色模式' : 'Use dark mode')}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
+                      onClick={() => {
+                        close();
+                        Toast.info(language === 'zh-CN' ? '2 条未读通知' : '2 unread notifications');
+                      }}
+                    >
+                      <Bell size={17} />
+                      <span className="flex-1">{language === 'zh-CN' ? '通知' : 'Notifications'}</span>
+                      <Badge size="sm" variant="danger">2</Badge>
+                    </button>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
+                      onClick={close}
+                    >
+                      <UserRound size={17} />
+                      <span>{language === 'zh-CN' ? '账户' : 'Account'}</span>
+                    </button>
+                  </div>
+                  )}
+                </div>
+              )}
+            </DropdownMenu>
+            <div className="desktop-header-actions">
             <DropdownMenu
               menuMode
               menuClassName="locale-menu"
@@ -1806,18 +2079,34 @@ export default function App() {
                 </div>
               )}
             </DropdownMenu>
+            </div>
             </>
           )}
         />
 
-        <Scrollbar ref={mainScrollRef} className="main-scrollbar" size="sm">
+        <PullToRefresh
+          ref={mainScrollRef}
+          className="main-scrollbar lumen-scrollbar"
+          data-orientation="vertical"
+          data-size="sm"
+          disabled={activeSection !== 'feedback' || activeDemo.id !== 'pull-to-refresh'}
+          onRefresh={() => new Promise<void>((resolve) => {
+            window.setTimeout(() => {
+              Toast.success(language === 'zh-CN' ? '页面内容已刷新' : 'Page content refreshed');
+              resolve();
+            }, 800);
+          })}
+        >
           <div className="main-content">
             <ActiveDemoContext.Provider value={{
               demo: activeDemo,
               expandedCodeTitle,
               copiedCodeTitle,
               onToggleCode: (title) => setExpandedCodeTitle((current) => current === title ? undefined : title),
-              onCopyCode: (title, code) => void copyActiveDemoCode(title, code),
+                onCopyCode: (title, code) => void copyActiveDemoCode(
+                  title,
+                  language === 'en-US' ? translateDemoText(code) : code,
+                ),
             }}>
               <div className="gallery-workspace">
                 <div className="gallery-preview">
@@ -2686,6 +2975,34 @@ export default function App() {
                   <Spinner size="lg" tone="warning" label="正在同步设备" />
                 </div>
               </DemoCard>
+              <DemoCard title="PullToRefresh" wide flush>
+                <PullToRefresh
+                  aria-label="移动端事件列表"
+                  className="h-72 w-full"
+                  onRefresh={() => new Promise<void>((resolve) => {
+                    window.setTimeout(() => {
+                      setPullRefreshCount((count) => count + 1);
+                      resolve();
+                    }, 800);
+                  })}
+                >
+                  <div className="mx-5 pad:mx-6">
+                    <div className="border-b border-[var(--lumen-color-surface-muted)] px-4 py-3 text-[12px] text-[var(--lumen-color-text-muted)]">
+                      移动端向下拖动 · 已刷新 {pullRefreshCount} 次
+                    </div>
+                    <List aria-label="最新事件">
+                      {['主线异常停车', '边坡监测预警', '巡检任务已完成', '机电设备状态正常', '隧道照明巡检'].map((title, index) => (
+                        <ListItem
+                          key={`${title}-${pullRefreshCount}`}
+                          title={title}
+                          description={`第 ${index + 1} 条更新记录`}
+                          meta={`${index + 1 + pullRefreshCount} 分钟前`}
+                        />
+                      ))}
+                    </List>
+                  </div>
+                </PullToRefresh>
+              </DemoCard>
               <DemoCard title="Empty" wide>
                 <Empty
                   bordered
@@ -2758,7 +3075,7 @@ export default function App() {
               </div>
             </ActiveDemoContext.Provider>
           </div>
-        </Scrollbar>
+        </PullToRefresh>
       </main>
 
       <Modal
