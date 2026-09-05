@@ -982,6 +982,104 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "ScrollToEdge": [
+    {
+      "name": "direction",
+      "type": "\"top\" | \"bottom\"",
+      "defaultValue": "'top'",
+      "description": "设置 direction。",
+      "descriptionEn": "Configures direction.",
+      "required": false
+    },
+    {
+      "name": "containerRef",
+      "type": "React.RefObject<HTMLElement>",
+      "defaultValue": "undefined",
+      "description": "设置 containerRef。",
+      "descriptionEn": "Configures container ref.",
+      "required": false
+    },
+    {
+      "name": "threshold",
+      "type": "number",
+      "defaultValue": "200",
+      "description": "设置 threshold。",
+      "descriptionEn": "Configures threshold.",
+      "required": false
+    },
+    {
+      "name": "behavior",
+      "type": "ScrollBehavior",
+      "defaultValue": "'smooth'",
+      "description": "设置 behavior。",
+      "descriptionEn": "Configures behavior.",
+      "required": false
+    },
+    {
+      "name": "position",
+      "type": "\"fixed\" | \"absolute\" | \"static\"",
+      "defaultValue": "'fixed'",
+      "description": "设置 position。",
+      "descriptionEn": "Configures position.",
+      "required": false
+    },
+    {
+      "name": "offset",
+      "type": "string | number",
+      "defaultValue": "16",
+      "description": "设置 offset。",
+      "descriptionEn": "Configures offset.",
+      "required": false
+    },
+    {
+      "name": "safeArea",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "设置 safeArea。",
+      "descriptionEn": "Configures safe area.",
+      "required": false
+    },
+    {
+      "name": "alwaysVisible",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "设置 alwaysVisible。",
+      "descriptionEn": "Configures always visible.",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置组件图标。",
+      "descriptionEn": "Sets the component icon.",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置可见标签或标题。",
+      "descriptionEn": "Sets the visible label or title.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
+      "description": "设置组件尺寸。",
+      "descriptionEn": "Sets the component size.",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"primary\" | \"secondary\" | \"accent\" | \"outline\" | \"ghost\" | \"destructive\"",
+      "defaultValue": "'secondary'",
+      "description": "设置组件的视觉变体。",
+      "descriptionEn": "Sets the visual variant of the component.",
+      "required": false
+    }
+  ],
   "Typography": [
     {
       "name": "variant",

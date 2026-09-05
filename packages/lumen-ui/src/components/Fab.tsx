@@ -2,7 +2,11 @@ import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import { Button } from './Button';
 import { cn } from './classNames';
-import type { ButtonSize, ButtonVariant } from './designTokens';
+import {
+  floatingButtonIconSizeTokens,
+  type ButtonSize,
+  type ButtonVariant,
+} from './designTokens';
 import { useLumenLocale } from '../i18n';
 
 export type FabPosition = 'fixed' | 'absolute' | 'static';
@@ -58,15 +62,15 @@ const fabPositionClassNames: Record<FabPosition, string> = {
 
 const fabSizeClassNames: Record<ButtonSize, { icon: string; extended: string }> = {
   sm: {
-    icon: '!h-9 !w-9 !rounded-full p-0',
+    icon: floatingButtonIconSizeTokens.sm,
     extended: '!h-9 !rounded-[var(--lumen-radius-pill)] px-3.5 text-[13px]',
   },
   md: {
-    icon: '!h-11 !w-11 !rounded-full p-0',
+    icon: floatingButtonIconSizeTokens.md,
     extended: '!h-11 !rounded-[var(--lumen-radius-pill)] px-[18px] text-[14px]',
   },
   lg: {
-    icon: '!h-[52px] !w-[52px] !rounded-full p-0',
+    icon: floatingButtonIconSizeTokens.lg,
     extended: '!h-[52px] !rounded-[var(--lumen-radius-pill)] px-[22px] text-[15px]',
   },
 };
