@@ -111,23 +111,14 @@ body {
   display: grid;
   max-height: 0;
   gap: 2px;
-  margin: 0 0 0 21px;
+  margin: 0 0 0 28px;
   overflow: hidden;
-  padding-left: 19px;
   opacity: 0;
   pointer-events: none;
   transition:
     max-height 220ms ease,
     margin 220ms ease,
     opacity 140ms ease;
-}
-
-.gallery-tree-children::before {
-  position: absolute;
-  inset: 4px auto 4px 0;
-  width: 1px;
-  background: var(--lumen-color-divider);
-  content: '';
 }
 
 .gallery-tree-group[data-expanded] .gallery-tree-children {
@@ -148,15 +139,6 @@ body {
   background: var(--lumen-color-primary-soft);
   color: var(--lumen-color-primary);
   font-weight: 500;
-}
-
-.gallery-tree-item[data-active]::before {
-  position: absolute;
-  inset: 7px auto 7px -20px;
-  width: 2px;
-  border-radius: 2px;
-  background: var(--lumen-color-primary);
-  content: '';
 }
 
 .sidebar-collapsed .gallery-tree-nav {

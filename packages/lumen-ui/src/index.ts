@@ -9,6 +9,7 @@ export * from './components/AppHeader';
 export * from './components/Avatar';
 export * from './components/Badge';
 export * from './components/BottomNavigation';
+export * from './components/BottomSheet';
 export * from './components/breadcrumb/Breadcrumb';
 export * from './components/Button';
 export * from './components/calendar/Calendar';
