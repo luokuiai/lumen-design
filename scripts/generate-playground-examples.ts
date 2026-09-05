@@ -138,12 +138,83 @@ const propertyDescriptions: Record<string, string> = {
   variant: '设置组件的视觉变体。',
 };
 
+const englishPropertyDescriptions: Record<string, string> = {
+  active: 'Controls whether the component is visible or enabled.',
+  align: 'Sets the alignment of the content or overlay.',
+  'aria-describedby': 'References the element that provides an accessible description.',
+  'aria-label': 'Sets the accessible name read by assistive technology.',
+  'aria-labelledby': 'References the element that provides the accessible name.',
+  ariaLabel: 'Sets the accessible name of the component.',
+  as: 'Sets the HTML element or React component to render.',
+  checked: 'Controls whether the component is selected.',
+  children: 'Sets the child content rendered by the component.',
+  className: 'Adds custom CSS class names.',
+  closeDelayMs: 'Sets the delay before the close animation completes, in milliseconds.',
+  closeOnEscape: 'Closes the overlay when Escape is pressed.',
+  closeOnOverlayClick: 'Closes the overlay when its backdrop is clicked.',
+  closeOnOutsideClick: 'Closes the overlay when an area outside it is clicked.',
+  closeOnSelect: 'Closes the overlay after an item is selected.',
+  closeOnSwipe: 'Allows the drawer to close with a swipe gesture on touch devices.',
+  contentClassName: 'Adds custom CSS class names to the overlay content.',
+  defaultChecked: 'Sets the initial selected state in uncontrolled mode.',
+  defaultOpen: 'Sets the initial open state in uncontrolled mode.',
+  defaultValue: 'Sets the initial value in uncontrolled mode.',
+  description: 'Provides supporting descriptive content.',
+  disabled: 'Disables the component and its interactions.',
+  finalFocusRef: 'References the element that receives focus after the overlay closes.',
+  icon: 'Sets the component icon.',
+  initialFocusRef: 'References the element that receives focus after the overlay opens.',
+  items: 'Defines the data items rendered by the component.',
+  label: 'Sets the visible label or title.',
+  locale: 'Sets the locale used by the component tree.',
+  loading: 'Shows a loading state and prevents repeated actions.',
+  lockScroll: 'Locks page scrolling while the overlay is open.',
+  max: 'Sets the maximum allowed value.',
+  menuClassName: 'Adds custom CSS class names to the menu overlay.',
+  menuMode: 'Enables menu semantics, focus management, and arrow-key navigation.',
+  min: 'Sets the minimum allowed value.',
+  multiple: 'Allows multiple values to be selected.',
+  name: 'Sets the form control name.',
+  onChange: 'Called when the value changes.',
+  onClick: 'Called when the component is clicked.',
+  onOpenChange: 'Called when the open state changes.',
+  onRequestClose: 'Called when the overlay requests to close.',
+  open: 'Controls whether the overlay or panel is open.',
+  options: 'Defines the available options.',
+  placeholder: 'Sets the hint shown when no value has been entered or selected.',
+  placement: 'Sets the position of the overlay or positioned element.',
+  required: 'Marks the form value as required.',
+  role: 'Sets the dialog or alertdialog accessibility role.',
+  searchable: 'Enables option search.',
+  size: 'Sets the component size.',
+  status: 'Sets the component status style.',
+  step: 'Sets the numeric increment.',
+  style: 'Adds inline styles.',
+  title: 'Sets the component title.',
+  tone: 'Sets the semantic color tone.',
+  trigger: 'Renders the trigger and provides its open state, menu ID, and toggle method.',
+  value: 'Sets the current value in controlled mode.',
+  variant: 'Sets the visual variant of the component.',
+};
+
 const getFallbackDescription = (name: string) => {
   if (propertyDescriptions[name]) return propertyDescriptions[name];
   if (name.startsWith('on')) return `组件执行 ${name.slice(2)} 对应操作时触发。`;
   if (name.startsWith('default')) return `设置 ${name.slice(7)} 的初始值。`;
   if (name.startsWith('show')) return `控制是否显示 ${name.slice(4)}。`;
   return `设置 ${name}。`;
+};
+
+const getEnglishFallbackDescription = (name: string) => {
+  if (englishPropertyDescriptions[name]) return englishPropertyDescriptions[name];
+  const label = name
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/[._-]+/g, ' ')
+    .toLowerCase();
+  if (name.startsWith('on')) return `Called when the ${label.slice(3)} action occurs.`;
+  if (name.startsWith('default')) return `Sets the initial ${label.slice(8)}.`;
+  if (name.startsWith('show')) return `Controls whether ${label.slice(5)} is shown.`;
+  return `Configures ${label}.`;
 };
 
 const getComponentDefaults = (sourceFile: ts.SourceFile, componentName: string) => {
@@ -195,6 +266,7 @@ type GeneratedPropDoc = {
   type: string;
   defaultValue: string;
   description: string;
+  descriptionEn: string;
   required: boolean;
 };
 
@@ -234,6 +306,7 @@ for (const componentFile of componentFiles) {
           description: /[\u3400-\u9fff]/.test(documentation)
             ? documentation
             : getFallbackDescription(property.name),
+          descriptionEn: getEnglishFallbackDescription(property.name),
           required: !(property.flags & ts.SymbolFlags.Optional),
         };
       })
@@ -244,18 +317,18 @@ for (const componentFile of componentFiles) {
 }
 
 componentApi.Toast = [
-  { name: 'show', type: '(message: string, type?: ToastType, options?: ToastOptions) => void', defaultValue: "type: 'info'", description: '显示指定类型的全局消息。', required: false },
-  { name: 'success', type: '(message: string, options?: ToastOptions) => void', defaultValue: '-', description: '显示成功消息。', required: false },
-  { name: 'info', type: '(message: string, options?: ToastOptions) => void', defaultValue: '-', description: '显示提示消息。', required: false },
-  { name: 'warning', type: '(message: string, options?: ToastOptions) => void', defaultValue: '-', description: '显示警告消息。', required: false },
-  { name: 'error', type: '(message: string, options?: ToastOptions) => void', defaultValue: '-', description: '显示错误消息。', required: false },
-  { name: 'clear', type: '() => void', defaultValue: '-', description: '立即清除全部消息。', required: false },
-  { name: 'options.duration', type: 'number', defaultValue: '2600', description: '设置消息显示时长，单位为毫秒。', required: false },
+  { name: 'show', type: '(message: string, type?: ToastType, options?: ToastOptions) => void', defaultValue: "type: 'info'", description: '显示指定类型的全局消息。', descriptionEn: 'Shows a global message with the specified type.', required: false },
+  { name: 'success', type: '(message: string, options?: ToastOptions) => void', defaultValue: '-', description: '显示成功消息。', descriptionEn: 'Shows a success message.', required: false },
+  { name: 'info', type: '(message: string, options?: ToastOptions) => void', defaultValue: '-', description: '显示提示消息。', descriptionEn: 'Shows an informational message.', required: false },
+  { name: 'warning', type: '(message: string, options?: ToastOptions) => void', defaultValue: '-', description: '显示警告消息。', descriptionEn: 'Shows a warning message.', required: false },
+  { name: 'error', type: '(message: string, options?: ToastOptions) => void', defaultValue: '-', description: '显示错误消息。', descriptionEn: 'Shows an error message.', required: false },
+  { name: 'clear', type: '() => void', defaultValue: '-', description: '立即清除全部消息。', descriptionEn: 'Immediately clears all messages.', required: false },
+  { name: 'options.duration', type: 'number', defaultValue: '2600', description: '设置消息显示时长，单位为毫秒。', descriptionEn: 'Sets the message duration in milliseconds.', required: false },
 ];
 
 const generatedApiSource = `// Generated by scripts/generate-playground-examples.ts.\n`
   + `// Do not edit this file directly.\n`
-  + `export type GeneratedPropDoc = { name: string; type: string; defaultValue: string; description: string; required: boolean };\n`
+  + `export type GeneratedPropDoc = { name: string; type: string; defaultValue: string; description: string; descriptionEn: string; required: boolean };\n`
   + `export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = ${JSON.stringify(componentApi, null, 2)};\n`;
 await writeFile(apiOutputPath, generatedApiSource);
 console.log(`Generated source for ${Object.keys(examples).length} cards and API for ${Object.keys(componentApi).length} components.`);

@@ -98,6 +98,11 @@ export interface LumenLocale {
     previous: string;
     next: string;
   };
+  pullToRefresh: {
+    pulling: string;
+    release: string;
+    refreshing: string;
+  };
   fileUpload: {
     inputLabel: string;
     unsupportedType: string;
@@ -185,6 +190,7 @@ export const zhCN: LumenLocale = {
     itemLabel: '条', total: (total, itemLabel) => `共 ${total} ${itemLabel}`, page: (current, total) => `第 ${current} / ${total} 页`,
     pageSize: (size) => `${size}条/页`, previous: '上一页', next: '下一页',
   },
+  pullToRefresh: { pulling: '下拉刷新', release: '释放刷新', refreshing: '正在刷新' },
   fileUpload: {
     inputLabel: '文件上传', unsupportedType: '文件格式不受支持', maxSize: (size) => `文件大小不能超过 ${size}`, maxFiles: (count) => `最多选择 ${count} 个文件`,
     uploading: '正在上传文件', dropToUpload: '释放文件以上传', dragOrClick: '拖拽文件到此处，或点击上传', dragOrChoose: '拖拽文件到此处，或点击选择文件',
@@ -240,6 +246,7 @@ export const enUS: LumenLocale = {
     itemLabel: 'items', total: (total, itemLabel) => `${total} ${itemLabel}`, page: (current, total) => `Page ${current} of ${total}`,
     pageSize: (size) => `${size} / page`, previous: 'Previous page', next: 'Next page',
   },
+  pullToRefresh: { pulling: 'Pull to refresh', release: 'Release to refresh', refreshing: 'Refreshing' },
   fileUpload: {
     inputLabel: 'Upload files', unsupportedType: 'Unsupported file type', maxSize: (size) => `File size must not exceed ${size}`, maxFiles: (count) => `Select up to ${count} files`,
     uploading: 'Uploading files', dropToUpload: 'Drop files to upload', dragOrClick: 'Drag files here or click to upload', dragOrChoose: 'Drag files here or click to choose files',

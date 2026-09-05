@@ -38,6 +38,7 @@ export * from './components/number-input/NumberInput';
 export * from './components/Pagination';
 export * from './components/Popover';
 export * from './components/Progress';
+export * from './components/pull-to-refresh/PullToRefresh';
 export * from './components/Radio';
 export * from './components/RadioGroup';
 export * from './components/rating/Rating';

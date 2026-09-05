@@ -38,6 +38,7 @@ describe('public API', () => {
     expect(Lumen.Pagination).toBeTypeOf('function');
     expect(Lumen.Popover).toBeTypeOf('function');
     expect(Lumen.Progress).toBeTypeOf('object');
+    expect(Lumen.PullToRefresh).toBeTypeOf('object');
     expect(Lumen.RadioGroup).toBeTypeOf('function');
     expect(Lumen.Rating).toBeTypeOf('object');
     expect(Lumen.Scrollbar).toBeTypeOf('object');
