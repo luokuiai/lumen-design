@@ -12,6 +12,7 @@ describe('public API', () => {
     expect(Lumen.Avatar).toBeTypeOf('object');
     expect(Lumen.Breadcrumb).toBeTypeOf('object');
     expect(Lumen.BottomNavigation).toBeTypeOf('function');
+    expect(Lumen.BottomSheet).toBeTypeOf('function');
     expect(Lumen.Button).toBeTypeOf('function');
     expect(Lumen.Calendar).toBeTypeOf('object');
     expect(Lumen.Card).toBeTypeOf('object');

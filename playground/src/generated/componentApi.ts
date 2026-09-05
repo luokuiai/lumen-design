@@ -442,6 +442,200 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "BottomSheet": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "defaultValue": "-",
+      "description": "控制浮层或面板是否打开。",
+      "descriptionEn": "Controls whether the overlay or panel is open.",
+      "required": true
+    },
+    {
+      "name": "onRequestClose",
+      "type": "() => void",
+      "defaultValue": "-",
+      "description": "请求关闭浮层时触发。",
+      "descriptionEn": "Called when the overlay requests to close.",
+      "required": true
+    },
+    {
+      "name": "onExited",
+      "type": "() => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 Exited 对应操作时触发。",
+      "descriptionEn": "Called when the exited action occurs.",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "defaultValue": "-",
+      "description": "组件承载的子内容。",
+      "descriptionEn": "Sets the child content rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置组件标题。",
+      "descriptionEn": "Sets the component title.",
+      "required": false
+    },
+    {
+      "name": "description",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "补充说明内容。",
+      "descriptionEn": "Provides supporting descriptive content.",
+      "required": false
+    },
+    {
+      "name": "sheetId",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 sheetId。",
+      "descriptionEn": "Configures sheet id.",
+      "required": false
+    },
+    {
+      "name": "overlayId",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 overlayId。",
+      "descriptionEn": "Configures overlay id.",
+      "required": false
+    },
+    {
+      "name": "overlayClassName",
+      "type": "string",
+      "defaultValue": "''",
+      "description": "设置 overlayClassName。",
+      "descriptionEn": "Configures overlay class name.",
+      "required": false
+    },
+    {
+      "name": "panelClassName",
+      "type": "string",
+      "defaultValue": "''",
+      "description": "设置 panelClassName。",
+      "descriptionEn": "Configures panel class name.",
+      "required": false
+    },
+    {
+      "name": "inset",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "设置 inset。",
+      "descriptionEn": "Configures inset.",
+      "required": false
+    },
+    {
+      "name": "maxWidth",
+      "type": "string | number",
+      "defaultValue": "undefined",
+      "description": "设置 maxWidth。",
+      "descriptionEn": "Configures max width.",
+      "required": false
+    },
+    {
+      "name": "maxHeight",
+      "type": "string | number",
+      "defaultValue": "'calc(100dvh - var(--lumen-viewport-gutter))'",
+      "description": "设置 maxHeight。",
+      "descriptionEn": "Configures max height.",
+      "required": false
+    },
+    {
+      "name": "persistent",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "设置 persistent。",
+      "descriptionEn": "Configures persistent.",
+      "required": false
+    },
+    {
+      "name": "closeOnOverlayClick",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "点击遮罩区域时关闭浮层。",
+      "descriptionEn": "Closes the overlay when its backdrop is clicked.",
+      "required": false
+    },
+    {
+      "name": "closeOnEscape",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "按 Escape 键时关闭浮层。",
+      "descriptionEn": "Closes the overlay when Escape is pressed.",
+      "required": false
+    },
+    {
+      "name": "closeOnSwipe",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "允许在触摸设备上沿退出方向滑动关闭抽屉。",
+      "descriptionEn": "Allows the drawer to close with a swipe gesture on touch devices.",
+      "required": false
+    },
+    {
+      "name": "showHandle",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否显示 Handle。",
+      "descriptionEn": "Controls whether handle is shown.",
+      "required": false
+    },
+    {
+      "name": "lockScroll",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "浮层显示期间锁定页面滚动。",
+      "descriptionEn": "Locks page scrolling while the overlay is open.",
+      "required": false
+    },
+    {
+      "name": "initialFocusRef",
+      "type": "React.RefObject<HTMLElement>",
+      "defaultValue": "undefined",
+      "description": "浮层打开后优先聚焦的元素引用。",
+      "descriptionEn": "References the element that receives focus after the overlay opens.",
+      "required": false
+    },
+    {
+      "name": "finalFocusRef",
+      "type": "React.RefObject<HTMLElement>",
+      "defaultValue": "undefined",
+      "description": "浮层关闭后恢复焦点的元素引用。",
+      "descriptionEn": "References the element that receives focus after the overlay closes.",
+      "required": false
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置供辅助技术读取的名称。",
+      "descriptionEn": "Sets the accessible name read by assistive technology.",
+      "required": false
+    },
+    {
+      "name": "aria-labelledby",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "关联用于命名组件的元素 ID。",
+      "descriptionEn": "References the element that provides the accessible name.",
+      "required": false
+    },
+    {
+      "name": "aria-describedby",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "关联用于补充说明组件内容的元素 ID。",
+      "descriptionEn": "References the element that provides an accessible description.",
+      "required": false
+    }
+  ],
   "Toolbar": [
     {
       "name": "size",

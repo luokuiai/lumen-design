@@ -47,6 +47,7 @@ import {
   Avatar,
   Badge,
   BottomNavigation,
+  BottomSheet,
   Breadcrumb,
   Button,
   Calendar,
@@ -394,12 +395,13 @@ const galleryCategories: GalleryCategory[] = [
     id: 'overlays',
     title: 'Overlays',
     description: '覆盖页面的弹层、抽屉和上下文操作。',
-    keywords: 'Modal Drawer ConfirmDialog CommandPalette Popover Tooltip',
+    keywords: 'Modal Drawer BottomSheet ConfirmDialog CommandPalette Popover Tooltip',
     icon: Bell,
     demos: [
       demo('CommandPalette', 'overlays', 'Button, CommandPalette', '    <Button onClick={() => setOpen(true)}>打开 CommandPalette</Button>'),
       demo('Modal', 'overlays', 'Button, Modal', '    <Modal open={open} title="编辑配置" description="修改当前配置项。" onRequestClose={() => setOpen(false)}>{content}</Modal>'),
       demo('Drawer', 'overlays', 'Button, Drawer', '    <Drawer open={open} closeOnSwipe title="配置面板" description="调整页面配置。" onRequestClose={() => setOpen(false)}>{content}</Drawer>'),
+      demo('BottomSheet', 'overlays', 'BottomSheet, Button', '    <BottomSheet\n      open={open}\n      title="快捷操作"\n      description="选择要执行的操作。"\n      onRequestClose={() => setOpen(false)}\n    >\n      <div className="space-y-1 px-4 pb-4">\n        <Button variant="ghost" className="w-full justify-start">分享</Button>\n        <Button variant="ghost" className="w-full justify-start">保存到收藏</Button>\n      </div>\n    </BottomSheet>'),
       demo('ConfirmDialog', 'overlays', 'Button, ConfirmDialog', '    <Button variant="destructive" onClick={() => setOpen(true)}>打开 Confirm</Button>'),
       demo('Toast', 'overlays', 'Button, Toast', '    <Button onClick={() => Toast.success(\'组件状态已保存\')}>Toast</Button>'),
       demo('Popover', 'overlays', 'Button, Popover', '    <Popover trigger={<Button>查看详情</Button>}>\n      上下文内容\n    </Popover>'),
@@ -538,6 +540,7 @@ const zhDemoNames: Record<string, string> = {
   CommandPalette: '命令面板',
   Modal: '模态框',
   Drawer: '抽屉',
+  BottomSheet: '底部操作面板',
   ConfirmDialog: '确认对话框',
   Toast: '消息提示',
   Popover: '弹出框',
@@ -1386,6 +1389,7 @@ export default function App() {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [modalSelectValue, setModalSelectValue] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const language = locale.locale === enUS.locale ? 'en-US' : 'zh-CN';
@@ -2891,6 +2895,9 @@ export default function App() {
                 <DemoCard title="Drawer" wide>
                     <Button variant="secondary" onClick={() => setDrawerOpen(true)}>打开 Drawer</Button>
                 </DemoCard>
+                <DemoCard title="BottomSheet" wide>
+                    <Button variant="secondary" onClick={() => setBottomSheetOpen(true)}>打开 BottomSheet</Button>
+                </DemoCard>
                 <DemoCard title="ConfirmDialog" wide>
                     <Button variant="destructive" onClick={() => setConfirmOpen(true)}>打开 Confirm</Button>
                 </DemoCard>
@@ -3127,6 +3134,22 @@ export default function App() {
           <Button onClick={() => setModalOpen(false)}>保存</Button>
         </div>
       </Modal>
+
+      <BottomSheet
+        open={bottomSheetOpen}
+        onRequestClose={() => setBottomSheetOpen(false)}
+        title="快捷操作"
+        description="选择要执行的操作。向下拖动顶部手柄也可关闭。"
+      >
+        <div className="space-y-1 px-4 pb-4">
+          <Button variant="ghost" className="w-full justify-start" icon={<Bell size={16} />}>
+            创建告警
+          </Button>
+          <Button variant="ghost" className="w-full justify-start" icon={<MapPin size={16} />}>
+            添加地点
+          </Button>
+        </div>
+      </BottomSheet>
 
       <CommandPalette
         open={commandPaletteOpen}
