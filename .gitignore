@@ -4,5 +4,6 @@ coverage/
 .codex/
 *.log
 .DS_Store
+/paseo.json
 
 .codegraph/

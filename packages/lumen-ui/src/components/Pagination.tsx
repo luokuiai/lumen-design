@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './Button';
 import { cn } from './classNames';
 import { Select } from './Select';
+import { useLumenLocale } from '../i18n';
 
 type PaginationItem = number | 'ellipsis-left' | 'ellipsis-right';
 
@@ -58,13 +59,15 @@ export const Pagination = ({
   onPageChange,
   variant = 'default',
   loading = false,
-  itemLabel = '条',
+  itemLabel: itemLabelProp,
   hideOnSinglePage,
   pageSize,
   pageSizeOptions = [10, 20, 50],
   onPageSizeChange,
   className = '',
 }: PaginationProps) => {
+  const locale = useLumenLocale();
+  const itemLabel = itemLabelProp ?? locale.pagination.itemLabel;
   const safeTotalPages = Math.max(1, totalPages);
   const safeCurrentPage = Math.min(Math.max(1, currentPage), safeTotalPages);
   const normalizedPageSizeOptions = useMemo(
@@ -99,7 +102,7 @@ export const Pagination = ({
         )}
       >
         <span className="min-w-0">
-          共 {totalItems} {itemLabel} · 第 {safeCurrentPage} / {safeTotalPages} 页
+          {locale.pagination.total(totalItems, itemLabel)} · {locale.pagination.page(safeCurrentPage, safeTotalPages)}
         </span>
         <div className="flex shrink-0 gap-1.5">
           <Button
@@ -109,7 +112,7 @@ export const Pagination = ({
             type="button"
             variant="secondary"
           >
-            上一页
+            {locale.pagination.previous}
           </Button>
           <Button
             disabled={safeCurrentPage >= safeTotalPages || loading}
@@ -118,7 +121,7 @@ export const Pagination = ({
             type="button"
             variant="secondary"
           >
-            下一页
+            {locale.pagination.next}
           </Button>
         </div>
       </div>
@@ -135,15 +138,15 @@ export const Pagination = ({
       )}
     >
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-[13px] text-[var(--lumen-color-text-muted)]">共 {totalItems} 条</span>
+        <span className="text-[13px] text-[var(--lumen-color-text-muted)]">{locale.pagination.total(totalItems, itemLabel)}</span>
         <span className="text-[13px] text-[var(--lumen-color-text-muted)]">
-          第 {safeCurrentPage} / {safeTotalPages} 页
+          {locale.pagination.page(safeCurrentPage, safeTotalPages)}
         </span>
         {shouldShowPageSizeSelector ? (
           <div className="w-[104px]">
               <Select<number>
                 options={normalizedPageSizeOptions.map((option) => ({
-                  label: `${option}条/页`,
+                  label: locale.pagination.pageSize(option),
                   value: option,
                 }))}
                 value={pageSize}
@@ -159,7 +162,7 @@ export const Pagination = ({
       <div className="flex max-w-full flex-wrap items-center gap-0.5 overflow-x-auto">
         <button
           type="button"
-          aria-label="上一页"
+          aria-label={locale.pagination.previous}
           onClick={() => onPageChange(safeCurrentPage - 1)}
           disabled={safeCurrentPage <= 1 || loading}
           className="flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] disabled:cursor-not-allowed disabled:opacity-30"
@@ -194,7 +197,7 @@ export const Pagination = ({
         )}
         <button
           type="button"
-          aria-label="下一页"
+          aria-label={locale.pagination.next}
           onClick={() => onPageChange(safeCurrentPage + 1)}
           disabled={safeCurrentPage >= safeTotalPages || loading}
           className="flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] disabled:cursor-not-allowed disabled:opacity-30"

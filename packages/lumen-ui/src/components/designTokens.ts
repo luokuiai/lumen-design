@@ -48,8 +48,14 @@ export const buttonVariantTokens = {
 export type ButtonVariant = keyof typeof buttonVariantTokens;
 export type ButtonSize = keyof typeof buttonSizeTokens;
 
+export const floatingButtonIconSizeTokens: Record<ButtonSize, string> = {
+  sm: '!h-9 !w-9 !rounded-full p-0',
+  md: '!h-11 !w-11 !rounded-full p-0',
+  lg: '!h-[52px] !w-[52px] !rounded-full p-0',
+};
+
 const buttonBase =
-  'inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50';
+  'relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 overflow-hidden font-normal transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-50';
 
 export const getButtonClassNames = ({
   variant = 'primary',
@@ -183,7 +189,7 @@ export const sideNavClassNames = {
   collapsedDivider:
     'mx-auto my-1 h-px w-8 bg-[var(--lumen-color-border)]',
   item:
-    'group relative flex min-h-[44px] w-full items-center rounded-[8px] text-left text-[15px] font-normal transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
+    'group relative flex min-h-[44px] w-full items-center rounded-[8px] text-left text-[14px] font-normal transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
   expandedItem: 'gap-3 px-3',
   collapsedItem: 'justify-center px-0',
   activeItem:

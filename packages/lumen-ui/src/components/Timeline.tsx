@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLumenLocale } from '../i18n';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 
 export interface TimelineItem {
@@ -47,9 +48,11 @@ const typeStyles: Record<TimelineType, { dot: string; line: string; badge: strin
 export const Timeline: React.FC<TimelineProps> = ({
   items,
   onItemClick,
-  emptyText = '暂无记录',
+  emptyText: emptyTextProp,
   maxItems,
 }) => {
+  const locale = useLumenLocale();
+  const emptyText = emptyTextProp ?? locale.timeline.emptyText;
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const displayItems = maxItems ? items.slice(0, maxItems) : items;
 
@@ -121,7 +124,7 @@ export const Timeline: React.FC<TimelineProps> = ({
                         className="inline-flex items-center gap-0.5 text-[12px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"
                       >
                         {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
-                        详情
+                        {locale.timeline.details}
                       </button>
                     )}
                   </div>
@@ -148,11 +151,11 @@ export const Timeline: React.FC<TimelineProps> = ({
                   {item.beforeValue && item.afterValue && (
                     <div className="grid grid-cols-1 gap-2 pad:grid-cols-2 pad:gap-3">
                       <div className="rounded-[6px] bg-[var(--lumen-color-danger-soft)] px-3 py-2">
-                        <div className="text-[12px] text-[var(--lumen-color-danger)]">变更前</div>
+                        <div className="text-[12px] text-[var(--lumen-color-danger)]">{locale.timeline.before}</div>
                         <div className="mt-0.5 text-[12px] text-[var(--lumen-color-danger-text)] line-through">{item.beforeValue}</div>
                       </div>
                       <div className="rounded-[6px] bg-[var(--lumen-color-success-soft)] px-3 py-2">
-                        <div className="text-[12px] text-[var(--lumen-color-success)]">变更后</div>
+                        <div className="text-[12px] text-[var(--lumen-color-success)]">{locale.timeline.after}</div>
                         <div className="mt-0.5 text-[12px] text-[var(--lumen-color-success-text)]">{item.afterValue}</div>
                       </div>
                     </div>
@@ -165,7 +168,7 @@ export const Timeline: React.FC<TimelineProps> = ({
       })}
       {maxItems && items.length > maxItems && (
         <p className="pl-[30px] text-[12px] text-[var(--lumen-color-text-placeholder)]">
-          还有 {items.length - maxItems} 条记录
+          {locale.timeline.remaining(items.length - maxItems)}
         </p>
       )}
     </div>

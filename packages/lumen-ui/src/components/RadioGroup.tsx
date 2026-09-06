@@ -30,7 +30,7 @@ export const RadioGroup = <T extends RadioGroupValue = string>({
   value,
   defaultValue,
   name,
-  size = 'sm',
+  size = 'md',
   direction = 'vertical',
   disabled = false,
   required = false,

@@ -41,6 +41,7 @@
   --lumen-color-warning-soft: #fbf2df;
   --lumen-color-warning-border: #ead6ac;
   --lumen-color-warning-text: #7b4d17;
+  --lumen-color-rating: #c89232;
   --lumen-color-info: #416b7d;
   --lumen-color-info-soft: #eaf1f3;
   --lumen-color-info-border: #c5d7dc;
@@ -105,6 +106,7 @@
   --lumen-color-warning-soft: rgba(217, 170, 98, 0.14);
   --lumen-color-warning-border: rgba(217, 170, 98, 0.3);
   --lumen-color-warning-text: #e7c287;
+  --lumen-color-rating: #ddb35f;
   --lumen-color-info: #8eb8c7;
   --lumen-color-info-soft: rgba(142, 184, 199, 0.14);
   --lumen-color-info-border: rgba(142, 184, 199, 0.3);

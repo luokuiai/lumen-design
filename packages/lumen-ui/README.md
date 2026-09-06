@@ -36,6 +36,22 @@ The `data-lumen-theme`, `data-color-scheme`, and `data-density` attributes can
 be configured independently. Theme authors can import the CSS variable
 contract from `@luokuiai/lumen-ui/theme-contract`.
 
+## Localization
+
+Components use Simplified Chinese defaults. Wrap the application with
+`LumenProvider` to use another built-in locale:
+
+```tsx
+import { enUS, LumenProvider } from '@luokuiai/lumen-ui';
+
+export function App() {
+  return <LumenProvider locale={enUS}>{/* application */}</LumenProvider>;
+}
+```
+
+The package also exports `zhCN` and the `LumenLocale` type for custom locale
+packs. Component text props take precedence over provider defaults.
+
 ## Package exports
 
 - `@luokuiai/lumen-ui` - React components and theme contract

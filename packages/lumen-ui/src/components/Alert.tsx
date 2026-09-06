@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { cn } from './classNames';
 import { semanticSurfaceToneClassNames } from './designTokens';
+import { useLumenLocale } from '../i18n';
 
 export type AlertVariant = 'info' | 'success' | 'warning' | 'danger';
 
@@ -42,7 +43,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       title,
       icon,
       action,
-      closeLabel = '关闭提示',
+      closeLabel,
       onClose,
       children,
       className,
@@ -51,6 +52,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     },
     ref,
   ) => {
+    const locale = useLumenLocale();
     const Icon = alertIcons[variant];
     const resolvedRole = role ?? (variant === 'warning' || variant === 'danger' ? 'alert' : 'status');
     const iconNode = icon === false ? null : icon ?? <Icon aria-hidden="true" size={18} />;
@@ -99,7 +101,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         {onClose ? (
           <button
             type="button"
-            aria-label={closeLabel}
+            aria-label={closeLabel ?? locale.accessibility.alertClose}
             className="-mr-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] text-current opacity-65 transition-colors hover:bg-current/10 hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-current/25"
             onClick={onClose}
           >

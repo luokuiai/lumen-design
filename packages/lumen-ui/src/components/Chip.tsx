@@ -2,6 +2,7 @@ import React from 'react';
 import { X } from 'lucide-react';
 import { cn } from './classNames';
 import { semanticBadgeToneClassNames } from './designTokens';
+import { useLumenLocale } from '../i18n';
 
 export type ChipTone = keyof typeof semanticBadgeToneClassNames;
 export type ChipSize = 'sm' | 'md';
@@ -50,9 +51,10 @@ export const Chip: React.FC<ChipProps> = ({
   disabled = false,
   onSelect,
   onClose,
-  closeLabel = '移除标签',
+  closeLabel,
   className,
 }) => {
+  const locale = useLumenLocale();
   const content = (
     <>
       {icon ? <span className="shrink-0">{icon}</span> : null}
@@ -91,7 +93,7 @@ export const Chip: React.FC<ChipProps> = ({
       {onClose ? (
         <button
           type="button"
-          aria-label={closeLabel}
+          aria-label={closeLabel ?? locale.accessibility.chipRemove}
           disabled={disabled}
           className="mr-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-[3px] opacity-65 transition-colors hover:bg-current/10 hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-current/30 disabled:cursor-not-allowed"
           onClick={onClose}

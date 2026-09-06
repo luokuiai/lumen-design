@@ -15,7 +15,8 @@ describe('Toast', () => {
     const toast = await screen.findByRole('status');
     expect(toast).toHaveTextContent('保存成功');
     expect(toast).toHaveAttribute('data-ui', 'toast');
-    expect(toast).toHaveClass('bg-[var(--lumen-color-surface)]');
+    expect(toast).toHaveClass('bg-[var(--lumen-color-surface-glass)]');
+    expect(toast).toHaveClass('backdrop-blur-[3px]');
     expect(toast).toHaveClass('shadow-[var(--lumen-shadow-dropdown)]');
   });
 });

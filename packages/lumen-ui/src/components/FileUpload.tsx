@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { FileText, LoaderCircle, UploadCloud, X } from 'lucide-react';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
+import { useLumenLocale } from '../i18n';
 
 export type FileUploadDensity = 'default' | 'compact';
 export type FileRejectionReason = 'type' | 'size' | 'limit' | 'custom';
@@ -75,12 +76,14 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       showFileList = true,
       uploading = false,
       progress,
-      inputAriaLabel = '文件上传',
+      inputAriaLabel,
       className,
       ...props
     },
     ref,
   ) => {
+    const locale = useLumenLocale();
+    const resolvedInputAriaLabel = inputAriaLabel ?? locale.fileUpload.inputLabel;
     const [isDragOver, setIsDragOver] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const compact = density === 'compact';
@@ -95,14 +98,14 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
 
       for (const file of incoming) {
         if (!acceptsFile(file, accept)) {
-          rejections.push({ file, reason: 'type', message: '文件格式不受支持' });
+          rejections.push({ file, reason: 'type', message: locale.fileUpload.unsupportedType });
           continue;
         }
         if (maxSize !== undefined && file.size > maxSize) {
           rejections.push({
             file,
             reason: 'size',
-            message: `文件大小不能超过 ${formatBytes(maxSize)}`,
+            message: locale.fileUpload.maxSize(formatBytes(maxSize)),
           });
           continue;
         }
@@ -117,7 +120,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           rejections.push({
             file,
             reason: 'limit',
-            message: `最多选择 ${effectiveMaxFiles} 个文件`,
+            message: locale.fileUpload.maxFiles(effectiveMaxFiles),
           });
           continue;
         }
@@ -148,7 +151,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
         <button
           type="button"
           disabled={disabled || uploading}
-          aria-label={inputAriaLabel}
+          aria-label={resolvedInputAriaLabel}
           onClick={() => inputRef.current?.click()}
           onDragEnter={(event) => {
             event.preventDefault();
@@ -185,10 +188,10 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               <span className="min-w-0 text-left">
                 <span className="block truncate">
                   {uploading
-                    ? '正在上传文件'
+                    ? locale.fileUpload.uploading
                     : isDragOver
-                      ? '释放文件以上传'
-                      : '拖拽文件到此处，或点击上传'}
+                      ? locale.fileUpload.dropToUpload
+                      : locale.fileUpload.dragOrClick}
                 </span>
                 {hint ? (
                   <span className="mt-0.5 block text-[12px] font-normal text-[var(--lumen-color-text-placeholder)]">
@@ -213,10 +216,10 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               </span>
               <span className="mt-2 text-[13px] font-medium text-[var(--lumen-color-text-secondary)]">
                 {uploading
-                  ? '正在上传文件'
+                  ? locale.fileUpload.uploading
                   : isDragOver
-                    ? '释放文件以上传'
-                    : '拖拽文件到此处，或点击选择文件'}
+                    ? locale.fileUpload.dropToUpload
+                    : locale.fileUpload.dragOrChoose}
               </span>
               {hint ? (
                 <span className="mt-1 text-[12px] text-[var(--lumen-color-text-placeholder)]">
@@ -245,7 +248,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           <div
             className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--lumen-color-border)]"
             role="progressbar"
-            aria-label="上传进度"
+            aria-label={locale.fileUpload.progress}
             aria-valuemin={0}
             aria-valuemax={100}
             aria-valuenow={Math.round(normalizedProgress)}
@@ -281,7 +284,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 <button
                   type="button"
                   disabled={disabled || uploading}
-                  aria-label={`移除 ${file.name}`}
+                  aria-label={locale.fileUpload.removeFile(file.name)}
                   onClick={() => removeFile(file)}
                   className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[var(--lumen-color-text-placeholder)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-danger)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-45"
                 >

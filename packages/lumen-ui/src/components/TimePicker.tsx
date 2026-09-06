@@ -5,6 +5,8 @@ import { Button } from './Button';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { TimeSelector } from './TimeSelector';
+import { useOverlayPortalScope } from './useOverlayBehavior';
+import { useLumenLocale } from '../i18n';
 
 export type TimePickerSize = 'sm' | 'md' | 'lg';
 
@@ -54,7 +56,7 @@ const getTimeInSeconds = (value?: string) => {
 export const TimePicker: React.FC<TimePickerProps> = ({
   value,
   onChange,
-  placeholder = '请选择时间',
+  placeholder: placeholderProp,
   className,
   size = 'md',
   precision = 'minute',
@@ -62,6 +64,9 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   minExclusiveTime,
   disabled = false,
 }) => {
+  const locale = useLumenLocale();
+  const placeholder = placeholderProp ?? locale.timePicker.placeholder;
+  const overlayScopeId = useOverlayPortalScope();
   const initialTime = resolveInitialTime(value);
   const [draftHour, setDraftHour] = useState(initialTime.hour);
   const [draftMinute, setDraftMinute] = useState(initialTime.minute);
@@ -183,7 +188,17 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     : '';
 
   return (
-    <div ref={wrapperRef} className={cn('relative', className)}>
+    <div
+      ref={wrapperRef}
+      className={cn('relative', className)}
+      onKeyDown={(event) => {
+        if (!open || event.key !== 'Escape') return;
+        event.preventDefault();
+        event.stopPropagation();
+        close();
+        triggerRef.current?.focus();
+      }}
+    >
       <button
         ref={triggerRef}
         type="button"
@@ -221,6 +236,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
               ref={panelRef}
               data-ui="time-picker-panel"
               data-time-picker-panel
+              data-lumen-overlay-scope={overlayScopeId ?? undefined}
               className="overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
               style={{
                 ...panelStyle,
@@ -253,7 +269,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
                   }}
                   className="text-[12px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"
                 >
-                  清除
+                  {locale.common.clear}
                 </button>
                 <div className="flex items-center gap-2">
                   <button
@@ -261,7 +277,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
                     onClick={selectNow}
                     className="text-[12px] font-medium text-[var(--lumen-color-primary)]"
                   >
-                    此刻
+                    {locale.common.now}
                   </button>
                   <Button
                     type="button"
@@ -272,7 +288,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
                       closeImmediate();
                     }}
                   >
-                    确定
+                    {locale.common.confirm}
                   </Button>
                 </div>
               </div>

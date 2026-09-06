@@ -4,7 +4,7 @@ import { cn } from './classNames';
 
 export interface CheckboxProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type' | 'onChange'> {
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'lg';
   checked?: boolean;
   defaultChecked?: boolean;
   disabled?: boolean;
@@ -15,7 +15,7 @@ export interface CheckboxProps
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({
-  size = 'sm',
+  size = 'md',
   checked,
   defaultChecked = false,
   disabled = false,
@@ -36,6 +36,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const currentChecked = isControlled ? checked : internalChecked;
   const isSmall = size === 'sm';
+  const controlSize = size === 'sm' ? 'h-3.5 w-3.5' : size === 'lg' ? 'h-[18px] w-[18px]' : 'h-4 w-4';
+  const indicatorRadius = size === 'sm' ? 'rounded-[3px]' : size === 'lg' ? 'rounded-[5px]' : 'rounded-[4px]';
+  const iconSize = size === 'sm' ? 9 : size === 'lg' ? 13 : 11;
   const hasDescription = Boolean(description);
   const explicitAriaLabel = props['aria-label'];
 
@@ -71,7 +74,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         className={cn(
           'relative inline-flex shrink-0 items-center justify-center',
           hasDescription && 'mt-0.5',
-          isSmall ? 'h-4 w-4' : 'h-5 w-5',
+          controlSize,
         )}
       >
         <input
@@ -92,7 +95,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           aria-hidden="true"
           className={cn(
             'flex items-center justify-center border transition-all',
-            isSmall ? 'h-4 w-4 rounded-[4px]' : 'h-5 w-5 rounded-[5px]',
+            controlSize,
+            indicatorRadius,
             indicatorVisible
               ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]'
               : 'border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-transparent',
@@ -101,9 +105,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           )}
         >
           {indeterminate ? (
-            <Minus size={isSmall ? 11 : 13} strokeWidth={3} />
+            <Minus size={iconSize} strokeWidth={3} />
           ) : (
-            <Check size={isSmall ? 11 : 13} strokeWidth={3} />
+            <Check size={iconSize} strokeWidth={3} />
           )}
         </span>
       </span>

@@ -34,7 +34,7 @@ describe('SideNav', () => {
     expect(activeItem).toHaveAttribute('aria-current', 'page');
     expect(activeItem).toHaveClass(
       'bg-[var(--lumen-color-primary-soft)]',
-      'text-[15px]',
+      'text-[14px]',
       'font-normal',
     );
     expect(screen.getByText('Workspace')).toHaveClass('text-[13px]', 'font-normal');

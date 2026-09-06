@@ -3,6 +3,7 @@ import type { LucideIcon } from 'lucide-react';
 import { cn } from './classNames';
 import { sideNavClassNames } from './designTokens';
 import { Tooltip } from './Tooltip';
+import { useLumenLocale } from '../i18n';
 
 export interface SideNavItem<T extends string = string> {
   value: T;
@@ -31,13 +32,15 @@ export const SideNav = <T extends string>({
   sections,
   activeValue,
   collapsed = false,
-  ariaLabel = '侧边导航',
+  ariaLabel,
   className,
   itemClassName,
   onSelect,
-}: SideNavProps<T>) => (
+}: SideNavProps<T>) => {
+  const locale = useLumenLocale();
+  return (
   <nav
-    aria-label={ariaLabel}
+    aria-label={ariaLabel ?? locale.navigation.sideNav}
     data-ui="side-nav"
     data-collapsed={collapsed || undefined}
     className={cn(sideNavClassNames.root, className)}
@@ -116,4 +119,5 @@ export const SideNav = <T extends string>({
       </div>
     ))}
   </nav>
-);
+  );
+};

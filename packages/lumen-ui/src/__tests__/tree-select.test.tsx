@@ -48,7 +48,7 @@ describe('TreeSelect', () => {
     expect(chevron).toHaveClass('rotate-90');
   });
 
-  it('keeps non-selectable rows neutral while only the expand control is interactive', () => {
+  it('distinguishes non-selectable nodes while keeping expand controls interactive', () => {
     render(
       <TreeSelect
         nodes={nodes}
@@ -69,12 +69,19 @@ describe('TreeSelect', () => {
     expect(parentOption).toBeDisabled();
     expect(parentOption).toHaveAttribute('aria-disabled', 'true');
     expect(parentOption).toHaveClass('!cursor-default');
-    expect(parentOption.parentElement).toHaveClass('cursor-default');
+    expect(parentOption.parentElement).toHaveClass(
+      'cursor-default',
+      'text-[var(--lumen-color-text-secondary)]',
+    );
     expect(parentOption.parentElement).not.toHaveClass(
       'hover:bg-[var(--lumen-color-surface-muted)]',
     );
+
     expect(disabledOption).toBeDisabled();
     expect(disabledOption).toHaveClass('!cursor-default');
+    expect(disabledOption.parentElement).toHaveClass(
+      'text-[var(--lumen-color-text-secondary)]',
+    );
     expect(expandButton).not.toBeDisabled();
     expect(expandButton).toHaveClass('cursor-pointer');
   });

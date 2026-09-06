@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { cn } from './classNames';
+import { useLumenLocale } from '../i18n';
 
 export type TimePrecision = 'minute' | 'second';
 
@@ -94,6 +95,7 @@ export const TimeSelector: React.FC<TimeSelectorProps> = ({
   isSecondDisabled,
   className,
 }) => {
+  const locale = useLumenLocale();
   const rootRef = useRef<HTMLDivElement>(null);
   const hours = useMemo(() => buildOptions(24), []);
   const minutes = useMemo(() => buildOptions(60, minuteStep), [minuteStep]);
@@ -151,14 +153,14 @@ export const TimeSelector: React.FC<TimeSelectorProps> = ({
         )}
       >
         <TimeColumn
-          title="时"
+          title={locale.timePicker.hour}
           values={hours}
           selected={hour}
           onSelect={onHourChange}
           isDisabled={isHourDisabled}
         />
         <TimeColumn
-          title="分"
+          title={locale.timePicker.minute}
           values={minutes}
           selected={minute}
           onSelect={onMinuteChange}
@@ -166,7 +168,7 @@ export const TimeSelector: React.FC<TimeSelectorProps> = ({
         />
         {precision === 'second' ? (
           <TimeColumn
-            title="秒"
+            title={locale.timePicker.second}
             values={seconds}
             selected={second}
             onSelect={onSecondChange ?? (() => undefined)}

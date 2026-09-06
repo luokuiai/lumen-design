@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
 import { Checkbox } from './Checkbox';
 import { cn } from './classNames';
+import { useLumenLocale } from '../i18n';
 
 export type DataTableKey = React.Key;
 export type DataTableSortDirection = 'asc' | 'desc';
@@ -68,7 +69,7 @@ export function DataTable<T>({
   maxHeight,
   loading = false,
   loadingRowCount = 5,
-  emptyText = '暂无数据',
+  emptyText: emptyTextProp,
   sort,
   onSortChange,
   selectedRowKeys,
@@ -78,6 +79,8 @@ export function DataTable<T>({
   className,
   tableClassName,
 }: DataTableProps<T>) {
+  const locale = useLumenLocale();
+  const emptyText = emptyTextProp === undefined ? locale.dataTable.emptyText : emptyTextProp;
   const selectable = Boolean(selectedRowKeys && onSelectedRowKeysChange);
   const selectedKeys = new Set(selectedRowKeys ?? []);
   const selectableRows = data.filter((row) => isRowSelectable?.(row) ?? true);
@@ -140,8 +143,9 @@ export function DataTable<T>({
     >
       <div
         data-ui="data-table-scroll"
+        data-size="sm"
         className={cn(
-          'max-w-full',
+          'lumen-scrollbar max-w-full',
           scrollMaxHeight === undefined ? 'overflow-x-auto' : 'overflow-auto',
         )}
         style={{ maxHeight: toCssSize(scrollMaxHeight) }}
@@ -158,7 +162,7 @@ export function DataTable<T>({
               {selectable ? (
                 <th scope="col" className={cn('w-12', cellPadding)}>
                   <Checkbox
-                    aria-label="选择当前页全部行"
+                    aria-label={locale.dataTable.selectAll}
                     checked={allVisibleSelected}
                     indeterminate={someVisibleSelected}
                     disabled={loading || selectableKeys.length === 0}
@@ -262,7 +266,7 @@ export function DataTable<T>({
                         {selectable ? (
                           <td className={cellPadding}>
                             <Checkbox
-                              aria-label={`选择第 ${rowIndex + 1} 行`}
+                              aria-label={locale.dataTable.selectRow(rowIndex + 1)}
                               checked={selectedKeys.has(key)}
                               disabled={!rowSelectable}
                               onChange={(checked) => updateRowSelection(key, checked)}

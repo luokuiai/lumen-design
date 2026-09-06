@@ -39,6 +39,7 @@ export const lumenThemeVariables = [
   '--lumen-color-warning-soft',
   '--lumen-color-warning-border',
   '--lumen-color-warning-text',
+  '--lumen-color-rating',
   '--lumen-color-info',
   '--lumen-color-info-soft',
   '--lumen-color-info-border',

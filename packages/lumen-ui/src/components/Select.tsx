@@ -11,6 +11,8 @@ import { Check, ChevronDown, LoaderCircle, Search, X } from 'lucide-react';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { dropdownTransformOrigin } from './dropdownMotion';
+import { useOverlayPortalScope } from './useOverlayBehavior';
+import { useLumenLocale } from '../i18n';
 
 const DROPDOWN_CLOSE_ANIMATION_MS = 120;
 const SHOULD_SKIP_CLOSE_ANIMATION_IN_TEST = import.meta.env.MODE === 'test';
@@ -126,21 +128,21 @@ export const Select = <T extends string | number = string>({
   options,
   mode = 'single',
   searchable = false,
-  placeholder = '请选择',
+  placeholder: placeholderProp,
   disabled = false,
   value,
   multipleTriggerDisplay = 'chips',
-  multipleCountLabel = (count) => `已选择 ${count} 项`,
+  multipleCountLabel: multipleCountLabelProp,
   onChange,
   size = 'md',
   className,
   triggerClassName,
   radius,
   onBeforeOpen,
-  searchPlaceholder = '搜索...',
-  emptyText = '无匹配选项',
+  searchPlaceholder: searchPlaceholderProp,
+  emptyText: emptyTextProp,
   filterOptions = true,
-  loadingText = '加载中...',
+  loadingText: loadingTextProp,
   loading = false,
   searchValue,
   onSearchChange,
@@ -150,6 +152,13 @@ export const Select = <T extends string | number = string>({
   optionClassName,
   'aria-label': ariaLabel,
 }: SelectProps<T>) => {
+  const locale = useLumenLocale();
+  const placeholder = placeholderProp ?? locale.select.placeholder;
+  const multipleCountLabel = multipleCountLabelProp ?? locale.select.multipleCountLabel;
+  const searchPlaceholder = searchPlaceholderProp ?? locale.select.searchPlaceholder;
+  const emptyText = emptyTextProp ?? locale.select.emptyText;
+  const loadingText = loadingTextProp ?? locale.select.loadingText;
+  const overlayScopeId = useOverlayPortalScope();
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const [isPreparingOpen, setIsPreparingOpen] = useState(false);
@@ -410,6 +419,8 @@ export const Select = <T extends string | number = string>({
 
       switch (e.key) {
         case 'Escape':
+          e.preventDefault();
+          e.stopPropagation();
           closeDropdownImmediate();
           break;
         case 'Enter':
@@ -678,7 +689,7 @@ export const Select = <T extends string | number = string>({
   const renderFooter = () => (
     <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-3 py-2.5">
       <span className="text-[12px] text-[var(--lumen-color-text-placeholder)]">
-        已选 {selectedValues.length} 项
+        {locale.select.selectedCount(selectedValues.length)}
       </span>
       <button
         type="button"
@@ -686,7 +697,7 @@ export const Select = <T extends string | number = string>({
         onClick={handleClearAll}
         className="text-[12px] text-[var(--lumen-color-text-placeholder)] transition-colors hover:text-[var(--lumen-color-text-muted)]"
       >
-        清空
+        {locale.common.clear}
       </button>
     </div>
   );
@@ -746,6 +757,7 @@ export const Select = <T extends string | number = string>({
             ref={portalRef}
             data-ui="select-dropdown"
             data-testid="select-dropdown"
+            data-lumen-overlay-scope={overlayScopeId ?? undefined}
             className={cn(
               radiusTokens.card,
               'border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]',

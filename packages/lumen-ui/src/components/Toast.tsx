@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { AlertCircle, CheckCircle2, Info, X } from 'lucide-react';
+import { zhCN, type LumenLocale } from '../i18n';
+import { getActiveLocale } from '../i18nStore';
 
 export type ToastType = 'success' | 'info' | 'warning' | 'error';
 
@@ -13,6 +15,7 @@ interface ToastItem {
   message: string;
   type: ToastType;
   duration: number;
+  locale: LumenLocale;
 }
 
 interface ToastViewItem extends ToastItem {
@@ -34,22 +37,18 @@ const TONE_MAP = {
   success: {
     icon: CheckCircle2,
     iconWrap: 'bg-[var(--lumen-color-success-soft)] text-[var(--lumen-color-success)]',
-    title: '操作成功',
   },
   info: {
     icon: Info,
     iconWrap: 'bg-[var(--lumen-color-info-soft)] text-[var(--lumen-color-primary)]',
-    title: '提示',
   },
   warning: {
     icon: AlertCircle,
     iconWrap: 'bg-[var(--lumen-color-warning-soft)] text-[var(--lumen-color-warning)]',
-    title: '请注意',
   },
   error: {
     icon: AlertCircle,
     iconWrap: 'bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger-hover)]',
-    title: '操作失败',
   },
 } as const;
 
@@ -216,7 +215,7 @@ const ToastCard: React.FC<{
 
   return (
     <div
-      className={`pointer-events-auto relative flex w-full min-w-0 max-w-full items-start gap-2.5 overflow-hidden rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-3 py-3 shadow-[var(--lumen-shadow-dropdown)] pad:gap-3 pad:px-4 ${
+      className={`pointer-events-auto relative flex w-full min-w-0 max-w-full items-start gap-2.5 overflow-hidden rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-glass)] px-3 py-3 shadow-[var(--lumen-shadow-dropdown)] backdrop-blur-[3px] pad:gap-3 pad:px-4 ${
         item.closing
           ? 'animate-[lumen-toast-out_160ms_ease-in_forwards]'
           : 'animate-[lumen-toast-in_180ms_ease-out]'
@@ -235,14 +234,14 @@ const ToastCard: React.FC<{
         <Icon size={16} />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="text-[14px] font-medium text-[var(--lumen-color-text-strong)]">{tone.title}</div>
+        <div className="text-[14px] font-medium text-[var(--lumen-color-text-strong)]">{item.locale.toast[item.type]}</div>
         <div className="mt-1 text-[14px] leading-6 text-[var(--lumen-color-text-muted)]">{item.message}</div>
       </div>
       <button
         type="button"
         onClick={onClose}
         className="relative isolate flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full text-[var(--lumen-color-text-placeholder)] transition-colors after:pointer-events-none after:absolute after:inset-0 after:rounded-full after:bg-current after:opacity-0 after:transition-opacity hover:text-[var(--lumen-color-text-secondary)] hover:after:opacity-[0.08] active:after:opacity-[0.14] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20"
-        aria-label="关闭消息提示"
+        aria-label={item.locale.toast.close}
       >
         <X size={14} />
       </button>
@@ -263,6 +262,7 @@ export class Toast {
       message,
       type,
       duration: options.duration ?? DEFAULT_DURATION,
+      locale: getActiveLocale(zhCN),
     });
   }
 
