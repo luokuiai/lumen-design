@@ -84,6 +84,7 @@ import {
   CollapseItem,
   CommandPalette,
   ConfirmDialog,
+  ContextMenu,
   DatePicker,
   DateTimePicker,
   DataTable,
@@ -135,6 +136,7 @@ import {
   Typography,
   Watermark,
   enUS,
+  useLongPress,
   zhCN,
 } from '@luokuiai/lumen-ui';
 import type { DataTableColumn, DataTableSort, StepsDirection } from '@luokuiai/lumen-ui';
@@ -262,7 +264,7 @@ type SafetyEvent = {
 
 const renderSections: Section[] = [
   { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
-  { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button DragHandle Badge Chip Avatar Tooltip', icon: Plus },
+  { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button useLongPress ContextMenu DragHandle Badge Chip Avatar Tooltip', icon: Plus },
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input SearchBar NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
@@ -325,10 +327,12 @@ const galleryCategories: GalleryCategory[] = [
     id: 'actions',
     title: 'Actions',
     description: '触发操作、工具组和页面主要行为。',
-    keywords: 'Button DragHandle Fab Toolbar DropdownMenu',
+    keywords: 'Button useLongPress ContextMenu DragHandle Fab Toolbar DropdownMenu',
     icon: Plus,
     demos: [
       demo('Button', 'buttons', 'Button', '    <Button variant="primary">保存</Button>'),
+      demo('useLongPress', 'buttons', 'Button, Typography, useLongPress', '    <div className="flex flex-col items-start gap-3">\n      <Button {...handlers} className="select-none touch-pan-y">移动端按住 500ms</Button>\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [message, setMessage] = useState('移动端长按，PC 端普通点击');\n  const handlers = useLongPress<HTMLButtonElement>({\n    onClick: () => setMessage('普通点击'),\n    onLongPress: () => setMessage('已触发长按'),\n  });", ['Long press'], []),
+      demo('ContextMenu', 'buttons', 'ContextMenu, Typography', '    <div className="flex flex-col gap-3">\n      <ContextMenu\n        ariaLabel="快捷操作"\n        menuClassName="menu-list"\n        content={<>\n          <button type="button" role="menuitem" onClick={() => setAction("复制")}>复制</button>\n          <button type="button" role="menuitem" onClick={() => setAction("收藏")}>收藏</button>\n          <button type="button" role="menuitem" onClick={() => setAction("删除")}>删除</button>\n        </>}\n      >\n        <div className="rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center">\n          PC 端右键，移动端长按\n        </div>\n      </ContextMenu>\n      <Typography variant="caption" color="muted">最近操作：{action}</Typography>\n    </div>', undefined, "const [action, setAction] = useState('暂无');", ['Context menu']),
       demo('DragHandle', 'buttons', 'DragHandle', '    <DragHandle />'),
       {
         ...demo('Fab', 'buttons', 'Fab', '    <Fab position="static" icon={<Plus size={18} />} aria-label="新建任务" />', 'Plus', undefined, ['Icon only', 'Extended', 'Expandable', 'Submenu']),
@@ -532,6 +536,8 @@ const zhDemoNames: Record<string, string> = {
   Typography: '排版',
   Locale: '国际化',
   Button: '按钮',
+  useLongPress: '长按',
+  ContextMenu: '上下文菜单',
   DragHandle: '拖拽手柄',
   Fab: '浮动操作按钮',
   Toolbar: '工具栏',
@@ -1505,6 +1511,8 @@ export default function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
   const [meetingName, setMeetingName] = useState('项目周会');
+  const [longPressMessage, setLongPressMessage] = useState('移动端长按，PC 端普通点击');
+  const [contextMenuAction, setContextMenuAction] = useState('暂无');
   const [searchBarValue, setSearchBarValue] = useState('');
   const [searchBarMessage, setSearchBarMessage] = useState('输入关键词后按 Enter 搜索');
   const [swipeActionMessage, setSwipeActionMessage] = useState('向左右滑动事件行');
@@ -1548,6 +1556,10 @@ export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const longPressHandlers = useLongPress<HTMLButtonElement>({
+    onClick: () => setLongPressMessage('普通点击'),
+    onLongPress: () => setLongPressMessage('已触发长按'),
+  });
 
   const language = locale.locale === enUS.locale ? 'en-US' : 'zh-CN';
   const messages = playgroundMessages[language];
@@ -2373,6 +2385,47 @@ export default function App() {
                     <Tooltip content="仅图标按钮">
                       <Button iconOnly aria-label="设置" icon={<Settings size={15} />} />
                     </Tooltip>
+                  </div>
+                </DemoCard>
+                <DemoCard title="Long press" wide>
+                  <div className="flex flex-col items-start gap-3">
+                    <Button {...longPressHandlers} className="select-none touch-pan-y">
+                      移动端按住 500ms
+                    </Button>
+                    <Typography variant="caption" color="muted">
+                      {longPressMessage}
+                    </Typography>
+                  </div>
+                </DemoCard>
+                <DemoCard title="Context menu" wide>
+                  <div className="flex flex-col gap-3">
+                    <ContextMenu
+                      ariaLabel="快捷操作"
+                      menuClassName="menu-list"
+                      content={(
+                        <>
+                          <button type="button" role="menuitem" onClick={() => setContextMenuAction('复制')}>
+                            <Copy size={15} />
+                            复制
+                          </button>
+                          <button type="button" role="menuitem" onClick={() => setContextMenuAction('收藏')}>
+                            <Star size={15} />
+                            收藏
+                          </button>
+                          <button type="button" role="menuitem" onClick={() => setContextMenuAction('删除')}>
+                            <Trash2 size={15} />
+                            删除
+                          </button>
+                        </>
+                      )}
+                    >
+                      <div className="select-none touch-pan-y rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center text-[14px] text-[var(--lumen-color-text)]">
+                        PC 端右键，移动端长按
+                      </div>
+                    </ContextMenu>
+                    <Typography variant="caption" color="muted">
+                      最近操作：{contextMenuAction}
+                    </Typography>
                   </div>
                 </DemoCard>
                 <DemoCard title="DragHandle" wide>
