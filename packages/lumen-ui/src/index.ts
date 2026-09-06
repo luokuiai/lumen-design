@@ -53,6 +53,7 @@ export * from './components/Slider';
 export * from './components/Skeleton';
 export * from './components/Steps';
 export * from './components/Switch';
+export * from './components/swipe-actions/SwipeActions';
 export * from './components/Spinner';
 export * from './components/Tabs';
 export * from './components/TabView';

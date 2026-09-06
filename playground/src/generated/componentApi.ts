@@ -4836,6 +4836,120 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "SwipeActions": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "defaultValue": "-",
+      "description": "可滑动的前景内容。",
+      "descriptionEn": "Sets the child content rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "startActions",
+      "type": "readonly SwipeAction[]",
+      "defaultValue": "[]",
+      "description": "向右滑动时展示的起始侧动作。",
+      "descriptionEn": "Configures start actions.",
+      "required": false
+    },
+    {
+      "name": "endActions",
+      "type": "readonly SwipeAction[]",
+      "defaultValue": "[]",
+      "description": "向左滑动时展示的结束侧动作。",
+      "descriptionEn": "Configures end actions.",
+      "required": false
+    },
+    {
+      "name": "openSide",
+      "type": "\"start\" | \"end\"",
+      "defaultValue": "undefined",
+      "description": "受控模式下当前展开的一侧。",
+      "descriptionEn": "Configures open side.",
+      "required": false
+    },
+    {
+      "name": "defaultOpenSide",
+      "type": "\"start\" | \"end\"",
+      "defaultValue": "null",
+      "description": "非受控模式下默认展开的一侧。",
+      "descriptionEn": "Sets the initial open side.",
+      "required": false
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(side: SwipeActionsSide | null) => void",
+      "defaultValue": "undefined",
+      "description": "展开侧变化时触发。",
+      "descriptionEn": "Called when the open state changes.",
+      "required": false
+    },
+    {
+      "name": "actionWidth",
+      "type": "number",
+      "defaultValue": "72",
+      "description": "每个动作按钮的宽度。",
+      "descriptionEn": "Configures action width.",
+      "required": false
+    },
+    {
+      "name": "threshold",
+      "type": "number",
+      "defaultValue": "0.4",
+      "description": "展开动作所需的滑动比例或像素距离。",
+      "descriptionEn": "Configures threshold.",
+      "required": false
+    },
+    {
+      "name": "fullSwipe",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否允许长距离滑动直接触发首个动作。",
+      "descriptionEn": "Configures full swipe.",
+      "required": false
+    },
+    {
+      "name": "fullSwipeThreshold",
+      "type": "number",
+      "defaultValue": "0.72",
+      "description": "全滑触发距离占容器宽度的比例。",
+      "descriptionEn": "Configures full swipe threshold.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否禁用滑动交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "closeOnAction",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "触发动作后是否自动收起。",
+      "descriptionEn": "Configures close on action.",
+      "required": false
+    },
+    {
+      "name": "swipeIgnoreSelector",
+      "type": "string",
+      "defaultValue": "'input, select, textarea, [contenteditable=\"true\"], [data-swipe-actions-ignore]'",
+      "description": "不响应滑动手势的后代元素选择器。",
+      "descriptionEn": "Configures swipe ignore selector.",
+      "required": false
+    },
+    {
+      "name": "contentClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "前景内容的附加类名。",
+      "descriptionEn": "Adds custom CSS class names to the overlay content.",
+      "required": false
+    }
+  ],
   "PullToRefresh": [
     {
       "name": "onRefresh",

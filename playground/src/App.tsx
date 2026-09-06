@@ -9,6 +9,7 @@ import {
 } from 'react';
 import {
   AlertTriangle,
+  Archive,
   ArrowLeft,
   Bell,
   CalendarDays,
@@ -34,6 +35,7 @@ import {
   Moon,
   Sun,
   Table2,
+  Trash2,
   Type as TypeIcon,
   UserRound,
   X,
@@ -98,6 +100,7 @@ import {
   Spinner,
   Steps,
   Switch,
+  SwipeActions,
   Tabs,
   TabView,
   Textarea,
@@ -241,7 +244,7 @@ const renderSections: Section[] = [
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button Badge Chip Avatar Tooltip', icon: Plus },
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
-  { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
+  { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
   { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
   { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、命令面板、确认和消息提示。', keywords: 'Modal Drawer CommandPalette ConfirmDialog Toast', icon: Bell },
   { id: 'feedback', title: 'Feedback', description: '页面提示、加载、进度、空状态、上传和骨架屏。', keywords: 'Alert Spinner Progress Empty FileUpload Skeleton SegmentedControl', icon: Settings },
@@ -365,7 +368,7 @@ const galleryCategories: GalleryCategory[] = [
     id: 'data-display',
     title: 'Data Display',
     description: '状态、列表、表格与结构化内容。',
-    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List Scrollbar Collapse Accordion Divider Watermark',
+    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List SwipeActions Scrollbar Collapse Accordion Divider Watermark',
     icon: Table2,
     demos: [
       demo('Badge', 'buttons', 'Badge', '    <Badge variant="success">Success</Badge>'),
@@ -376,6 +379,7 @@ const galleryCategories: GalleryCategory[] = [
       demo('FileTypeIcon', 'data', 'FileTypeIcon', '    <FileTypeIcon fileName="proposal.pdf" />'),
       demo('DataTable', 'data', 'DataTable', '    <>\n      <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n    </>', undefined, undefined, ['DataTable · Sticky Header', 'DataTable · Embedded']),
       demo('List', 'data', 'List, ListItem', '    <List>\n      <ListItem title="设计评审" />\n    </List>'),
+      demo('SwipeActions', 'data', 'SwipeActions', '    <SwipeActions\n      startActions={[{ key: \'archive\', label: \'归档\', icon: <Archive size={18} />, tone: \'success\', onClick: () => setResult(\'已归档\') }]}\n      endActions={[{ key: \'delete\', label: \'删除\', icon: <Trash2 size={18} />, tone: \'danger\', onClick: () => setResult(\'已删除\') }]}\n      fullSwipe\n    >\n      <div className="px-4 py-3">向左或向右滑动这条事件</div>\n    </SwipeActions>', 'Archive, Trash2', "const [result, setResult] = useState('');"),
       demo('Scrollbar', 'data', 'Scrollbar', '    <Scrollbar className="h-64">{content}</Scrollbar>'),
       demo('Collapse', 'data', 'Collapse, CollapseItem', '    <Collapse defaultValue={[\'road\']}>\n      <CollapseItem value="road" title="路段信息">路段内容</CollapseItem>\n    </Collapse>'),
       demo('Accordion', 'data', 'Accordion, CollapseItem', '    <Accordion defaultValue="event">\n      <CollapseItem value="event" title="事件详情">事件内容</CollapseItem>\n    </Accordion>'),
@@ -536,6 +540,7 @@ const zhDemoNames: Record<string, string> = {
   FileTypeIcon: '文件类型图标',
   DataTable: '数据表格',
   List: '列表',
+  SwipeActions: '滑动操作',
   Scrollbar: '滚动条',
   ScrollToEdge: '滚动到边缘',
   Collapse: '折叠面板',
@@ -1364,6 +1369,7 @@ export default function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
   const [meetingName, setMeetingName] = useState('项目周会');
+  const [swipeActionMessage, setSwipeActionMessage] = useState('向左右滑动事件行');
   const [otpValue, setOtpValue] = useState('');
   const [textareaText, setTextareaText] = useState('记录评审结论和后续动作。');
   const [checked, setChecked] = useState(true);
@@ -2938,6 +2944,50 @@ export default function App() {
                       meta={<Badge size="sm" variant="success">已完成</Badge>}
                     />
                   </List>
+                </DemoCard>
+                <DemoCard title="SwipeActions" wide>
+                  <div className="mx-auto w-full max-w-[420px]">
+                    <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
+                      <SwipeActions
+                        startActions={[
+                          {
+                            key: 'archive',
+                            label: '归档',
+                            icon: <Archive size={18} />,
+                            tone: 'success',
+                            onClick: () => setSwipeActionMessage('事件已归档'),
+                          },
+                        ]}
+                        endActions={[
+                          {
+                            key: 'delete',
+                            label: '删除',
+                            icon: <Trash2 size={18} />,
+                            tone: 'danger',
+                            onClick: () => setSwipeActionMessage('事件已删除'),
+                          },
+                        ]}
+                        fullSwipe
+                      >
+                        <div className="flex min-h-18 items-center gap-3 px-4 py-3">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger)]">
+                            <AlertTriangle size={18} />
+                          </span>
+                          <span className="min-w-0">
+                            <strong className="block text-[14px] font-medium text-[var(--lumen-color-text)]">
+                              主线异常停车
+                            </strong>
+                            <span className="mt-0.5 block text-[13px] text-[var(--lumen-color-text-muted)]">
+                              右滑归档，左滑删除
+                            </span>
+                          </span>
+                        </div>
+                      </SwipeActions>
+                    </div>
+                    <p className="mt-3 text-center text-[12px] text-[var(--lumen-color-text-muted)]">
+                      {swipeActionMessage}
+                    </p>
+                  </div>
                 </DemoCard>
                 <DemoCard title="Scrollbar" wide>
                   <div className="form-grid items-start">
