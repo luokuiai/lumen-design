@@ -4510,6 +4510,80 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "ContextMenu": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "defaultValue": "-",
+      "description": "可触发菜单的目标内容。",
+      "descriptionEn": "Sets the child content rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "content",
+      "type": "React.ReactNode | ((state: ContextMenuContentState) => React.ReactNode)",
+      "defaultValue": "-",
+      "description": "菜单内容，菜单项应使用 role=\"menuitem\"。",
+      "descriptionEn": "Configures content.",
+      "required": true
+    },
+    {
+      "name": "longPressDelay",
+      "type": "number",
+      "defaultValue": "500",
+      "description": "移动端触发长按所需时间，单位毫秒。",
+      "descriptionEn": "Configures long press delay.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否禁用右键和长按触发。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "closeDelayMs",
+      "type": "number",
+      "defaultValue": "120",
+      "description": "关闭动画时长，单位毫秒。",
+      "descriptionEn": "Sets the delay before the close animation completes, in milliseconds.",
+      "required": false
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "defaultValue": "undefined",
+      "description": "菜单打开状态变化时调用。",
+      "descriptionEn": "Called when the open state changes.",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "触发区域类名。",
+      "descriptionEn": "Adds custom CSS class names.",
+      "required": false
+    },
+    {
+      "name": "menuClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "菜单表面类名。",
+      "descriptionEn": "Adds custom CSS class names to the menu overlay.",
+      "required": false
+    },
+    {
+      "name": "ariaLabel",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "菜单的无障碍名称。",
+      "descriptionEn": "Sets the accessible name of the component.",
+      "required": false
+    }
+  ],
   "OtpInput": [
     {
       "name": "value",

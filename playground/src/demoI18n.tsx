@@ -1,6 +1,15 @@
 import { Children, cloneElement, isValidElement, type ReactElement, type ReactNode } from 'react';
 
 const demoTranslations: Record<string, string> = {
+  '移动端按住 500ms': 'Hold for 500ms on mobile',
+  '移动端长按，PC 端普通点击': 'Long press on mobile, regular click on desktop',
+  '普通点击': 'Regular click',
+  '已触发长按': 'Long press triggered',
+  '快捷操作': 'Quick actions',
+  'PC 端右键，移动端长按': 'Right-click on desktop, long press on mobile',
+  '最近操作：': 'Last action: ',
+  '暂无': 'None',
+  '收藏': 'Favorite',
   '输入关键词后按 Enter 搜索': 'Enter a keyword and press Enter to search',
   '请输入搜索内容': 'Enter something to search',
   '搜索组件、页面或命令': 'Search components, pages, or commands',
