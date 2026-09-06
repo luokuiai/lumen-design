@@ -57,6 +57,7 @@ describe('public API', () => {
     expect(Lumen.Transfer).toBeTypeOf('function');
     expect(Lumen.Toolbar).toBeTypeOf('object');
     expect(Lumen.Typography).toBeTypeOf('object');
+    expect(Lumen.Watermark).toBeTypeOf('object');
     expect('CompactPagination' in Lumen).toBe(false);
     expect('TimeSelector' in Lumen).toBe(false);
   });

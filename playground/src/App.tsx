@@ -107,6 +107,7 @@ import {
   Transfer,
   TreeSelect,
   Typography,
+  Watermark,
   enUS,
   zhCN,
 } from '@luokuiai/lumen-ui';
@@ -361,13 +362,14 @@ const galleryCategories: GalleryCategory[] = [
     id: 'data-display',
     title: 'Data Display',
     description: '状态、列表、表格与结构化内容。',
-    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List Scrollbar Collapse Accordion Divider',
+    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List Scrollbar Collapse Accordion Divider Watermark',
     icon: Table2,
     demos: [
       demo('Badge', 'buttons', 'Badge', '    <Badge variant="success">Success</Badge>'),
       demo('Avatar', 'buttons', 'Avatar', '    <Avatar name="Lumen Design" />'),
       demo('Chip', 'buttons', 'Chip', '    <Chip tone="neutral">设计系统</Chip>'),
       demo('Timeline', 'navigation', 'Timeline', '    <Timeline items={[{ id: \'1\', title: \'已创建\' }]} />'),
+      demo('Watermark', 'data', 'Watermark', '    <Watermark content={[\'Lumen Design\', \'内部资料 · 用户 1024\']}>\n      <div className="p-6">敏感业务内容</div>\n    </Watermark>'),
       demo('FileTypeIcon', 'data', 'FileTypeIcon', '    <FileTypeIcon fileName="proposal.pdf" />'),
       demo('DataTable', 'data', 'DataTable', '    <>\n      <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n    </>', undefined, undefined, ['DataTable · Sticky Header', 'DataTable · Embedded']),
       demo('List', 'data', 'List, ListItem', '    <List>\n      <ListItem title="设计评审" />\n    </List>'),
@@ -525,6 +527,7 @@ const zhDemoNames: Record<string, string> = {
   Avatar: '头像',
   Chip: '标签',
   Timeline: '时间线',
+  Watermark: '水印',
   FileTypeIcon: '文件类型图标',
   DataTable: '数据表格',
   List: '列表',
@@ -2735,6 +2738,33 @@ export default function App() {
           if (section.id === 'data') {
             return (
               <GallerySection key={section.id} section={section}>
+                <DemoCard title="Watermark" wide>
+                  <Watermark
+                    content={['Lumen Design', '内部资料 · 用户 1024']}
+                    gap={[72, 64]}
+                    markSize={[150, 56]}
+                  >
+                    <div className="grid min-h-64 content-center gap-4 bg-[var(--lumen-color-surface-subtle)] p-6 pad:grid-cols-3">
+                      {[
+                        ['今日访问', '12,480'],
+                        ['风险事件', '36'],
+                        ['待处理', '8'],
+                      ].map(([label, value]) => (
+                        <div
+                          key={label}
+                          className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4"
+                        >
+                          <div className="text-[12px] text-[var(--lumen-color-text-muted)]">
+                            {label}
+                          </div>
+                          <strong className="mt-2 block text-[24px] font-semibold text-[var(--lumen-color-text-strong)]">
+                            {value}
+                          </strong>
+                        </div>
+                      ))}
+                    </div>
+                  </Watermark>
+                </DemoCard>
                 <DemoCard title="FileTypeIcon" wide>
                   <div className="space-y-5">
                     {fileTypeIconExamples.map((group) => (
