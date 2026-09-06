@@ -1,6 +1,8 @@
 import { Children, cloneElement, isValidElement, type ReactElement, type ReactNode } from 'react';
 
 const demoTranslations: Record<string, string> = {
+  '10,000 条记录，仅渲染可见区域': '10,000 records, rendering only the visible range',
+  '运行记录': 'Activity records',
   '移动端按住 500ms': 'Hold for 500ms on mobile',
   '移动端长按，PC 端普通点击': 'Long press on mobile, regular click on desktop',
   '普通点击': 'Regular click',

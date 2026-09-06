@@ -80,6 +80,8 @@ export function DataTable<T>({
   tableClassName,
 }: DataTableProps<T>) {
   const locale = useLumenLocale();
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const headerRef = React.useRef<HTMLTableSectionElement>(null);
   const emptyText = emptyTextProp === undefined ? locale.dataTable.emptyText : emptyTextProp;
   const selectable = Boolean(selectedRowKeys && onSelectedRowKeysChange);
   const selectedKeys = new Set(selectedRowKeys ?? []);
@@ -95,6 +97,29 @@ export function DataTable<T>({
   const cellTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
   const headerTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
   const scrollMaxHeight = maxHeight ?? (stickyHeader ? 400 : undefined);
+  const stickyBodyMaxHeight = stickyHeader && scrollMaxHeight !== undefined
+    ? `calc(${toCssSize(scrollMaxHeight)} - var(--lumen-data-table-header-height, 44px))`
+    : undefined;
+
+  React.useLayoutEffect(() => {
+    if (!stickyHeader) return;
+    const scrollContainer = scrollContainerRef.current;
+    const header = headerRef.current;
+    if (!scrollContainer || !header) return;
+    const updateHeaderHeight = () => {
+      if (header.offsetHeight > 0) {
+        scrollContainer.style.setProperty(
+          '--lumen-data-table-header-height',
+          `${header.offsetHeight}px`,
+        );
+      }
+    };
+    updateHeaderHeight();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(updateHeaderHeight);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, [stickyHeader]);
 
   const updateVisibleSelection = (checked: boolean) => {
     const nextKeys = new Set(selectedKeys);
@@ -142,25 +167,43 @@ export function DataTable<T>({
       )}
     >
       <div
+        ref={scrollContainerRef}
         data-ui="data-table-scroll"
         data-size="sm"
+        data-density={density}
+        data-sticky-header={stickyHeader || undefined}
         className={cn(
-          'lumen-scrollbar max-w-full',
-          scrollMaxHeight === undefined ? 'overflow-x-auto' : 'overflow-auto',
+          'lumen-scrollbar max-w-full overflow-x-auto',
+          !stickyHeader && scrollMaxHeight !== undefined && 'overflow-y-auto',
         )}
-        style={{ maxHeight: toCssSize(scrollMaxHeight) }}
+        style={{ maxHeight: stickyHeader ? undefined : toCssSize(scrollMaxHeight) }}
       >
-        <table className={cn('w-full border-collapse text-left', tableClassName)}>
+        <table className={cn(
+          'w-full border-collapse text-left',
+          stickyHeader && 'block min-w-full',
+          tableClassName,
+        )}>
           {caption ? <caption className="sr-only">{caption}</caption> : null}
           <thead
+            ref={headerRef}
             className={cn(
               'bg-[var(--lumen-color-surface-subtle)]',
-              stickyHeader && 'sticky top-0 z-10',
+              stickyHeader && 'block',
             )}
           >
-            <tr className="border-b border-[var(--lumen-color-divider)]">
+            <tr
+              className={cn(
+                'border-b border-[var(--lumen-color-divider)]',
+                stickyHeader && 'table table-fixed',
+              )}
+              style={{ width: stickyHeader ? 'calc(100% - 6px)' : undefined }}
+            >
               {selectable ? (
-                <th scope="col" className={cn('w-12', cellPadding)}>
+                <th
+                  scope="col"
+                  className={cn('w-12', cellPadding)}
+                  style={{ minWidth: 48, width: 48 }}
+                >
                   <Checkbox
                     aria-label={locale.dataTable.selectAll}
                     checked={allVisibleSelected}
@@ -216,16 +259,38 @@ export function DataTable<T>({
               })}
             </tr>
           </thead>
-          <tbody>
+          <tbody
+            data-ui="data-table-body"
+            data-size="sm"
+            className={cn(
+              stickyHeader && 'lumen-scrollbar block overflow-x-hidden overflow-y-auto',
+            )}
+            style={{
+              maxHeight: stickyBodyMaxHeight,
+              scrollbarGutter: stickyHeader ? 'stable' : undefined,
+            }}
+          >
             {loading
               ? Array.from({ length: Math.max(1, loadingRowCount) }, (_, rowIndex) => (
                   <tr
                     key={`loading-${rowIndex}`}
-                    className="border-b border-[var(--lumen-color-surface-muted)] last:border-b-0"
+                    className={cn(
+                      'border-b border-[var(--lumen-color-surface-muted)] last:border-b-0',
+                      stickyHeader && 'table w-full table-fixed',
+                    )}
                   >
-                    {selectable ? <td className={cellPadding} /> : null}
+                    {selectable ? (
+                      <td className={cellPadding} style={{ minWidth: 48, width: 48 }} />
+                    ) : null}
                     {columns.map((column, columnIndex) => (
-                      <td key={column.key} className={cellPadding}>
+                      <td
+                        key={column.key}
+                        className={cellPadding}
+                        style={{
+                          width: toCssSize(column.width),
+                          minWidth: toCssSize(column.minWidth),
+                        }}
+                      >
                         <span
                           className="block h-3 animate-pulse rounded-[4px] bg-[var(--lumen-color-surface-muted)]"
                           style={{ width: loadingCellWidths[columnIndex % loadingCellWidths.length] }}
@@ -236,7 +301,7 @@ export function DataTable<T>({
                 ))
               : data.length === 0
                 ? (
-                    <tr>
+                    <tr className={cn(stickyHeader && 'table w-full table-fixed')}>
                       <td
                         colSpan={totalColumns}
                         className={cn(
@@ -260,11 +325,15 @@ export function DataTable<T>({
                         data-selected={selectedKeys.has(key) || undefined}
                         className={cn(
                           'border-b border-[var(--lumen-color-surface-muted)] transition-colors last:border-b-0 hover:bg-[var(--lumen-color-surface-hover)] data-[selected=true]:bg-[var(--lumen-color-info-soft)]',
+                          stickyHeader && 'table w-full table-fixed',
                           resolvedRowClassName,
                         )}
                       >
                         {selectable ? (
-                          <td className={cellPadding}>
+                          <td
+                            className={cellPadding}
+                            style={{ minWidth: 48, width: 48 }}
+                          >
                             <Checkbox
                               aria-label={locale.dataTable.selectRow(rowIndex + 1)}
                               checked={selectedKeys.has(key)}
@@ -284,6 +353,10 @@ export function DataTable<T>({
                               column.align === 'right' && 'text-right',
                               column.className,
                             )}
+                            style={{
+                              width: toCssSize(column.width),
+                              minWidth: toCssSize(column.minWidth),
+                            }}
                           >
                             {column.render(row, rowIndex)}
                           </td>

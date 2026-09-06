@@ -4714,6 +4714,96 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "VirtualList": [
+    {
+      "name": "items",
+      "type": "readonly T[]",
+      "defaultValue": "-",
+      "description": "列表数据。",
+      "descriptionEn": "Defines the data items rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "itemSize",
+      "type": "number | ((item: T, index: number) => number)",
+      "defaultValue": "-",
+      "description": "固定项高度，或根据数据返回每项高度的函数。",
+      "descriptionEn": "Configures item size.",
+      "required": true
+    },
+    {
+      "name": "renderItem",
+      "type": "(item: T, index: number) => React.ReactNode",
+      "defaultValue": "-",
+      "description": "渲染列表项。",
+      "descriptionEn": "Configures render item.",
+      "required": true
+    },
+    {
+      "name": "getItemKey",
+      "type": "(item: T, index: number) => React.Key",
+      "defaultValue": "undefined",
+      "description": "返回稳定的列表项 key，默认使用索引。",
+      "descriptionEn": "Configures get item key.",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "string | number",
+      "defaultValue": "320",
+      "description": "可滚动视口高度。",
+      "descriptionEn": "Configures height.",
+      "required": false
+    },
+    {
+      "name": "overscan",
+      "type": "number",
+      "defaultValue": "3",
+      "description": "可见区域上下额外渲染的项目数。",
+      "descriptionEn": "Configures overscan.",
+      "required": false
+    },
+    {
+      "name": "initialScrollIndex",
+      "type": "number",
+      "defaultValue": "0",
+      "description": "首次渲染时滚动到的项目索引。",
+      "descriptionEn": "Configures initial scroll index.",
+      "required": false
+    },
+    {
+      "name": "onRangeChange",
+      "type": "(range: VirtualListRange) => void",
+      "defaultValue": "undefined",
+      "description": "可见及预渲染范围变化时调用。",
+      "descriptionEn": "Called when the range change action occurs.",
+      "required": false
+    },
+    {
+      "name": "emptyContent",
+      "type": "React.ReactNode",
+      "defaultValue": "null",
+      "description": "数据为空时显示的内容。",
+      "descriptionEn": "Configures empty content.",
+      "required": false
+    },
+    {
+      "name": "contentClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "内容容器类名。",
+      "descriptionEn": "Adds custom CSS class names to the overlay content.",
+      "required": false
+    },
+    {
+      "name": "itemClassName",
+      "type": "string | ((item: T, index: number) => string | undefined)",
+      "defaultValue": "undefined",
+      "description": "列表项类名或类名生成函数。",
+      "descriptionEn": "Configures item class name.",
+      "required": false
+    }
+  ],
   "Rating": [
     {
       "name": "value",

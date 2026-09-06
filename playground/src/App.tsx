@@ -134,6 +134,7 @@ import {
   Transfer,
   TreeSelect,
   Typography,
+  VirtualList,
   Watermark,
   enUS,
   useLongPress,
@@ -267,7 +268,7 @@ const renderSections: Section[] = [
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button useLongPress ContextMenu DragHandle Badge Chip Avatar Tooltip', icon: Plus },
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input SearchBar NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
-  { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
+  { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem VirtualList SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
   { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Carousel Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
   { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、命令面板、确认和消息提示。', keywords: 'Modal Drawer CommandPalette ConfirmDialog Toast', icon: Bell },
   { id: 'feedback', title: 'Feedback', description: '页面提示、加载、进度、空状态、上传和骨架屏。', keywords: 'Alert Spinner Progress Empty FileUpload Skeleton SegmentedControl', icon: Settings },
@@ -396,7 +397,7 @@ const galleryCategories: GalleryCategory[] = [
     id: 'data-display',
     title: 'Data Display',
     description: '状态、列表、表格与结构化内容。',
-    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List SwipeActions Scrollbar Collapse Accordion Divider Watermark',
+    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List VirtualList SwipeActions Scrollbar Collapse Accordion Divider Watermark',
     icon: Table2,
     demos: [
       demo('Badge', 'buttons', 'Badge', '    <Badge variant="success">Success</Badge>'),
@@ -407,6 +408,7 @@ const galleryCategories: GalleryCategory[] = [
       demo('FileTypeIcon', 'data', 'FileTypeIcon', '    <FileTypeIcon fileName="proposal.pdf" />'),
       demo('DataTable', 'data', 'DataTable', '    <>\n      <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n    </>', undefined, undefined, ['DataTable · Sticky Header', 'DataTable · Embedded']),
       demo('List', 'data', 'List, ListItem', '    <List>\n      <ListItem title="设计评审" />\n    </List>'),
+      demo('VirtualList', 'data', 'VirtualList', '    <VirtualList\n      aria-label="运行记录"\n      items={items}\n      itemSize={60}\n      height={320}\n      overscan={4}\n      getItemKey={(item) => item.id}\n      renderItem={(item) => (\n        <div className="flex h-full items-center border-b px-4">{item.title}</div>\n      )}\n    />', undefined, "const items = Array.from({ length: 10000 }, (_, index) => ({\n    id: index + 1,\n    title: `运行记录 ${index + 1}`,\n  }));"),
       demo('SwipeActions', 'data', 'SwipeActions', '    <SwipeActions\n      startActions={[{ key: \'archive\', label: \'归档\', icon: <Archive size={18} />, tone: \'success\', onClick: () => setResult(\'已归档\') }]}\n      endActions={[{ key: \'delete\', label: \'删除\', icon: <Trash2 size={18} />, tone: \'danger\', onClick: () => setResult(\'已删除\') }]}\n      fullSwipe\n    >\n      <div className="px-4 py-3">向左或向右滑动这条事件</div>\n    </SwipeActions>', 'Archive, Trash2', "const [result, setResult] = useState('');"),
       demo('Scrollbar', 'data', 'Scrollbar', '    <Scrollbar className="h-64">{content}</Scrollbar>'),
       demo('Collapse', 'data', 'Collapse, CollapseItem', '    <Collapse defaultValue={[\'road\']}>\n      <CollapseItem value="road" title="路段信息">路段内容</CollapseItem>\n    </Collapse>'),
@@ -577,6 +579,7 @@ const zhDemoNames: Record<string, string> = {
   FileTypeIcon: '文件类型图标',
   DataTable: '数据表格',
   List: '列表',
+  VirtualList: '虚拟列表',
   SwipeActions: '滑动操作',
   Scrollbar: '滚动条',
   ScrollToEdge: '滚动到边缘',
@@ -965,6 +968,12 @@ const safetyEvents: SafetyEvent[] = Array.from({ length: 23 }, (_, index) => {
     updatedAt: `2026-08-${String(22 - Math.floor(index / 8)).padStart(2, '0')} ${String(9 + (index % 8)).padStart(2, '0')}:${minute}`,
   };
 });
+
+const virtualListItems = Array.from({ length: 10_000 }, (_, index) => ({
+  id: index + 1,
+  title: `运行记录 ${index + 1}`,
+  description: `后台任务批次 ${String(index + 1).padStart(5, '0')}`,
+}));
 
 const safetyEventColumns: DataTableColumn<SafetyEvent>[] = [
   {
@@ -3235,6 +3244,38 @@ export default function App() {
                       meta={<Badge size="sm" variant="success">已完成</Badge>}
                     />
                   </List>
+                </DemoCard>
+                <DemoCard title="VirtualList" wide>
+                  <div className="space-y-3">
+                    <Typography variant="caption" color="muted">
+                      10,000 条记录，仅渲染可见区域
+                    </Typography>
+                    <VirtualList
+                      aria-label="运行记录"
+                      items={virtualListItems}
+                      itemSize={60}
+                      height={320}
+                      overscan={4}
+                      getItemKey={(item) => item.id}
+                      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
+                      itemClassName="border-b border-[var(--lumen-color-surface-muted)]"
+                      renderItem={(item) => (
+                        <div className="flex h-full min-w-0 items-center gap-3 px-4">
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-[var(--lumen-color-primary-soft)] text-[12px] font-medium text-[var(--lumen-color-primary)]">
+                            {item.id}
+                          </span>
+                          <span className="min-w-0">
+                            <strong className="block truncate text-[14px] font-medium text-[var(--lumen-color-text)]">
+                              {item.title}
+                            </strong>
+                            <span className="block truncate text-[12px] text-[var(--lumen-color-text-muted)]">
+                              {item.description}
+                            </span>
+                          </span>
+                        </div>
+                      )}
+                    />
+                  </div>
                 </DemoCard>
                 <DemoCard title="SwipeActions" wide>
                   <div className="mx-auto w-full max-w-[420px]">
