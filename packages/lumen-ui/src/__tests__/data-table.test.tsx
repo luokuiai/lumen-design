@@ -77,9 +77,17 @@ describe('DataTable', () => {
 
     const table = screen.getByRole('table');
     expect(table.parentElement).toHaveAttribute('data-ui', 'data-table-scroll');
-    expect(table.parentElement).toHaveClass('overflow-auto');
-    expect(table.parentElement).toHaveStyle({ maxHeight: '240px' });
-    expect(table.querySelector('thead')).toHaveClass('sticky', 'top-0', 'z-10');
+    expect(table.parentElement).toHaveAttribute('data-sticky-header', 'true');
+    expect(table.parentElement).toHaveAttribute('data-density', 'default');
+    expect(table.parentElement).toHaveClass('overflow-x-auto');
+    expect(table.parentElement).not.toHaveStyle({ maxHeight: '240px' });
+    expect(table.querySelector('thead')).toHaveClass('block');
+    expect(table.querySelector('thead')).not.toHaveClass('sticky');
+    expect(table.querySelector('tbody')).toHaveAttribute('data-ui', 'data-table-body');
+    expect(table.querySelector('tbody')).toHaveClass('overflow-y-auto');
+    expect(table.querySelector('tbody')).toHaveStyle({
+      maxHeight: 'calc(240px - var(--lumen-data-table-header-height, 44px))',
+    });
   });
 
   it('provides a default scroll height for sticky headers', () => {
@@ -92,8 +100,8 @@ describe('DataTable', () => {
       />,
     );
 
-    expect(screen.getByRole('table').parentElement).toHaveStyle({
-      maxHeight: '400px',
+    expect(screen.getByRole('table').querySelector('tbody')).toHaveStyle({
+      maxHeight: 'calc(400px - var(--lumen-data-table-header-height, 44px))',
     });
   });
 

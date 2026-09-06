@@ -16,6 +16,7 @@ describe('public API', () => {
     expect(Lumen.Button).toBeTypeOf('function');
     expect(Lumen.Calendar).toBeTypeOf('object');
     expect(Lumen.Card).toBeTypeOf('object');
+    expect(Lumen.Carousel).toBeTypeOf('object');
     expect(Lumen.Cascader).toBeTypeOf('function');
     expect(Lumen.CardHeader).toBeTypeOf('object');
     expect(Lumen.Collapse).toBeTypeOf('object');
@@ -36,6 +37,12 @@ describe('public API', () => {
     expect(Lumen.Select).toBeTypeOf('function');
     expect(Lumen.Modal).toBeTypeOf('function');
     expect(Lumen.NumberInput).toBeTypeOf('object');
+    expect(Lumen.OtpInput).toBeTypeOf('object');
+    expect(Lumen.SearchBar).toBeTypeOf('object');
+    expect(Lumen.useLongPress).toBeTypeOf('function');
+    expect(Lumen.ContextMenu).toBeTypeOf('function');
+    expect(Lumen.SwipeActions).toBeTypeOf('object');
+    expect(Lumen.DragHandle).toBeTypeOf('object');
     expect(Lumen.Pagination).toBeTypeOf('function');
     expect(Lumen.Popover).toBeTypeOf('function');
     expect(Lumen.Progress).toBeTypeOf('object');
@@ -58,6 +65,7 @@ describe('public API', () => {
     expect(Lumen.Transfer).toBeTypeOf('function');
     expect(Lumen.Toolbar).toBeTypeOf('object');
     expect(Lumen.Typography).toBeTypeOf('object');
+    expect(Lumen.VirtualList).toBeTypeOf('object');
     expect(Lumen.Watermark).toBeTypeOf('object');
     expect('CompactPagination' in Lumen).toBe(false);
     expect('TimeSelector' in Lumen).toBe(false);

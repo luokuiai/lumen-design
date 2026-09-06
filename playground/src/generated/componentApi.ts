@@ -4510,6 +4510,300 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "ContextMenu": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "defaultValue": "-",
+      "description": "可触发菜单的目标内容。",
+      "descriptionEn": "Sets the child content rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "content",
+      "type": "React.ReactNode | ((state: ContextMenuContentState) => React.ReactNode)",
+      "defaultValue": "-",
+      "description": "菜单内容，菜单项应使用 role=\"menuitem\"。",
+      "descriptionEn": "Configures content.",
+      "required": true
+    },
+    {
+      "name": "longPressDelay",
+      "type": "number",
+      "defaultValue": "500",
+      "description": "移动端触发长按所需时间，单位毫秒。",
+      "descriptionEn": "Configures long press delay.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否禁用右键和长按触发。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "closeDelayMs",
+      "type": "number",
+      "defaultValue": "120",
+      "description": "关闭动画时长，单位毫秒。",
+      "descriptionEn": "Sets the delay before the close animation completes, in milliseconds.",
+      "required": false
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "defaultValue": "undefined",
+      "description": "菜单打开状态变化时调用。",
+      "descriptionEn": "Called when the open state changes.",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "触发区域类名。",
+      "descriptionEn": "Adds custom CSS class names.",
+      "required": false
+    },
+    {
+      "name": "menuClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "菜单表面类名。",
+      "descriptionEn": "Adds custom CSS class names to the menu overlay.",
+      "required": false
+    },
+    {
+      "name": "ariaLabel",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "菜单的无障碍名称。",
+      "descriptionEn": "Sets the accessible name of the component.",
+      "required": false
+    }
+  ],
+  "OtpInput": [
+    {
+      "name": "value",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "受控模式下的验证码值。",
+      "descriptionEn": "Sets the current value in controlled mode.",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "defaultValue": "''",
+      "description": "非受控模式下的初始验证码。",
+      "descriptionEn": "Sets the initial value in uncontrolled mode.",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "验证码变化时触发。",
+      "descriptionEn": "Called when the value changes.",
+      "required": false
+    },
+    {
+      "name": "onComplete",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "所有输入格填写完成时触发。",
+      "descriptionEn": "Called when the complete action occurs.",
+      "required": false
+    },
+    {
+      "name": "length",
+      "type": "number",
+      "defaultValue": "6",
+      "description": "验证码位数。",
+      "descriptionEn": "Configures length.",
+      "required": false
+    },
+    {
+      "name": "type",
+      "type": "\"text\" | \"numeric\"",
+      "defaultValue": "'numeric'",
+      "description": "允许输入数字或字母数字。",
+      "descriptionEn": "Configures type.",
+      "required": false
+    },
+    {
+      "name": "mask",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否隐藏每一位验证码。",
+      "descriptionEn": "Configures mask.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否禁用全部输入格。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否将全部输入格设为只读。",
+      "descriptionEn": "Configures read only.",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否显示错误状态。",
+      "descriptionEn": "Configures invalid.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
+      "description": "输入格尺寸。",
+      "descriptionEn": "Sets the component size.",
+      "required": false
+    },
+    {
+      "name": "autoFocus",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否在挂载后聚焦第一格。",
+      "descriptionEn": "Configures auto focus.",
+      "required": false
+    },
+    {
+      "name": "autoComplete",
+      "type": "string",
+      "defaultValue": "'one-time-code'",
+      "description": "第一格使用的自动填充提示。",
+      "descriptionEn": "Configures auto complete.",
+      "required": false
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "表单提交字段名称。",
+      "descriptionEn": "Sets the form control name.",
+      "required": false
+    },
+    {
+      "name": "inputClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "每个输入格的附加类名。",
+      "descriptionEn": "Configures input class name.",
+      "required": false
+    },
+    {
+      "name": "getInputLabel",
+      "type": "(index: number, length: number) => string",
+      "defaultValue": "(index, total) => `Digit ${index + 1} of ${total}`",
+      "description": "自定义单个输入格的无障碍标签。",
+      "descriptionEn": "Configures get input label.",
+      "required": false
+    }
+  ],
+  "VirtualList": [
+    {
+      "name": "items",
+      "type": "readonly T[]",
+      "defaultValue": "-",
+      "description": "列表数据。",
+      "descriptionEn": "Defines the data items rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "itemSize",
+      "type": "number | ((item: T, index: number) => number)",
+      "defaultValue": "-",
+      "description": "固定项高度，或根据数据返回每项高度的函数。",
+      "descriptionEn": "Configures item size.",
+      "required": true
+    },
+    {
+      "name": "renderItem",
+      "type": "(item: T, index: number) => React.ReactNode",
+      "defaultValue": "-",
+      "description": "渲染列表项。",
+      "descriptionEn": "Configures render item.",
+      "required": true
+    },
+    {
+      "name": "getItemKey",
+      "type": "(item: T, index: number) => React.Key",
+      "defaultValue": "undefined",
+      "description": "返回稳定的列表项 key，默认使用索引。",
+      "descriptionEn": "Configures get item key.",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "string | number",
+      "defaultValue": "320",
+      "description": "可滚动视口高度。",
+      "descriptionEn": "Configures height.",
+      "required": false
+    },
+    {
+      "name": "overscan",
+      "type": "number",
+      "defaultValue": "3",
+      "description": "可见区域上下额外渲染的项目数。",
+      "descriptionEn": "Configures overscan.",
+      "required": false
+    },
+    {
+      "name": "initialScrollIndex",
+      "type": "number",
+      "defaultValue": "0",
+      "description": "首次渲染时滚动到的项目索引。",
+      "descriptionEn": "Configures initial scroll index.",
+      "required": false
+    },
+    {
+      "name": "onRangeChange",
+      "type": "(range: VirtualListRange) => void",
+      "defaultValue": "undefined",
+      "description": "可见及预渲染范围变化时调用。",
+      "descriptionEn": "Called when the range change action occurs.",
+      "required": false
+    },
+    {
+      "name": "emptyContent",
+      "type": "React.ReactNode",
+      "defaultValue": "null",
+      "description": "数据为空时显示的内容。",
+      "descriptionEn": "Configures empty content.",
+      "required": false
+    },
+    {
+      "name": "contentClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "内容容器类名。",
+      "descriptionEn": "Adds custom CSS class names to the overlay content.",
+      "required": false
+    },
+    {
+      "name": "itemClassName",
+      "type": "string | ((item: T, index: number) => string | undefined)",
+      "defaultValue": "undefined",
+      "description": "列表项类名或类名生成函数。",
+      "descriptionEn": "Configures item class name.",
+      "required": false
+    }
+  ],
   "Rating": [
     {
       "name": "value",
@@ -4703,6 +4997,260 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "设置 months。",
       "descriptionEn": "Configures months.",
+      "required": false
+    }
+  ],
+  "SwipeActions": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "defaultValue": "-",
+      "description": "可滑动的前景内容。",
+      "descriptionEn": "Sets the child content rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "startActions",
+      "type": "readonly SwipeAction[]",
+      "defaultValue": "[]",
+      "description": "向右滑动时展示的起始侧动作。",
+      "descriptionEn": "Configures start actions.",
+      "required": false
+    },
+    {
+      "name": "endActions",
+      "type": "readonly SwipeAction[]",
+      "defaultValue": "[]",
+      "description": "向左滑动时展示的结束侧动作。",
+      "descriptionEn": "Configures end actions.",
+      "required": false
+    },
+    {
+      "name": "openSide",
+      "type": "\"start\" | \"end\"",
+      "defaultValue": "undefined",
+      "description": "受控模式下当前展开的一侧。",
+      "descriptionEn": "Configures open side.",
+      "required": false
+    },
+    {
+      "name": "defaultOpenSide",
+      "type": "\"start\" | \"end\"",
+      "defaultValue": "null",
+      "description": "非受控模式下默认展开的一侧。",
+      "descriptionEn": "Sets the initial open side.",
+      "required": false
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(side: SwipeActionsSide | null) => void",
+      "defaultValue": "undefined",
+      "description": "展开侧变化时触发。",
+      "descriptionEn": "Called when the open state changes.",
+      "required": false
+    },
+    {
+      "name": "actionWidth",
+      "type": "number",
+      "defaultValue": "72",
+      "description": "每个动作按钮的宽度。",
+      "descriptionEn": "Configures action width.",
+      "required": false
+    },
+    {
+      "name": "threshold",
+      "type": "number",
+      "defaultValue": "0.4",
+      "description": "展开动作所需的滑动比例或像素距离。",
+      "descriptionEn": "Configures threshold.",
+      "required": false
+    },
+    {
+      "name": "fullSwipe",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否允许长距离滑动直接触发首个动作。",
+      "descriptionEn": "Configures full swipe.",
+      "required": false
+    },
+    {
+      "name": "fullSwipeThreshold",
+      "type": "number",
+      "defaultValue": "0.72",
+      "description": "全滑触发距离占容器宽度的比例。",
+      "descriptionEn": "Configures full swipe threshold.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否禁用滑动交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "closeOnAction",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "触发动作后是否自动收起。",
+      "descriptionEn": "Configures close on action.",
+      "required": false
+    },
+    {
+      "name": "swipeIgnoreSelector",
+      "type": "string",
+      "defaultValue": "'input, select, textarea, [contenteditable=\"true\"], [data-swipe-actions-ignore]'",
+      "description": "不响应滑动手势的后代元素选择器。",
+      "descriptionEn": "Configures swipe ignore selector.",
+      "required": false
+    },
+    {
+      "name": "contentClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "前景内容的附加类名。",
+      "descriptionEn": "Adds custom CSS class names to the overlay content.",
+      "required": false
+    }
+  ],
+  "SearchBar": [
+    {
+      "name": "value",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "受控模式下的搜索关键词。",
+      "descriptionEn": "Sets the current value in controlled mode.",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "defaultValue": "''",
+      "description": "非受控模式下的初始搜索关键词。",
+      "descriptionEn": "Sets the initial value in uncontrolled mode.",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "搜索关键词变化时触发。",
+      "descriptionEn": "Called when the value changes.",
+      "required": false
+    },
+    {
+      "name": "onSearch",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "提交搜索时触发。",
+      "descriptionEn": "Called when the search action occurs.",
+      "required": false
+    },
+    {
+      "name": "onClear",
+      "type": "() => void",
+      "defaultValue": "undefined",
+      "description": "清空搜索关键词时触发。",
+      "descriptionEn": "Called when the clear action occurs.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
+      "description": "搜索栏尺寸。",
+      "descriptionEn": "Sets the component size.",
+      "required": false
+    },
+    {
+      "name": "clearable",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否显示清空按钮。",
+      "descriptionEn": "Configures clearable.",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否处于加载状态。",
+      "descriptionEn": "Shows a loading state and prevents repeated actions.",
+      "required": false
+    },
+    {
+      "name": "prefix",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义前置内容；传入 null 可隐藏默认搜索图标。",
+      "descriptionEn": "Configures prefix.",
+      "required": false
+    },
+    {
+      "name": "suffix",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义后置内容。",
+      "descriptionEn": "Configures suffix.",
+      "required": false
+    },
+    {
+      "name": "inputClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "输入元素附加类名。",
+      "descriptionEn": "Configures input class name.",
+      "required": false
+    },
+    {
+      "name": "clearLabel",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "清空按钮的无障碍名称。",
+      "descriptionEn": "Configures clear label.",
+      "required": false
+    }
+  ],
+  "DragHandle": [
+    {
+      "name": "axis",
+      "type": "\"vertical\" | \"horizontal\" | \"both\"",
+      "defaultValue": "'vertical'",
+      "description": "拖拽排序的主要方向。",
+      "descriptionEn": "Configures axis.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
+      "description": "手柄尺寸。",
+      "descriptionEn": "Sets the component size.",
+      "required": false
+    },
+    {
+      "name": "active",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否正在拖动。",
+      "descriptionEn": "Controls whether the component is visible or enabled.",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义手柄图标。",
+      "descriptionEn": "Sets the component icon.",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "自定义无障碍名称。",
+      "descriptionEn": "Sets the visible label or title.",
       "required": false
     }
   ],
@@ -4989,6 +5537,168 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "设置供辅助技术读取的名称。",
       "descriptionEn": "Sets the accessible name read by assistive technology.",
+      "required": false
+    }
+  ],
+  "Carousel": [
+    {
+      "name": "items",
+      "type": "readonly CarouselItem[]",
+      "defaultValue": "-",
+      "description": "轮播项数据。",
+      "descriptionEn": "Defines the data items rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "受控模式下当前轮播项标识。",
+      "descriptionEn": "Sets the current value in controlled mode.",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "非受控模式下的默认轮播项标识。",
+      "descriptionEn": "Sets the initial value in uncontrolled mode.",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string, index: number) => void",
+      "defaultValue": "undefined",
+      "description": "当前轮播项变化时触发。",
+      "descriptionEn": "Called when the value changes.",
+      "required": false
+    },
+    {
+      "name": "loop",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否循环轮播。",
+      "descriptionEn": "Configures loop.",
+      "required": false
+    },
+    {
+      "name": "showArrows",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否显示前后导航按钮。",
+      "descriptionEn": "Controls whether arrows is shown.",
+      "required": false
+    },
+    {
+      "name": "showIndicators",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否显示底部指示点。",
+      "descriptionEn": "Controls whether indicators is shown.",
+      "required": false
+    },
+    {
+      "name": "autoplay",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否自动轮播。",
+      "descriptionEn": "Configures autoplay.",
+      "required": false
+    },
+    {
+      "name": "interval",
+      "type": "number",
+      "defaultValue": "5000",
+      "description": "自动轮播间隔，单位毫秒。",
+      "descriptionEn": "Configures interval.",
+      "required": false
+    },
+    {
+      "name": "pauseOnHover",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "鼠标悬停时是否暂停自动轮播。",
+      "descriptionEn": "Configures pause on hover.",
+      "required": false
+    },
+    {
+      "name": "swipeable",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否允许触摸手势切换。",
+      "descriptionEn": "Configures swipeable.",
+      "required": false
+    },
+    {
+      "name": "swipeThreshold",
+      "type": "number",
+      "defaultValue": "48",
+      "description": "触发切换所需的最小滑动距离。",
+      "descriptionEn": "Configures swipe threshold.",
+      "required": false
+    },
+    {
+      "name": "velocityThreshold",
+      "type": "number",
+      "defaultValue": "0.45",
+      "description": "触发切换的最小滑动速度。",
+      "descriptionEn": "Configures velocity threshold.",
+      "required": false
+    },
+    {
+      "name": "edgeSwipeWidth",
+      "type": "number",
+      "defaultValue": "20",
+      "description": "忽略屏幕边缘手势的宽度。",
+      "descriptionEn": "Configures edge swipe width.",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "string | number",
+      "defaultValue": "280",
+      "description": "轮播可视区域高度。",
+      "descriptionEn": "Configures height.",
+      "required": false
+    },
+    {
+      "name": "previousIcon",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义上一项图标。",
+      "descriptionEn": "Configures previous icon.",
+      "required": false
+    },
+    {
+      "name": "nextIcon",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义下一项图标。",
+      "descriptionEn": "Configures next icon.",
+      "required": false
+    },
+    {
+      "name": "ariaLabel",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "自定义无障碍名称。",
+      "descriptionEn": "Sets the accessible name of the component.",
+      "required": false
+    },
+    {
+      "name": "itemClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "轮播项附加类名。",
+      "descriptionEn": "Configures item class name.",
+      "required": false
+    },
+    {
+      "name": "indicatorsClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "指示点容器附加类名。",
+      "descriptionEn": "Configures indicators class name.",
       "required": false
     }
   ],

@@ -8,7 +8,26 @@ import {
   useState,
 } from 'react';
 import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import {
   AlertTriangle,
+  Archive,
   ArrowLeft,
   Bell,
   CalendarDays,
@@ -34,6 +53,7 @@ import {
   Moon,
   Sun,
   Table2,
+  Trash2,
   Type as TypeIcon,
   UserRound,
   X,
@@ -56,6 +76,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Carousel,
   Cascader,
   Checkbox,
   Chip,
@@ -63,10 +84,12 @@ import {
   CollapseItem,
   CommandPalette,
   ConfirmDialog,
+  ContextMenu,
   DatePicker,
   DateTimePicker,
   DataTable,
   Divider,
+  DragHandle,
   Drawer,
   DropdownMenu,
   FileUpload,
@@ -80,6 +103,7 @@ import {
   LumenProvider,
   Modal,
   NumberInput,
+  OtpInput,
   Pagination,
   Popover,
   Progress,
@@ -89,6 +113,7 @@ import {
   Rating,
   Scrollbar,
   ScrollToEdge,
+  SearchBar,
   SegmentedControl,
   Select,
   SideNav,
@@ -97,6 +122,7 @@ import {
   Spinner,
   Steps,
   Switch,
+  SwipeActions,
   Tabs,
   TabView,
   Textarea,
@@ -108,8 +134,10 @@ import {
   Transfer,
   TreeSelect,
   Typography,
+  VirtualList,
   Watermark,
   enUS,
+  useLongPress,
   zhCN,
 } from '@luokuiai/lumen-ui';
 import type { DataTableColumn, DataTableSort, StepsDirection } from '@luokuiai/lumen-ui';
@@ -237,11 +265,11 @@ type SafetyEvent = {
 
 const renderSections: Section[] = [
   { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
-  { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button Badge Chip Avatar Tooltip', icon: Plus },
-  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input NumberInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
+  { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button useLongPress ContextMenu DragHandle Badge Chip Avatar Tooltip', icon: Plus },
+  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input SearchBar NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
-  { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
-  { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
+  { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem VirtualList SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
+  { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Carousel Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
   { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、命令面板、确认和消息提示。', keywords: 'Modal Drawer CommandPalette ConfirmDialog Toast', icon: Bell },
   { id: 'feedback', title: 'Feedback', description: '页面提示、加载、进度、空状态、上传和骨架屏。', keywords: 'Alert Spinner Progress Empty FileUpload Skeleton SegmentedControl', icon: Settings },
 ];
@@ -300,10 +328,13 @@ const galleryCategories: GalleryCategory[] = [
     id: 'actions',
     title: 'Actions',
     description: '触发操作、工具组和页面主要行为。',
-    keywords: 'Button Fab Toolbar DropdownMenu',
+    keywords: 'Button useLongPress ContextMenu DragHandle Fab Toolbar DropdownMenu',
     icon: Plus,
     demos: [
       demo('Button', 'buttons', 'Button', '    <Button variant="primary">保存</Button>'),
+      demo('useLongPress', 'buttons', 'Button, Typography, useLongPress', '    <div className="flex flex-col items-start gap-3">\n      <Button {...handlers} className="select-none touch-pan-y">移动端按住 500ms</Button>\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [message, setMessage] = useState('移动端长按，PC 端普通点击');\n  const handlers = useLongPress<HTMLButtonElement>({\n    onClick: () => setMessage('普通点击'),\n    onLongPress: () => setMessage('已触发长按'),\n  });", ['Long press'], []),
+      demo('ContextMenu', 'buttons', 'ContextMenu, Typography', '    <div className="flex flex-col gap-3">\n      <ContextMenu\n        ariaLabel="快捷操作"\n        menuClassName="menu-list"\n        content={<>\n          <button type="button" role="menuitem" onClick={() => setAction("复制")}>复制</button>\n          <button type="button" role="menuitem" onClick={() => setAction("收藏")}>收藏</button>\n          <button type="button" role="menuitem" onClick={() => setAction("删除")}>删除</button>\n        </>}\n      >\n        <div className="rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center">\n          PC 端右键，移动端长按\n        </div>\n      </ContextMenu>\n      <Typography variant="caption" color="muted">最近操作：{action}</Typography>\n    </div>', undefined, "const [action, setAction] = useState('暂无');", ['Context menu']),
+      demo('DragHandle', 'buttons', 'DragHandle', '    <DragHandle />'),
       {
         ...demo('Fab', 'buttons', 'Fab', '    <Fab position="static" icon={<Plus size={18} />} aria-label="新建任务" />', 'Plus', undefined, ['Icon only', 'Extended', 'Expandable', 'Submenu']),
         codeByCardTitle: {
@@ -321,11 +352,13 @@ const galleryCategories: GalleryCategory[] = [
     id: 'forms',
     title: 'Forms',
     description: '输入、选择、日期时间和文件提交。',
-    keywords: 'Input FormField Checkbox Radio Switch Slider Rating Select Cascader Date Time Calendar Transfer FileUpload',
+    keywords: 'Input SearchBar FormField Checkbox Radio Switch Slider Rating Select Cascader Date Time Calendar Transfer FileUpload',
     icon: Check,
     demos: [
       demo('Input / FormField', 'forms', 'FormField, Input', '    <FormField label="项目名称" inputId="project-name">\n      {(props) => <Input {...props} />}\n    </FormField>', undefined, undefined, ['Input + FormField']),
+      demo('SearchBar', 'forms', 'SearchBar, Typography', '    <div className="max-w-[420px] space-y-2">\n      <SearchBar\n        value={value}\n        onChange={setValue}\n        onSearch={(keyword) => setMessage(keyword ? `正在搜索“${keyword}”` : \'请输入搜索内容\')}\n        placeholder="搜索组件、页面或命令"\n        aria-label="组件搜索"\n      />\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [value, setValue] = useState('');\n  const [message, setMessage] = useState('输入关键词后按 Enter 搜索');"),
       demo('NumberInput', 'forms', 'FormField, NumberInput', '    <FormField label="处置时限">\n      <NumberInput defaultValue={30} min={5} max={120} suffix="分钟" />\n    </FormField>'),
+      demo('OtpInput', 'forms', 'FormField, OtpInput', '    <FormField label="短信验证码">\n      <OtpInput value={value} onChange={setValue} />\n    </FormField>', undefined, "const [value, setValue] = useState('');"),
       demo('Textarea', 'forms', 'FormField, Textarea', '    <FormField label="备注">\n      <Textarea value={value} onChange={setValue} maxLength={200} showCount />\n    </FormField>'),
       demo('Checkbox', 'forms', 'Checkbox', '    <div className="flex items-center gap-5">\n      <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />\n      <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />\n      <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />\n    </div>'),
       demo('Radio', 'forms', 'Radio, RadioGroup', '    <div className="space-y-4">\n      <div className="flex items-center gap-5">\n        <Radio size="sm" checked label="Small" />\n        <Radio size="md" checked label="Medium" />\n        <Radio size="lg" checked label="Large" />\n      </div>\n      <RadioGroup size="md" value={value} onChange={setValue} options={options} />\n    </div>'),
@@ -347,12 +380,13 @@ const galleryCategories: GalleryCategory[] = [
     id: 'navigation',
     title: 'Navigation',
     description: '应用级与页面级导航结构。',
-    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Tabs Steps Pagination ScrollToEdge',
+    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Carousel Tabs Steps Pagination ScrollToEdge',
     icon: MoreHorizontal,
     demos: [
       demo('Breadcrumb', 'navigation', 'Breadcrumb', '    <Breadcrumb items={[\n      { label: \'首页\', href: \'/\' },\n      { label: \'订单详情\' },\n    ]} />'),
       demo('AppBar', 'navigation', 'AppBar, Button, Typography', '    <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <AppBar\n        position="absolute"\n        title="订单详情"\n        leading={(\n          <Button iconOnly variant="ghost" aria-label="返回" icon={<ArrowLeft size={19} />} />\n        )}\n        actions={(\n          <Button iconOnly variant="ghost" aria-label="更多操作" icon={<MoreHorizontal size={19} />} />\n        )}\n      />\n      <div className="px-5 pt-20">\n        <Typography variant="h3">#LM-20260904</Typography>\n        <Typography variant="caption" color="muted">等待审核</Typography>\n      </div>\n    </div>', 'ArrowLeft, MoreHorizontal'),
       demo('BottomNavigation', 'navigation', 'BottomNavigation, Typography', '    <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">\n        <Typography variant="h3">{value}</Typography>\n        <Typography variant="caption" color="muted">当前底部导航目标</Typography>\n      </div>\n      <BottomNavigation\n        position="absolute"\n        value={value}\n        onChange={setValue}\n        items={[\n          { value: \'home\', label: \'首页\', icon: Star },\n          { value: \'schedule\', label: \'日程\', icon: CalendarDays },\n          { value: \'messages\', label: \'消息\', icon: Bell, badge: 3, badgeLabel: \'3 条未读消息\' },\n          { value: \'profile\', label: \'我的\', icon: UserRound },\n        ]}\n      />\n    </div>', 'Bell, CalendarDays, Star, UserRound', "const [value, setValue] = useState('home');"),
+      demo('Carousel', 'navigation', 'Carousel', '    <Carousel\n      height={240}\n      items={[\n        { id: \'mobile\', content: <div className="p-8">移动体验升级</div> },\n        { id: \'motion\', content: <div className="p-8">统一交互节奏</div> },\n        { id: \'content\', content: <div className="p-8">承载任意内容</div> },\n      ]}\n    />'),
       demo('ScrollToEdge', 'navigation', 'ScrollToEdge', '    <ScrollToEdge direction="top" threshold={240} />'),
       demo('Pagination', 'data', 'Pagination', '    <Pagination currentPage={1} totalPages={5} onPageChange={setPage} />'),
       demo('Tabs', 'navigation', 'Tabs, TabView', '    <div>\n      <Tabs\n        value={value}\n        idPrefix="account-tabs"\n        options={[\n          { value: \'overview\', label: \'总览\' },\n          { value: \'activity\', label: \'动态\' },\n        ]}\n        onChange={setValue}\n      />\n      <TabView\n        value={value}\n        idPrefix="account-tabs"\n        items={[\n          { value: \'overview\', content: \'总览内容\' },\n          { value: \'activity\', content: \'动态内容\' },\n        ]}\n        onChange={setValue}\n        swipeable\n      />\n    </div>', undefined, "const [value, setValue] = useState('overview');", ['Tabs'], ['Tabs', 'TabView']),
@@ -363,7 +397,7 @@ const galleryCategories: GalleryCategory[] = [
     id: 'data-display',
     title: 'Data Display',
     description: '状态、列表、表格与结构化内容。',
-    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List Scrollbar Collapse Accordion Divider Watermark',
+    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List VirtualList SwipeActions Scrollbar Collapse Accordion Divider Watermark',
     icon: Table2,
     demos: [
       demo('Badge', 'buttons', 'Badge', '    <Badge variant="success">Success</Badge>'),
@@ -374,6 +408,8 @@ const galleryCategories: GalleryCategory[] = [
       demo('FileTypeIcon', 'data', 'FileTypeIcon', '    <FileTypeIcon fileName="proposal.pdf" />'),
       demo('DataTable', 'data', 'DataTable', '    <>\n      <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n    </>', undefined, undefined, ['DataTable · Sticky Header', 'DataTable · Embedded']),
       demo('List', 'data', 'List, ListItem', '    <List>\n      <ListItem title="设计评审" />\n    </List>'),
+      demo('VirtualList', 'data', 'VirtualList', '    <VirtualList\n      aria-label="运行记录"\n      items={items}\n      itemSize={60}\n      height={320}\n      overscan={4}\n      getItemKey={(item) => item.id}\n      renderItem={(item) => (\n        <div className="flex h-full items-center border-b px-4">{item.title}</div>\n      )}\n    />', undefined, "const items = Array.from({ length: 10000 }, (_, index) => ({\n    id: index + 1,\n    title: `运行记录 ${index + 1}`,\n  }));"),
+      demo('SwipeActions', 'data', 'SwipeActions', '    <SwipeActions\n      startActions={[{ key: \'archive\', label: \'归档\', icon: <Archive size={18} />, tone: \'success\', onClick: () => setResult(\'已归档\') }]}\n      endActions={[{ key: \'delete\', label: \'删除\', icon: <Trash2 size={18} />, tone: \'danger\', onClick: () => setResult(\'已删除\') }]}\n      fullSwipe\n    >\n      <div className="px-4 py-3">向左或向右滑动这条事件</div>\n    </SwipeActions>', 'Archive, Trash2', "const [result, setResult] = useState('');"),
       demo('Scrollbar', 'data', 'Scrollbar', '    <Scrollbar className="h-64">{content}</Scrollbar>'),
       demo('Collapse', 'data', 'Collapse, CollapseItem', '    <Collapse defaultValue={[\'road\']}>\n      <CollapseItem value="road" title="路段信息">路段内容</CollapseItem>\n    </Collapse>'),
       demo('Accordion', 'data', 'Accordion, CollapseItem', '    <Accordion defaultValue="event">\n      <CollapseItem value="event" title="事件详情">事件内容</CollapseItem>\n    </Accordion>'),
@@ -428,6 +464,8 @@ const playgroundMessages = {
     expandSidebar: '展开侧栏',
     collapseSidebar: '折叠侧栏',
     searchPlaceholder: '搜索分类或组件',
+    searchResults: '搜索结果',
+    noSearchResults: '没有匹配的组件',
     brandSubtitle: '开发预览',
     usageTips: '使用建议',
     examples: '示例',
@@ -465,6 +503,8 @@ const playgroundMessages = {
     expandSidebar: 'Expand sidebar',
     collapseSidebar: 'Collapse sidebar',
     searchPlaceholder: 'Search categories or components',
+    searchResults: 'Search results',
+    noSearchResults: 'No matching components',
     brandSubtitle: 'Development Preview',
     usageTips: 'Usage',
     examples: 'Examples',
@@ -498,11 +538,16 @@ const zhDemoNames: Record<string, string> = {
   Typography: '排版',
   Locale: '国际化',
   Button: '按钮',
+  useLongPress: '长按',
+  ContextMenu: '上下文菜单',
+  DragHandle: '拖拽手柄',
   Fab: '浮动操作按钮',
   Toolbar: '工具栏',
   DropdownMenu: '下拉菜单',
   'Input / FormField': '输入框 / 表单字段',
+  SearchBar: '搜索栏',
   NumberInput: '数字输入框',
+  OtpInput: '验证码输入框',
   Textarea: '多行文本框',
   Checkbox: '复选框',
   Radio: '单选框',
@@ -521,6 +566,7 @@ const zhDemoNames: Record<string, string> = {
   Breadcrumb: '面包屑',
   AppBar: '应用栏',
   BottomNavigation: '底部导航',
+  Carousel: '轮播',
   Pagination: '分页',
   Tabs: '标签页',
   TabView: '标签视图',
@@ -533,6 +579,8 @@ const zhDemoNames: Record<string, string> = {
   FileTypeIcon: '文件类型图标',
   DataTable: '数据表格',
   List: '列表',
+  VirtualList: '虚拟列表',
+  SwipeActions: '滑动操作',
   Scrollbar: '滚动条',
   ScrollToEdge: '滚动到边缘',
   Collapse: '折叠面板',
@@ -921,6 +969,12 @@ const safetyEvents: SafetyEvent[] = Array.from({ length: 23 }, (_, index) => {
   };
 });
 
+const virtualListItems = Array.from({ length: 10_000 }, (_, index) => ({
+  id: index + 1,
+  title: `运行记录 ${index + 1}`,
+  description: `后台任务批次 ${String(index + 1).padStart(5, '0')}`,
+}));
+
 const safetyEventColumns: DataTableColumn<SafetyEvent>[] = [
   {
     key: 'id',
@@ -1002,6 +1056,111 @@ const getSafetyEventSortValue = (event: SafetyEvent, key: string) => {
   if (key === 'level') return { 高: 3, 中: 2, 低: 1 }[event.level];
   return event[key as keyof SafetyEvent];
 };
+
+const initialDragHandleItems = [
+  { id: 'overview', label: '运营总览', labelEn: 'Operations overview' },
+  { id: 'events', label: '实时事件', labelEn: 'Live events' },
+  { id: 'reports', label: '分析报表', labelEn: 'Analytics reports' },
+];
+
+type DragHandleItem = (typeof initialDragHandleItems)[number];
+
+function SortableDragHandleItem({
+  item,
+  locale,
+}: {
+  item: DragHandleItem;
+  locale: 'zh-CN' | 'en-US';
+}) {
+  const {
+    attributes,
+    isDragging,
+    listeners,
+    setActivatorNodeRef,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: item.id });
+  const label = locale === 'en-US' ? item.labelEn : item.label;
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`flex items-center gap-2 rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-3 py-2.5 ${isDragging ? 'opacity-30' : ''}`}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }}
+    >
+      <DragHandle
+        {...attributes}
+        {...listeners}
+        ref={setActivatorNodeRef}
+        size="md"
+        active={isDragging}
+        label={locale === 'en-US' ? `Drag ${label} to reorder` : `拖动${label}排序`}
+      />
+      <span className="text-[14px] text-[var(--lumen-color-text)]">{label}</span>
+    </div>
+  );
+}
+
+function DragHandleOverlay({ item, locale }: { item: DragHandleItem; locale: 'zh-CN' | 'en-US' }) {
+  const label = locale === 'en-US' ? item.labelEn : item.label;
+  return (
+    <div className="flex w-full items-center gap-2 rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-3 py-2.5 shadow-[var(--lumen-shadow-overlay)]">
+      <DragHandle size="md" active tabIndex={-1} />
+      <span className="text-[14px] text-[var(--lumen-color-text)]">{label}</span>
+    </div>
+  );
+}
+
+function DragHandleExample() {
+  const messages = useContext(PlaygroundMessagesContext);
+  const [items, setItems] = useState(initialDragHandleItems);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+  const activeItem = items.find((item) => item.id === activeId);
+
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
+    setActiveId(null);
+    if (!over || active.id === over.id) return;
+    setItems((current) => {
+      const oldIndex = current.findIndex((item) => item.id === active.id);
+      const newIndex = current.findIndex((item) => item.id === over.id);
+      return arrayMove(current, oldIndex, newIndex);
+    });
+  };
+
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={({ active }) => setActiveId(String(active.id))}
+      onDragCancel={() => setActiveId(null)}
+      onDragEnd={handleDragEnd}
+    >
+      <div className="mx-auto max-w-[420px] space-y-2">
+        <SortableContext items={items} strategy={verticalListSortingStrategy}>
+          {items.map((item) => (
+            <SortableDragHandleItem key={item.id} item={item} locale={messages.locale} />
+          ))}
+        </SortableContext>
+        <p className="pt-1 text-[12px] text-[var(--lumen-color-text-muted)]">
+          {messages.locale === 'en-US'
+            ? 'Drag the handle to reorder, or focus it and use the arrow keys.'
+            : '拖动手柄排序，也可聚焦后按上下方向键。'}
+        </p>
+      </div>
+      <DragOverlay dropAnimation={{ duration: 200, easing: 'ease' }}>
+        {activeItem ? <DragHandleOverlay item={activeItem} locale={messages.locale} /> : null}
+      </DragOverlay>
+    </DndContext>
+  );
+}
 
 function GallerySection({ section, children }: { section: Section; children: React.ReactNode }) {
   const activeDemo = useContext(ActiveDemoContext);
@@ -1361,6 +1520,12 @@ export default function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
   const [meetingName, setMeetingName] = useState('项目周会');
+  const [longPressMessage, setLongPressMessage] = useState('移动端长按，PC 端普通点击');
+  const [contextMenuAction, setContextMenuAction] = useState('暂无');
+  const [searchBarValue, setSearchBarValue] = useState('');
+  const [searchBarMessage, setSearchBarMessage] = useState('输入关键词后按 Enter 搜索');
+  const [swipeActionMessage, setSwipeActionMessage] = useState('向左右滑动事件行');
+  const [otpValue, setOtpValue] = useState('');
   const [textareaText, setTextareaText] = useState('记录评审结论和后续动作。');
   const [checked, setChecked] = useState(true);
   const [enabled, setEnabled] = useState(true);
@@ -1400,6 +1565,10 @@ export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const longPressHandlers = useLongPress<HTMLButtonElement>({
+    onClick: () => setLongPressMessage('普通点击'),
+    onLongPress: () => setLongPressMessage('已触发长按'),
+  });
 
   const language = locale.locale === enUS.locale ? 'en-US' : 'zh-CN';
   const messages = playgroundMessages[language];
@@ -1433,6 +1602,16 @@ export default function App() {
     ),
     [demoLabels, localizedCategories, normalizedSearch],
   );
+  const mobileSearchResults = useMemo(() => {
+    if (!normalizedSearch) return [];
+    return localizedCategories.flatMap((category) => category.demos
+      .filter((demoItem) => (
+        `${demoItem.title} ${demoLabels[demoItem.title] ?? ''} ${category.title} ${category.description}`
+          .toLowerCase()
+          .includes(normalizedSearch)
+      ))
+      .map((demoItem) => ({ category, demo: demoItem })));
+  }, [demoLabels, localizedCategories, normalizedSearch]);
   const activeSections = useMemo(() => {
     const sourceSection = renderSections.find((section) => section.id === activeDemo.sourceSection);
     return sourceSection
@@ -1632,7 +1811,7 @@ export default function App() {
 
       <main className="main">
         <AppHeader
-          className="topbar"
+          className={`topbar${mobileSearchOpen ? ' topbar-search-open' : ''}`}
           title="Lumen UI Gallery"
           description={messages.appDescription}
           navigation={(
@@ -1659,48 +1838,57 @@ export default function App() {
             </>
           )}
           search={(
-            <Input
-              id="gallery-search"
-              className="topbar-search"
-              size="md"
-              value={gallerySearch}
-              onChange={(event) => setGallerySearch(event.target.value)}
-              prefix={<Search size={15} />}
-              placeholder={messages.searchPlaceholder}
-            />
-          )}
-          actions={(
             <>
-            <DropdownMenu
-              className="mobile-search-button"
-              menuClassName="w-[min(360px,calc(100vw-16px))] p-3"
-              align="right"
-              onOpenChange={setMobileSearchOpen}
-              trigger={({ open, menuId, toggle }) => (
-                <Button
-                  iconOnly
-                  size="sm"
-                  variant="ghost"
-                  aria-label={open ? messages.closeSearch : messages.openSearch}
-                  aria-controls={menuId}
-                  aria-expanded={open}
-                  aria-haspopup="dialog"
-                  icon={open ? <X size={18} /> : <Search size={18} />}
-                  onClick={toggle}
-                />
-              )}
-            >
-              <Input
-                ref={mobileSearchInputRef}
-                id="mobile-gallery-search"
+              <SearchBar
+                id="gallery-search"
+                className="topbar-search desktop-topbar-search"
                 size="md"
                 value={gallerySearch}
-                onChange={(event) => setGallerySearch(event.target.value)}
-                prefix={<Search size={15} />}
+                onChange={setGallerySearch}
                 placeholder={messages.searchPlaceholder}
                 aria-label={messages.searchPlaceholder}
               />
-            </DropdownMenu>
+              <SearchBar
+                ref={mobileSearchInputRef}
+                id="mobile-gallery-search"
+                className="mobile-appbar-search"
+                size="lg"
+                value={gallerySearch}
+                onChange={setGallerySearch}
+                placeholder={messages.searchPlaceholder}
+                aria-label={messages.searchPlaceholder}
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape' && !gallerySearch) {
+                    event.preventDefault();
+                    setMobileSearchOpen(false);
+                  }
+                }}
+                prefix={(
+                  <button
+                    type="button"
+                    className="mobile-search-back"
+                    aria-label={messages.closeSearch}
+                    onClick={() => setMobileSearchOpen(false)}
+                  >
+                    <ArrowLeft aria-hidden="true" size={20} />
+                  </button>
+                )}
+              />
+            </>
+          )}
+          actions={(
+            <>
+            <Button
+              iconOnly
+              size="sm"
+              variant="ghost"
+              className="mobile-search-button"
+              aria-label={messages.openSearch}
+              aria-expanded={mobileSearchOpen}
+              aria-controls="mobile-gallery-search"
+              icon={<Search size={18} />}
+              onClick={() => setMobileSearchOpen(true)}
+            />
             <DropdownMenu
               menuMode
               className="mobile-more-button"
@@ -2134,7 +2322,32 @@ export default function App() {
             }}>
               <div className="gallery-workspace">
                 <div className="gallery-preview">
-                  {activeSections.map((section) => {
+                  {mobileSearchOpen && normalizedSearch ? (
+                    <section className="mobile-search-content" aria-live="polite">
+                      <h2>{messages.searchResults}</h2>
+                      {mobileSearchResults.length ? (
+                        <div className="mobile-search-content-list">
+                          {mobileSearchResults.map(({ category, demo: demoItem }) => (
+                            <button
+                              key={`${category.id}-${demoItem.id}`}
+                              type="button"
+                              className="mobile-search-content-result"
+                              onClick={() => navigateToDemo(category.id, demoItem.id)}
+                            >
+                              <Search aria-hidden="true" size={18} />
+                              <span>
+                                <strong>{demoLabels[demoItem.title] ?? demoItem.title}</strong>
+                                <small>{category.title}</small>
+                              </span>
+                              <ChevronRight aria-hidden="true" size={18} />
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="mobile-search-content-empty">{messages.noSearchResults}</p>
+                      )}
+                    </section>
+                  ) : activeSections.map((section) => {
           if (section.id === 'typography') {
             return (
               <GallerySection key={section.id} section={section}>
@@ -2182,6 +2395,50 @@ export default function App() {
                       <Button iconOnly aria-label="设置" icon={<Settings size={15} />} />
                     </Tooltip>
                   </div>
+                </DemoCard>
+                <DemoCard title="Long press" wide>
+                  <div className="flex flex-col items-start gap-3">
+                    <Button {...longPressHandlers} className="select-none touch-pan-y">
+                      移动端按住 500ms
+                    </Button>
+                    <Typography variant="caption" color="muted">
+                      {longPressMessage}
+                    </Typography>
+                  </div>
+                </DemoCard>
+                <DemoCard title="Context menu" wide>
+                  <div className="flex flex-col gap-3">
+                    <ContextMenu
+                      ariaLabel="快捷操作"
+                      menuClassName="menu-list"
+                      content={(
+                        <>
+                          <button type="button" role="menuitem" onClick={() => setContextMenuAction('复制')}>
+                            <Copy size={15} />
+                            复制
+                          </button>
+                          <button type="button" role="menuitem" onClick={() => setContextMenuAction('收藏')}>
+                            <Star size={15} />
+                            收藏
+                          </button>
+                          <button type="button" role="menuitem" onClick={() => setContextMenuAction('删除')}>
+                            <Trash2 size={15} />
+                            删除
+                          </button>
+                        </>
+                      )}
+                    >
+                      <div className="select-none touch-pan-y rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center text-[14px] text-[var(--lumen-color-text)]">
+                        PC 端右键，移动端长按
+                      </div>
+                    </ContextMenu>
+                    <Typography variant="caption" color="muted">
+                      最近操作：{contextMenuAction}
+                    </Typography>
+                  </div>
+                </DemoCard>
+                <DemoCard title="DragHandle" wide>
+                  <DragHandleExample />
                 </DemoCard>
                 <DemoCard title="Icon only" wide>
                   <div className="fab-example-row">
@@ -2332,6 +2589,22 @@ export default function App() {
                     </FormField>
                   </div>
                 </DemoCard>
+                <DemoCard title="SearchBar" wide>
+                  <div className="max-w-[420px] space-y-2">
+                    <SearchBar
+                      value={searchBarValue}
+                      onChange={setSearchBarValue}
+                      onSearch={(keyword) => setSearchBarMessage(
+                        keyword ? `正在搜索“${keyword}”` : '请输入搜索内容',
+                      )}
+                      placeholder="搜索组件、页面或命令"
+                      aria-label="组件搜索"
+                    />
+                    <Typography variant="caption" color="muted">
+                      {searchBarMessage}
+                    </Typography>
+                  </div>
+                </DemoCard>
                 <DemoCard title="NumberInput" wide>
                   <div className="max-w-[420px]">
                     <FormField label="处置时限">
@@ -2342,6 +2615,19 @@ export default function App() {
                         max={120}
                         step={5}
                         suffix="分钟"
+                      />
+                    </FormField>
+                  </div>
+                </DemoCard>
+                <DemoCard title="OtpInput" wide>
+                  <div className="max-w-[420px]">
+                    <FormField
+                      label="短信验证码"
+                    >
+                      <OtpInput
+                        value={otpValue}
+                        onChange={setOtpValue}
+                        aria-label="短信验证码"
                       />
                     </FormField>
                   </div>
@@ -2621,6 +2907,44 @@ export default function App() {
                       ]}
                     />
                   </div>
+                </DemoCard>
+                <DemoCard title="Carousel" wide>
+                  <Carousel
+                    height={240}
+                    className="mx-auto w-full max-w-[640px]"
+                    items={[
+                      {
+                        id: 'mobile',
+                        ariaLabel: '移动体验升级',
+                        content: (
+                          <div className="flex h-full flex-col justify-end bg-gradient-to-br from-indigo-600 to-violet-500 p-7 pb-12 text-white pad:px-16 l:px-16">
+                            <strong className="text-[22px] font-semibold">移动体验升级</strong>
+                            <span className="mt-1 text-[14px] text-white/80">触摸滑动、键盘与按钮导航。</span>
+                          </div>
+                        ),
+                      },
+                      {
+                        id: 'motion',
+                        ariaLabel: '统一交互节奏',
+                        content: (
+                          <div className="flex h-full flex-col justify-end bg-gradient-to-br from-cyan-600 to-blue-500 p-7 pb-12 text-white pad:px-16 l:px-16">
+                            <strong className="text-[22px] font-semibold">统一交互节奏</strong>
+                            <span className="mt-1 text-[14px] text-white/80">循环、指示点和自动播放均可配置。</span>
+                          </div>
+                        ),
+                      },
+                      {
+                        id: 'content',
+                        ariaLabel: '承载任意内容',
+                        content: (
+                          <div className="flex h-full flex-col justify-end bg-gradient-to-br from-emerald-600 to-teal-500 p-7 pb-12 text-white pad:px-16 l:px-16">
+                            <strong className="text-[22px] font-semibold">承载任意内容</strong>
+                            <span className="mt-1 text-[14px] text-white/80">图片、卡片和操作都可以自由组合。</span>
+                          </div>
+                        ),
+                      },
+                    ]}
+                  />
                 </DemoCard>
                 <DemoCard title="ScrollToEdge" wide>
                   <div className="isolate relative mx-auto w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
@@ -2920,6 +3244,82 @@ export default function App() {
                       meta={<Badge size="sm" variant="success">已完成</Badge>}
                     />
                   </List>
+                </DemoCard>
+                <DemoCard title="VirtualList" wide>
+                  <div className="space-y-3">
+                    <Typography variant="caption" color="muted">
+                      10,000 条记录，仅渲染可见区域
+                    </Typography>
+                    <VirtualList
+                      aria-label="运行记录"
+                      items={virtualListItems}
+                      itemSize={60}
+                      height={320}
+                      overscan={4}
+                      getItemKey={(item) => item.id}
+                      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
+                      itemClassName="border-b border-[var(--lumen-color-surface-muted)]"
+                      renderItem={(item) => (
+                        <div className="flex h-full min-w-0 items-center gap-3 px-4">
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-[var(--lumen-color-primary-soft)] text-[12px] font-medium text-[var(--lumen-color-primary)]">
+                            {item.id}
+                          </span>
+                          <span className="min-w-0">
+                            <strong className="block truncate text-[14px] font-medium text-[var(--lumen-color-text)]">
+                              {item.title}
+                            </strong>
+                            <span className="block truncate text-[12px] text-[var(--lumen-color-text-muted)]">
+                              {item.description}
+                            </span>
+                          </span>
+                        </div>
+                      )}
+                    />
+                  </div>
+                </DemoCard>
+                <DemoCard title="SwipeActions" wide>
+                  <div className="mx-auto w-full max-w-[420px]">
+                    <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
+                      <SwipeActions
+                        startActions={[
+                          {
+                            key: 'archive',
+                            label: '归档',
+                            icon: <Archive size={18} />,
+                            tone: 'success',
+                            onClick: () => setSwipeActionMessage('事件已归档'),
+                          },
+                        ]}
+                        endActions={[
+                          {
+                            key: 'delete',
+                            label: '删除',
+                            icon: <Trash2 size={18} />,
+                            tone: 'danger',
+                            onClick: () => setSwipeActionMessage('事件已删除'),
+                          },
+                        ]}
+                        fullSwipe
+                      >
+                        <div className="flex min-h-18 items-center gap-3 px-4 py-3">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger)]">
+                            <AlertTriangle size={18} />
+                          </span>
+                          <span className="min-w-0">
+                            <strong className="block text-[14px] font-medium text-[var(--lumen-color-text)]">
+                              主线异常停车
+                            </strong>
+                            <span className="mt-0.5 block text-[13px] text-[var(--lumen-color-text-muted)]">
+                              右滑归档，左滑删除
+                            </span>
+                          </span>
+                        </div>
+                      </SwipeActions>
+                    </div>
+                    <p className="mt-3 text-center text-[12px] text-[var(--lumen-color-text-muted)]">
+                      {swipeActionMessage}
+                    </p>
+                  </div>
                 </DemoCard>
                 <DemoCard title="Scrollbar" wide>
                   <div className="form-grid items-start">
