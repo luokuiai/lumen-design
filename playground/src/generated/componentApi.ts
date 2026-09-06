@@ -4950,6 +4950,104 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "SearchBar": [
+    {
+      "name": "value",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "受控模式下的搜索关键词。",
+      "descriptionEn": "Sets the current value in controlled mode.",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "defaultValue": "''",
+      "description": "非受控模式下的初始搜索关键词。",
+      "descriptionEn": "Sets the initial value in uncontrolled mode.",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "搜索关键词变化时触发。",
+      "descriptionEn": "Called when the value changes.",
+      "required": false
+    },
+    {
+      "name": "onSearch",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "提交搜索时触发。",
+      "descriptionEn": "Called when the search action occurs.",
+      "required": false
+    },
+    {
+      "name": "onClear",
+      "type": "() => void",
+      "defaultValue": "undefined",
+      "description": "清空搜索关键词时触发。",
+      "descriptionEn": "Called when the clear action occurs.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
+      "description": "搜索栏尺寸。",
+      "descriptionEn": "Sets the component size.",
+      "required": false
+    },
+    {
+      "name": "clearable",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否显示清空按钮。",
+      "descriptionEn": "Configures clearable.",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否处于加载状态。",
+      "descriptionEn": "Shows a loading state and prevents repeated actions.",
+      "required": false
+    },
+    {
+      "name": "prefix",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义前置内容；传入 null 可隐藏默认搜索图标。",
+      "descriptionEn": "Configures prefix.",
+      "required": false
+    },
+    {
+      "name": "suffix",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义后置内容。",
+      "descriptionEn": "Configures suffix.",
+      "required": false
+    },
+    {
+      "name": "inputClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "输入元素附加类名。",
+      "descriptionEn": "Configures input class name.",
+      "required": false
+    },
+    {
+      "name": "clearLabel",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "清空按钮的无障碍名称。",
+      "descriptionEn": "Configures clear label.",
+      "required": false
+    }
+  ],
   "DragHandle": [
     {
       "name": "axis",

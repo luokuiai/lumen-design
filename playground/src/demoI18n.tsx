@@ -1,6 +1,10 @@
 import { Children, cloneElement, isValidElement, type ReactElement, type ReactNode } from 'react';
 
 const demoTranslations: Record<string, string> = {
+  '输入关键词后按 Enter 搜索': 'Enter a keyword and press Enter to search',
+  '请输入搜索内容': 'Enter something to search',
+  '搜索组件、页面或命令': 'Search components, pages, or commands',
+  '组件搜索': 'Component search',
   '触摸滑动、键盘与按钮导航。': 'Swipe, keyboard, and button navigation.',
   '循环、指示点和自动播放均可配置。': 'Looping, indicators, and autoplay are configurable.',
   '图片、卡片和操作都可以自由组合。': 'Compose images, cards, and actions freely.',
