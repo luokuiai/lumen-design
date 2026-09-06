@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { cn } from './classNames';
 import {
   tabVariantClassNames,
@@ -23,6 +23,7 @@ export interface TabsProps<T extends string> {
   gridClassName?: string;
   itemClassName?: string;
   aside?: React.ReactNode;
+  idPrefix?: string;
 }
 
 export const Tabs = <T extends string>({
@@ -34,7 +35,10 @@ export const Tabs = <T extends string>({
   gridClassName,
   itemClassName = '',
   aside,
+  idPrefix,
 }: TabsProps<T>) => {
+  const tabListRef = useRef<HTMLDivElement>(null);
+  const activeTabRef = useRef<HTMLButtonElement>(null);
   const styles = tabVariantClassNames[variant];
   const resolvedGridClassName =
     gridClassName ??
@@ -42,10 +46,35 @@ export const Tabs = <T extends string>({
       ? 'grid grid-cols-1 gap-2 pad:grid-cols-2 l:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 xxxl:grid-cols-6'
       : 'flex items-center gap-2 overflow-x-auto overflow-y-hidden');
 
+  useEffect(() => {
+    const tabList = tabListRef.current;
+    const activeTab = activeTabRef.current;
+    if (!tabList || !activeTab) return;
+    if (tabList.scrollWidth <= tabList.clientWidth) return;
+
+    const listBounds = tabList.getBoundingClientRect();
+    const tabBounds = activeTab.getBoundingClientRect();
+    const edgePadding = 4;
+    let delta = 0;
+    if (tabBounds.left < listBounds.left + edgePadding) {
+      delta = tabBounds.left - listBounds.left - edgePadding;
+    } else if (tabBounds.right > listBounds.right - edgePadding) {
+      delta = tabBounds.right - listBounds.right + edgePadding;
+    }
+    if (delta === 0) return;
+
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    tabList.scrollTo({
+      left: tabList.scrollLeft + delta,
+      behavior: reducedMotion ? 'auto' : 'smooth',
+    });
+  }, [value]);
+
   return (
     <div data-ui="tabs-surface" className={cn(styles.container, className)}>
       <div className={cn('flex flex-col gap-3 pad:gap-4 l:flex-row l:items-center l:justify-between')}>
         <div
+          ref={tabListRef}
           role="tablist"
           data-testid="tabs-grid"
           className={cn(resolvedGridClassName, aside ? 'min-w-0 flex-1' : '')}
@@ -56,7 +85,10 @@ export const Tabs = <T extends string>({
             return (
               <button
                 key={option.value}
+                ref={active ? activeTabRef : undefined}
+                id={idPrefix ? `${idPrefix}-tab-${option.value}` : undefined}
                 role="tab"
+                aria-controls={idPrefix ? `${idPrefix}-panel-${option.value}` : undefined}
                 type="button"
                 aria-selected={active}
                 aria-disabled={option.disabled || undefined}

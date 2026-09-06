@@ -54,6 +54,7 @@ export * from './components/Steps';
 export * from './components/Switch';
 export * from './components/Spinner';
 export * from './components/Tabs';
+export * from './components/TabView';
 export * from './components/Textarea';
 export * from './components/TimePicker';
 export * from './components/Timeline';

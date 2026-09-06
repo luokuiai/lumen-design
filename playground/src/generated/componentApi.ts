@@ -2300,6 +2300,96 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "TabView": [
+    {
+      "name": "value",
+      "type": "T",
+      "defaultValue": "-",
+      "description": "受控模式下的当前值。",
+      "descriptionEn": "Sets the current value in controlled mode.",
+      "required": true
+    },
+    {
+      "name": "items",
+      "type": "readonly TabViewItem<T>[]",
+      "defaultValue": "-",
+      "description": "定义组件渲染的数据项。",
+      "descriptionEn": "Defines the data items rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: T) => void",
+      "defaultValue": "-",
+      "description": "值发生变化时触发。",
+      "descriptionEn": "Called when the value changes.",
+      "required": true
+    },
+    {
+      "name": "swipeable",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "设置 swipeable。",
+      "descriptionEn": "Configures swipeable.",
+      "required": false
+    },
+    {
+      "name": "swipeThreshold",
+      "type": "number",
+      "defaultValue": "48",
+      "description": "设置 swipeThreshold。",
+      "descriptionEn": "Configures swipe threshold.",
+      "required": false
+    },
+    {
+      "name": "velocityThreshold",
+      "type": "number",
+      "defaultValue": "0.45",
+      "description": "设置 velocityThreshold。",
+      "descriptionEn": "Configures velocity threshold.",
+      "required": false
+    },
+    {
+      "name": "edgeSwipeWidth",
+      "type": "number",
+      "defaultValue": "20",
+      "description": "设置 edgeSwipeWidth。",
+      "descriptionEn": "Configures edge swipe width.",
+      "required": false
+    },
+    {
+      "name": "idPrefix",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 idPrefix。",
+      "descriptionEn": "Configures id prefix.",
+      "required": false
+    },
+    {
+      "name": "trackClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 trackClassName。",
+      "descriptionEn": "Configures track class name.",
+      "required": false
+    },
+    {
+      "name": "panelClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 panelClassName。",
+      "descriptionEn": "Configures panel class name.",
+      "required": false
+    },
+    {
+      "name": "swipeIgnoreSelector",
+      "type": "string",
+      "defaultValue": "'a, button, input, select, textarea, [contenteditable=\"true\"], [data-tab-view-swipe-ignore]'",
+      "description": "设置 swipeIgnoreSelector。",
+      "descriptionEn": "Configures swipe ignore selector.",
+      "required": false
+    }
+  ],
   "Divider": [
     {
       "name": "orientation",
@@ -3837,6 +3927,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "设置 aside。",
       "descriptionEn": "Configures aside.",
+      "required": false
+    },
+    {
+      "name": "idPrefix",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 idPrefix。",
+      "descriptionEn": "Configures id prefix.",
       "required": false
     }
   ],

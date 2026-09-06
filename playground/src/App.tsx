@@ -98,6 +98,7 @@ import {
   Steps,
   Switch,
   Tabs,
+  TabView,
   Textarea,
   TimePicker,
   Timeline,
@@ -354,7 +355,7 @@ const galleryCategories: GalleryCategory[] = [
       demo('BottomNavigation', 'navigation', 'BottomNavigation, Typography', '    <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">\n        <Typography variant="h3">{value}</Typography>\n        <Typography variant="caption" color="muted">当前底部导航目标</Typography>\n      </div>\n      <BottomNavigation\n        position="absolute"\n        value={value}\n        onChange={setValue}\n        items={[\n          { value: \'home\', label: \'首页\', icon: Star },\n          { value: \'schedule\', label: \'日程\', icon: CalendarDays },\n          { value: \'messages\', label: \'消息\', icon: Bell, badge: 3, badgeLabel: \'3 条未读消息\' },\n          { value: \'profile\', label: \'我的\', icon: UserRound },\n        ]}\n      />\n    </div>', 'Bell, CalendarDays, Star, UserRound', "const [value, setValue] = useState('home');"),
       demo('ScrollToEdge', 'navigation', 'ScrollToEdge', '    <ScrollToEdge direction="top" threshold={240} />'),
       demo('Pagination', 'data', 'Pagination', '    <Pagination currentPage={1} totalPages={5} onPageChange={setPage} />'),
-      demo('Tabs', 'navigation', 'Tabs', '    <Tabs\n      value="overview"\n      options={[{ value: \'overview\', label: \'总览\' }]}\n      onChange={() => undefined}\n    />'),
+      demo('Tabs', 'navigation', 'Tabs, TabView', '    <div>\n      <Tabs\n        value={value}\n        idPrefix="account-tabs"\n        options={[\n          { value: \'overview\', label: \'总览\' },\n          { value: \'activity\', label: \'动态\' },\n        ]}\n        onChange={setValue}\n      />\n      <TabView\n        value={value}\n        idPrefix="account-tabs"\n        items={[\n          { value: \'overview\', content: \'总览内容\' },\n          { value: \'activity\', content: \'动态内容\' },\n        ]}\n        onChange={setValue}\n        swipeable\n      />\n    </div>', undefined, "const [value, setValue] = useState('overview');", ['Tabs'], ['Tabs', 'TabView']),
       demo('Steps', 'navigation', 'Steps', '    <Steps current={1} items={[{ title: \'提交\' }, { title: \'完成\' }]} />'),
     ],
   },
@@ -522,6 +523,7 @@ const zhDemoNames: Record<string, string> = {
   BottomNavigation: '底部导航',
   Pagination: '分页',
   Tabs: '标签页',
+  TabView: '标签视图',
   Steps: '步骤条',
   Badge: '徽标',
   Avatar: '头像',
@@ -2653,16 +2655,66 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="Tabs" wide>
-                  <Tabs
-                    value={tab}
-                    onChange={setTab}
-                    options={[
-                      { value: 'overview', label: '总览', count: 12, icon: Bell },
-                      { value: 'usage', label: '使用', count: 8, icon: Check },
-                      { value: 'tokens', label: 'Tokens', count: 32, icon: Settings },
-                    ]}
-                    aside={<Button size="sm" variant="secondary">导出</Button>}
-                  />
+                  <div className="mx-auto w-full max-w-[480px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
+                    <Tabs
+                      value={tab}
+                      onChange={setTab}
+                      idPrefix="mobile-tab-view"
+                      options={[
+                        { value: 'overview', label: '总览', count: 12, icon: Bell },
+                        { value: 'usage', label: '使用', count: 8, icon: Check },
+                        { value: 'tokens', label: 'Tokens', count: 32, icon: Settings },
+                      ]}
+                      className="px-4 pt-2"
+                      aside={<Button size="sm" variant="secondary">导出</Button>}
+                    />
+                    <TabView
+                      value={tab}
+                      onChange={setTab}
+                      idPrefix="mobile-tab-view"
+                      swipeable
+                      className="border-t border-[var(--lumen-color-divider)]"
+                      panelClassName="min-h-52 p-5"
+                      items={[
+                        {
+                          value: 'overview',
+                          content: (
+                            <div>
+                              <Typography variant="h3">运营总览</Typography>
+                              <Typography variant="body" color="muted" className="mt-2">
+                                在移动端向左滑动，直接切换到下一个可用视图。
+                              </Typography>
+                            </div>
+                          ),
+                        },
+                        {
+                          value: 'usage',
+                          content: (
+                            <div>
+                              <Typography variant="h3">使用情况</Typography>
+                              <Typography variant="body" color="muted" className="mt-2">
+                                继续左右滑动，可在相邻视图之间自然切换。
+                              </Typography>
+                            </div>
+                          ),
+                        },
+                        {
+                          value: 'tokens',
+                          content: (
+                            <div>
+                              <Typography variant="h3">设计令牌</Typography>
+                              <Typography variant="body" color="muted" className="mt-2">
+                                向右滑动可返回上一个视图。
+                              </Typography>
+                              <Button className="mt-5" size="sm" variant="secondary">
+                                面板内按钮
+                              </Button>
+                            </div>
+                          ),
+                        },
+                      ]}
+                    />
+                  </div>
                 </DemoCard>
                 <DemoCard title="DropdownMenu">
                   <div className="stack">

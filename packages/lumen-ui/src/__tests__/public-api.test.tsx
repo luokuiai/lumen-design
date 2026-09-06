@@ -50,6 +50,7 @@ describe('public API', () => {
     expect(Lumen.Skeleton).toBeTypeOf('object');
     expect(Lumen.Spinner).toBeTypeOf('object');
     expect(Lumen.Steps).toBeTypeOf('object');
+    expect(Lumen.TabView).toBeTypeOf('function');
     expect(Lumen.Chip).toBeTypeOf('function');
     expect(Lumen.CommandPalette).toBeTypeOf('function');
     expect('Tag' in Lumen).toBe(false);
