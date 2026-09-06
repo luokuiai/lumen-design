@@ -4510,6 +4510,136 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "OtpInput": [
+    {
+      "name": "value",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "受控模式下的验证码值。",
+      "descriptionEn": "Sets the current value in controlled mode.",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "defaultValue": "''",
+      "description": "非受控模式下的初始验证码。",
+      "descriptionEn": "Sets the initial value in uncontrolled mode.",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "验证码变化时触发。",
+      "descriptionEn": "Called when the value changes.",
+      "required": false
+    },
+    {
+      "name": "onComplete",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "所有输入格填写完成时触发。",
+      "descriptionEn": "Called when the complete action occurs.",
+      "required": false
+    },
+    {
+      "name": "length",
+      "type": "number",
+      "defaultValue": "6",
+      "description": "验证码位数。",
+      "descriptionEn": "Configures length.",
+      "required": false
+    },
+    {
+      "name": "type",
+      "type": "\"text\" | \"numeric\"",
+      "defaultValue": "'numeric'",
+      "description": "允许输入数字或字母数字。",
+      "descriptionEn": "Configures type.",
+      "required": false
+    },
+    {
+      "name": "mask",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否隐藏每一位验证码。",
+      "descriptionEn": "Configures mask.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否禁用全部输入格。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否将全部输入格设为只读。",
+      "descriptionEn": "Configures read only.",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否显示错误状态。",
+      "descriptionEn": "Configures invalid.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
+      "description": "输入格尺寸。",
+      "descriptionEn": "Sets the component size.",
+      "required": false
+    },
+    {
+      "name": "autoFocus",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否在挂载后聚焦第一格。",
+      "descriptionEn": "Configures auto focus.",
+      "required": false
+    },
+    {
+      "name": "autoComplete",
+      "type": "string",
+      "defaultValue": "'one-time-code'",
+      "description": "第一格使用的自动填充提示。",
+      "descriptionEn": "Configures auto complete.",
+      "required": false
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "表单提交字段名称。",
+      "descriptionEn": "Sets the form control name.",
+      "required": false
+    },
+    {
+      "name": "inputClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "每个输入格的附加类名。",
+      "descriptionEn": "Configures input class name.",
+      "required": false
+    },
+    {
+      "name": "getInputLabel",
+      "type": "(index: number, length: number) => string",
+      "defaultValue": "(index, total) => `Digit ${index + 1} of ${total}`",
+      "description": "自定义单个输入格的无障碍标签。",
+      "descriptionEn": "Configures get input label.",
+      "required": false
+    }
+  ],
   "Rating": [
     {
       "name": "value",

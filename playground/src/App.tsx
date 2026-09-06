@@ -80,6 +80,7 @@ import {
   LumenProvider,
   Modal,
   NumberInput,
+  OtpInput,
   Pagination,
   Popover,
   Progress,
@@ -238,7 +239,7 @@ type SafetyEvent = {
 const renderSections: Section[] = [
   { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button Badge Chip Avatar Tooltip', icon: Plus },
-  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input NumberInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
+  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
   { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
@@ -326,6 +327,7 @@ const galleryCategories: GalleryCategory[] = [
     demos: [
       demo('Input / FormField', 'forms', 'FormField, Input', '    <FormField label="项目名称" inputId="project-name">\n      {(props) => <Input {...props} />}\n    </FormField>', undefined, undefined, ['Input + FormField']),
       demo('NumberInput', 'forms', 'FormField, NumberInput', '    <FormField label="处置时限">\n      <NumberInput defaultValue={30} min={5} max={120} suffix="分钟" />\n    </FormField>'),
+      demo('OtpInput', 'forms', 'FormField, OtpInput', '    <FormField label="短信验证码">\n      <OtpInput value={value} onChange={setValue} />\n    </FormField>', undefined, "const [value, setValue] = useState('');"),
       demo('Textarea', 'forms', 'FormField, Textarea', '    <FormField label="备注">\n      <Textarea value={value} onChange={setValue} maxLength={200} showCount />\n    </FormField>'),
       demo('Checkbox', 'forms', 'Checkbox', '    <div className="flex items-center gap-5">\n      <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />\n      <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />\n      <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />\n    </div>'),
       demo('Radio', 'forms', 'Radio, RadioGroup', '    <div className="space-y-4">\n      <div className="flex items-center gap-5">\n        <Radio size="sm" checked label="Small" />\n        <Radio size="md" checked label="Medium" />\n        <Radio size="lg" checked label="Large" />\n      </div>\n      <RadioGroup size="md" value={value} onChange={setValue} options={options} />\n    </div>'),
@@ -503,6 +505,7 @@ const zhDemoNames: Record<string, string> = {
   DropdownMenu: '下拉菜单',
   'Input / FormField': '输入框 / 表单字段',
   NumberInput: '数字输入框',
+  OtpInput: '验证码输入框',
   Textarea: '多行文本框',
   Checkbox: '复选框',
   Radio: '单选框',
@@ -1361,6 +1364,7 @@ export default function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
   const [meetingName, setMeetingName] = useState('项目周会');
+  const [otpValue, setOtpValue] = useState('');
   const [textareaText, setTextareaText] = useState('记录评审结论和后续动作。');
   const [checked, setChecked] = useState(true);
   const [enabled, setEnabled] = useState(true);
@@ -2342,6 +2346,20 @@ export default function App() {
                         max={120}
                         step={5}
                         suffix="分钟"
+                      />
+                    </FormField>
+                  </div>
+                </DemoCard>
+                <DemoCard title="OtpInput" wide>
+                  <div className="max-w-[420px]">
+                    <FormField
+                      label="短信验证码"
+                      hint={otpValue.length === 6 ? '验证码已填写完整' : '支持自动填充和整串粘贴'}
+                    >
+                      <OtpInput
+                        value={otpValue}
+                        onChange={setOtpValue}
+                        aria-label="短信验证码"
                       />
                     </FormField>
                   </div>
