@@ -1872,6 +1872,104 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "Watermark": [
+    {
+      "name": "content",
+      "type": "string | string[]",
+      "defaultValue": "undefined",
+      "description": "设置 content。",
+      "descriptionEn": "Configures content.",
+      "required": false
+    },
+    {
+      "name": "image",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 image。",
+      "descriptionEn": "Configures image.",
+      "required": false
+    },
+    {
+      "name": "rotate",
+      "type": "number",
+      "defaultValue": "-22",
+      "description": "设置 rotate。",
+      "descriptionEn": "Configures rotate.",
+      "required": false
+    },
+    {
+      "name": "opacity",
+      "type": "number",
+      "defaultValue": "0.12",
+      "description": "设置 opacity。",
+      "descriptionEn": "Configures opacity.",
+      "required": false
+    },
+    {
+      "name": "gap",
+      "type": "[number, number]",
+      "defaultValue": "[100, 100]",
+      "description": "设置 gap。",
+      "descriptionEn": "Configures gap.",
+      "required": false
+    },
+    {
+      "name": "offset",
+      "type": "[number, number]",
+      "defaultValue": "[0, 0]",
+      "description": "设置 offset。",
+      "descriptionEn": "Configures offset.",
+      "required": false
+    },
+    {
+      "name": "markSize",
+      "type": "[number, number]",
+      "defaultValue": "[160, 64]",
+      "description": "设置 markSize。",
+      "descriptionEn": "Configures mark size.",
+      "required": false
+    },
+    {
+      "name": "font",
+      "type": "WatermarkFont",
+      "defaultValue": "{}",
+      "description": "设置 font。",
+      "descriptionEn": "Configures font.",
+      "required": false
+    },
+    {
+      "name": "zIndex",
+      "type": "number",
+      "defaultValue": "9",
+      "description": "设置 zIndex。",
+      "descriptionEn": "Configures z index.",
+      "required": false
+    },
+    {
+      "name": "fullPage",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "设置 fullPage。",
+      "descriptionEn": "Configures full page.",
+      "required": false
+    },
+    {
+      "name": "overlayClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 overlayClassName。",
+      "descriptionEn": "Configures overlay class name.",
+      "required": false
+    },
+    {
+      "name": "overlayStyle",
+      "type": "React.CSSProperties",
+      "defaultValue": "undefined",
+      "description": "设置 overlayStyle。",
+      "descriptionEn": "Configures overlay style.",
+      "required": false
+    }
+  ],
   "DataTable": [
     {
       "name": "columns",
