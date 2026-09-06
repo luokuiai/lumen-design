@@ -146,6 +146,11 @@ export interface LumenLocale {
     increment: string;
     decrement: string;
     dragHandle?: string;
+    carousel?: string;
+    carouselPrevious?: string;
+    carouselNext?: string;
+    carouselPagination?: string;
+    carouselSlide?: (current: number, total: number) => string;
     scrollToTop?: string;
     scrollToBottom?: string;
   };
@@ -205,6 +210,8 @@ export const zhCN: LumenLocale = {
   accessibility: {
     alertClose: '关闭提示', chipRemove: '移除标签', empty: '暂无数据', fab: '浮动操作', loading: '加载中',
     passwordShow: '显示密码', passwordHide: '隐藏密码', rating: '评分', increment: '增加', decrement: '减少', dragHandle: '拖动排序',
+    carousel: '轮播图', carouselPrevious: '上一张', carouselNext: '下一张', carouselPagination: '选择轮播项',
+    carouselSlide: (current, total) => `第 ${current} 张，共 ${total} 张`,
     scrollToTop: '回到顶部', scrollToBottom: '滚动到底部',
   },
   confirmDialog: { confirm: '确认', cancel: '取消' },
@@ -262,6 +269,8 @@ export const enUS: LumenLocale = {
   accessibility: {
     alertClose: 'Close alert', chipRemove: 'Remove tag', empty: 'No data', fab: 'Floating action', loading: 'Loading',
     passwordShow: 'Show password', passwordHide: 'Hide password', rating: 'Rating', increment: 'Increase', decrement: 'Decrease', dragHandle: 'Drag to reorder',
+    carousel: 'Carousel', carouselPrevious: 'Previous slide', carouselNext: 'Next slide', carouselPagination: 'Choose slide',
+    carouselSlide: (current, total) => `Slide ${current} of ${total}`,
     scrollToTop: 'Scroll to top', scrollToBottom: 'Scroll to bottom',
   },
   confirmDialog: { confirm: 'Confirm', cancel: 'Cancel' },

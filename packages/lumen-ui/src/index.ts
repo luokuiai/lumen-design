@@ -14,6 +14,7 @@ export * from './components/breadcrumb/Breadcrumb';
 export * from './components/Button';
 export * from './components/calendar/Calendar';
 export * from './components/Card';
+export * from './components/carousel/Carousel';
 export * from './components/cascader/Cascader';
 export * from './components/Checkbox';
 export * from './components/Chip';
