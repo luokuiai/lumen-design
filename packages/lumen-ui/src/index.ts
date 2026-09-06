@@ -39,6 +39,7 @@ export * from './components/LumenProvider';
 export * from './components/Modal';
 export * from './components/number-input/NumberInput';
 export * from './components/otp-input/OtpInput';
+export * from './components/search-bar/SearchBar';
 export * from './components/Pagination';
 export * from './components/Popover';
 export * from './components/Progress';

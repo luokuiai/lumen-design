@@ -38,6 +38,7 @@ describe('public API', () => {
     expect(Lumen.Modal).toBeTypeOf('function');
     expect(Lumen.NumberInput).toBeTypeOf('object');
     expect(Lumen.OtpInput).toBeTypeOf('object');
+    expect(Lumen.SearchBar).toBeTypeOf('object');
     expect(Lumen.SwipeActions).toBeTypeOf('object');
     expect(Lumen.DragHandle).toBeTypeOf('object');
     expect(Lumen.Pagination).toBeTypeOf('function');
