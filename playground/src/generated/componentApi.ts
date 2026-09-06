@@ -5278,6 +5278,168 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "Carousel": [
+    {
+      "name": "items",
+      "type": "readonly CarouselItem[]",
+      "defaultValue": "-",
+      "description": "轮播项数据。",
+      "descriptionEn": "Defines the data items rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "受控模式下当前轮播项标识。",
+      "descriptionEn": "Sets the current value in controlled mode.",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "非受控模式下的默认轮播项标识。",
+      "descriptionEn": "Sets the initial value in uncontrolled mode.",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string, index: number) => void",
+      "defaultValue": "undefined",
+      "description": "当前轮播项变化时触发。",
+      "descriptionEn": "Called when the value changes.",
+      "required": false
+    },
+    {
+      "name": "loop",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否循环轮播。",
+      "descriptionEn": "Configures loop.",
+      "required": false
+    },
+    {
+      "name": "showArrows",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否显示前后导航按钮。",
+      "descriptionEn": "Controls whether arrows is shown.",
+      "required": false
+    },
+    {
+      "name": "showIndicators",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否显示底部指示点。",
+      "descriptionEn": "Controls whether indicators is shown.",
+      "required": false
+    },
+    {
+      "name": "autoplay",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否自动轮播。",
+      "descriptionEn": "Configures autoplay.",
+      "required": false
+    },
+    {
+      "name": "interval",
+      "type": "number",
+      "defaultValue": "5000",
+      "description": "自动轮播间隔，单位毫秒。",
+      "descriptionEn": "Configures interval.",
+      "required": false
+    },
+    {
+      "name": "pauseOnHover",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "鼠标悬停时是否暂停自动轮播。",
+      "descriptionEn": "Configures pause on hover.",
+      "required": false
+    },
+    {
+      "name": "swipeable",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "是否允许触摸手势切换。",
+      "descriptionEn": "Configures swipeable.",
+      "required": false
+    },
+    {
+      "name": "swipeThreshold",
+      "type": "number",
+      "defaultValue": "48",
+      "description": "触发切换所需的最小滑动距离。",
+      "descriptionEn": "Configures swipe threshold.",
+      "required": false
+    },
+    {
+      "name": "velocityThreshold",
+      "type": "number",
+      "defaultValue": "0.45",
+      "description": "触发切换的最小滑动速度。",
+      "descriptionEn": "Configures velocity threshold.",
+      "required": false
+    },
+    {
+      "name": "edgeSwipeWidth",
+      "type": "number",
+      "defaultValue": "20",
+      "description": "忽略屏幕边缘手势的宽度。",
+      "descriptionEn": "Configures edge swipe width.",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "string | number",
+      "defaultValue": "280",
+      "description": "轮播可视区域高度。",
+      "descriptionEn": "Configures height.",
+      "required": false
+    },
+    {
+      "name": "previousIcon",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义上一项图标。",
+      "descriptionEn": "Configures previous icon.",
+      "required": false
+    },
+    {
+      "name": "nextIcon",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义下一项图标。",
+      "descriptionEn": "Configures next icon.",
+      "required": false
+    },
+    {
+      "name": "ariaLabel",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "自定义无障碍名称。",
+      "descriptionEn": "Sets the accessible name of the component.",
+      "required": false
+    },
+    {
+      "name": "itemClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "轮播项附加类名。",
+      "descriptionEn": "Configures item class name.",
+      "required": false
+    },
+    {
+      "name": "indicatorsClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "指示点容器附加类名。",
+      "descriptionEn": "Configures indicators class name.",
+      "required": false
+    }
+  ],
   "Toast": [
     {
       "name": "show",

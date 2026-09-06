@@ -76,6 +76,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Carousel,
   Cascader,
   Checkbox,
   Chip,
@@ -264,7 +265,7 @@ const renderSections: Section[] = [
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
-  { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
+  { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Carousel Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
   { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、命令面板、确认和消息提示。', keywords: 'Modal Drawer CommandPalette ConfirmDialog Toast', icon: Bell },
   { id: 'feedback', title: 'Feedback', description: '页面提示、加载、进度、空状态、上传和骨架屏。', keywords: 'Alert Spinner Progress Empty FileUpload Skeleton SegmentedControl', icon: Settings },
 ];
@@ -372,12 +373,13 @@ const galleryCategories: GalleryCategory[] = [
     id: 'navigation',
     title: 'Navigation',
     description: '应用级与页面级导航结构。',
-    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Tabs Steps Pagination ScrollToEdge',
+    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Carousel Tabs Steps Pagination ScrollToEdge',
     icon: MoreHorizontal,
     demos: [
       demo('Breadcrumb', 'navigation', 'Breadcrumb', '    <Breadcrumb items={[\n      { label: \'首页\', href: \'/\' },\n      { label: \'订单详情\' },\n    ]} />'),
       demo('AppBar', 'navigation', 'AppBar, Button, Typography', '    <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <AppBar\n        position="absolute"\n        title="订单详情"\n        leading={(\n          <Button iconOnly variant="ghost" aria-label="返回" icon={<ArrowLeft size={19} />} />\n        )}\n        actions={(\n          <Button iconOnly variant="ghost" aria-label="更多操作" icon={<MoreHorizontal size={19} />} />\n        )}\n      />\n      <div className="px-5 pt-20">\n        <Typography variant="h3">#LM-20260904</Typography>\n        <Typography variant="caption" color="muted">等待审核</Typography>\n      </div>\n    </div>', 'ArrowLeft, MoreHorizontal'),
       demo('BottomNavigation', 'navigation', 'BottomNavigation, Typography', '    <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">\n        <Typography variant="h3">{value}</Typography>\n        <Typography variant="caption" color="muted">当前底部导航目标</Typography>\n      </div>\n      <BottomNavigation\n        position="absolute"\n        value={value}\n        onChange={setValue}\n        items={[\n          { value: \'home\', label: \'首页\', icon: Star },\n          { value: \'schedule\', label: \'日程\', icon: CalendarDays },\n          { value: \'messages\', label: \'消息\', icon: Bell, badge: 3, badgeLabel: \'3 条未读消息\' },\n          { value: \'profile\', label: \'我的\', icon: UserRound },\n        ]}\n      />\n    </div>', 'Bell, CalendarDays, Star, UserRound', "const [value, setValue] = useState('home');"),
+      demo('Carousel', 'navigation', 'Carousel', '    <Carousel\n      height={240}\n      items={[\n        { id: \'mobile\', content: <div className="p-8">移动体验升级</div> },\n        { id: \'motion\', content: <div className="p-8">统一交互节奏</div> },\n        { id: \'content\', content: <div className="p-8">承载任意内容</div> },\n      ]}\n    />'),
       demo('ScrollToEdge', 'navigation', 'ScrollToEdge', '    <ScrollToEdge direction="top" threshold={240} />'),
       demo('Pagination', 'data', 'Pagination', '    <Pagination currentPage={1} totalPages={5} onPageChange={setPage} />'),
       demo('Tabs', 'navigation', 'Tabs, TabView', '    <div>\n      <Tabs\n        value={value}\n        idPrefix="account-tabs"\n        options={[\n          { value: \'overview\', label: \'总览\' },\n          { value: \'activity\', label: \'动态\' },\n        ]}\n        onChange={setValue}\n      />\n      <TabView\n        value={value}\n        idPrefix="account-tabs"\n        items={[\n          { value: \'overview\', content: \'总览内容\' },\n          { value: \'activity\', content: \'动态内容\' },\n        ]}\n        onChange={setValue}\n        swipeable\n      />\n    </div>', undefined, "const [value, setValue] = useState('overview');", ['Tabs'], ['Tabs', 'TabView']),
@@ -549,6 +551,7 @@ const zhDemoNames: Record<string, string> = {
   Breadcrumb: '面包屑',
   AppBar: '应用栏',
   BottomNavigation: '底部导航',
+  Carousel: '轮播',
   Pagination: '分页',
   Tabs: '标签页',
   TabView: '标签视图',
@@ -2774,6 +2777,44 @@ export default function App() {
                       ]}
                     />
                   </div>
+                </DemoCard>
+                <DemoCard title="Carousel" wide>
+                  <Carousel
+                    height={240}
+                    className="mx-auto w-full max-w-[640px]"
+                    items={[
+                      {
+                        id: 'mobile',
+                        ariaLabel: '移动体验升级',
+                        content: (
+                          <div className="flex h-full flex-col justify-end bg-gradient-to-br from-indigo-600 to-violet-500 p-7 pb-12 text-white pad:px-16 l:px-16">
+                            <strong className="text-[22px] font-semibold">移动体验升级</strong>
+                            <span className="mt-1 text-[14px] text-white/80">触摸滑动、键盘与按钮导航。</span>
+                          </div>
+                        ),
+                      },
+                      {
+                        id: 'motion',
+                        ariaLabel: '统一交互节奏',
+                        content: (
+                          <div className="flex h-full flex-col justify-end bg-gradient-to-br from-cyan-600 to-blue-500 p-7 pb-12 text-white pad:px-16 l:px-16">
+                            <strong className="text-[22px] font-semibold">统一交互节奏</strong>
+                            <span className="mt-1 text-[14px] text-white/80">循环、指示点和自动播放均可配置。</span>
+                          </div>
+                        ),
+                      },
+                      {
+                        id: 'content',
+                        ariaLabel: '承载任意内容',
+                        content: (
+                          <div className="flex h-full flex-col justify-end bg-gradient-to-br from-emerald-600 to-teal-500 p-7 pb-12 text-white pad:px-16 l:px-16">
+                            <strong className="text-[22px] font-semibold">承载任意内容</strong>
+                            <span className="mt-1 text-[14px] text-white/80">图片、卡片和操作都可以自由组合。</span>
+                          </div>
+                        ),
+                      },
+                    ]}
+                  />
                 </DemoCard>
                 <DemoCard title="ScrollToEdge" wide>
                   <div className="isolate relative mx-auto w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">

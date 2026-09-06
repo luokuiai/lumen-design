@@ -16,6 +16,7 @@ describe('public API', () => {
     expect(Lumen.Button).toBeTypeOf('function');
     expect(Lumen.Calendar).toBeTypeOf('object');
     expect(Lumen.Card).toBeTypeOf('object');
+    expect(Lumen.Carousel).toBeTypeOf('object');
     expect(Lumen.Cascader).toBeTypeOf('function');
     expect(Lumen.CardHeader).toBeTypeOf('object');
     expect(Lumen.Collapse).toBeTypeOf('object');

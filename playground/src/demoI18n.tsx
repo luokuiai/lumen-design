@@ -1,6 +1,12 @@
 import { Children, cloneElement, isValidElement, type ReactElement, type ReactNode } from 'react';
 
 const demoTranslations: Record<string, string> = {
+  '触摸滑动、键盘与按钮导航。': 'Swipe, keyboard, and button navigation.',
+  '循环、指示点和自动播放均可配置。': 'Looping, indicators, and autoplay are configurable.',
+  '图片、卡片和操作都可以自由组合。': 'Compose images, cards, and actions freely.',
+  '移动体验升级': 'Elevated mobile experiences',
+  '统一交互节奏': 'Consistent interaction rhythm',
+  '承载任意内容': 'Any content supported',
   '最新一次同步完成于 10:32，当前路网数据正常。': 'The latest sync completed at 10:32. Current road network data is normal.',
   '浮动操作按钮用于突出当前页面最重要、最常用的单一操作，适合创建、编辑或快速添加。': 'Floating action buttons highlight the most important and frequent action on a page.',
   '当前筛选条件下没有安全事件记录。': 'No safety events match the current filters.',
