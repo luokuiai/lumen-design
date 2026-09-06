@@ -25,6 +25,7 @@ export * from './components/DateTimePicker';
 export * from './components/DataTable';
 export * from './components/Divider';
 export * from './components/Drawer';
+export * from './components/drag-handle/DragHandle';
 export * from './components/DropdownMenu';
 export * from './components/Empty';
 export * from './components/Fab';

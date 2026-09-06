@@ -145,6 +145,7 @@ export interface LumenLocale {
     rating: string;
     increment: string;
     decrement: string;
+    dragHandle?: string;
     scrollToTop?: string;
     scrollToBottom?: string;
   };
@@ -203,7 +204,7 @@ export const zhCN: LumenLocale = {
   toast: { success: '操作成功', info: '提示', warning: '请注意', error: '操作失败', close: '关闭消息提示' },
   accessibility: {
     alertClose: '关闭提示', chipRemove: '移除标签', empty: '暂无数据', fab: '浮动操作', loading: '加载中',
-    passwordShow: '显示密码', passwordHide: '隐藏密码', rating: '评分', increment: '增加', decrement: '减少',
+    passwordShow: '显示密码', passwordHide: '隐藏密码', rating: '评分', increment: '增加', decrement: '减少', dragHandle: '拖动排序',
     scrollToTop: '回到顶部', scrollToBottom: '滚动到底部',
   },
   confirmDialog: { confirm: '确认', cancel: '取消' },
@@ -260,7 +261,7 @@ export const enUS: LumenLocale = {
   toast: { success: 'Success', info: 'Notice', warning: 'Warning', error: 'Error', close: 'Close notification' },
   accessibility: {
     alertClose: 'Close alert', chipRemove: 'Remove tag', empty: 'No data', fab: 'Floating action', loading: 'Loading',
-    passwordShow: 'Show password', passwordHide: 'Hide password', rating: 'Rating', increment: 'Increase', decrement: 'Decrease',
+    passwordShow: 'Show password', passwordHide: 'Hide password', rating: 'Rating', increment: 'Increase', decrement: 'Decrease', dragHandle: 'Drag to reorder',
     scrollToTop: 'Scroll to top', scrollToBottom: 'Scroll to bottom',
   },
   confirmDialog: { confirm: 'Confirm', cancel: 'Cancel' },

@@ -8,6 +8,24 @@ import {
   useState,
 } from 'react';
 import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import {
   AlertTriangle,
   Archive,
   ArrowLeft,
@@ -69,6 +87,7 @@ import {
   DateTimePicker,
   DataTable,
   Divider,
+  DragHandle,
   Drawer,
   DropdownMenu,
   FileUpload,
@@ -241,7 +260,7 @@ type SafetyEvent = {
 
 const renderSections: Section[] = [
   { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
-  { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button Badge Chip Avatar Tooltip', icon: Plus },
+  { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button DragHandle Badge Chip Avatar Tooltip', icon: Plus },
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
@@ -304,10 +323,11 @@ const galleryCategories: GalleryCategory[] = [
     id: 'actions',
     title: 'Actions',
     description: '触发操作、工具组和页面主要行为。',
-    keywords: 'Button Fab Toolbar DropdownMenu',
+    keywords: 'Button DragHandle Fab Toolbar DropdownMenu',
     icon: Plus,
     demos: [
       demo('Button', 'buttons', 'Button', '    <Button variant="primary">保存</Button>'),
+      demo('DragHandle', 'buttons', 'DragHandle', '    <DragHandle />'),
       {
         ...demo('Fab', 'buttons', 'Fab', '    <Fab position="static" icon={<Plus size={18} />} aria-label="新建任务" />', 'Plus', undefined, ['Icon only', 'Extended', 'Expandable', 'Submenu']),
         codeByCardTitle: {
@@ -504,6 +524,7 @@ const zhDemoNames: Record<string, string> = {
   Typography: '排版',
   Locale: '国际化',
   Button: '按钮',
+  DragHandle: '拖拽手柄',
   Fab: '浮动操作按钮',
   Toolbar: '工具栏',
   DropdownMenu: '下拉菜单',
@@ -1010,6 +1031,111 @@ const getSafetyEventSortValue = (event: SafetyEvent, key: string) => {
   if (key === 'level') return { 高: 3, 中: 2, 低: 1 }[event.level];
   return event[key as keyof SafetyEvent];
 };
+
+const initialDragHandleItems = [
+  { id: 'overview', label: '运营总览', labelEn: 'Operations overview' },
+  { id: 'events', label: '实时事件', labelEn: 'Live events' },
+  { id: 'reports', label: '分析报表', labelEn: 'Analytics reports' },
+];
+
+type DragHandleItem = (typeof initialDragHandleItems)[number];
+
+function SortableDragHandleItem({
+  item,
+  locale,
+}: {
+  item: DragHandleItem;
+  locale: 'zh-CN' | 'en-US';
+}) {
+  const {
+    attributes,
+    isDragging,
+    listeners,
+    setActivatorNodeRef,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: item.id });
+  const label = locale === 'en-US' ? item.labelEn : item.label;
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`flex items-center gap-2 rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-3 py-2.5 ${isDragging ? 'opacity-30' : ''}`}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }}
+    >
+      <DragHandle
+        {...attributes}
+        {...listeners}
+        ref={setActivatorNodeRef}
+        size="md"
+        active={isDragging}
+        label={locale === 'en-US' ? `Drag ${label} to reorder` : `拖动${label}排序`}
+      />
+      <span className="text-[14px] text-[var(--lumen-color-text)]">{label}</span>
+    </div>
+  );
+}
+
+function DragHandleOverlay({ item, locale }: { item: DragHandleItem; locale: 'zh-CN' | 'en-US' }) {
+  const label = locale === 'en-US' ? item.labelEn : item.label;
+  return (
+    <div className="flex w-full items-center gap-2 rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-3 py-2.5 shadow-[var(--lumen-shadow-overlay)]">
+      <DragHandle size="md" active tabIndex={-1} />
+      <span className="text-[14px] text-[var(--lumen-color-text)]">{label}</span>
+    </div>
+  );
+}
+
+function DragHandleExample() {
+  const messages = useContext(PlaygroundMessagesContext);
+  const [items, setItems] = useState(initialDragHandleItems);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+  const activeItem = items.find((item) => item.id === activeId);
+
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
+    setActiveId(null);
+    if (!over || active.id === over.id) return;
+    setItems((current) => {
+      const oldIndex = current.findIndex((item) => item.id === active.id);
+      const newIndex = current.findIndex((item) => item.id === over.id);
+      return arrayMove(current, oldIndex, newIndex);
+    });
+  };
+
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={({ active }) => setActiveId(String(active.id))}
+      onDragCancel={() => setActiveId(null)}
+      onDragEnd={handleDragEnd}
+    >
+      <div className="mx-auto max-w-[420px] space-y-2">
+        <SortableContext items={items} strategy={verticalListSortingStrategy}>
+          {items.map((item) => (
+            <SortableDragHandleItem key={item.id} item={item} locale={messages.locale} />
+          ))}
+        </SortableContext>
+        <p className="pt-1 text-[12px] text-[var(--lumen-color-text-muted)]">
+          {messages.locale === 'en-US'
+            ? 'Drag the handle to reorder, or focus it and use the arrow keys.'
+            : '拖动手柄排序，也可聚焦后按上下方向键。'}
+        </p>
+      </div>
+      <DragOverlay dropAnimation={{ duration: 200, easing: 'ease' }}>
+        {activeItem ? <DragHandleOverlay item={activeItem} locale={messages.locale} /> : null}
+      </DragOverlay>
+    </DndContext>
+  );
+}
 
 function GallerySection({ section, children }: { section: Section; children: React.ReactNode }) {
   const activeDemo = useContext(ActiveDemoContext);
@@ -2192,6 +2318,9 @@ export default function App() {
                       <Button iconOnly aria-label="设置" icon={<Settings size={15} />} />
                     </Tooltip>
                   </div>
+                </DemoCard>
+                <DemoCard title="DragHandle" wide>
+                  <DragHandleExample />
                 </DemoCard>
                 <DemoCard title="Icon only" wide>
                   <div className="fab-example-row">

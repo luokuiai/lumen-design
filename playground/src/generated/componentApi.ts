@@ -4950,6 +4950,48 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "DragHandle": [
+    {
+      "name": "axis",
+      "type": "\"vertical\" | \"horizontal\" | \"both\"",
+      "defaultValue": "'vertical'",
+      "description": "拖拽排序的主要方向。",
+      "descriptionEn": "Configures axis.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
+      "description": "手柄尺寸。",
+      "descriptionEn": "Sets the component size.",
+      "required": false
+    },
+    {
+      "name": "active",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否正在拖动。",
+      "descriptionEn": "Controls whether the component is visible or enabled.",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义手柄图标。",
+      "descriptionEn": "Sets the component icon.",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "自定义无障碍名称。",
+      "descriptionEn": "Sets the visible label or title.",
+      "required": false
+    }
+  ],
   "PullToRefresh": [
     {
       "name": "onRefresh",
