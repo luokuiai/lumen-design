@@ -1,6 +1,6 @@
 {
   "name": "@luokuiai/lumen-ui",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-beta.1",
   "description": "Lumen UI React component library",
   "type": "module",
   "repository": {
