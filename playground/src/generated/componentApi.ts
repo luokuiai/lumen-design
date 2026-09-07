@@ -3784,6 +3784,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
   ],
   "FormField": [
     {
+      "name": "name",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置表单控件名称。",
+      "descriptionEn": "Sets the form control name.",
+      "required": false
+    },
+    {
       "name": "label",
       "type": "React.ReactNode",
       "defaultValue": "-",
@@ -3805,6 +3813,22 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "设置 error。",
       "descriptionEn": "Configures error.",
+      "required": false
+    },
+    {
+      "name": "helperText",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 helperText。",
+      "descriptionEn": "Configures helper text.",
+      "required": false
+    },
+    {
+      "name": "reserveMessageSpace",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "设置 reserveMessageSpace。",
+      "descriptionEn": "Configures reserve message space.",
       "required": false
     },
     {
@@ -6122,6 +6146,90 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "description": "设置消息显示时长，单位为毫秒。",
       "descriptionEn": "Sets the message duration in milliseconds.",
       "required": false
+    }
+  ],
+  "Form": [
+    {
+      "name": "values",
+      "type": "TValues",
+      "defaultValue": "-",
+      "description": "设置 values。",
+      "descriptionEn": "Configures values.",
+      "required": true
+    },
+    {
+      "name": "validate",
+      "type": "(values: TValues) => FormErrors<TValues>",
+      "defaultValue": "-",
+      "description": "设置 validate。",
+      "descriptionEn": "Configures validate.",
+      "required": true
+    },
+    {
+      "name": "onFinish",
+      "type": "(values: TValues) => void | Promise<void>",
+      "defaultValue": "-",
+      "description": "组件执行 Finish 对应操作时触发。",
+      "descriptionEn": "Called when the finish action occurs.",
+      "required": true
+    },
+    {
+      "name": "showErrors",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否显示 Errors。",
+      "descriptionEn": "Controls whether errors is shown.",
+      "required": false
+    },
+    {
+      "name": "onValidationFailed",
+      "type": "(errors: FormErrors<TValues>, values: TValues) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 ValidationFailed 对应操作时触发。",
+      "descriptionEn": "Called when the validation failed action occurs.",
+      "required": false
+    },
+    {
+      "name": "focusFirstError",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "设置 focusFirstError。",
+      "descriptionEn": "Configures focus first error.",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "React.ReactNode | ((state: FormRenderProps<TValues>) => React.ReactNode)",
+      "defaultValue": "-",
+      "description": "组件承载的子内容。",
+      "descriptionEn": "Sets the child content rendered by the component.",
+      "required": true
+    }
+  ],
+  "FormRender": [
+    {
+      "name": "errors",
+      "type": "Partial<Record<Extract<keyof TValues, string>, string>>",
+      "defaultValue": "-",
+      "description": "设置 errors。",
+      "descriptionEn": "Configures errors.",
+      "required": true
+    },
+    {
+      "name": "isSubmitting",
+      "type": "boolean",
+      "defaultValue": "-",
+      "description": "设置 isSubmitting。",
+      "descriptionEn": "Configures is submitting.",
+      "required": true
+    },
+    {
+      "name": "submitError",
+      "type": "unknown",
+      "defaultValue": "-",
+      "description": "设置 submitError。",
+      "descriptionEn": "Configures submit error.",
+      "required": true
     }
   ]
 };
