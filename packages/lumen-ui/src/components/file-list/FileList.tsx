@@ -52,7 +52,7 @@ export function FileListItem({
         className,
       )}
     >
-      <FileTypeIcon fileName={file.name} mimeType={file.type} size={density === 'compact' ? 'sm' : 'md'} />
+      <FileTypeIcon fileName={file.name} mimeType={file.type} size="md" />
       <span className="min-w-0 flex-1 text-left">
         <OverflowText text={file.name} wrap={wrapName} className="text-[14px] font-normal text-[var(--lumen-color-text)]" />
         {showSize && file.size !== undefined && Number.isFinite(file.size) && file.size >= 0 ? (
