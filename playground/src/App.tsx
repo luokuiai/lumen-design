@@ -3788,7 +3788,7 @@ export default function App() {
                 </div>
               </DemoCard>
               <DemoCard title="FileUpload">
-                <div className="w-full max-w-xl">
+                <div className="w-full">
                   <FileUpload
                     value={files}
                     onChange={setFiles}
@@ -3816,7 +3816,7 @@ export default function App() {
                 </div>
               </DemoCard>
               <DemoCard title="FileUpload Compact">
-                <div className="w-full max-w-sm">
+                <div className="w-full">
                   <FileUpload
                     density="compact"
                     value={compactFiles}

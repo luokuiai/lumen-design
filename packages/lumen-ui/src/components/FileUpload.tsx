@@ -263,7 +263,6 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
 
         {showFileList && value.length > 0 ? (
           <FileList
-            className="border-t border-[var(--lumen-color-border)] pt-2"
             items={value.map((file) => ({
               id: getFileKey(file), name: file.name, size: file.size,
               type: file.type, badge: getFileBadge?.(file),

@@ -54,9 +54,9 @@ export function FileListItem({
     >
       <FileTypeIcon fileName={file.name} mimeType={file.type} size={density === 'compact' ? 'sm' : 'md'} />
       <span className="min-w-0 flex-1 text-left">
-        <OverflowText text={file.name} wrap={wrapName} className="text-[13px] font-medium text-[var(--lumen-color-text)]" />
+        <OverflowText text={file.name} wrap={wrapName} className="text-[14px] font-normal text-[var(--lumen-color-text)]" />
         {showSize && file.size !== undefined && Number.isFinite(file.size) && file.size >= 0 ? (
-          <span className="mt-0.5 block text-[12px] text-[var(--lumen-color-text-placeholder)]">
+          <span className="mt-0.5 block text-[13px] text-[var(--lumen-color-text-placeholder)]">
             {formatBytes(file.size)}
           </span>
         ) : null}
