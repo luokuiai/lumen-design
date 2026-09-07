@@ -37,6 +37,27 @@ function fill() {
 }
 
 describe('Form', () => {
+  it('keeps the message area mounted across validation and reset inside Form', () => {
+    const { container } = render(<Example />);
+    const areas = [...container.querySelectorAll('[data-lumen-form-field-message]')];
+    expect(areas).toHaveLength(2);
+    expect(areas.every((area) => area.textContent === '')).toBe(true);
+    fireEvent.click(screen.getByText('Submit'));
+    expect([...container.querySelectorAll('[data-lumen-form-field-message]')]).toEqual(areas);
+    expect(areas[0]).toHaveTextContent('Name is required');
+    fireEvent.click(screen.getByText('Reset'));
+    expect([...container.querySelectorAll('[data-lumen-form-field-message]')]).toEqual(areas);
+    expect(areas.every((area) => area.textContent === '')).toBe(true);
+  });
+
+  it('allows compact message layout and leaves standalone fields compact by default', () => {
+    const field = <FormField name="name" label="Name" reserveMessageSpace={false}>{(props) => <Input {...props} />}</FormField>;
+    const { container, rerender } = render(<Form values={initialValues} validate={validate} onFinish={() => undefined}>{field}</Form>);
+    expect(container.querySelector('[data-lumen-form-field-message]')).toBeNull();
+    rerender(<FormField label="Standalone"><Input /></FormField>);
+    expect(container.querySelector('[data-lumen-form-field-message]')).toBeNull();
+  });
+
   it('reports hidden errors to the caller only on failed submission', () => {
     const onValidationFailed = vi.fn();
     const onFinish = vi.fn();

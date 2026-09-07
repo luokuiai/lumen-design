@@ -3824,6 +3824,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     },
     {
+      "name": "reserveMessageSpace",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "设置 reserveMessageSpace。",
+      "descriptionEn": "Configures reserve message space.",
+      "required": false
+    },
+    {
       "name": "children",
       "type": "React.ReactNode | ((props: FormFieldRenderProps) => React.ReactNode)",
       "defaultValue": "-",

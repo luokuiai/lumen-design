@@ -40,8 +40,12 @@ const [values, setValues] = useState({ name: '', email: '' });
   updates to `values` refresh all field errors, including cross-field rules,
   without moving focus or submitting again. Reset restores submit-only behavior.
 - Optional `FormField helperText` shares its text area with the error. Errors
-  replace guidance; correcting a field restores it. No empty row is reserved,
-  and longer messages can wrap naturally.
+  replace guidance; correcting a field restores it. Inside Form, each field
+  keeps a 20px minimum message area as its normal bottom spacing. Use horizontal
+  grid gaps only instead of adding another vertical gap. One-line errors do not
+  shift following fields; longer messages wrap and may expand safely. Standalone
+  FormField keeps its existing compact behavior. Set `reserveMessageSpace` on a
+  field to override either default.
 - Spread the `FormField` render props onto the input to connect the label, name,
   invalid styling, and error description. Explicit `error` props take precedence.
 - Failed validation focuses the first available control in an invalid FormField

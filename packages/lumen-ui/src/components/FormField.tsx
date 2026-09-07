@@ -21,6 +21,8 @@ export interface FormFieldProps {
   error?: React.ReactNode;
   /** Optional guidance, replaced by the error message in the same text area. */
   helperText?: React.ReactNode;
+  /** Use the message area as field spacing. Defaults to true inside Form. */
+  reserveMessageSpace?: boolean;
   children: React.ReactNode | ((props: FormFieldRenderProps) => React.ReactNode);
   size?: FormFieldSize;
   className?: string;
@@ -58,6 +60,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   required = false,
   error: errorProp,
   helperText,
+  reserveMessageSpace,
   children,
   size = 'md',
   className,
@@ -68,6 +71,7 @@ export const FormField: React.FC<FormFieldProps> = ({
 }) => {
   const generatedId = useId();
   const form = useContext(FormContext);
+  const reserveSpace = reserveMessageSpace ?? Boolean(form);
   const error = errorProp !== undefined ? errorProp : name ? form?.errors[name] : undefined;
   const visibleError = form?.showErrors === false ? undefined : error;
   const inputId = inputIdProp ?? (name ? `${generatedId}-input` : undefined);
@@ -85,12 +89,13 @@ export const FormField: React.FC<FormFieldProps> = ({
   const sizeTokens = formFieldSizeTokens[size];
 
   return (
-    <div data-lumen-form-field-invalid={invalid || undefined} className={cn(sizeTokens.root, className)}>
+    <div data-lumen-form-field-invalid={invalid || undefined} className={cn(!reserveSpace && sizeTokens.root, className)}>
       <label
         htmlFor={inputId}
         className={cn(
           'block font-normal text-[var(--lumen-color-text-secondary)]',
           sizeTokens.label,
+          reserveSpace && (size === 'sm' ? 'mb-1' : size === 'lg' ? 'mb-2' : 'mb-1.5'),
           labelClassName,
         )}
       >
@@ -108,15 +113,23 @@ export const FormField: React.FC<FormFieldProps> = ({
       <div className={contentClassName}>
         {typeof children === 'function' ? children(fieldProps) : children}
       </div>
-      {(visibleError || helperText) && (
-        <p id={descriptionId} className={cn(
-          'break-words',
-          visibleError ? 'text-[var(--lumen-color-danger)]' : 'text-[var(--lumen-color-text-muted)]',
-          sizeTokens.error,
-          Boolean(visibleError) && errorClassName,
-        )}>
-          {visibleError || helperText}
-        </p>
+      {(reserveSpace || visibleError || helperText) && (
+        <div
+          data-lumen-form-field-message
+          className={reserveSpace ? 'min-h-5 pt-0.5' : undefined}
+        >
+          {(visibleError || helperText) && (
+            <p id={descriptionId} className={cn(
+              'break-words',
+              reserveSpace && 'leading-4',
+              visibleError ? 'text-[var(--lumen-color-danger)]' : 'text-[var(--lumen-color-text-muted)]',
+              sizeTokens.error,
+              Boolean(visibleError) && errorClassName,
+            )}>
+              {visibleError || helperText}
+            </p>
+          )}
+        </div>
       )}
     </div>
   );

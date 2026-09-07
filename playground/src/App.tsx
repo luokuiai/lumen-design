@@ -2621,24 +2621,23 @@ export default function App() {
                     >
                       {({ isSubmitting, submitError }) => (
                         <>
-                          <fieldset disabled={isSubmitting} className="grid min-w-0 gap-4 border-0 p-0 pad:grid-cols-2">
+                          <fieldset disabled={isSubmitting} className="grid min-w-0 gap-x-4 gap-y-0 border-0 p-0 pad:grid-cols-2">
                             {([
                               { name: 'name', label: language === 'en-US' ? 'Name' : '姓名', type: 'text', autoComplete: 'name' },
                               { name: 'email', label: language === 'en-US' ? 'Email' : '邮箱', type: 'email', autoComplete: 'email' },
                               { name: 'password', label: language === 'en-US' ? 'Password' : '密码', type: 'password', autoComplete: 'new-password' },
                               { name: 'confirmPassword', label: language === 'en-US' ? 'Confirm password' : '确认密码', type: 'password', autoComplete: 'new-password' },
                             ] as const).map((field) => (
-                              <FormField key={field.name} name={field.name} label={field.label} required
-                                helperText={field.name === 'password'
-                                  ? language === 'en-US' ? 'Use at least 8 characters.' : '密码至少需要 8 位'
-                                  : field.name === 'confirmPassword'
-                                    ? language === 'en-US' ? 'Repeat your password.' : '再次输入相同密码'
-                                    : undefined}
-                              >
+                              <FormField key={field.name} name={field.name} label={field.label} required>
                                 {(props) => (
                                   <Input
                                     {...props}
                                     type={field.type}
+                                    placeholder={field.name === 'password'
+                                      ? language === 'en-US' ? 'At least 8 characters' : '密码至少 8 位'
+                                      : field.name === 'confirmPassword'
+                                        ? language === 'en-US' ? 'Repeat your password' : '再次输入相同密码'
+                                        : undefined}
                                     autoComplete={field.autoComplete}
                                     value={formValues[field.name]}
                                     onChange={(event) => setFormValues((current) => ({ ...current, [field.name]: event.target.value }))}
