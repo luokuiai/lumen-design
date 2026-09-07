@@ -95,6 +95,7 @@ import {
   Drawer,
   DropdownMenu,
   FileUpload,
+  FileList,
   FileTypeIcon,
   FormField,
   Form,
@@ -381,6 +382,7 @@ const galleryCategories: GalleryCategory[] = [
       demo('DatePicker', 'pickers', 'DatePicker', '    <DatePicker value="2026-09-04" onChange={setValue} />'),
       demo('TimePicker', 'pickers', 'TimePicker', '    <TimePicker value="09:30" onChange={setValue} />'),
       demo('DateTimePicker', 'pickers', 'DateTimePicker', '    <DateTimePicker label="开始时间" value="2026-09-04 09:30:00" onChange={setValue} />'),
+      demo('FileList', 'feedback', 'FileList', '<FileList items={[]} />', undefined, undefined, ['FileList', 'FileList Wrapped']),
       demo('FileUpload', 'feedback', 'FileUpload', '    <>\n      <FileUpload value={files} onChange={setFiles} multiple />\n      <FileUpload density="compact" value={files} onChange={setFiles} multiple />\n    </>', undefined, undefined, ['FileUpload', 'FileUpload Compact']),
     ],
   },
@@ -574,6 +576,8 @@ const zhDemoNames: Record<string, string> = {
   Calendar: '日历',
   Transfer: '穿梭框',
   FileUpload: '文件上传',
+  FileList: '文件列表',
+  'FileList Wrapped': '文件列表 · 换行与隐藏大小',
   Breadcrumb: '面包屑',
   AppBar: '应用栏',
   SideNav: '侧边导航',
@@ -3743,10 +3747,39 @@ export default function App() {
                   )}
                 />
               </DemoCard>
+              <DemoCard title="FileList">
+                <div className="w-full max-w-md">
+                  <FileList
+                    items={[
+                      { id: 'pdf', name: '应用于低压配电物联网的断路器管理方法及系统_20231024032440.pdf', size: 1258291, badge: { label: '已上传', variant: 'success' } },
+                      { id: 'sheet', name: 'budget.xlsx', size: 4096, badge: { label: '等待财务部门与项目负责人共同审核后归档', variant: 'warning' } },
+                      { id: 'image', name: 'photo.png', size: 0 },
+                    ]}
+                    renderActions={(file) => (
+                      <Button size="sm" variant="ghost" onClick={() => Toast.info(`预览附件：${file.name}`)}>
+                        预览
+                      </Button>
+                    )}
+                    onRemove={(file) => Toast.info(`移除附件：${file.name}`)}
+                  />
+                </div>
+              </DemoCard>
+              <DemoCard title="FileList Wrapped">
+                <div className="w-full max-w-sm">
+                  <FileList
+                    wrapName
+                    showSize={false}
+                    items={[
+                      { id: 'doc', name: '这是一份完整显示名称并支持自动换行的项目设计说明文档.docx', size: 8192, badge: { label: '已归档', variant: 'neutral' } },
+                    ]}
+                  />
+                </div>
+              </DemoCard>
               <DemoCard title="FileUpload">
                 <FileUpload
                   value={files}
                   onChange={setFiles}
+                  getFileBadge={() => ({ label: '待上传', variant: 'neutral' })}
                   multiple
                   maxFiles={3}
                   accept=".png,.jpg,.pdf"

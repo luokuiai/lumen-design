@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { FileText, LoaderCircle, UploadCloud, X } from 'lucide-react';
+import { LoaderCircle, UploadCloud } from 'lucide-react';
 import { cn } from './classNames';
-import { radiusTokens } from './designTokens';
+import { FileList, type FileListBadge } from './file-list/FileList';
+import { formatBytes } from './file-list/formatBytes';
 import { useLumenLocale } from '../i18n';
 
 export type FileUploadDensity = 'default' | 'compact';
@@ -27,19 +28,15 @@ export interface FileUploadProps
   density?: FileUploadDensity;
   hint?: React.ReactNode;
   showFileList?: boolean;
+  showFileSize?: boolean;
+  wrapFileName?: boolean;
+  getFileBadge?: (file: File) => FileListBadge | undefined;
+  /** Custom trailing actions; callers control their disabled state. */
+  renderFileActions?: (file: File) => React.ReactNode;
   uploading?: boolean;
   progress?: number;
   inputAriaLabel?: string;
 }
-
-const formatBytes = (value: number) => {
-  if (value < 1024) return `${value} B`;
-  if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} KB`;
-  if (value < 1024 * 1024 * 1024) {
-    return `${(value / 1024 / 1024).toFixed(1)} MB`;
-  }
-  return `${(value / 1024 / 1024 / 1024).toFixed(1)} GB`;
-};
 
 const getFileKey = (file: File) =>
   `${file.name}:${file.size}:${file.lastModified}`;
@@ -74,6 +71,10 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       density = 'default',
       hint,
       showFileList = true,
+      showFileSize = true,
+      wrapFileName = false,
+      getFileBadge,
+      renderFileActions,
       uploading = false,
       progress,
       inputAriaLabel,
@@ -261,38 +262,25 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
         ) : null}
 
         {showFileList && value.length > 0 ? (
-          <div className={cn('border-t border-[var(--lumen-color-border)] pt-2', compact ? 'space-y-1.5' : 'space-y-2')}>
-            {value.map((file) => (
-              <div
-                key={getFileKey(file)}
-                className={cn(
-                  'flex min-w-0 items-center gap-3 border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-3',
-                  compact ? 'min-h-10 rounded-[7px] py-1.5' : `${radiusTokens.icon} min-h-12 py-2`,
-                )}
-              >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]">
-                  <FileText size={16} />
-                </span>
-                <span className="min-w-0 flex-1 text-left">
-                  <span className="block truncate text-[13px] font-medium text-[var(--lumen-color-text)]">
-                    {file.name}
-                  </span>
-                  <span className="mt-0.5 block text-[12px] text-[var(--lumen-color-text-placeholder)]">
-                    {formatBytes(file.size)}
-                  </span>
-                </span>
-                <button
-                  type="button"
-                  disabled={disabled || uploading}
-                  aria-label={locale.fileUpload.removeFile(file.name)}
-                  onClick={() => removeFile(file)}
-                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[var(--lumen-color-text-placeholder)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-danger)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-45"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            ))}
-          </div>
+          <FileList
+            className="border-t border-[var(--lumen-color-border)] pt-2"
+            items={value.map((file) => ({
+              id: getFileKey(file), name: file.name, size: file.size,
+              type: file.type, badge: getFileBadge?.(file),
+            }))}
+            renderActions={renderFileActions ? (item) => {
+              const file = value.find((file) => getFileKey(file) === item.id);
+              return file ? renderFileActions(file) : null;
+            } : undefined}
+            density={density}
+            showSize={showFileSize}
+            wrapName={wrapFileName}
+            disabled={disabled || uploading}
+            onRemove={(item) => {
+              const file = value.find((file) => getFileKey(file) === item.id);
+              if (file) removeFile(file);
+            }}
+          />
         ) : null}
       </div>
     );
