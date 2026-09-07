@@ -10,7 +10,10 @@ import { Calendar, ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 import { Button } from './Button';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
+import { MobileTimeWheel } from './mobileTimeWheel';
+import { MobilePickerModal } from './mobilePickerModal';
 import { TimeSelector } from './TimeSelector';
+import { useMobilePicker } from './useMobilePicker';
 import { useOverlayPortalScope } from './useOverlayBehavior';
 import { useLumenLocale } from '../i18n';
 
@@ -180,6 +183,11 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   size = 'md',
 }) => {
   const locale = useLumenLocale();
+  const isMobile = useMobilePicker();
+  const mobileDateLabel = locale.dateTimePicker.dateLabel ?? locale.datePicker.placeholder;
+  const mobileTimeLabel = locale.dateTimePicker.timeLabel ?? locale.timePicker.placeholder;
+  const mobileCancelLabel = locale.dateTimePicker.cancel
+    ?? (locale.locale.startsWith('zh') ? '取消' : 'Cancel');
   const placeholder = placeholderProp ?? locale.dateTimePicker.placeholder;
   const weekdays = locale.calendar.weekdays;
   const months = locale.calendar.months;
@@ -203,6 +211,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   const [draftSecond, setDraftSecond] = useState(
     parsed?.second ?? (defaultToNow ? pad(today.getSeconds()) : '00'),
   );
+  const [mobileView, setMobileView] = useState<'date' | 'time'>('date');
   const [dropDirection, setDropDirection] = useState<'up' | 'down'>('down');
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -263,6 +272,16 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   }, [open, syncDraftFromValue, value]);
 
   const updatePosition = useCallback(() => {
+    if (isMobile) {
+      setDropDirection('down');
+      setPanelStyle({
+        position: 'relative',
+        width: 'min(100%, 360px)',
+        maxHeight: 'calc(100dvh - 24px)',
+        zIndex: 9999,
+      });
+      return;
+    }
     const rect = triggerRef.current?.getBoundingClientRect();
     if (!rect) {
       return;
@@ -288,7 +307,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
       maxHeight: 'calc(100dvh - 16px)',
       zIndex: 9999,
     });
-  }, [panelWidth]);
+  }, [isMobile, panelWidth]);
 
   const openPanel = () => {
     if (closeTimeoutRef.current) {
@@ -296,6 +315,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
     }
     setIsAnimatingOut(false);
     syncDraftFromValue();
+    setMobileView('date');
     updatePosition();
     setOpen(true);
   };
@@ -488,30 +508,82 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
 
       {open
         ? createPortal(
+            <MobilePickerModal
+              mobile={isMobile}
+              open={open}
+              onRequestClose={closePanel}
+              label={label}
+              modalId="date-time-picker-panel"
+              maxWidth="max-w-[360px]"
+            >
             <div
               ref={panelRef}
               data-date-time-picker-panel
               data-lumen-overlay-scope={overlayScopeId ?? undefined}
-              className="overflow-x-auto overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
-              style={{
+              className={cn(
+                isMobile
+                  ? 'contents'
+                  : 'overflow-x-auto overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]',
+              )}
+              style={isMobile ? undefined : {
                 ...panelStyle,
                 animation: isAnimatingOut
-                  ? dropDirection === 'up'
-                    ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
-                    : 'lumen-dropdown-out 0.12s ease-in forwards'
-                  : dropDirection === 'up'
-                    ? 'lumen-dropdown-in-up 0.12s ease-out'
-                    : 'lumen-dropdown-in 0.12s ease-out',
+                    ? dropDirection === 'up'
+                      ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
+                      : 'lumen-dropdown-out 0.12s ease-in forwards'
+                    : dropDirection === 'up'
+                      ? 'lumen-dropdown-in-up 0.12s ease-out'
+                      : 'lumen-dropdown-in 0.12s ease-out',
                 transformOrigin: dropDirection === 'up' ? 'bottom' : 'top',
               }}
             >
+              {isMobile ? (
+                <div className="grid grid-cols-2 gap-2 border-b border-[var(--lumen-color-surface-muted)] p-3">
+                  <button
+                    type="button"
+                    aria-label={mobileDateLabel}
+                    aria-pressed={mobileView === 'date'}
+                    onClick={() => setMobileView('date')}
+                    className={cn(
+                      'flex min-w-0 items-center gap-2 px-3 py-2 text-left transition-colors',
+                      radiusTokens.control,
+                      mobileView === 'date'
+                        ? 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]'
+                        : 'text-[var(--lumen-color-text-secondary)]',
+                    )}
+                  >
+                    <Calendar size={18} className="shrink-0" />
+                    <span className="min-w-0 truncate text-[14px] font-medium tabular-nums">
+                      {draftDate}
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={mobileTimeLabel}
+                    aria-pressed={mobileView === 'time'}
+                    onClick={() => setMobileView('time')}
+                    className={cn(
+                      'flex min-w-0 items-center gap-2 px-3 py-2 text-left transition-colors',
+                      radiusTokens.control,
+                      mobileView === 'time'
+                        ? 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]'
+                        : 'text-[var(--lumen-color-text-secondary)]',
+                    )}
+                  >
+                    <Clock size={18} className="shrink-0" />
+                    <span className="min-w-0 truncate text-[14px] font-medium tabular-nums">
+                      {draftHour}:{draftMinute}{precision === 'second' ? `:${draftSecond}` : ''}
+                    </span>
+                  </button>
+                </div>
+              ) : null}
               <div
-                className="grid"
-                style={{
+                className={cn('grid', isMobile && 'block')}
+                style={isMobile ? undefined : {
                   gridTemplateColumns: `${DATE_PANEL_WIDTH}px ${timePanelWidth}px`,
                 }}
               >
-                <div className="min-w-0 p-4">
+                <div className={cn('min-w-0 p-4', isMobile && mobileView !== 'date' && 'hidden')}>
                   <div className="mb-3 flex items-center justify-between">
                     <button
                       type="button"
@@ -548,9 +620,13 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                           type="button"
                           aria-label={locale.calendar.selectDate(cell.date)}
                           disabled={dateDisabled}
-                          onClick={() => setDraftDate(cell.date)}
+                          onClick={() => {
+                            setDraftDate(cell.date);
+                            if (isMobile) setMobileView('time');
+                          }}
                           className={cn(
-                            'mx-auto my-0.5 flex h-8 w-8 items-center justify-center rounded-full text-[13px] transition-all',
+                            'mx-auto my-0.5 flex items-center justify-center rounded-full transition-all',
+                            isMobile ? 'h-10 w-10 text-[14px]' : 'h-8 w-8 text-[13px]',
                             'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
                             !cell.current && 'text-[var(--lumen-color-border-hover)]',
                             dateDisabled &&
@@ -570,25 +646,43 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                   </div>
                 </div>
 
-                <TimeSelector
-                  hour={draftHour}
-                  minute={draftMinute}
-                  second={draftSecond}
-                  onHourChange={setDraftHour}
-                  onMinuteChange={setDraftMinute}
-                  onSecondChange={setDraftSecond}
-                  precision={precision}
-                  minuteStep={minuteStep}
-                  isHourDisabled={(hour) =>
-                    isTimeDisabled(draftDate, hour, '59')
-                  }
-                  isMinuteDisabled={(minute) =>
-                    isTimeDisabled(draftDate, draftHour, minute)
-                  }
-                  className={cn(
-                    'border-l border-[var(--lumen-color-surface-muted)]',
-                  )}
-                />
+                {isMobile ? mobileView === 'time' ? (
+                  <div data-date-time-picker-mobile-time>
+                    <MobileTimeWheel
+                      hour={draftHour}
+                      minute={draftMinute}
+                      second={draftSecond}
+                      onHourChange={setDraftHour}
+                      onMinuteChange={setDraftMinute}
+                      onSecondChange={setDraftSecond}
+                      precision={precision}
+                      minuteStep={minuteStep}
+                      labels={{
+                        hour: locale.timePicker.hour,
+                        minute: locale.timePicker.minute,
+                        second: locale.timePicker.second,
+                      }}
+                    />
+                  </div>
+                ) : null : (
+                  <TimeSelector
+                    hour={draftHour}
+                    minute={draftMinute}
+                    second={draftSecond}
+                    onHourChange={setDraftHour}
+                    onMinuteChange={setDraftMinute}
+                    onSecondChange={setDraftSecond}
+                    precision={precision}
+                    minuteStep={minuteStep}
+                    isHourDisabled={(hour) =>
+                      isTimeDisabled(draftDate, hour, '59')
+                    }
+                    isMinuteDisabled={(minute) =>
+                      isTimeDisabled(draftDate, draftHour, minute)
+                    }
+                    className="border-l border-[var(--lumen-color-surface-muted)]"
+                  />
+                )}
               </div>
 
               <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[var(--lumen-color-surface-muted)] px-3 py-3 pad:px-4">
@@ -616,12 +710,25 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                   >
                     {locale.common.now}
                   </button>
+                  {isMobile ? (
+                    <button
+                      type="button"
+                      onClick={closePanel}
+                      className={cn(
+                        pickerActionButtonClassName,
+                        'font-medium text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]',
+                      )}
+                    >
+                      {mobileCancelLabel}
+                    </button>
+                  ) : null}
                   <Button type="button" size="sm" onClick={confirm}>
                     {locale.common.confirm}
                   </Button>
                 </div>
               </div>
-            </div>,
+            </div>
+            </MobilePickerModal>,
             document.body,
           )
         : null}
