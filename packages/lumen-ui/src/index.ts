@@ -71,6 +71,7 @@ export * from './components/Toolbar';
 export * from './components/Tooltip';
 export * from './components/Transfer';
 export * from './components/TreeSelect';
+export * from './components/tree/Tree';
 export * from './components/Typography';
 export * from './components/virtual-list/VirtualList';
 export * from './components/Watermark';

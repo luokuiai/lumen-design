@@ -5000,6 +5000,104 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "Tree": [
+    {
+      "name": "nodes",
+      "type": "TreeNode[]",
+      "defaultValue": "-",
+      "description": "设置 nodes。",
+      "descriptionEn": "Configures nodes.",
+      "required": true
+    },
+    {
+      "name": "expandedKeys",
+      "type": "string[]",
+      "defaultValue": "undefined",
+      "description": "设置 expandedKeys。",
+      "descriptionEn": "Configures expanded keys.",
+      "required": false
+    },
+    {
+      "name": "defaultExpandedKeys",
+      "type": "string[]",
+      "defaultValue": "[]",
+      "description": "设置 ExpandedKeys 的初始值。",
+      "descriptionEn": "Sets the initial expanded keys.",
+      "required": false
+    },
+    {
+      "name": "onExpandedChange",
+      "type": "(keys: string[], node: TreeNode) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 ExpandedChange 对应操作时触发。",
+      "descriptionEn": "Called when the expanded change action occurs.",
+      "required": false
+    },
+    {
+      "name": "selectedKeys",
+      "type": "string[]",
+      "defaultValue": "undefined",
+      "description": "设置 selectedKeys。",
+      "descriptionEn": "Configures selected keys.",
+      "required": false
+    },
+    {
+      "name": "defaultSelectedKeys",
+      "type": "string[]",
+      "defaultValue": "[]",
+      "description": "设置 SelectedKeys 的初始值。",
+      "descriptionEn": "Sets the initial selected keys.",
+      "required": false
+    },
+    {
+      "name": "onSelectionChange",
+      "type": "(keys: string[], node: TreeNode) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 SelectionChange 对应操作时触发。",
+      "descriptionEn": "Called when the selection change action occurs.",
+      "required": false
+    },
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "允许选择多个值。",
+      "descriptionEn": "Allows multiple values to be selected.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "禁用组件及其交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
+      "description": "设置组件尺寸。",
+      "descriptionEn": "Sets the component size.",
+      "required": false
+    },
+    {
+      "name": "renderLabel",
+      "type": "(node: TreeNode) => React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 renderLabel。",
+      "descriptionEn": "Configures render label.",
+      "required": false
+    },
+    {
+      "name": "emptyContent",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 emptyContent。",
+      "descriptionEn": "Configures empty content.",
+      "required": false
+    }
+  ],
   "SwipeActions": [
     {
       "name": "children",
