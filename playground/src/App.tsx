@@ -3754,7 +3754,7 @@ export default function App() {
                 />
               </DemoCard>
               <DemoCard title="FileList">
-                <div className="w-full max-w-md">
+                <div className="w-full max-w-2xl">
                   <FileList
                     items={[
                       { id: 'pdf', name: '应用于低压配电物联网的断路器管理方法及系统_20231024032440.pdf', size: 1258291, badge: { label: '已上传', variant: 'success' } },
@@ -3777,12 +3777,13 @@ export default function App() {
                 </div>
               </DemoCard>
               <DemoCard title="FileList Wrapped">
-                <div className="w-full max-w-sm">
+                <div className="w-full max-w-2xl">
                   <FileList
                     wrapName
                     showSize={false}
+                    badgeMaxWidth={72}
                     items={[
-                      { id: 'doc', name: '这是一份完整显示名称并支持自动换行的项目设计说明文档.docx', size: 8192, badge: { label: '已归档', variant: 'neutral' } },
+                      { id: 'doc', name: '这是一份完整显示名称并支持自动换行的项目设计说明文档.docx', size: 8192, badge: { label: '已归档至项目文档资料库', variant: 'neutral' } },
                     ]}
                   />
                 </div>

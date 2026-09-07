@@ -28,6 +28,8 @@ export interface FileListItemProps extends React.HTMLAttributes<HTMLLIElement> {
   showSize?: boolean;
   /** Wrap the full name instead of truncating. Defaults to false. */
   wrapName?: boolean;
+  /** Badge maximum width (numbers are pixels). Defaults to 96; capped at 35% of the row. */
+  badgeMaxWidth?: number | string;
   disabled?: boolean;
   /** Custom buttons displayed at the trailing edge, before removal. */
   actions?: React.ReactNode;
@@ -36,13 +38,17 @@ export interface FileListItemProps extends React.HTMLAttributes<HTMLLIElement> {
 }
 
 export function FileListItem({
-  file, showSize = true, wrapName = false,
-  disabled = false, onRemove, actions, className, ...props
+  file, showSize = true, wrapName = false, badgeMaxWidth = 96,
+  disabled = false, onRemove, actions, className, style, ...props
 }: FileListItemProps) {
   const locale = useLumenLocale();
   return (
     <li
       {...props}
+      style={{
+        ...style,
+        '--lumen-file-badge-max-width': typeof badgeMaxWidth === 'number' ? `${badgeMaxWidth}px` : badgeMaxWidth,
+      } as React.CSSProperties}
       className={cn(
         'flex min-w-0 items-center gap-3 border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-3',
         `${radiusTokens.icon} min-h-12 py-2`,
@@ -59,7 +65,7 @@ export function FileListItem({
         ) : null}
       </span>
       {file.badge ? (
-        <Badge variant={file.badge.variant} size="sm" className="min-w-0 max-w-[35%] shrink-0">
+        <Badge variant={file.badge.variant} size="md" className="min-w-0 max-w-[min(var(--lumen-file-badge-max-width),35%)] shrink-0">
           <OverflowText text={file.badge.label} />
         </Badge>
       ) : null}
@@ -84,6 +90,8 @@ export function FileListItem({
 }
 
 export interface FileListProps extends React.HTMLAttributes<HTMLUListElement> {
+  /** Badge maximum width (numbers are pixels). Defaults to 96; capped at 35% of the row. */
+  badgeMaxWidth?: number | string;
   /** Render trailing actions; callers control their disabled state. */
   renderActions?: (file: FileListFile) => React.ReactNode;
   items: FileListFile[];
@@ -94,12 +102,12 @@ export interface FileListProps extends React.HTMLAttributes<HTMLUListElement> {
 }
 
 export function FileList({
-  items, showSize, wrapName, disabled, onRemove, renderActions, className, ...props
+  items, showSize, wrapName, badgeMaxWidth, disabled, onRemove, renderActions, className, ...props
 }: FileListProps) {
   return (
     <ul {...props} className={cn('m-0 min-w-0 list-none space-y-2 p-0', className)}>
       {items.map((file) => (
-        <FileListItem key={file.id} file={file} showSize={showSize} wrapName={wrapName} disabled={disabled} onRemove={onRemove} actions={renderActions?.(file)} />
+        <FileListItem key={file.id} file={file} showSize={showSize} wrapName={wrapName} badgeMaxWidth={badgeMaxWidth} disabled={disabled} onRemove={onRemove} actions={renderActions?.(file)} />
       ))}
     </ul>
   );
