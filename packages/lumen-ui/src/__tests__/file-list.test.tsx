@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { FileList, type FileListFile } from '../components/file-list/FileList';
+import { FileList, FileListItem, type FileListFile } from '../components/file-list/FileList';
 import { FileUpload } from '../components/FileUpload';
 
 const items: FileListFile[] = [
@@ -17,6 +17,25 @@ afterEach(() => {
 });
 
 describe('FileList', () => {
+  it('defaults to compact badges and forwards updated width settings to each item', () => {
+    const { rerender } = render(<FileList items={items} />);
+    const widths = () => screen.getAllByRole('listitem').map((item) => item.style.getPropertyValue('--lumen-file-badge-max-width'));
+    expect(widths()).toEqual(['96px', '96px', '96px']);
+    rerender(<FileList items={items} badgeMaxWidth={72} />);
+    expect(widths()).toEqual(['72px', '72px', '72px']);
+    rerender(<FileList items={items} badgeMaxWidth="5rem" />);
+    expect(widths()).toEqual(['5rem', '5rem', '5rem']);
+    expect(screen.getByRole('list')).not.toHaveAttribute('badgeMaxWidth');
+  });
+
+  it('supports badge width on standalone items while preserving caller styles', () => {
+    render(<ul><FileListItem file={items[0]!} badgeMaxWidth="20%" style={{ color: 'red' }} /></ul>);
+    const item = screen.getByRole('listitem');
+    expect(item.style.getPropertyValue('--lumen-file-badge-max-width')).toBe('20%');
+    expect(item.style.color).toBe('red');
+    expect(item).not.toHaveAttribute('badgeMaxWidth');
+  });
+
   it('renders remote metadata with file type icons and optional sizes', () => {
     const { container, rerender } = render(<FileList items={items} />);
     expect(screen.getAllByRole('listitem')).toHaveLength(3);

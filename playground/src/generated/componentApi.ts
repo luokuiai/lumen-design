@@ -6266,6 +6266,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
   ],
   "FileListItem": [
     {
+      "name": "badgeMaxWidth",
+      "type": "string | number",
+      "defaultValue": "96",
+      "description": "设置 badgeMaxWidth。",
+      "descriptionEn": "Configures badge max width.",
+      "required": false
+    },
+    {
       "name": "file",
       "type": "FileListFile",
       "defaultValue": "-",
@@ -6315,6 +6323,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     }
   ],
   "FileList": [
+    {
+      "name": "badgeMaxWidth",
+      "type": "string | number",
+      "defaultValue": "undefined",
+      "description": "设置 badgeMaxWidth。",
+      "descriptionEn": "Configures badge max width.",
+      "required": false
+    },
     {
       "name": "renderActions",
       "type": "(file: FileListFile) => React.ReactNode",
