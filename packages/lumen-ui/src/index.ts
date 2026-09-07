@@ -36,6 +36,7 @@ export * from './components/Fab';
 export * from './components/FileUpload';
 export * from './components/file-type-icon';
 export * from './components/FormField';
+export * from './components/form/Form';
 export * from './components/Input';
 export * from './components/List';
 export * from './components/LumenProvider';

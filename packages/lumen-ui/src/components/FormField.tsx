@@ -1,7 +1,9 @@
-import React, { useId } from 'react';
+import React, { useContext, useId } from 'react';
 import { cn } from './classNames';
+import { FormContext } from './form/formContext';
 
 export interface FormFieldRenderProps {
+  name?: string;
   id?: string;
   required?: boolean;
   invalid: boolean;
@@ -12,6 +14,8 @@ export interface FormFieldRenderProps {
 export type FormFieldSize = 'sm' | 'md' | 'lg';
 
 export interface FormFieldProps {
+  /** Match a key in Form values to receive its submit-time validation error. */
+  name?: string;
   label: React.ReactNode;
   required?: boolean;
   error?: React.ReactNode;
@@ -47,21 +51,26 @@ const formFieldSizeTokens: Record<FormFieldSize, {
 };
 
 export const FormField: React.FC<FormFieldProps> = ({
+  name,
   label,
   required = false,
-  error,
+  error: errorProp,
   children,
   size = 'md',
   className,
   labelClassName,
   contentClassName,
   errorClassName,
-  inputId,
+  inputId: inputIdProp,
 }) => {
   const generatedId = useId();
+  const form = useContext(FormContext);
+  const error = errorProp !== undefined ? errorProp : name ? form?.errors[name] : undefined;
+  const inputId = inputIdProp ?? (name ? `${generatedId}-input` : undefined);
   const errorId = error ? `${generatedId}-error` : undefined;
   const invalid = Boolean(error);
   const fieldProps: FormFieldRenderProps = {
+    name,
     id: inputId,
     required,
     invalid,
@@ -71,7 +80,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   const sizeTokens = formFieldSizeTokens[size];
 
   return (
-    <div className={cn(sizeTokens.root, className)}>
+    <div data-lumen-form-field-invalid={invalid || undefined} className={cn(sizeTokens.root, className)}>
       <label
         htmlFor={inputId}
         className={cn(

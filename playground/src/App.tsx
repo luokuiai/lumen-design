@@ -97,6 +97,7 @@ import {
   FileUpload,
   FileTypeIcon,
   FormField,
+  Form,
   Empty,
   Fab,
   Input,
@@ -355,10 +356,11 @@ const galleryCategories: GalleryCategory[] = [
     id: 'forms',
     title: 'Forms',
     description: '输入、选择、日期时间和文件提交。',
-    keywords: 'Input SearchBar FormField Checkbox Radio Switch Slider Rating Select Combobox Cascader Date Time Calendar Transfer FileUpload',
+    keywords: 'Form Validation Input SearchBar FormField Checkbox Radio Switch Slider Rating Select Combobox Cascader Date Time Calendar Transfer FileUpload',
     icon: Check,
     demos: [
       demo('Input / FormField', 'forms', 'FormField, Input', '    <FormField label="项目名称" inputId="project-name">\n      {(props) => <Input {...props} />}\n    </FormField>', undefined, undefined, ['Input + FormField']),
+      demo('Form', 'forms', 'Form, FormField, Input, Button, Alert', '    <Form values={values} validate={validate} onFinish={submit}>\n      <FormField name="name" label="姓名" required>\n        {(props) => <Input {...props} value={values.name} onChange={(event) => setValues({ name: event.target.value })} />}\n      </FormField>\n      <Button type="submit">校验并提交</Button>\n    </Form>', undefined, "const [values, setValues] = useState({ name: '' });\n  const validate = (values: { name: string }) => ({ name: values.name.trim() ? undefined : '请输入姓名' });\n  const submit = (values: { name: string }) => console.log(values);"),
       demo('SearchBar', 'forms', 'SearchBar, Typography', '    <div className="max-w-[420px] space-y-2">\n      <SearchBar\n        value={value}\n        onChange={setValue}\n        onSearch={(keyword) => setMessage(keyword ? `正在搜索“${keyword}”` : \'请输入搜索内容\')}\n        placeholder="搜索组件、页面或命令"\n        aria-label="组件搜索"\n      />\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [value, setValue] = useState('');\n  const [message, setMessage] = useState('输入关键词后按 Enter 搜索');"),
       demo('NumberInput', 'forms', 'FormField, NumberInput', '    <FormField label="处置时限">\n      <NumberInput defaultValue={30} min={5} max={120} suffix="分钟" />\n    </FormField>'),
       demo('OtpInput', 'forms', 'FormField, OtpInput', '    <FormField label="短信验证码">\n      <OtpInput value={value} onChange={setValue} />\n    </FormField>', undefined, "const [value, setValue] = useState('');"),
@@ -550,6 +552,7 @@ const zhDemoNames: Record<string, string> = {
   Toolbar: '工具栏',
   DropdownMenu: '下拉菜单',
   'Input / FormField': '输入框 / 表单字段',
+  Form: '整表校验',
   SearchBar: '搜索栏',
   NumberInput: '数字输入框',
   OtpInput: '验证码输入框',
@@ -1527,6 +1530,8 @@ export default function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
   const [meetingName, setMeetingName] = useState('项目周会');
+  const [formValues, setFormValues] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+  const [formSubmitted, setFormSubmitted] = useState('');
   const [longPressMessage, setLongPressMessage] = useState('移动端长按，PC 端普通点击');
   const [contextMenuAction, setContextMenuAction] = useState('暂无');
   const [searchBarValue, setSearchBarValue] = useState('');
@@ -2572,6 +2577,82 @@ export default function App() {
           if (section.id === 'forms') {
             return (
               <GallerySection key={section.id} section={section}>
+                <DemoCard title="Form" wide>
+                  <div className="mx-auto max-w-[640px] space-y-4">
+                    <p className="text-[14px] text-[var(--lumen-color-text-secondary)]">
+                      {language === 'en-US'
+                        ? 'Create a user: submit the empty form to see all four errors at once. Fix them and submit again; confirmation must match the password.'
+                        : '创建用户：先直接点击“校验并提交”，一次查看四个字段的错误。修正后再次提交；确认密码还需要与密码一致。'}
+                    </p>
+                    <Form
+                      aria-label={language === 'en-US' ? 'Create user' : '创建用户'}
+                      values={formValues}
+                      validate={(values) => ({
+                        name: values.name.trim() ? undefined : language === 'en-US' ? 'Enter a name.' : '请输入姓名',
+                        email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim()) ? undefined : language === 'en-US' ? 'Enter a valid email.' : '请输入有效的邮箱地址',
+                        password: values.password.length >= 8 ? undefined : language === 'en-US' ? 'Use at least 8 characters.' : '密码至少需要 8 位',
+                        confirmPassword: values.confirmPassword && values.confirmPassword === values.password ? undefined : language === 'en-US' ? 'Confirm the matching password.' : '请确认密码，且两次输入必须一致',
+                      })}
+                      onFinish={async (values) => {
+                        await new Promise((resolve) => window.setTimeout(resolve, 600));
+                        setFormSubmitted(`${values.name} · ${values.email}`);
+                      }}
+                      onChange={() => setFormSubmitted('')}
+                      onReset={() => {
+                        setFormValues({ name: '', email: '', password: '', confirmPassword: '' });
+                        setFormSubmitted('');
+                      }}
+                    >
+                      {({ errors, isSubmitting, submitError }) => (
+                        <>
+                          {Object.keys(errors).length > 0 && (
+                            <Alert variant="danger" title={language === 'en-US'
+                              ? `${Object.keys(errors).length} fields need attention. Nothing was submitted.`
+                              : `共 ${Object.keys(errors).length} 个字段未通过校验，尚未提交。`}>
+                              {language === 'en-US' ? 'All fields were checked together. Focus moved to the first error.' : '已一次性检查全部字段，并定位到第一个错误。'}
+                            </Alert>
+                          )}
+                          <fieldset disabled={isSubmitting} className="grid min-w-0 gap-4 border-0 p-0 pad:grid-cols-2">
+                            {([
+                              { name: 'name', label: language === 'en-US' ? 'Name' : '姓名', type: 'text', autoComplete: 'name' },
+                              { name: 'email', label: language === 'en-US' ? 'Email' : '邮箱', type: 'email', autoComplete: 'email' },
+                              { name: 'password', label: language === 'en-US' ? 'Password' : '密码', type: 'password', autoComplete: 'new-password' },
+                              { name: 'confirmPassword', label: language === 'en-US' ? 'Confirm password' : '确认密码', type: 'password', autoComplete: 'new-password' },
+                            ] as const).map((field) => (
+                              <FormField key={field.name} name={field.name} label={field.label} required>
+                                {(props) => (
+                                  <Input
+                                    {...props}
+                                    type={field.type}
+                                    autoComplete={field.autoComplete}
+                                    value={formValues[field.name]}
+                                    onChange={(event) => setFormValues((current) => ({ ...current, [field.name]: event.target.value }))}
+                                  />
+                                )}
+                              </FormField>
+                            ))}
+                          </fieldset>
+                          <div className="flex flex-wrap gap-2">
+                            <Button type="submit" disabled={isSubmitting}>
+                              {isSubmitting ? language === 'en-US' ? 'Submitting…' : '提交中…' : language === 'en-US' ? 'Validate and submit' : '校验并提交'}
+                            </Button>
+                            <Button type="button" variant="secondary" disabled={isSubmitting} onClick={() => {
+                              setFormValues({ name: 'Lumen', email: 'demo@example.com', password: 'lumen-demo-2026', confirmPassword: 'lumen-demo-2026' });
+                              setFormSubmitted('');
+                            }}>
+                              {language === 'en-US' ? 'Fill valid example' : '填入有效示例'}
+                            </Button>
+                            <Button type="reset" variant="secondary" disabled={isSubmitting}>
+                              {language === 'en-US' ? 'Reset' : '重置'}
+                            </Button>
+                          </div>
+                          {Boolean(submitError) && <Alert variant="danger" title={language === 'en-US' ? 'Submission failed. Please try again.' : '提交失败，请重试。'} />}
+                          {formSubmitted && <Alert variant="success" title={language === 'en-US' ? 'All four fields passed. Demo submission completed.' : '四个字段全部校验通过，模拟提交成功。'}>{formSubmitted}</Alert>}
+                        </>
+                      )}
+                    </Form>
+                  </div>
+                </DemoCard>
                 <DemoCard title="Input + FormField" wide>
                   <div className="form-grid">
                     <FormField label="会议名称" required inputId="meeting-title">
