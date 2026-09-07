@@ -271,7 +271,6 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               const file = value.find((file) => getFileKey(file) === item.id);
               return file ? renderFileActions(file) : null;
             } : undefined}
-            density={density}
             showSize={showFileSize}
             wrapName={wrapFileName}
             disabled={disabled || uploading}

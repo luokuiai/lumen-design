@@ -8,8 +8,6 @@ import { useLumenLocale } from '../../i18n';
 import { OverflowText } from './overflowText';
 import { formatBytes } from './formatBytes';
 
-export type FileListDensity = 'default' | 'compact';
-
 export interface FileListBadge {
   label: string;
   variant?: BadgeVariant;
@@ -30,7 +28,6 @@ export interface FileListItemProps extends React.HTMLAttributes<HTMLLIElement> {
   showSize?: boolean;
   /** Wrap the full name instead of truncating. Defaults to false. */
   wrapName?: boolean;
-  density?: FileListDensity;
   disabled?: boolean;
   /** Custom buttons displayed at the trailing edge, before removal. */
   actions?: React.ReactNode;
@@ -39,7 +36,7 @@ export interface FileListItemProps extends React.HTMLAttributes<HTMLLIElement> {
 }
 
 export function FileListItem({
-  file, showSize = true, wrapName = false, density = 'default',
+  file, showSize = true, wrapName = false,
   disabled = false, onRemove, actions, className, ...props
 }: FileListItemProps) {
   const locale = useLumenLocale();
@@ -48,7 +45,7 @@ export function FileListItem({
       {...props}
       className={cn(
         'flex min-w-0 items-center gap-3 border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-3',
-        density === 'compact' ? 'min-h-10 rounded-[7px] py-1.5' : `${radiusTokens.icon} min-h-12 py-2`,
+        `${radiusTokens.icon} min-h-12 py-2`,
         className,
       )}
     >
@@ -92,18 +89,17 @@ export interface FileListProps extends React.HTMLAttributes<HTMLUListElement> {
   items: FileListFile[];
   showSize?: boolean;
   wrapName?: boolean;
-  density?: FileListDensity;
   disabled?: boolean;
   onRemove?: (file: FileListFile) => void;
 }
 
 export function FileList({
-  items, showSize, wrapName, density = 'default', disabled, onRemove, renderActions, className, ...props
+  items, showSize, wrapName, disabled, onRemove, renderActions, className, ...props
 }: FileListProps) {
   return (
-    <ul {...props} className={cn('m-0 min-w-0 list-none p-0', density === 'compact' ? 'space-y-1.5' : 'space-y-2', className)}>
+    <ul {...props} className={cn('m-0 min-w-0 list-none space-y-2 p-0', className)}>
       {items.map((file) => (
-        <FileListItem key={file.id} file={file} showSize={showSize} wrapName={wrapName} density={density} disabled={disabled} onRemove={onRemove} actions={renderActions?.(file)} />
+        <FileListItem key={file.id} file={file} showSize={showSize} wrapName={wrapName} disabled={disabled} onRemove={onRemove} actions={renderActions?.(file)} />
       ))}
     </ul>
   );

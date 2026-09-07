@@ -6290,14 +6290,6 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     },
     {
-      "name": "density",
-      "type": "\"default\" | \"compact\"",
-      "defaultValue": "'default'",
-      "description": "设置 density。",
-      "descriptionEn": "Configures density.",
-      "required": false
-    },
-    {
       "name": "disabled",
       "type": "boolean",
       "defaultValue": "false",
@@ -6353,14 +6345,6 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "设置 wrapName。",
       "descriptionEn": "Configures wrap name.",
-      "required": false
-    },
-    {
-      "name": "density",
-      "type": "\"default\" | \"compact\"",
-      "defaultValue": "'default'",
-      "description": "设置 density。",
-      "descriptionEn": "Configures density.",
       "required": false
     },
     {
