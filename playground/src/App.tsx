@@ -82,6 +82,7 @@ import {
   Chip,
   Collapse,
   CollapseItem,
+  Combobox,
   CommandPalette,
   ConfirmDialog,
   ContextMenu,
@@ -267,7 +268,7 @@ const renderSections: Section[] = [
   { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button useLongPress ContextMenu DragHandle Badge Chip Avatar Tooltip', icon: Plus },
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input SearchBar NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
-  { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
+  { id: 'pickers', title: 'Pickers', description: '选择器、输入建议、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Combobox Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem VirtualList SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
   { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Carousel Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
   { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、命令面板、确认和消息提示。', keywords: 'Modal Drawer CommandPalette ConfirmDialog Toast', icon: Bell },
@@ -352,7 +353,7 @@ const galleryCategories: GalleryCategory[] = [
     id: 'forms',
     title: 'Forms',
     description: '输入、选择、日期时间和文件提交。',
-    keywords: 'Input SearchBar FormField Checkbox Radio Switch Slider Rating Select Cascader Date Time Calendar Transfer FileUpload',
+    keywords: 'Input SearchBar FormField Checkbox Radio Switch Slider Rating Select Combobox Cascader Date Time Calendar Transfer FileUpload',
     icon: Check,
     demos: [
       demo('Input / FormField', 'forms', 'FormField, Input', '    <FormField label="项目名称" inputId="project-name">\n      {(props) => <Input {...props} />}\n    </FormField>', undefined, undefined, ['Input + FormField']),
@@ -366,6 +367,7 @@ const galleryCategories: GalleryCategory[] = [
       demo('Slider', 'forms', 'Slider', '    <Slider value={60} onChange={() => undefined} />'),
       demo('Rating', 'forms', 'Rating', '    <Rating value={4} onChange={() => undefined} />'),
       demo('Select', 'pickers', 'Select', '    <Select\n      value="review"\n      options={[{ label: \'设计评审\', value: \'review\' }]}\n      onChange={() => undefined}\n    />'),
+      demo('Combobox', 'pickers', 'Combobox', '    <Combobox\n      value={value}\n      options={[\n        { label: \'设计评审\', value: \'review\' },\n        { label: \'需求同步\', value: \'sync\' },\n      ]}\n      onChange={(nextValue) => setValue(nextValue as string | null)}\n      placeholder="输入或选择事项"\n    />', undefined, "const [value, setValue] = useState<string | null>(null);"),
       demo('TreeSelect', 'pickers', 'TreeSelect', '    <TreeSelect nodes={nodes} value="frontend" onChange={setValue} searchable />'),
       demo('Cascader', 'pickers', 'Cascader', '    <Cascader options={options} value={[]} onChange={() => undefined} />'),
       demo('DatePicker', 'pickers', 'DatePicker', '    <DatePicker value="2026-09-04" onChange={setValue} />'),
@@ -555,6 +557,7 @@ const zhDemoNames: Record<string, string> = {
   Slider: '滑块',
   Rating: '评分',
   Select: '选择器',
+  Combobox: '组合框',
   TreeSelect: '树选择器',
   Cascader: '级联选择器',
   DatePicker: '日期选择器',
@@ -1542,6 +1545,8 @@ export default function App() {
   const [stepsDirection, setStepsDirection] = useState<StepsDirection>('horizontal');
   const [basicSelectValue, setBasicSelectValue] = useState<string | null>(null);
   const [selectValue, setSelectValue] = useState<string | null>('review');
+  const [comboboxValue, setComboboxValue] = useState<string | null>(null);
+  const [customComboboxValue, setCustomComboboxValue] = useState<string | null>(null);
   const [multiSelectValue, setMultiSelectValue] = useState<Array<string | number>>(['review', 'release']);
   const [cascaderValue, setCascaderValue] = useState<string[]>(['east', 'shanghai', 'pudong']);
   const [treeValue, setTreeValue] = useState<string | null>('frontend');
@@ -2747,6 +2752,25 @@ export default function App() {
                       onChange={(value) => setMultiSelectValue(Array.isArray(value) ? value : [])}
                       searchable
                       placeholder="选择多个事项"
+                    />
+                  </div>
+                </DemoCard>
+                <DemoCard title="Combobox" wide>
+                  <div className="form-grid">
+                    <Combobox
+                      options={selectOptions}
+                      value={comboboxValue}
+                      onChange={(nextValue) => setComboboxValue(nextValue as string | null)}
+                      placeholder="输入或选择事项"
+                      aria-label="事项"
+                    />
+                    <Combobox
+                      options={selectOptions}
+                      value={customComboboxValue}
+                      onChange={(nextValue) => setCustomComboboxValue(nextValue as string | null)}
+                      allowCustomValue
+                      placeholder="输入事项，可创建新选项"
+                      aria-label="自定义事项"
                     />
                   </div>
                 </DemoCard>

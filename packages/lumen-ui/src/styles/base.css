@@ -69,6 +69,27 @@
   --lumen-control-height-lg: 40px;
 }
 
+/* Prevent iPhone Safari from zooming compact editable controls on focus. */
+@supports (-webkit-touch-callout: none) {
+  @media (width < 40rem) and (hover: none) and (pointer: coarse) {
+    [data-ui='combobox-input'] {
+      font-size: 16px;
+    }
+
+    [data-ui='combobox-control'][data-size='sm'] {
+      min-height: 40px;
+    }
+
+    [data-ui='combobox-control'][data-size='md'] {
+      min-height: 44px;
+    }
+
+    [data-ui='combobox-control'][data-size='lg'] {
+      min-height: 48px;
+    }
+  }
+}
+
 @keyframes lumen-page-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }

@@ -5312,6 +5312,272 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "Combobox": [
+    {
+      "name": "options",
+      "type": "ComboboxOption<T>[]",
+      "defaultValue": "-",
+      "description": "定义可选择的选项。",
+      "descriptionEn": "Defines the available options.",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "string | T",
+      "defaultValue": "-",
+      "description": "受控模式下的当前值。",
+      "descriptionEn": "Sets the current value in controlled mode.",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: T | string | null, option: ComboboxOption<T> | null) => void",
+      "defaultValue": "-",
+      "description": "值发生变化时触发。",
+      "descriptionEn": "Called when the value changes.",
+      "required": true
+    },
+    {
+      "name": "inputValue",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "受控模式下的当前输入内容。",
+      "descriptionEn": "Sets the current input text in controlled mode.",
+      "required": false
+    },
+    {
+      "name": "defaultInputValue",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "非受控模式下的初始输入内容。",
+      "descriptionEn": "Sets the initial input text in uncontrolled mode.",
+      "required": false
+    },
+    {
+      "name": "onInputValueChange",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "输入内容发生变化时触发。",
+      "descriptionEn": "Called when the input text changes.",
+      "required": false
+    },
+    {
+      "name": "allowCustomValue",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "允许提交不在选项列表中的自定义值。",
+      "descriptionEn": "Allows values that are not present in the option list.",
+      "required": false
+    },
+    {
+      "name": "onCreateOption",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "提交自定义选项时触发。",
+      "descriptionEn": "Called when a custom option is submitted.",
+      "required": false
+    },
+    {
+      "name": "filterOptions",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否在本地过滤选项。",
+      "descriptionEn": "Controls whether options are filtered locally.",
+      "required": false
+    },
+    {
+      "name": "filterOption",
+      "type": "(option: ComboboxOption<T>, query: string) => boolean",
+      "defaultValue": "undefined",
+      "description": "自定义单个选项的匹配规则。",
+      "descriptionEn": "Customizes how each option is matched against the query.",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "显示加载状态并阻止重复操作。",
+      "descriptionEn": "Shows a loading state and prevents repeated actions.",
+      "required": false
+    },
+    {
+      "name": "loadingText",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "覆盖加载状态的提示内容。",
+      "descriptionEn": "Overrides the loading-state content.",
+      "required": false
+    },
+    {
+      "name": "emptyText",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "覆盖无匹配选项时的提示内容。",
+      "descriptionEn": "Overrides the content shown when no options match.",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "未选择或未输入时显示的提示。",
+      "descriptionEn": "Sets the hint shown when no value has been entered or selected.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
+      "description": "设置组件尺寸。",
+      "descriptionEn": "Sets the component size.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "禁用组件及其交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "标记组件当前处于校验错误状态。",
+      "descriptionEn": "Marks the component as having a validation error.",
+      "required": false
+    },
+    {
+      "name": "clearable",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "允许清除当前值。",
+      "descriptionEn": "Allows the current value to be cleared.",
+      "required": false
+    },
+    {
+      "name": "openOnFocus",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "聚焦输入框时自动打开选项列表。",
+      "descriptionEn": "Opens the option list when the input receives focus.",
+      "required": false
+    },
+    {
+      "name": "autoHighlight",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "打开列表时自动高亮首个可用选项。",
+      "descriptionEn": "Highlights the first enabled option when the list opens.",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "追加自定义 CSS 类名。",
+      "descriptionEn": "Adds custom CSS class names.",
+      "required": false
+    },
+    {
+      "name": "inputClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "追加输入框的 CSS 类名。",
+      "descriptionEn": "Adds custom CSS class names to the input.",
+      "required": false
+    },
+    {
+      "name": "dropdownClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "追加选项浮层的 CSS 类名。",
+      "descriptionEn": "Adds custom CSS class names to the option overlay.",
+      "required": false
+    },
+    {
+      "name": "optionClassName",
+      "type": "(option: ComboboxOption<T>, state: ComboboxOptionRenderState) => string | undefined",
+      "defaultValue": "undefined",
+      "description": "根据选项状态追加 CSS 类名。",
+      "descriptionEn": "Adds CSS class names based on the option state.",
+      "required": false
+    },
+    {
+      "name": "renderOption",
+      "type": "(option: ComboboxOption<T>, state: ComboboxOptionRenderState) => React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义选项内容的渲染方式。",
+      "descriptionEn": "Customizes how option content is rendered.",
+      "required": false
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "defaultValue": "undefined",
+      "description": "打开状态发生变化时触发。",
+      "descriptionEn": "Called when the open state changes.",
+      "required": false
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 id。",
+      "descriptionEn": "Configures id.",
+      "required": false
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置表单控件名称。",
+      "descriptionEn": "Sets the form control name.",
+      "required": false
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "标记表单值为必填。",
+      "descriptionEn": "Marks the form value as required.",
+      "required": false
+    },
+    {
+      "name": "autoComplete",
+      "type": "string",
+      "defaultValue": "'off'",
+      "description": "设置原生输入框的自动填充行为。",
+      "descriptionEn": "Sets the native input autocomplete behavior.",
+      "required": false
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置供辅助技术读取的名称。",
+      "descriptionEn": "Sets the accessible name read by assistive technology.",
+      "required": false
+    },
+    {
+      "name": "aria-labelledby",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "关联用于命名组件的元素 ID。",
+      "descriptionEn": "References the element that provides the accessible name.",
+      "required": false
+    },
+    {
+      "name": "aria-describedby",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "关联用于补充说明组件内容的元素 ID。",
+      "descriptionEn": "References the element that provides an accessible description.",
+      "required": false
+    }
+  ],
   "FileTypeIcon": [
     {
       "name": "category",

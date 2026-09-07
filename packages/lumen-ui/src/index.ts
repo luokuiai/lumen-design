@@ -21,6 +21,7 @@ export * from './components/Checkbox';
 export * from './components/Chip';
 export * from './components/Collapse';
 export * from './components/command-palette/CommandPalette';
+export * from './components/combobox/Combobox';
 export * from './components/ConfirmDialog';
 export * from './components/context-menu/ContextMenu';
 export * from './components/DatePicker';

@@ -27,6 +27,13 @@ export interface LumenLocale {
     selectedCount: (count: number) => string;
     removeItem: (label: string) => string;
   };
+  combobox?: {
+    placeholder: string;
+    emptyText: string;
+    loadingText: string;
+    open: string;
+    close: string;
+  };
   treeSelect: {
     placeholder: string;
     searchPlaceholder: string;
@@ -168,6 +175,10 @@ export const zhCN: LumenLocale = {
     placeholder: '请选择', searchPlaceholder: '搜索...', emptyText: '无匹配选项', loadingText: '加载中...',
     multipleCountLabel: (count) => `已选择 ${count} 项`, selectedCount: (count) => `已选 ${count} 项`, removeItem: (label) => `移除 ${label}`,
   },
+  combobox: {
+    placeholder: '请输入或选择', emptyText: '无匹配选项', loadingText: '加载中...',
+    open: '打开选项', close: '关闭选项',
+  },
   treeSelect: {
     placeholder: '请选择', searchPlaceholder: '搜索组织节点', emptyText: '无可选节点', loadingText: '加载中...',
     selectedCount: (count) => `已选 ${count} 项`, removeItem: (label) => `移除 ${label}`,
@@ -224,6 +235,10 @@ export const enUS: LumenLocale = {
   select: {
     placeholder: 'Select', searchPlaceholder: 'Search...', emptyText: 'No matching options', loadingText: 'Loading...',
     multipleCountLabel: (count) => `${count} selected`, selectedCount: (count) => `${count} selected`, removeItem: (label) => `Remove ${label}`,
+  },
+  combobox: {
+    placeholder: 'Type or select', emptyText: 'No matching options', loadingText: 'Loading...',
+    open: 'Open options', close: 'Close options',
   },
   treeSelect: {
     placeholder: 'Select', searchPlaceholder: 'Search nodes', emptyText: 'No available nodes', loadingText: 'Loading...',
