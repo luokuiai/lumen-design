@@ -66,6 +66,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   const menuId = useId();
   const [phase, setPhase] = useState<ContextMenuPhase>('closed');
   const [anchor, setAnchor] = useState({ x: -9999, y: -9999 });
+  const [opensUp, setOpensUp] = useState(false);
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({
     left: -9999,
     position: 'fixed',
@@ -155,10 +156,16 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     if (!mounted || !menuRef.current) return;
     const width = menuRef.current.offsetWidth || 176;
     const height = menuRef.current.offsetHeight || 160;
+    const flipX = anchor.x + width > window.innerWidth - VIEWPORT_PADDING;
+    const flipY = anchor.y + height > window.innerHeight - VIEWPORT_PADDING;
+    const left = clamp(flipX ? anchor.x - width : anchor.x, VIEWPORT_PADDING, window.innerWidth - width - VIEWPORT_PADDING);
+    const top = clamp(flipY ? anchor.y - height : anchor.y, VIEWPORT_PADDING, window.innerHeight - height - VIEWPORT_PADDING);
+    setOpensUp(flipY);
     setMenuStyle({
-      left: clamp(anchor.x, VIEWPORT_PADDING, window.innerWidth - width - VIEWPORT_PADDING),
+      left,
       position: 'fixed',
-      top: clamp(anchor.y, VIEWPORT_PADDING, window.innerHeight - height - VIEWPORT_PADDING),
+      top,
+      transformOrigin: `${clamp(anchor.x - left, 0, width)}px ${clamp(anchor.y - top, 0, height)}px`,
       maxHeight: `calc(100vh - ${VIEWPORT_PADDING * 2}px)`,
       maxWidth: `calc(100vw - ${VIEWPORT_PADDING * 2}px)`,
     });
@@ -244,9 +251,10 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
               menuClassName,
             )}
             style={{
+              transformOrigin: menuStyle.transformOrigin,
               animation: phase === 'closing'
-                ? 'lumen-dropdown-out 0.12s ease-in forwards'
-                : 'lumen-dropdown-in 0.12s ease-out',
+                ? `lumen-dropdown-out${opensUp ? '-up' : ''} 0.12s ease-in forwards`
+                : `lumen-dropdown-in${opensUp ? '-up' : ''} 0.12s ease-out`,
             }}
           >
             {typeof content === 'function' ? content({ close }) : content}

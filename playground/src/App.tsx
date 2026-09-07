@@ -363,9 +363,9 @@ const galleryCategories: GalleryCategory[] = [
       demo('Form / FormField', 'forms', 'Form, FormField, Input, Button, Alert, SegmentedControl, Toast', '    <Form values={values} validate={validate} onFinish={submit}>\n      <FormField name="name" label="姓名" required>\n        {(props) => <Input {...props} value={values.name} onChange={(event) => setValues({ name: event.target.value })} />}\n      </FormField>\n      <Button type="submit">校验并提交</Button>\n    </Form>', undefined, "const [values, setValues] = useState({ name: '' });\n  const validate = (values: { name: string }) => ({ name: values.name.trim() ? undefined : '请输入姓名' });\n  const submit = (values: { name: string }) => console.log(values);"),
       demo('Input', 'forms', 'Input', '    <Input aria-label="项目名称" placeholder="请输入项目名称" />'),
       demo('Textarea', 'forms', 'FormField, Textarea', '    <FormField label="备注">\n      <Textarea value={value} onChange={setValue} maxLength={200} showCount />\n    </FormField>'),
-      demo('SearchBar', 'forms', 'SearchBar, Typography', '    <div className="max-w-[420px] space-y-2">\n      <SearchBar\n        value={value}\n        onChange={setValue}\n        onSearch={(keyword) => setMessage(keyword ? `正在搜索“${keyword}”` : \'请输入搜索内容\')}\n        placeholder="搜索组件、页面或命令"\n        aria-label="组件搜索"\n      />\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [value, setValue] = useState('');\n  const [message, setMessage] = useState('输入关键词后按 Enter 搜索');"),
       demo('NumberInput', 'forms', 'FormField, NumberInput', '    <FormField label="处置时限">\n      <NumberInput defaultValue={30} min={5} max={120} suffix="分钟" />\n    </FormField>'),
       demo('OtpInput', 'forms', 'FormField, OtpInput', '    <FormField label="短信验证码">\n      <OtpInput value={value} onChange={setValue} />\n    </FormField>', undefined, "const [value, setValue] = useState('');"),
+      demo('SearchBar', 'forms', 'SearchBar, Typography', '    <div className="max-w-[420px] space-y-2">\n      <SearchBar\n        value={value}\n        onChange={setValue}\n        onSearch={(keyword) => setMessage(keyword ? `正在搜索“${keyword}”` : \'请输入搜索内容\')}\n        placeholder="搜索组件、页面或命令"\n        aria-label="组件搜索"\n      />\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [value, setValue] = useState('');\n  const [message, setMessage] = useState('输入关键词后按 Enter 搜索');"),
       demo('Checkbox', 'forms', 'Checkbox', '    <div className="flex items-center gap-5">\n      <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />\n      <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />\n      <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />\n    </div>'),
       demo('Radio', 'forms', 'Radio, RadioGroup', '    <div className="space-y-4">\n      <div className="flex items-center gap-5">\n        <Radio size="sm" checked label="Small" />\n        <Radio size="md" checked label="Medium" />\n        <Radio size="lg" checked label="Large" />\n      </div>\n      <RadioGroup size="md" value={value} onChange={setValue} options={options} />\n    </div>'),
       demo('Switch', 'forms', 'Switch', '    <div className="flex items-center gap-5">\n      <Switch size="sm" checked={enabled} onChange={setEnabled} label="Small" />\n      <Switch size="md" checked={enabled} onChange={setEnabled} label="Medium" />\n      <Switch size="lg" checked={enabled} onChange={setEnabled} label="Large" />\n    </div>'),
@@ -391,6 +391,7 @@ const galleryCategories: GalleryCategory[] = [
     keywords: 'AppBar BottomNavigation SideNav Breadcrumb Tabs Steps Pagination ScrollToEdge',
     icon: MoreHorizontal,
     demos: [
+      demo('SideNav', 'navigation', 'SideNav', '    <SideNav sections={[{ items: [{ value: "overview", label: "总览" }, { value: "settings", label: "设置" }] }]} />'),
       demo('AppBar', 'navigation', 'AppBar, Button, Typography', '    <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <AppBar\n        position="absolute"\n        title="订单详情"\n        leading={(\n          <Button iconOnly variant="ghost" aria-label="返回" icon={<ArrowLeft size={19} />} />\n        )}\n        actions={(\n          <Button iconOnly variant="ghost" aria-label="更多操作" icon={<MoreHorizontal size={19} />} />\n        )}\n      />\n      <div className="px-5 pt-20">\n        <Typography variant="h3">#LM-20260904</Typography>\n        <Typography variant="caption" color="muted">等待审核</Typography>\n      </div>\n    </div>', 'ArrowLeft, MoreHorizontal'),
       demo('BottomNavigation', 'navigation', 'BottomNavigation, Typography', '    <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">\n        <Typography variant="h3">{value}</Typography>\n        <Typography variant="caption" color="muted">当前底部导航目标</Typography>\n      </div>\n      <BottomNavigation\n        position="absolute"\n        value={value}\n        onChange={setValue}\n        items={[\n          { value: \'home\', label: \'首页\', icon: Star },\n          { value: \'schedule\', label: \'日程\', icon: CalendarDays },\n          { value: \'messages\', label: \'消息\', icon: Bell, badge: 3, badgeLabel: \'3 条未读消息\' },\n          { value: \'profile\', label: \'我的\', icon: UserRound },\n        ]}\n      />\n    </div>', 'Bell, CalendarDays, Star, UserRound', "const [value, setValue] = useState('home');"),
       demo('Breadcrumb', 'navigation', 'Breadcrumb', '    <Breadcrumb items={[\n      { label: \'首页\', href: \'/\' },\n      { label: \'订单详情\' },\n    ]} />'),
@@ -575,6 +576,7 @@ const zhDemoNames: Record<string, string> = {
   FileUpload: '文件上传',
   Breadcrumb: '面包屑',
   AppBar: '应用栏',
+  SideNav: '侧边导航',
   BottomNavigation: '底部导航',
   Carousel: '轮播',
   Pagination: '分页',
@@ -1166,8 +1168,8 @@ function DragHandleExample() {
         </SortableContext>
         <p className="pt-1 text-[12px] text-[var(--lumen-color-text-muted)]">
           {messages.locale === 'en-US'
-            ? 'Drag the handle to reorder, or focus it and use the arrow keys.'
-            : '拖动手柄排序，也可聚焦后按上下方向键。'}
+            ? 'Hover to grab the handle, then drag to reorder. Keyboard: focus and use the arrow keys.'
+            : '鼠标移至手柄显示抓取光标，拖动即可排序；也可聚焦后按上下方向键。'}
         </p>
       </div>
       <DragOverlay dropAnimation={{ duration: 200, easing: 'ease' }}>
@@ -1507,6 +1509,7 @@ function GalleryBrand({ className = '', subtitle }: { className?: string; subtit
 }
 
 export default function App() {
+  const [sideNavValue, setSideNavValue] = useState('overview');
   const [locale, setLocale] = useState(getInitialLocale);
   useEffect(() => {
     document.documentElement.lang = locale.locale;
@@ -2449,7 +2452,7 @@ export default function App() {
                       )}
                     >
                       <div className="select-none touch-pan-y rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center text-[14px] text-[var(--lumen-color-text)]">
-                        PC 端右键，移动端长按
+                        PC 端右键，移动端长按；菜单从触发位置展开，靠近窗口边缘时自动翻转
                       </div>
                     </ContextMenu>
                     <Typography variant="caption" color="muted">
@@ -2924,8 +2927,9 @@ export default function App() {
                   <TimePicker value={timeValue} onChange={setTimeValue} />
                 </DemoCard>
                 <DemoCard title="DateTimePicker" wide>
-                  <div className="max-w-[420px]">
+                  <div className="max-w-[420px] space-y-3">
                     <DateTimePicker label="开始时间" value={dateTimeValue} onChange={setDateTimeValue} />
+                    <DateTimePicker label="开始时间（精确到分）" precision="minute" value={dateTimeValue} onChange={setDateTimeValue} />
                   </div>
                 </DemoCard>
                 <DemoCard title="Calendar" wide>
@@ -2949,6 +2953,19 @@ export default function App() {
           if (section.id === 'navigation') {
             return (
               <GallerySection key={section.id} section={section}>
+                <DemoCard title="SideNav" wide>
+                  <div className="space-y-3">
+                    <SideNav
+                      activeValue={sideNavValue}
+                      onSelect={setSideNavValue}
+                      sections={[{ items: [
+                        { value: 'overview', label: '运营总览', icon: Star },
+                        { value: 'settings', label: '系统设置', icon: Settings },
+                      ] }]}
+                    />
+                    <Typography variant="caption" color="muted">默认宽度 320px，窄容器内自动收缩。</Typography>
+                  </div>
+                </DemoCard>
                 <DemoCard title="Breadcrumb" wide>
                   <Breadcrumb
                     items={[
