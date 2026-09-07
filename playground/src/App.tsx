@@ -37,6 +37,7 @@ import {
   Code2,
   Copy,
   Filter,
+  Folder,
   Languages,
   MapPin,
   LogOut,
@@ -134,6 +135,7 @@ import {
   Tooltip,
   Transfer,
   TreeSelect,
+  Tree,
   Typography,
   VirtualList,
   Watermark,
@@ -399,7 +401,7 @@ const galleryCategories: GalleryCategory[] = [
     id: 'data-display',
     title: 'Data Display',
     description: '状态、列表、表格与结构化内容。',
-    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List VirtualList SwipeActions Scrollbar Collapse Accordion Divider Watermark',
+    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable Tree List VirtualList SwipeActions Scrollbar Collapse Accordion Divider Watermark',
     icon: Table2,
     demos: [
       demo('Badge', 'buttons', 'Badge', '    <Badge variant="success">Success</Badge>'),
@@ -410,6 +412,7 @@ const galleryCategories: GalleryCategory[] = [
       demo('FileTypeIcon', 'data', 'FileTypeIcon', '    <FileTypeIcon fileName="proposal.pdf" />'),
       demo('DataTable', 'data', 'DataTable', '    <>\n      <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n    </>', undefined, undefined, ['DataTable · Sticky Header', 'DataTable · Embedded']),
       demo('List', 'data', 'List, ListItem', '    <List>\n      <ListItem title="设计评审" />\n    </List>'),
+      demo('Tree', 'data', 'Tree', '    <Tree\n      aria-label="项目文件"\n      nodes={[{ key: "src", label: "src", children: [{ key: "app", label: "App.tsx" }] }]}\n      defaultExpandedKeys={["src"]}\n      multiple\n    />'),
       demo('VirtualList', 'data', 'VirtualList', '    <VirtualList\n      aria-label="运行记录"\n      items={items}\n      itemSize={60}\n      height={320}\n      overscan={4}\n      getItemKey={(item) => item.id}\n      renderItem={(item) => (\n        <div className="flex h-full items-center border-b px-4">{item.title}</div>\n      )}\n    />', undefined, "const items = Array.from({ length: 10000 }, (_, index) => ({\n    id: index + 1,\n    title: `运行记录 ${index + 1}`,\n  }));"),
       demo('SwipeActions', 'data', 'SwipeActions', '    <SwipeActions\n      startActions={[{ key: \'archive\', label: \'归档\', icon: <Archive size={18} />, tone: \'success\', onClick: () => setResult(\'已归档\') }]}\n      endActions={[{ key: \'delete\', label: \'删除\', icon: <Trash2 size={18} />, tone: \'danger\', onClick: () => setResult(\'已删除\') }]}\n      fullSwipe\n    >\n      <div className="px-4 py-3">向左或向右滑动这条事件</div>\n    </SwipeActions>', 'Archive, Trash2', "const [result, setResult] = useState('');"),
       demo('Scrollbar', 'data', 'Scrollbar', '    <Scrollbar className="h-64">{content}</Scrollbar>'),
@@ -559,6 +562,7 @@ const zhDemoNames: Record<string, string> = {
   Select: '选择器',
   Combobox: '组合框',
   TreeSelect: '树选择器',
+  Tree: '树形视图',
   Cascader: '级联选择器',
   DatePicker: '日期选择器',
   TimePicker: '时间选择器',
@@ -3235,6 +3239,36 @@ export default function App() {
                     }}
                     onPageChange={setEventPage}
                   />
+                </DemoCard>
+                <DemoCard title="Tree" wide>
+                  <div className="grid gap-6 l:grid-cols-2">
+                    <Tree
+                      aria-label="项目文件"
+                      defaultExpandedKeys={['src']}
+                      defaultSelectedKeys={['app']}
+                      nodes={[
+                        { key: 'src', label: 'src', icon: <Folder size={16} />, children: [
+                          { key: 'components', label: 'components', icon: <Folder size={16} />, children: [{ key: 'button', label: 'Button.tsx' }] },
+                          { key: 'app', label: 'App.tsx' },
+                        ] },
+                        { key: 'readme', label: 'README.md' },
+                        { key: 'lock', label: 'bun.lock', disabled: true },
+                      ]}
+                    />
+                    <Tree
+                      aria-label="团队多选"
+                      multiple
+                      defaultExpandedKeys={['team']}
+                      defaultSelectedKeys={['design']}
+                      nodes={[
+                        { key: 'team', label: '产品团队', selectable: false, children: [
+                          { key: 'design', label: '设计' },
+                          { key: 'frontend', label: '前端' },
+                          { key: 'backend', label: '后端' },
+                        ] },
+                      ]}
+                    />
+                  </div>
                 </DemoCard>
                 <DemoCard title="List" wide>
                   <List aria-label="重点事件">
