@@ -3,6 +3,7 @@ import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it } from 'vitest';
 import { DateTimePicker } from '../components/DateTimePicker';
+import { DatePicker } from '../components/DatePicker';
 import { Tabs } from '../components/Tabs';
 import { TimePicker } from '../components/TimePicker';
 import { Toast } from '../components/Toast';
@@ -43,7 +44,7 @@ describe('responsive layouts', () => {
     );
   });
 
-  it('keeps time popovers inside a narrow mobile viewport', async () => {
+  it('uses touch wheels in a modal on a narrow mobile viewport', async () => {
     Object.defineProperty(window, 'innerWidth', {
       configurable: true,
       value: 200,
@@ -54,11 +55,36 @@ describe('responsive layouts', () => {
     await user.click(screen.getByRole('button', { name: '请选择时间' }));
 
     const panel = document.querySelector<HTMLElement>('[data-time-picker-panel]');
-    expect(panel).toHaveStyle({ width: '184px' });
-    expect(panel).toHaveStyle({ maxHeight: 'calc(100dvh - 16px)' });
+    const modal = document.querySelector<HTMLElement>('[data-modal="time-picker-panel"]');
+    expect(document.querySelector('[data-modal-overlay="time-picker-panel"]')).toBeInTheDocument();
+    expect(modal).toHaveAttribute('role', 'dialog');
+    expect(modal).toHaveClass('max-w-[344px]');
+    expect(panel).toHaveClass('contents');
+    expect(
+      screen.getByRole('listbox', { name: '时' }).querySelector('[aria-selected="true"]'),
+    ).toHaveTextContent('09');
+    expect(document.querySelector('[data-time-selector-column]')).not.toBeInTheDocument();
   });
 
-  it('keeps date-time columns on mobile with horizontal overflow', async () => {
+  it('uses the shared modal treatment for the mobile date picker', async () => {
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      value: 300,
+    });
+    const user = userEvent.setup();
+
+    render(<DatePicker value="" onChange={() => undefined} />);
+    await user.click(screen.getByRole('button', { name: '请选择日期' }));
+
+    const panel = document.querySelector<HTMLElement>('[data-date-picker-portal]');
+    const modal = document.querySelector<HTMLElement>('[data-modal="date-picker-panel"]');
+    expect(document.querySelector('[data-modal-overlay="date-picker-panel"]')).toBeInTheDocument();
+    expect(modal).toHaveAttribute('role', 'dialog');
+    expect(modal).toHaveClass('max-w-[320px]');
+    expect(panel).toHaveClass('contents');
+  });
+
+  it('uses a stepped modal date-time flow on mobile', async () => {
     Object.defineProperty(window, 'innerWidth', {
       configurable: true,
       value: 300,
@@ -75,10 +101,21 @@ describe('responsive layouts', () => {
     await user.click(screen.getByRole('button', { name: '请选择日期时间' }));
 
     const panel = document.querySelector<HTMLElement>('[data-date-time-picker-panel]');
-    const layout = panel?.firstElementChild as HTMLElement | null;
-    expect(panel).toHaveStyle({ width: '284px' });
-    expect(panel).toHaveClass('overflow-x-auto');
-    expect(layout).toHaveStyle({ gridTemplateColumns: '320px 210px' });
+    const modal = document.querySelector<HTMLElement>('[data-modal="date-time-picker-panel"]');
+    expect(document.querySelector('[data-modal-overlay="date-time-picker-panel"]')).toBeInTheDocument();
+    expect(modal).toHaveAttribute('role', 'dialog');
+    expect(modal).toHaveClass('max-w-[360px]');
+    expect(panel).toHaveClass('contents');
+    expect(document.querySelector('[data-date-time-picker-time-column]')).not.toBeInTheDocument();
+
+    const timeStep = panel?.querySelector<HTMLButtonElement>('button[aria-pressed="false"]');
+    await user.click(timeStep!);
+
+    expect(document.querySelector('[data-date-time-picker-mobile-time]')).toBeInTheDocument();
+    expect(screen.queryByRole('textbox', { name: '时' })).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('listbox', { name: '时' }).querySelector('[aria-selected="true"]'),
+    ).toHaveTextContent('09');
   });
 
   it('positions toasts on the right with responsive width', async () => {

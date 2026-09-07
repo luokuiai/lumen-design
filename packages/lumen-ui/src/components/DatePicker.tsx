@@ -7,9 +7,12 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from './Button';
 import { Calendar } from './calendar/Calendar';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
+import { MobilePickerModal } from './mobilePickerModal';
+import { useMobilePicker } from './useMobilePicker';
 import { useOverlayPortalScope } from './useOverlayBehavior';
 import { type LumenLocale, useLumenLocale, zhCN } from '../i18n';
 
@@ -158,9 +161,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   maxDate,
 }) => {
   const locale = useLumenLocale();
+  const isMobile = useMobilePicker();
   const placeholder = placeholderProp ?? locale.datePicker.placeholder;
+  const cancelLabel = locale.locale.startsWith('zh') ? '取消' : 'Cancel';
   const overlayScopeId = useOverlayPortalScope();
   const [open, setOpen] = useState(false);
+  const [mobileDraftValue, setMobileDraftValue] = useState(value);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
@@ -185,6 +191,16 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const portalRef = useRef<HTMLDivElement>(null);
 
   const updateDropdownPosition = useCallback(() => {
+    if (isMobile) {
+      setDropDirection('down');
+      setDropdownStyle({
+        position: 'relative',
+        width: 'min(100%, 320px)',
+        maxHeight: 'calc(100dvh - 24px)',
+        zIndex: 9999,
+      });
+      return;
+    }
     if (!triggerRef.current) return;
     const rect = triggerRef.current.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
@@ -221,7 +237,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       width: dropdownWidth,
       zIndex: 9999,
     });
-  }, [mode]);
+  }, [isMobile, mode]);
 
   // 解析当前值
   const parsed = useMemo(() => parseDate(value), [value]);
@@ -301,6 +317,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         parsed?.year ?? todayDate.year,
       );
       setYearPickerStart(initialYearPageStart);
+      setMobileDraftValue(value);
       updateDropdownPosition();
     }
   }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -424,10 +441,14 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   const selectDate = useCallback(
     (dateStr: string) => {
+      if (isMobile) {
+        setMobileDraftValue(dateStr);
+        return;
+      }
       onChange(dateStr);
       closeDropdownImmediate();
     },
-    [onChange, closeDropdownImmediate],
+    [closeDropdownImmediate, isMobile, onChange],
   );
 
   const selectMonth = useCallback(
@@ -435,10 +456,14 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       const str = `${year}-${pad(month + 1)}`;
       if (minDate && str < minDate.substring(0, 7)) return;
       if (maxDate && str > maxDate.substring(0, 7)) return;
+      if (isMobile) {
+        setMobileDraftValue(str);
+        return;
+      }
       onChange(str);
       closeDropdownImmediate();
     },
-    [onChange, minDate, maxDate, closeDropdownImmediate],
+    [closeDropdownImmediate, isMobile, maxDate, minDate, onChange],
   );
 
   const selectYear = useCallback(
@@ -458,11 +483,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   }, [value, mode, format, locale.datePicker]);
 
   // 选中值解析（year-month 模式）
+  const selectedValue = isMobile && open ? mobileDraftValue : value;
   const selectedMonth = useMemo(() => {
-    if (mode !== 'year-month' || !value) return null;
-    const p = parseDate(value);
+    if (mode !== 'year-month' || !selectedValue) return null;
+    const p = parseDate(selectedValue);
     return p ? { year: p.year, month: p.month } : null;
-  }, [value, mode]);
+  }, [mode, selectedValue]);
 
   // ─── 渲染 ──────────────────────────────────────────
 
@@ -516,36 +542,48 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       {/* 下拉面板（portal 到 body） */}
       {open &&
         createPortal(
-          <div
-            ref={portalRef}
-            data-ui="date-picker-panel"
-            data-date-picker-portal
-            data-lumen-overlay-scope={overlayScopeId ?? undefined}
-            className="rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-xl"
-            style={{
-              ...dropdownStyle,
-              animation: isAnimatingOut
-                ? dropDirection === 'up'
-                  ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
-                  : 'lumen-dropdown-out 0.12s ease-in forwards'
-                : dropDirection === 'up'
-                  ? 'lumen-dropdown-in-up 0.12s ease-out'
-                  : 'lumen-dropdown-in 0.12s ease-out',
-              transformOrigin: dropDirection === 'up' ? 'bottom' : 'top',
-            }}
+          <MobilePickerModal
+            mobile={isMobile}
+            open={open}
+            onRequestClose={closeDropdown}
+            label={placeholder}
+            modalId="date-picker-panel"
+            maxWidth="max-w-[320px]"
           >
-            {mode === 'year-month-day' ? (
-              <Calendar
-                value={value}
-                onChange={selectDate}
-                size={size}
-                showToday={showToday}
-                clearable={clearable}
-                minDate={minDate}
-                maxDate={maxDate}
-              />
-            ) : (
-              <MonthModeContent
+            <div
+              ref={portalRef}
+              data-ui="date-picker-panel"
+              data-date-picker-portal
+              data-lumen-overlay-scope={overlayScopeId ?? undefined}
+              className={cn(
+                isMobile
+                  ? 'contents'
+                  : 'overflow-y-auto rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-xl',
+              )}
+              style={isMobile ? undefined : {
+                ...dropdownStyle,
+                animation: isAnimatingOut
+                    ? dropDirection === 'up'
+                      ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
+                      : 'lumen-dropdown-out 0.12s ease-in forwards'
+                    : dropDirection === 'up'
+                      ? 'lumen-dropdown-in-up 0.12s ease-out'
+                      : 'lumen-dropdown-in 0.12s ease-out',
+                transformOrigin: dropDirection === 'up' ? 'bottom' : 'top',
+              }}
+            >
+              {mode === 'year-month-day' ? (
+                <Calendar
+                  value={selectedValue}
+                  onChange={selectDate}
+                  size={size}
+                  showToday={showToday}
+                  clearable={clearable}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                />
+              ) : (
+                <MonthModeContent
                 tokens={tokens}
                 viewYear={viewYear}
                 showYearPicker={showYearPicker}
@@ -566,17 +604,42 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                 showToday={showToday}
                 clearable={clearable}
                 onClear={() => {
-                  onChange('');
-                  closeDropdown();
+                  if (isMobile) setMobileDraftValue('');
+                  else {
+                    onChange('');
+                    closeDropdown();
+                  }
                 }}
                 onSelectToday={() =>
                   selectMonth(todayDate.year, todayDate.month)
                 }
                 isMonthDisabled={isMonthDisabled}
                 isYearDisabled={isYearDisabled}
-              />
-            )}
-          </div>,
+                />
+              )}
+              {isMobile ? (
+                <div className="flex items-center justify-end gap-2 border-t border-[var(--lumen-color-surface-muted)] px-3 py-3">
+                  <button
+                    type="button"
+                    onClick={closeDropdown}
+                    className="px-2 py-1 text-[13px] font-medium text-[var(--lumen-color-text-secondary)]"
+                  >
+                    {cancelLabel}
+                  </button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={() => {
+                      onChange(mobileDraftValue);
+                      closeDropdownImmediate();
+                    }}
+                  >
+                    {locale.common.confirm}
+                  </Button>
+                </div>
+              ) : null}
+            </div>
+          </MobilePickerModal>,
           document.body,
         )}
     </div>

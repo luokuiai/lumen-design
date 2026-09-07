@@ -371,7 +371,7 @@ const galleryCategories: GalleryCategory[] = [
       demo('TreeSelect', 'pickers', 'TreeSelect', '    <TreeSelect nodes={nodes} value="frontend" onChange={setValue} searchable />'),
       demo('Cascader', 'pickers', 'Cascader', '    <Cascader options={options} value={[]} onChange={() => undefined} />'),
       demo('DatePicker', 'pickers', 'DatePicker', '    <DatePicker value="2026-09-04" onChange={setValue} />'),
-      demo('TimePicker', 'pickers', 'TimePicker', '    <TimePicker value="09:30" onChange={setValue} minuteStep={5} />'),
+      demo('TimePicker', 'pickers', 'TimePicker', '    <TimePicker value="09:30" onChange={setValue} />'),
       demo('DateTimePicker', 'pickers', 'DateTimePicker', '    <DateTimePicker label="开始时间" value="2026-09-04 09:30:00" onChange={setValue} />'),
       demo('Calendar', 'pickers', 'Calendar', '    <Calendar value="2026-09-04" onChange={() => undefined} />'),
       demo('Transfer', 'pickers', 'Transfer', '    <Transfer items={items} targetKeys={[]} onChange={() => undefined} />'),
@@ -2821,11 +2821,11 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="TimePicker" wide>
-                  <TimePicker value={timeValue} onChange={setTimeValue} minuteStep={5} />
+                  <TimePicker value={timeValue} onChange={setTimeValue} />
                 </DemoCard>
                 <DemoCard title="DateTimePicker" wide>
                   <div className="max-w-[420px]">
-                    <DateTimePicker label="开始时间" value={dateTimeValue} onChange={setDateTimeValue} minuteStep={5} />
+                    <DateTimePicker label="开始时间" value={dateTimeValue} onChange={setDateTimeValue} />
                   </div>
                 </DemoCard>
                 <DemoCard title="Calendar" wide>

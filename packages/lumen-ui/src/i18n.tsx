@@ -79,6 +79,9 @@ export interface LumenLocale {
   dateTimePicker: {
     placeholder: string;
     valueLabel: (label: string) => string;
+    dateLabel?: string;
+    timeLabel?: string;
+    cancel?: string;
   };
   timePicker: {
     placeholder: string;
@@ -197,7 +200,7 @@ export const zhCN: LumenLocale = {
   datePicker: {
     placeholder: '请选择日期', formatYearMonth: (year, month) => `${year}年${month}月`, formatDate: (year, month, day) => `${year}年${month}月${day}日`,
   },
-  dateTimePicker: { placeholder: '请选择日期时间', valueLabel: (label) => `${label}值` },
+  dateTimePicker: { placeholder: '请选择日期时间', valueLabel: (label) => `${label}值`, dateLabel: '日期', timeLabel: '时间', cancel: '取消' },
   timePicker: { placeholder: '请选择时间', hour: '时', minute: '分', second: '秒' },
   transfer: {
     sourceTitle: '可选项', targetTitle: '已选项', searchPlaceholder: '搜索', emptyText: '暂无数据',
@@ -260,7 +263,7 @@ export const enUS: LumenLocale = {
     placeholder: 'Select date', formatYearMonth: (year, month) => new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(new Date(year, month - 1, 1)),
     formatDate: (year, month, day) => new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(year, month - 1, day)),
   },
-  dateTimePicker: { placeholder: 'Select date and time', valueLabel: (label) => `${label} value` },
+  dateTimePicker: { placeholder: 'Select date and time', valueLabel: (label) => `${label} value`, dateLabel: 'Date', timeLabel: 'Time', cancel: 'Cancel' },
   timePicker: { placeholder: 'Select time', hour: 'Hour', minute: 'Minute', second: 'Second' },
   transfer: {
     sourceTitle: 'Available', targetTitle: 'Selected', searchPlaceholder: 'Search', emptyText: 'No data',
