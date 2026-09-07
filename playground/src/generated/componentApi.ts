@@ -198,6 +198,38 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     },
     {
+      "name": "showFileSize",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否显示 FileSize。",
+      "descriptionEn": "Controls whether file size is shown.",
+      "required": false
+    },
+    {
+      "name": "wrapFileName",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "设置 wrapFileName。",
+      "descriptionEn": "Configures wrap file name.",
+      "required": false
+    },
+    {
+      "name": "getFileBadge",
+      "type": "(file: File) => FileListBadge | undefined",
+      "defaultValue": "undefined",
+      "description": "设置 getFileBadge。",
+      "descriptionEn": "Configures get file badge.",
+      "required": false
+    },
+    {
+      "name": "renderFileActions",
+      "type": "(file: File) => React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 renderFileActions。",
+      "descriptionEn": "Configures render file actions.",
+      "required": false
+    },
+    {
       "name": "uploading",
       "type": "boolean",
       "defaultValue": "false",
@@ -6230,6 +6262,106 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "description": "设置 submitError。",
       "descriptionEn": "Configures submit error.",
       "required": true
+    }
+  ],
+  "FileListItem": [
+    {
+      "name": "file",
+      "type": "FileListFile",
+      "defaultValue": "-",
+      "description": "设置 file。",
+      "descriptionEn": "Configures file.",
+      "required": true
+    },
+    {
+      "name": "showSize",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否显示 Size。",
+      "descriptionEn": "Controls whether size is shown.",
+      "required": false
+    },
+    {
+      "name": "wrapName",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "设置 wrapName。",
+      "descriptionEn": "Configures wrap name.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "禁用组件及其交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 actions。",
+      "descriptionEn": "Configures actions.",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "type": "(file: FileListFile) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 Remove 对应操作时触发。",
+      "descriptionEn": "Called when the remove action occurs.",
+      "required": false
+    }
+  ],
+  "FileList": [
+    {
+      "name": "renderActions",
+      "type": "(file: FileListFile) => React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 renderActions。",
+      "descriptionEn": "Configures render actions.",
+      "required": false
+    },
+    {
+      "name": "items",
+      "type": "FileListFile[]",
+      "defaultValue": "-",
+      "description": "定义组件渲染的数据项。",
+      "descriptionEn": "Defines the data items rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "showSize",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "控制是否显示 Size。",
+      "descriptionEn": "Controls whether size is shown.",
+      "required": false
+    },
+    {
+      "name": "wrapName",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "设置 wrapName。",
+      "descriptionEn": "Configures wrap name.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "禁用组件及其交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "type": "(file: FileListFile) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 Remove 对应操作时触发。",
+      "descriptionEn": "Called when the remove action occurs.",
+      "required": false
     }
   ]
 };

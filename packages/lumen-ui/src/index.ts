@@ -34,6 +34,7 @@ export * from './components/DropdownMenu';
 export * from './components/Empty';
 export * from './components/Fab';
 export * from './components/FileUpload';
+export * from './components/file-list/FileList';
 export * from './components/file-type-icon';
 export * from './components/FormField';
 export * from './components/form/Form';

@@ -36,6 +36,7 @@ import {
   ChevronRight,
   Code2,
   Copy,
+  Eye,
   Filter,
   Folder,
   Languages,
@@ -95,6 +96,7 @@ import {
   Drawer,
   DropdownMenu,
   FileUpload,
+  FileList,
   FileTypeIcon,
   FormField,
   Form,
@@ -381,6 +383,7 @@ const galleryCategories: GalleryCategory[] = [
       demo('DatePicker', 'pickers', 'DatePicker', '    <DatePicker value="2026-09-04" onChange={setValue} />'),
       demo('TimePicker', 'pickers', 'TimePicker', '    <TimePicker value="09:30" onChange={setValue} />'),
       demo('DateTimePicker', 'pickers', 'DateTimePicker', '    <DateTimePicker label="开始时间" value="2026-09-04 09:30:00" onChange={setValue} />'),
+      demo('FileList', 'feedback', 'FileList', '<FileList items={[]} />', undefined, undefined, ['FileList', 'FileList Wrapped']),
       demo('FileUpload', 'feedback', 'FileUpload', '    <>\n      <FileUpload value={files} onChange={setFiles} multiple />\n      <FileUpload density="compact" value={files} onChange={setFiles} multiple />\n    </>', undefined, undefined, ['FileUpload', 'FileUpload Compact']),
     ],
   },
@@ -574,6 +577,8 @@ const zhDemoNames: Record<string, string> = {
   Calendar: '日历',
   Transfer: '穿梭框',
   FileUpload: '文件上传',
+  FileList: '文件列表',
+  'FileList Wrapped': '文件列表 · 换行与隐藏大小',
   Breadcrumb: '面包屑',
   AppBar: '应用栏',
   SideNav: '侧边导航',
@@ -1580,8 +1585,13 @@ export default function App() {
   const [selectedEventKeys, setSelectedEventKeys] = useState<React.Key[]>([]);
   const [warningAlertVisible, setWarningAlertVisible] = useState(true);
   const [pullRefreshCount, setPullRefreshCount] = useState(0);
-  const [files, setFiles] = useState<File[]>([]);
-  const [compactFiles, setCompactFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<File[]>(() => [
+    new File(['# 项目设计说明\n\n用于展示文件列表的示例附件。'], '应用于低压配电物联网的断路器管理方法及系统_20231024032440.md', { type: 'text/markdown' }),
+    new File(['<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="16" fill="royalblue" /></svg>'], '项目图标.svg', { type: 'image/svg+xml' }),
+  ]);
+  const [compactFiles, setCompactFiles] = useState<File[]>(() => [
+    new File(['# 设计评审记录\n\n用于展示紧凑文件列表的示例附件。'], '支持自动换行并完整展示文件名称的项目设计评审记录.md', { type: 'text/markdown' }),
+  ]);
   const [modalOpen, setModalOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [modalSelectValue, setModalSelectValue] = useState<string | null>(null);
@@ -3743,28 +3753,95 @@ export default function App() {
                   )}
                 />
               </DemoCard>
+              <DemoCard title="FileList">
+                <div className="w-full max-w-md">
+                  <FileList
+                    items={[
+                      { id: 'pdf', name: '应用于低压配电物联网的断路器管理方法及系统_20231024032440.pdf', size: 1258291, badge: { label: '已上传', variant: 'success' } },
+                      { id: 'sheet', name: 'budget.xlsx', size: 4096, badge: { label: '等待财务部门与项目负责人共同审核后归档', variant: 'warning' } },
+                      { id: 'image', name: 'photo.png', size: 0 },
+                    ]}
+                    renderActions={(file) => (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        iconOnly
+                        icon={<Eye size={16} aria-hidden="true" />}
+                        aria-label={`查看附件：${file.name}`}
+                        title="查看"
+                        onClick={() => Toast.info(`查看附件：${file.name}`)}
+                      />
+                    )}
+                    onRemove={(file) => Toast.info(`移除附件：${file.name}`)}
+                  />
+                </div>
+              </DemoCard>
+              <DemoCard title="FileList Wrapped">
+                <div className="w-full max-w-sm">
+                  <FileList
+                    wrapName
+                    showSize={false}
+                    items={[
+                      { id: 'doc', name: '这是一份完整显示名称并支持自动换行的项目设计说明文档.docx', size: 8192, badge: { label: '已归档', variant: 'neutral' } },
+                    ]}
+                  />
+                </div>
+              </DemoCard>
               <DemoCard title="FileUpload">
-                <FileUpload
-                  value={files}
-                  onChange={setFiles}
-                  multiple
-                  maxFiles={3}
-                  accept=".png,.jpg,.pdf"
-                  hint="支持 PNG、JPG、PDF，最多 3 个文件。"
-                  onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
-                />
+                <div className="w-full">
+                  <FileUpload
+                    value={files}
+                    onChange={setFiles}
+                    getFileBadge={(file) => ({
+                      label: file.type === 'text/markdown' ? '等待项目负责人及相关部门共同审核后归档' : '待上传',
+                      variant: file.type === 'text/markdown' ? 'warning' : 'neutral',
+                    })}
+                    renderFileActions={(file) => (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        iconOnly
+                        icon={<Eye size={16} aria-hidden="true" />}
+                        aria-label={`查看附件：${file.name}`}
+                        title="查看"
+                        onClick={() => Toast.info(`查看附件：${file.name}`)}
+                      />
+                    )}
+                    multiple
+                    maxFiles={3}
+                    accept=".png,.jpg,.pdf,.md,.svg"
+                    hint="内置 FileList：类型图标、大小、长名称与 badge 省略提示，以及右侧操作。最多 3 个文件。"
+                    onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
+                  />
+                </div>
               </DemoCard>
               <DemoCard title="FileUpload Compact">
-                <FileUpload
-                  density="compact"
-                  value={compactFiles}
-                  onChange={setCompactFiles}
-                  multiple
-                  maxFiles={3}
-                  accept=".png,.jpg,.pdf"
-                  hint="支持 PNG、JPG、PDF"
-                  onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
-                />
+                <div className="w-full">
+                  <FileUpload
+                    density="compact"
+                    value={compactFiles}
+                    onChange={setCompactFiles}
+                    wrapFileName
+                    showFileSize={false}
+                    getFileBadge={() => ({ label: '待上传', variant: 'neutral' })}
+                    renderFileActions={(file) => (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        iconOnly
+                        icon={<Eye size={16} aria-hidden="true" />}
+                        aria-label={`查看附件：${file.name}`}
+                        title="查看"
+                        onClick={() => Toast.info(`查看附件：${file.name}`)}
+                      />
+                    )}
+                    multiple
+                    maxFiles={3}
+                    accept=".png,.jpg,.pdf,.md,.svg"
+                    hint="名称完整换行，隐藏文件大小。最多 3 个文件。"
+                    onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
+                  />
+                </div>
               </DemoCard>
               <DemoCard title="SegmentedControl">
                   <SegmentedControl
