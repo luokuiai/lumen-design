@@ -332,13 +332,10 @@ const galleryCategories: GalleryCategory[] = [
     id: 'actions',
     title: 'Actions',
     description: '触发操作、工具组和页面主要行为。',
-    keywords: 'Button useLongPress ContextMenu DragHandle Fab Toolbar DropdownMenu',
+    keywords: 'Button Fab Toolbar DropdownMenu ContextMenu useLongPress DragHandle SwipeActions',
     icon: Plus,
     demos: [
       demo('Button', 'buttons', 'Button', '    <Button variant="primary">保存</Button>'),
-      demo('useLongPress', 'buttons', 'Button, Typography, useLongPress', '    <div className="flex flex-col items-start gap-3">\n      <Button {...handlers} className="select-none touch-pan-y">移动端按住 500ms</Button>\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [message, setMessage] = useState('移动端长按，PC 端普通点击');\n  const handlers = useLongPress<HTMLButtonElement>({\n    onClick: () => setMessage('普通点击'),\n    onLongPress: () => setMessage('已触发长按'),\n  });", ['Long press'], []),
-      demo('ContextMenu', 'buttons', 'ContextMenu, Typography', '    <div className="flex flex-col gap-3">\n      <ContextMenu\n        ariaLabel="快捷操作"\n        menuClassName="menu-list"\n        content={<>\n          <button type="button" role="menuitem" onClick={() => setAction("复制")}>复制</button>\n          <button type="button" role="menuitem" onClick={() => setAction("收藏")}>收藏</button>\n          <button type="button" role="menuitem" onClick={() => setAction("删除")}>删除</button>\n        </>}\n      >\n        <div className="rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center">\n          PC 端右键，移动端长按\n        </div>\n      </ContextMenu>\n      <Typography variant="caption" color="muted">最近操作：{action}</Typography>\n    </div>', undefined, "const [action, setAction] = useState('暂无');", ['Context menu']),
-      demo('DragHandle', 'buttons', 'DragHandle', '    <DragHandle />'),
       {
         ...demo('Fab', 'buttons', 'Fab', '    <Fab position="static" icon={<Plus size={18} />} aria-label="新建任务" />', 'Plus', undefined, ['Icon only', 'Extended', 'Expandable', 'Submenu']),
         codeByCardTitle: {
@@ -350,35 +347,40 @@ const galleryCategories: GalleryCategory[] = [
       },
       demo('Toolbar', 'navigation', 'Button, Toolbar', '    <Toolbar\n      ariaLabel="列表操作"\n      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"\n    >\n      <Button size="sm" variant="ghost" icon={<Search size={15} />}>\n        搜索\n      </Button>\n      <Button size="sm" variant="ghost" icon={<Filter size={15} />}>\n        筛选\n      </Button>\n      <div className="flex-1" />\n      <Button size="sm" icon={<Plus size={15} />}>\n        新建\n      </Button>\n    </Toolbar>', 'Filter, Plus, Search'),
       demo('DropdownMenu', 'navigation', 'Button, DropdownMenu', '    <DropdownMenu\n      trigger={({ toggle }) => <Button onClick={toggle}>打开菜单</Button>}\n    >\n      {({ close }) => <button onClick={close}>复制</button>}\n    </DropdownMenu>'),
+      demo('ContextMenu', 'buttons', 'ContextMenu, Typography', '    <div className="flex flex-col gap-3">\n      <ContextMenu\n        ariaLabel="快捷操作"\n        menuClassName="menu-list"\n        content={<>\n          <button type="button" role="menuitem" onClick={() => setAction("复制")}>复制</button>\n          <button type="button" role="menuitem" onClick={() => setAction("收藏")}>收藏</button>\n          <button type="button" role="menuitem" onClick={() => setAction("删除")}>删除</button>\n        </>}\n      >\n        <div className="rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center">\n          PC 端右键，移动端长按\n        </div>\n      </ContextMenu>\n      <Typography variant="caption" color="muted">最近操作：{action}</Typography>\n    </div>', undefined, "const [action, setAction] = useState('暂无');", ['Context menu']),
+      demo('useLongPress', 'buttons', 'Button, Typography, useLongPress', '    <div className="flex flex-col items-start gap-3">\n      <Button {...handlers} className="select-none touch-pan-y">移动端按住 500ms</Button>\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [message, setMessage] = useState('移动端长按，PC 端普通点击');\n  const handlers = useLongPress<HTMLButtonElement>({\n    onClick: () => setMessage('普通点击'),\n    onLongPress: () => setMessage('已触发长按'),\n  });", ['Long press'], []),
+      demo('DragHandle', 'buttons', 'DragHandle', '    <DragHandle />'),
+      demo('SwipeActions', 'data', 'SwipeActions', '    <SwipeActions\n      startActions={[{ key: \'archive\', label: \'归档\', icon: <Archive size={18} />, tone: \'success\', onClick: () => setResult(\'已归档\') }]}\n      endActions={[{ key: \'delete\', label: \'删除\', icon: <Trash2 size={18} />, tone: \'danger\', onClick: () => setResult(\'已删除\') }]}\n      fullSwipe\n    >\n      <div className="px-4 py-3">向左或向右滑动这条事件</div>\n    </SwipeActions>', 'Archive, Trash2', "const [result, setResult] = useState('');"),
     ],
   },
   {
     id: 'forms',
     title: 'Forms',
     description: '输入、选择、日期时间和文件提交。',
-    keywords: 'Form Validation Input SearchBar FormField Checkbox Radio Switch Slider Rating Select Combobox Cascader Date Time Calendar Transfer FileUpload',
+    keywords: 'Form Validation FormField Input Textarea SearchBar NumberInput OtpInput Checkbox Radio Switch SegmentedControl Slider Rating Select Combobox Cascader TreeSelect Transfer Calendar Date Time FileUpload',
     icon: Check,
     demos: [
-      demo('Input / FormField', 'forms', 'FormField, Input', '    <FormField label="项目名称" inputId="project-name">\n      {(props) => <Input {...props} />}\n    </FormField>', undefined, undefined, ['Input + FormField']),
-      demo('Form', 'forms', 'Form, FormField, Input, Button, Alert, SegmentedControl, Toast', '    <Form values={values} validate={validate} onFinish={submit}>\n      <FormField name="name" label="姓名" required>\n        {(props) => <Input {...props} value={values.name} onChange={(event) => setValues({ name: event.target.value })} />}\n      </FormField>\n      <Button type="submit">校验并提交</Button>\n    </Form>', undefined, "const [values, setValues] = useState({ name: '' });\n  const validate = (values: { name: string }) => ({ name: values.name.trim() ? undefined : '请输入姓名' });\n  const submit = (values: { name: string }) => console.log(values);"),
+      demo('Form / FormField', 'forms', 'Form, FormField, Input, Button, Alert, SegmentedControl, Toast', '    <Form values={values} validate={validate} onFinish={submit}>\n      <FormField name="name" label="姓名" required>\n        {(props) => <Input {...props} value={values.name} onChange={(event) => setValues({ name: event.target.value })} />}\n      </FormField>\n      <Button type="submit">校验并提交</Button>\n    </Form>', undefined, "const [values, setValues] = useState({ name: '' });\n  const validate = (values: { name: string }) => ({ name: values.name.trim() ? undefined : '请输入姓名' });\n  const submit = (values: { name: string }) => console.log(values);"),
+      demo('Input', 'forms', 'Input', '    <Input aria-label="项目名称" placeholder="请输入项目名称" />'),
+      demo('Textarea', 'forms', 'FormField, Textarea', '    <FormField label="备注">\n      <Textarea value={value} onChange={setValue} maxLength={200} showCount />\n    </FormField>'),
       demo('SearchBar', 'forms', 'SearchBar, Typography', '    <div className="max-w-[420px] space-y-2">\n      <SearchBar\n        value={value}\n        onChange={setValue}\n        onSearch={(keyword) => setMessage(keyword ? `正在搜索“${keyword}”` : \'请输入搜索内容\')}\n        placeholder="搜索组件、页面或命令"\n        aria-label="组件搜索"\n      />\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [value, setValue] = useState('');\n  const [message, setMessage] = useState('输入关键词后按 Enter 搜索');"),
       demo('NumberInput', 'forms', 'FormField, NumberInput', '    <FormField label="处置时限">\n      <NumberInput defaultValue={30} min={5} max={120} suffix="分钟" />\n    </FormField>'),
       demo('OtpInput', 'forms', 'FormField, OtpInput', '    <FormField label="短信验证码">\n      <OtpInput value={value} onChange={setValue} />\n    </FormField>', undefined, "const [value, setValue] = useState('');"),
-      demo('Textarea', 'forms', 'FormField, Textarea', '    <FormField label="备注">\n      <Textarea value={value} onChange={setValue} maxLength={200} showCount />\n    </FormField>'),
       demo('Checkbox', 'forms', 'Checkbox', '    <div className="flex items-center gap-5">\n      <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />\n      <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />\n      <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />\n    </div>'),
       demo('Radio', 'forms', 'Radio, RadioGroup', '    <div className="space-y-4">\n      <div className="flex items-center gap-5">\n        <Radio size="sm" checked label="Small" />\n        <Radio size="md" checked label="Medium" />\n        <Radio size="lg" checked label="Large" />\n      </div>\n      <RadioGroup size="md" value={value} onChange={setValue} options={options} />\n    </div>'),
       demo('Switch', 'forms', 'Switch', '    <div className="flex items-center gap-5">\n      <Switch size="sm" checked={enabled} onChange={setEnabled} label="Small" />\n      <Switch size="md" checked={enabled} onChange={setEnabled} label="Medium" />\n      <Switch size="lg" checked={enabled} onChange={setEnabled} label="Large" />\n    </div>'),
+      demo('SegmentedControl', 'feedback', 'SegmentedControl', '    <SegmentedControl value="all" options={options} onChange={setValue} />'),
       demo('Slider', 'forms', 'Slider', '    <Slider value={60} onChange={() => undefined} />'),
       demo('Rating', 'forms', 'Rating', '    <Rating value={4} onChange={() => undefined} />'),
       demo('Select', 'pickers', 'Select', '    <Select\n      value="review"\n      options={[{ label: \'设计评审\', value: \'review\' }]}\n      onChange={() => undefined}\n    />'),
       demo('Combobox', 'pickers', 'Combobox', '    <Combobox\n      value={value}\n      options={[\n        { label: \'设计评审\', value: \'review\' },\n        { label: \'需求同步\', value: \'sync\' },\n      ]}\n      onChange={(nextValue) => setValue(nextValue as string | null)}\n      placeholder="输入或选择事项"\n    />', undefined, "const [value, setValue] = useState<string | null>(null);"),
-      demo('TreeSelect', 'pickers', 'TreeSelect', '    <TreeSelect nodes={nodes} value="frontend" onChange={setValue} searchable />'),
       demo('Cascader', 'pickers', 'Cascader', '    <Cascader options={options} value={[]} onChange={() => undefined} />'),
+      demo('TreeSelect', 'pickers', 'TreeSelect', '    <TreeSelect nodes={nodes} value="frontend" onChange={setValue} searchable />'),
+      demo('Transfer', 'pickers', 'Transfer', '    <Transfer items={items} targetKeys={[]} onChange={() => undefined} />'),
+      demo('Calendar', 'pickers', 'Calendar', '    <Calendar value="2026-09-04" onChange={() => undefined} />'),
       demo('DatePicker', 'pickers', 'DatePicker', '    <DatePicker value="2026-09-04" onChange={setValue} />'),
       demo('TimePicker', 'pickers', 'TimePicker', '    <TimePicker value="09:30" onChange={setValue} />'),
       demo('DateTimePicker', 'pickers', 'DateTimePicker', '    <DateTimePicker label="开始时间" value="2026-09-04 09:30:00" onChange={setValue} />'),
-      demo('Calendar', 'pickers', 'Calendar', '    <Calendar value="2026-09-04" onChange={() => undefined} />'),
-      demo('Transfer', 'pickers', 'Transfer', '    <Transfer items={items} targetKeys={[]} onChange={() => undefined} />'),
       demo('FileUpload', 'feedback', 'FileUpload', '    <>\n      <FileUpload value={files} onChange={setFiles} multiple />\n      <FileUpload density="compact" value={files} onChange={setFiles} multiple />\n    </>', undefined, undefined, ['FileUpload', 'FileUpload Compact']),
     ],
   },
@@ -386,57 +388,56 @@ const galleryCategories: GalleryCategory[] = [
     id: 'navigation',
     title: 'Navigation',
     description: '应用级与页面级导航结构。',
-    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Carousel Tabs Steps Pagination ScrollToEdge',
+    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Tabs Steps Pagination ScrollToEdge',
     icon: MoreHorizontal,
     demos: [
-      demo('Breadcrumb', 'navigation', 'Breadcrumb', '    <Breadcrumb items={[\n      { label: \'首页\', href: \'/\' },\n      { label: \'订单详情\' },\n    ]} />'),
       demo('AppBar', 'navigation', 'AppBar, Button, Typography', '    <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <AppBar\n        position="absolute"\n        title="订单详情"\n        leading={(\n          <Button iconOnly variant="ghost" aria-label="返回" icon={<ArrowLeft size={19} />} />\n        )}\n        actions={(\n          <Button iconOnly variant="ghost" aria-label="更多操作" icon={<MoreHorizontal size={19} />} />\n        )}\n      />\n      <div className="px-5 pt-20">\n        <Typography variant="h3">#LM-20260904</Typography>\n        <Typography variant="caption" color="muted">等待审核</Typography>\n      </div>\n    </div>', 'ArrowLeft, MoreHorizontal'),
       demo('BottomNavigation', 'navigation', 'BottomNavigation, Typography', '    <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">\n        <Typography variant="h3">{value}</Typography>\n        <Typography variant="caption" color="muted">当前底部导航目标</Typography>\n      </div>\n      <BottomNavigation\n        position="absolute"\n        value={value}\n        onChange={setValue}\n        items={[\n          { value: \'home\', label: \'首页\', icon: Star },\n          { value: \'schedule\', label: \'日程\', icon: CalendarDays },\n          { value: \'messages\', label: \'消息\', icon: Bell, badge: 3, badgeLabel: \'3 条未读消息\' },\n          { value: \'profile\', label: \'我的\', icon: UserRound },\n        ]}\n      />\n    </div>', 'Bell, CalendarDays, Star, UserRound', "const [value, setValue] = useState('home');"),
-      demo('Carousel', 'navigation', 'Carousel', '    <Carousel\n      height={240}\n      items={[\n        { id: \'mobile\', content: <div className="p-8">移动体验升级</div> },\n        { id: \'motion\', content: <div className="p-8">统一交互节奏</div> },\n        { id: \'content\', content: <div className="p-8">承载任意内容</div> },\n      ]}\n    />'),
-      demo('ScrollToEdge', 'navigation', 'ScrollToEdge', '    <ScrollToEdge direction="top" threshold={240} />'),
-      demo('Pagination', 'data', 'Pagination', '    <Pagination currentPage={1} totalPages={5} onPageChange={setPage} />'),
+      demo('Breadcrumb', 'navigation', 'Breadcrumb', '    <Breadcrumb items={[\n      { label: \'首页\', href: \'/\' },\n      { label: \'订单详情\' },\n    ]} />'),
       demo('Tabs', 'navigation', 'Tabs, TabView', '    <div>\n      <Tabs\n        value={value}\n        idPrefix="account-tabs"\n        options={[\n          { value: \'overview\', label: \'总览\' },\n          { value: \'activity\', label: \'动态\' },\n        ]}\n        onChange={setValue}\n      />\n      <TabView\n        value={value}\n        idPrefix="account-tabs"\n        items={[\n          { value: \'overview\', content: \'总览内容\' },\n          { value: \'activity\', content: \'动态内容\' },\n        ]}\n        onChange={setValue}\n        swipeable\n      />\n    </div>', undefined, "const [value, setValue] = useState('overview');", ['Tabs'], ['Tabs', 'TabView']),
       demo('Steps', 'navigation', 'Steps', '    <Steps current={1} items={[{ title: \'提交\' }, { title: \'完成\' }]} />'),
+      demo('Pagination', 'data', 'Pagination', '    <Pagination currentPage={1} totalPages={5} onPageChange={setPage} />'),
+      demo('ScrollToEdge', 'navigation', 'ScrollToEdge', '    <ScrollToEdge direction="top" threshold={240} />'),
     ],
   },
   {
     id: 'data-display',
     title: 'Data Display',
     description: '状态、列表、表格与结构化内容。',
-    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable Tree List VirtualList SwipeActions Scrollbar Collapse Accordion Divider Watermark',
+    keywords: 'Avatar Badge Chip FileTypeIcon List VirtualList Scrollbar DataTable Tree Timeline Carousel Collapse Accordion Divider Watermark',
     icon: Table2,
     demos: [
-      demo('Badge', 'buttons', 'Badge', '    <Badge variant="success">Success</Badge>'),
       demo('Avatar', 'buttons', 'Avatar', '    <Avatar name="Lumen Design" />'),
+      demo('Badge', 'buttons', 'Badge', '    <Badge variant="success">Success</Badge>'),
       demo('Chip', 'buttons', 'Chip', '    <Chip tone="neutral">设计系统</Chip>'),
-      demo('Timeline', 'navigation', 'Timeline', '    <Timeline items={[{ id: \'1\', title: \'已创建\' }]} />'),
-      demo('Watermark', 'data', 'Watermark', '    <Watermark content={[\'Lumen Design\', \'内部资料 · 用户 1024\']}>\n      <div className="p-6">敏感业务内容</div>\n    </Watermark>'),
       demo('FileTypeIcon', 'data', 'FileTypeIcon', '    <FileTypeIcon fileName="proposal.pdf" />'),
-      demo('DataTable', 'data', 'DataTable', '    <>\n      <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n    </>', undefined, undefined, ['DataTable · Sticky Header', 'DataTable · Embedded']),
       demo('List', 'data', 'List, ListItem', '    <List>\n      <ListItem title="设计评审" />\n    </List>'),
-      demo('Tree', 'data', 'Tree', '    <Tree\n      aria-label="项目文件"\n      nodes={[{ key: "src", label: "src", children: [{ key: "app", label: "App.tsx" }] }]}\n      defaultExpandedKeys={["src"]}\n      multiple\n    />'),
       demo('VirtualList', 'data', 'VirtualList', '    <VirtualList\n      aria-label="运行记录"\n      items={items}\n      itemSize={60}\n      height={320}\n      overscan={4}\n      getItemKey={(item) => item.id}\n      renderItem={(item) => (\n        <div className="flex h-full items-center border-b px-4">{item.title}</div>\n      )}\n    />', undefined, "const items = Array.from({ length: 10000 }, (_, index) => ({\n    id: index + 1,\n    title: `运行记录 ${index + 1}`,\n  }));"),
-      demo('SwipeActions', 'data', 'SwipeActions', '    <SwipeActions\n      startActions={[{ key: \'archive\', label: \'归档\', icon: <Archive size={18} />, tone: \'success\', onClick: () => setResult(\'已归档\') }]}\n      endActions={[{ key: \'delete\', label: \'删除\', icon: <Trash2 size={18} />, tone: \'danger\', onClick: () => setResult(\'已删除\') }]}\n      fullSwipe\n    >\n      <div className="px-4 py-3">向左或向右滑动这条事件</div>\n    </SwipeActions>', 'Archive, Trash2', "const [result, setResult] = useState('');"),
       demo('Scrollbar', 'data', 'Scrollbar', '    <Scrollbar className="h-64">{content}</Scrollbar>'),
+      demo('DataTable', 'data', 'DataTable', '    <>\n      <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n    </>', undefined, undefined, ['DataTable · Sticky Header', 'DataTable · Embedded']),
+      demo('Tree', 'data', 'Tree', '    <Tree\n      aria-label="项目文件"\n      nodes={[{ key: "src", label: "src", children: [{ key: "app", label: "App.tsx" }] }]}\n      defaultExpandedKeys={["src"]}\n      multiple\n    />'),
+      demo('Timeline', 'navigation', 'Timeline', '    <Timeline items={[{ id: \'1\', title: \'已创建\' }]} />'),
+      demo('Carousel', 'navigation', 'Carousel', '    <Carousel\n      height={240}\n      items={[\n        { id: \'mobile\', content: <div className="p-8">移动体验升级</div> },\n        { id: \'motion\', content: <div className="p-8">统一交互节奏</div> },\n        { id: \'content\', content: <div className="p-8">承载任意内容</div> },\n      ]}\n    />'),
       demo('Collapse', 'data', 'Collapse, CollapseItem', '    <Collapse defaultValue={[\'road\']}>\n      <CollapseItem value="road" title="路段信息">路段内容</CollapseItem>\n    </Collapse>'),
       demo('Accordion', 'data', 'Accordion, CollapseItem', '    <Accordion defaultValue="event">\n      <CollapseItem value="event" title="事件详情">事件内容</CollapseItem>\n    </Accordion>'),
       demo('Divider', 'data', 'Divider', '    <Divider label="更多信息" />'),
+      demo('Watermark', 'data', 'Watermark', '    <Watermark content={[\'Lumen Design\', \'内部资料 · 用户 1024\']}>\n      <div className="p-6">敏感业务内容</div>\n    </Watermark>'),
     ],
   },
   {
     id: 'feedback',
     title: 'Feedback',
     description: '操作结果、进度、加载与空状态。',
-    keywords: 'Alert Toast Progress Spinner PullToRefresh Skeleton Empty SegmentedControl',
+    keywords: 'Alert Toast Empty Spinner Progress Skeleton PullToRefresh',
     icon: Settings,
     demos: [
       demo('Alert', 'feedback', 'Alert', '    <Alert variant="success" title="保存成功" />'),
-      demo('Progress', 'feedback', 'Progress', '    <Progress value={64} />'),
-      demo('Spinner', 'feedback', 'Spinner', '    <Spinner aria-label="加载中" />'),
-      demo('PullToRefresh', 'feedback', 'PullToRefresh', '    <PullToRefresh\n      className="h-72 overflow-y-auto"\n      onRefresh={() => new Promise((resolve) => {\n        window.setTimeout(() => {\n          setRefreshCount((count) => count + 1);\n          resolve();\n        }, 800);\n      })}\n    >\n      <div>已刷新 {refreshCount} 次</div>\n    </PullToRefresh>', undefined, 'const [refreshCount, setRefreshCount] = useState(0);'),
+      demo('Toast', 'overlays', 'Button, Toast', '    <Button onClick={() => Toast.success(\'组件状态已保存\')}>Toast</Button>'),
       demo('Empty', 'feedback', 'Empty', '    <Empty title="暂无数据" />'),
-      demo('SegmentedControl', 'feedback', 'SegmentedControl', '    <SegmentedControl value="all" options={options} onChange={setValue} />'),
+      demo('Spinner', 'feedback', 'Spinner', '    <Spinner aria-label="加载中" />'),
+      demo('Progress', 'feedback', 'Progress', '    <Progress value={64} />'),
       demo('Skeleton', 'feedback', 'Skeleton', '    <Skeleton variant="rectangular" height={96} />'),
+      demo('PullToRefresh', 'feedback', 'PullToRefresh', '    <PullToRefresh\n      className="h-72 overflow-y-auto"\n      onRefresh={() => new Promise((resolve) => {\n        window.setTimeout(() => {\n          setRefreshCount((count) => count + 1);\n          resolve();\n        }, 800);\n      })}\n    >\n      <div>已刷新 {refreshCount} 次</div>\n    </PullToRefresh>', undefined, 'const [refreshCount, setRefreshCount] = useState(0);'),
     ],
   },
   {
@@ -446,13 +447,12 @@ const galleryCategories: GalleryCategory[] = [
     keywords: 'Modal Drawer BottomSheet ConfirmDialog CommandPalette Popover Tooltip',
     icon: Bell,
     demos: [
-      demo('CommandPalette', 'overlays', 'Button, CommandPalette', '    <Button onClick={() => setOpen(true)}>打开 CommandPalette</Button>'),
+      demo('Popover', 'overlays', 'Button, Popover', '    <Popover trigger={<Button>查看详情</Button>}>\n      上下文内容\n    </Popover>'),
       demo('Modal', 'overlays', 'Button, Modal', '    <Modal open={open} title="编辑配置" description="修改当前配置项。" onRequestClose={() => setOpen(false)}>{content}</Modal>'),
+      demo('ConfirmDialog', 'overlays', 'Button, ConfirmDialog', '    <Button variant="destructive" onClick={() => setOpen(true)}>打开 Confirm</Button>'),
       demo('Drawer', 'overlays', 'Button, Drawer', '    <Drawer open={open} closeOnSwipe title="配置面板" description="调整页面配置。" onRequestClose={() => setOpen(false)}>{content}</Drawer>'),
       demo('BottomSheet', 'overlays', 'BottomSheet, Button', '    <BottomSheet\n      open={open}\n      title="快捷操作"\n      description="选择要执行的操作。"\n      onRequestClose={() => setOpen(false)}\n    >\n      <div className="space-y-1 px-4 pb-4">\n        <Button variant="ghost" className="w-full justify-start">分享</Button>\n        <Button variant="ghost" className="w-full justify-start">保存到收藏</Button>\n      </div>\n    </BottomSheet>'),
-      demo('ConfirmDialog', 'overlays', 'Button, ConfirmDialog', '    <Button variant="destructive" onClick={() => setOpen(true)}>打开 Confirm</Button>'),
-      demo('Toast', 'overlays', 'Button, Toast', '    <Button onClick={() => Toast.success(\'组件状态已保存\')}>Toast</Button>'),
-      demo('Popover', 'overlays', 'Button, Popover', '    <Popover trigger={<Button>查看详情</Button>}>\n      上下文内容\n    </Popover>'),
+      demo('CommandPalette', 'overlays', 'Button, CommandPalette', '    <Button onClick={() => setOpen(true)}>打开 CommandPalette</Button>'),
     ],
   },
 ];
@@ -551,8 +551,8 @@ const zhDemoNames: Record<string, string> = {
   Fab: '浮动操作按钮',
   Toolbar: '工具栏',
   DropdownMenu: '下拉菜单',
-  'Input / FormField': '输入框 / 表单字段',
-  Form: '整表校验',
+  Input: '输入框',
+  'Form / FormField': '表单 / 表单字段',
   SearchBar: '搜索栏',
   NumberInput: '数字输入框',
   OtpInput: '验证码输入框',
@@ -619,7 +619,6 @@ const zhExampleNames: Record<string, string> = {
   Extended: '扩展形态',
   Expandable: '可展开',
   Submenu: '子菜单',
-  'Input + FormField': '输入框与表单字段',
   'DataTable · Sticky Header': '数据表格 · 固定表头',
   'DataTable · Embedded': '数据表格 · 嵌入式',
   'FileUpload Compact': '文件上传 · 紧凑模式',
@@ -729,6 +728,8 @@ const legacyCategoryAliases: Record<string, string> = {
   data: 'data-display',
 };
 const legacyDemoAliases: Record<string, string> = {
+  form: 'form-form-field',
+  'input-form-field': 'input',
   headings: 'typography',
   body: 'typography',
   dropdown: 'dropdown-menu',
@@ -751,8 +752,12 @@ const getRouteFromHash = () => {
 
   const [rawCategoryId, rawDemoId] = window.location.hash.slice(1).split('/');
   const categoryId = legacyCategoryAliases[rawCategoryId ?? ''] ?? rawCategoryId;
-  const category = galleryCategories.find((item) => item.id === categoryId) ?? fallbackCategory;
   const demoId = legacyDemoAliases[rawDemoId ?? ''] ?? rawDemoId;
+  const requestedCategory = galleryCategories.find((item) => item.id === categoryId);
+  const category = requestedCategory?.demos.some((item) => item.id === demoId)
+    ? requestedCategory
+    : galleryCategories.find((item) => item.demos.some((entry) => entry.id === demoId))
+      ?? requestedCategory ?? fallbackCategory;
   const selectedDemo = category.demos.find((item) => item.id === demoId) ?? category.demos[0]!;
   return { categoryId: category.id, demoId: selectedDemo.id };
 };
@@ -2578,7 +2583,7 @@ export default function App() {
           if (section.id === 'forms') {
             return (
               <GallerySection key={section.id} section={section}>
-                <DemoCard title="Form" wide>
+                <DemoCard title="Form / FormField" wide>
                   <div className="mx-auto max-w-[640px] space-y-4">
                     <p className="text-[14px] text-[var(--lumen-color-text-secondary)]">
                       {language === 'en-US'
@@ -2667,30 +2672,26 @@ export default function App() {
                     </Form>
                   </div>
                 </DemoCard>
-                <DemoCard title="Input + FormField" wide>
+                <DemoCard title="Input" wide>
                   <div className="form-grid">
-                    <FormField label="会议名称" required inputId="meeting-title">
-                      {(props) => (
-                        <Input
-                          {...props}
-                          id="meeting-title"
-                          value={meetingName}
-                          onChange={(event) => setMeetingName(event.target.value)}
-                          prefix={<CalendarDays size={15} />}
-                        />
-                      )}
-                    </FormField>
-                    <FormField label="负责人">
-                      <Input placeholder="负责人姓名" suffix={<UserRound size={15} />} />
-                    </FormField>
-                    <FormField label="访问密码">
-                      <Input
-                        type="password"
-                        passwordToggle
-                        autoComplete="current-password"
-                        defaultValue="lumen-demo"
-                      />
-                    </FormField>
+                    <Input
+                      aria-label={language === 'en-US' ? 'Meeting name' : '会议名称'}
+                      value={meetingName}
+                      onChange={(event) => setMeetingName(event.target.value)}
+                      prefix={<CalendarDays size={15} />}
+                    />
+                    <Input
+                      aria-label={language === 'en-US' ? 'Owner' : '负责人'}
+                      placeholder={language === 'en-US' ? 'Owner name' : '负责人姓名'}
+                      suffix={<UserRound size={15} />}
+                    />
+                    <Input
+                      aria-label={language === 'en-US' ? 'Access password' : '访问密码'}
+                      type="password"
+                      passwordToggle
+                      autoComplete="current-password"
+                      defaultValue="lumen-demo"
+                    />
                   </div>
                 </DemoCard>
                 <DemoCard title="SearchBar" wide>
