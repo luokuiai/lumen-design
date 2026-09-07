@@ -36,7 +36,12 @@ const [values, setValues] = useState({ name: '', email: '' });
 - `validate` receives the complete values object, including for cross-field rules.
   Native validation popups are disabled so every error can appear together.
   Express all required, format, and cross-field checks in `validate`; `required`
-  on a field alone does not add a rule. Validation runs on submit, not on editing.
+  on a field alone does not add a rule. Before the first submit, editing does not validate. After submission, immutable
+  updates to `values` refresh all field errors, including cross-field rules,
+  without moving focus or submitting again. Reset restores submit-only behavior.
+- Optional `FormField helperText` shares its text area with the error. Errors
+  replace guidance; correcting a field restores it. No empty row is reserved,
+  and longer messages can wrap naturally.
 - Spread the `FormField` render props onto the input to connect the label, name,
   invalid styling, and error description. Explicit `error` props take precedence.
 - Failed validation focuses the first available control in an invalid FormField
@@ -48,3 +53,26 @@ const [values, setValues] = useState({ name: '', email: '' });
   appropriate feedback through the child render function; retry clears the error.
 - Reset clears validation feedback. Reset controlled values in `onReset`;
   preventing that event also preserves validation feedback.
+
+For application-owned feedback such as a Toast, disable inline error text and
+handle failed submissions:
+
+```tsx
+<Form
+  values={values}
+  validate={validate}
+  onFinish={saveUser}
+  showErrors={false}
+  onValidationFailed={(errors) => {
+    Toast.error(Object.values(errors).filter(Boolean).join('; '));
+  }}
+>
+  {/* Named FormField controls and a submit button */}
+</Form>
+```
+
+`showErrors` defaults to `true`. When false, helper text remains visible and
+invalid styling, `aria-invalid`, error state, focus, and submission blocking
+still work. Set `focusFirstError={false}` separately if the application manages
+focus. `onValidationFailed(errors, values)` runs once per invalid submit, never
+during live revalidation, so typing does not repeatedly trigger Toast messages.

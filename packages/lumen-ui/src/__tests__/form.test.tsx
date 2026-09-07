@@ -10,7 +10,7 @@ const validate = (values: Values) => ({
   name: values.name.trim() ? undefined : 'Name is required',
 });
 
-function Example(props: Partial<Pick<FormProps<Values>, 'onFinish' | 'validate' | 'focusFirstError' | 'onReset'>>) {
+function Example(props: Partial<Pick<FormProps<Values>, 'onFinish' | 'validate' | 'focusFirstError' | 'onReset' | 'showErrors' | 'onValidationFailed'>>) {
   const [values, setValues] = useState(initialValues);
   return (
     <Form aria-label="Example" values={values} validate={validate} onFinish={() => undefined}
@@ -37,6 +37,82 @@ function fill() {
 }
 
 describe('Form', () => {
+  it('reports hidden errors to the caller only on failed submission', () => {
+    const onValidationFailed = vi.fn();
+    const onFinish = vi.fn();
+    render(<Example showErrors={false} onValidationFailed={onValidationFailed} onFinish={onFinish} />);
+    fireEvent.click(screen.getByText('Submit'));
+    expect(onValidationFailed).toHaveBeenCalledExactlyOnceWith({ email: 'Email is invalid', name: 'Name is required' }, initialValues);
+    expect(screen.queryByText('Email is invalid')).not.toBeInTheDocument();
+    expect(screen.queryByText('Name is required')).not.toBeInTheDocument();
+    const name = screen.getByRole('textbox', { name: 'Name' });
+    expect(name).toHaveAttribute('aria-invalid', 'true');
+    expect(name).not.toHaveAttribute('aria-describedby');
+    expect(name).toHaveFocus();
+    expect(onFinish).not.toHaveBeenCalled();
+    fill();
+    expect(onValidationFailed).toHaveBeenCalledTimes(1);
+    expect(name).not.toHaveAttribute('aria-invalid');
+  });
+
+  it('keeps helper text when errors are hidden and can show the current error again', () => {
+    const content = <FormField name="name" label="Name" helperText="Your full name">{(field) => <Input {...field} />}</FormField>;
+    const { rerender } = render(<Form aria-label="Example" values={initialValues} validate={validate} onFinish={() => undefined} showErrors={false}>{content}</Form>);
+    fireEvent.submit(screen.getByRole('form'));
+    expect(screen.getByRole('textbox')).toHaveAccessibleDescription('Your full name');
+    rerender(<Form aria-label="Example" values={initialValues} validate={validate} onFinish={() => undefined} showErrors>{content}</Form>);
+    expect(screen.getByRole('textbox')).toHaveAccessibleDescription('Name is required');
+  });
+
+  it('waits for first submission, then updates feedback without moving focus', () => {
+    const check = vi.fn(validate);
+    render(<Example validate={check} />);
+    fireEvent.change(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'invalid' } });
+    expect(check).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByText('Submit'));
+    const email = screen.getByRole('textbox', { name: 'Email' });
+    act(() => email.focus());
+    fireEvent.change(email, { target: { value: 'demo@example.com' } });
+    expect(screen.getByText('1 errors')).toBeInTheDocument();
+    expect(email).toHaveFocus();
+    expect(email).not.toHaveAttribute('aria-invalid');
+    fireEvent.click(screen.getByText('Reset'));
+    check.mockClear();
+    fireEvent.change(email, { target: { value: 'invalid' } });
+    expect(check).not.toHaveBeenCalled();
+    expect(screen.getByText('0 errors')).toBeInTheDocument();
+  });
+
+  it('refreshes dependent field errors after programmatic value updates', () => {
+    const check = (values: Values) => ({ email: values.name === values.email ? undefined : 'Values must match' });
+    const onFinish = vi.fn();
+    const content = <FormField name="email" label="Email">{(field) => <Input {...field} />}</FormField>;
+    const { rerender } = render(<Form values={{ name: 'a', email: 'b' }} validate={check} onFinish={onFinish} aria-label="Example">{content}</Form>);
+    fireEvent.submit(screen.getByRole('form'));
+    expect(screen.getByText('Values must match')).toBeInTheDocument();
+    rerender(<Form values={{ name: 'b', email: 'b' }} validate={check} onFinish={onFinish} aria-label="Example">{content}</Form>);
+    expect(screen.queryByText('Values must match')).not.toBeInTheDocument();
+    expect(onFinish).not.toHaveBeenCalled();
+    rerender(<Form values={{ name: 'c', email: 'b' }} validate={check} onFinish={onFinish} aria-label="Example">{content}</Form>);
+    expect(screen.getByText('Values must match')).toBeInTheDocument();
+  });
+
+  it('replaces helper text with errors and restores it without adding another message', () => {
+    const renderField = (error?: string) => <FormField name="name" label="Name" helperText="Your full name" error={error}>
+      {(field) => <Input {...field} />}
+    </FormField>;
+    const { rerender } = render(renderField());
+    const message = screen.getByText('Your full name');
+    expect(screen.getByRole('textbox')).toHaveAccessibleDescription('Your full name');
+    rerender(renderField('Enter your name'));
+    expect(screen.getByText('Enter your name')).toBe(message);
+    expect(screen.queryByText('Your full name')).not.toBeInTheDocument();
+    expect(screen.getByRole('textbox')).toHaveAccessibleDescription('Enter your name');
+    rerender(renderField());
+    expect(screen.getByText('Your full name')).toBe(message);
+    expect(screen.getByRole('textbox')).not.toHaveAttribute('aria-invalid');
+  });
+
   it('validates all fields together and focuses the first error in DOM order', () => {
     const onFinish = vi.fn();
     const check = vi.fn(validate);
@@ -52,12 +128,13 @@ describe('Form', () => {
     expect(onFinish).not.toHaveBeenCalled();
   });
 
-  it('revalidates current values on submission and clears errors when valid', async () => {
+  it('refreshes errors while editing after submission without saving automatically', async () => {
     const onFinish = vi.fn();
     render(<Example onFinish={onFinish} />);
     fireEvent.click(screen.getByText('Submit'));
     fill();
-    expect(screen.getByText('2 errors')).toBeInTheDocument();
+    expect(screen.getByText('0 errors')).toBeInTheDocument();
+    expect(onFinish).not.toHaveBeenCalled();
     fireEvent.click(screen.getByText('Submit'));
     await waitFor(() => expect(screen.getByText('Submit')).not.toBeDisabled());
     expect(onFinish).toHaveBeenCalledExactlyOnceWith({ name: 'Lumen', email: 'demo@example.com' });

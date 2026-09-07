@@ -19,6 +19,8 @@ export interface FormFieldProps {
   label: React.ReactNode;
   required?: boolean;
   error?: React.ReactNode;
+  /** Optional guidance, replaced by the error message in the same text area. */
+  helperText?: React.ReactNode;
   children: React.ReactNode | ((props: FormFieldRenderProps) => React.ReactNode);
   size?: FormFieldSize;
   className?: string;
@@ -55,6 +57,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   label,
   required = false,
   error: errorProp,
+  helperText,
   children,
   size = 'md',
   className,
@@ -66,8 +69,10 @@ export const FormField: React.FC<FormFieldProps> = ({
   const generatedId = useId();
   const form = useContext(FormContext);
   const error = errorProp !== undefined ? errorProp : name ? form?.errors[name] : undefined;
+  const visibleError = form?.showErrors === false ? undefined : error;
   const inputId = inputIdProp ?? (name ? `${generatedId}-input` : undefined);
-  const errorId = error ? `${generatedId}-error` : undefined;
+  const errorId = visibleError ? `${generatedId}-error` : undefined;
+  const descriptionId = errorId ?? (helperText ? `${generatedId}-help` : undefined);
   const invalid = Boolean(error);
   const fieldProps: FormFieldRenderProps = {
     name,
@@ -75,7 +80,7 @@ export const FormField: React.FC<FormFieldProps> = ({
     required,
     invalid,
     'aria-invalid': invalid || undefined,
-    'aria-describedby': errorId,
+    'aria-describedby': descriptionId,
   };
   const sizeTokens = formFieldSizeTokens[size];
 
@@ -103,9 +108,14 @@ export const FormField: React.FC<FormFieldProps> = ({
       <div className={contentClassName}>
         {typeof children === 'function' ? children(fieldProps) : children}
       </div>
-      {error && (
-        <p id={errorId} className={cn('text-[var(--lumen-color-danger)]', sizeTokens.error, errorClassName)}>
-          {error}
+      {(visibleError || helperText) && (
+        <p id={descriptionId} className={cn(
+          'break-words',
+          visibleError ? 'text-[var(--lumen-color-danger)]' : 'text-[var(--lumen-color-text-muted)]',
+          sizeTokens.error,
+          Boolean(visibleError) && errorClassName,
+        )}>
+          {visibleError || helperText}
         </p>
       )}
     </div>

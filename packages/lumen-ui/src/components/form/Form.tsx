@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { cn } from '../classNames';
 import { FormContext } from './formContext';
 
@@ -19,6 +19,10 @@ export interface FormProps<TValues extends object>
   validate: (values: TValues) => FormErrors<TValues>;
   /** Called only when the entire form is valid. A promise keeps submission locked. */
   onFinish: (values: TValues) => void | Promise<void>;
+  /** Display field error text. Validation, invalid state, and focus still apply when false. */
+  showErrors?: boolean;
+  /** Runs on failed submission only, not during live revalidation. */
+  onValidationFailed?: (errors: FormErrors<TValues>, values: TValues) => void;
   focusFirstError?: boolean;
   children: React.ReactNode | ((state: FormRenderProps<TValues>) => React.ReactNode);
 }
@@ -26,14 +30,32 @@ export interface FormProps<TValues extends object>
 /** Validates all fields on submit and shares errors with named FormField children. */
 export function Form<TValues extends object>({
   values, validate, onFinish, focusFirstError = true, children,
-  className, onReset, ...props
+  showErrors = true, onValidationFailed, className, onReset, ...props
 }: FormProps<TValues>) {
   const formRef = useRef<HTMLFormElement>(null);
   const submitting = useRef(false);
+  const hasSubmitted = useRef(false);
+  const previousValues = useRef(values);
   const [errors, setErrors] = useState<FormErrors<TValues>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<unknown>(null);
   const [validationAttempt, setValidationAttempt] = useState(0);
+
+  // Follow controlled values rather than native change events so custom controls
+  // and programmatic updates also refresh cross-field validation feedback.
+  useEffect(() => {
+    if (Object.is(previousValues.current, values)) return;
+    previousValues.current = values;
+    if (!hasSubmitted.current || submitting.current) return;
+    try {
+      setErrors(Object.fromEntries(
+        Object.entries(validate(values)).filter(([, message]) => typeof message === 'string' && message.length > 0),
+      ) as FormErrors<TValues>);
+      setSubmitError(null);
+    } catch (error) {
+      setSubmitError(error);
+    }
+  }, [values, validate]);
 
   useLayoutEffect(() => {
     if (!validationAttempt || !focusFirstError) return;
@@ -53,6 +75,7 @@ export function Form<TValues extends object>({
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (submitting.current) return;
+    hasSubmitted.current = true;
     submitting.current = true;
     setSubmitError(null);
     try {
@@ -62,6 +85,7 @@ export function Form<TValues extends object>({
       setErrors(nextErrors);
       if (Object.keys(nextErrors).length) {
         setValidationAttempt((attempt) => attempt + 1);
+        onValidationFailed?.(nextErrors, values);
         return;
       }
       setIsSubmitting(true);
@@ -75,7 +99,7 @@ export function Form<TValues extends object>({
   };
 
   return (
-    <FormContext.Provider value={{ errors }}>
+    <FormContext.Provider value={{ errors, showErrors }}>
       <form
         {...props}
         ref={formRef}
@@ -90,6 +114,7 @@ export function Form<TValues extends object>({
           }
           onReset?.(event);
           if (event.defaultPrevented) return;
+          hasSubmitted.current = false;
           setErrors({});
           setSubmitError(null);
           setValidationAttempt(0);

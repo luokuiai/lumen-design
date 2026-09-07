@@ -360,7 +360,7 @@ const galleryCategories: GalleryCategory[] = [
     icon: Check,
     demos: [
       demo('Input / FormField', 'forms', 'FormField, Input', '    <FormField label="项目名称" inputId="project-name">\n      {(props) => <Input {...props} />}\n    </FormField>', undefined, undefined, ['Input + FormField']),
-      demo('Form', 'forms', 'Form, FormField, Input, Button, Alert', '    <Form values={values} validate={validate} onFinish={submit}>\n      <FormField name="name" label="姓名" required>\n        {(props) => <Input {...props} value={values.name} onChange={(event) => setValues({ name: event.target.value })} />}\n      </FormField>\n      <Button type="submit">校验并提交</Button>\n    </Form>', undefined, "const [values, setValues] = useState({ name: '' });\n  const validate = (values: { name: string }) => ({ name: values.name.trim() ? undefined : '请输入姓名' });\n  const submit = (values: { name: string }) => console.log(values);"),
+      demo('Form', 'forms', 'Form, FormField, Input, Button, Alert, SegmentedControl, Toast', '    <Form values={values} validate={validate} onFinish={submit}>\n      <FormField name="name" label="姓名" required>\n        {(props) => <Input {...props} value={values.name} onChange={(event) => setValues({ name: event.target.value })} />}\n      </FormField>\n      <Button type="submit">校验并提交</Button>\n    </Form>', undefined, "const [values, setValues] = useState({ name: '' });\n  const validate = (values: { name: string }) => ({ name: values.name.trim() ? undefined : '请输入姓名' });\n  const submit = (values: { name: string }) => console.log(values);"),
       demo('SearchBar', 'forms', 'SearchBar, Typography', '    <div className="max-w-[420px] space-y-2">\n      <SearchBar\n        value={value}\n        onChange={setValue}\n        onSearch={(keyword) => setMessage(keyword ? `正在搜索“${keyword}”` : \'请输入搜索内容\')}\n        placeholder="搜索组件、页面或命令"\n        aria-label="组件搜索"\n      />\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [value, setValue] = useState('');\n  const [message, setMessage] = useState('输入关键词后按 Enter 搜索');"),
       demo('NumberInput', 'forms', 'FormField, NumberInput', '    <FormField label="处置时限">\n      <NumberInput defaultValue={30} min={5} max={120} suffix="分钟" />\n    </FormField>'),
       demo('OtpInput', 'forms', 'FormField, OtpInput', '    <FormField label="短信验证码">\n      <OtpInput value={value} onChange={setValue} />\n    </FormField>', undefined, "const [value, setValue] = useState('');"),
@@ -1532,6 +1532,7 @@ export default function App() {
   const [meetingName, setMeetingName] = useState('项目周会');
   const [formValues, setFormValues] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [formSubmitted, setFormSubmitted] = useState('');
+  const [formErrorDisplay, setFormErrorDisplay] = useState<'inline' | 'toast'>('inline');
   const [longPressMessage, setLongPressMessage] = useState('移动端长按，PC 端普通点击');
   const [contextMenuAction, setContextMenuAction] = useState('暂无');
   const [searchBarValue, setSearchBarValue] = useState('');
@@ -2581,17 +2582,32 @@ export default function App() {
                   <div className="mx-auto max-w-[640px] space-y-4">
                     <p className="text-[14px] text-[var(--lumen-color-text-secondary)]">
                       {language === 'en-US'
-                        ? 'Create a user: submit the empty form to see all four errors at once. Fix them and submit again; confirmation must match the password.'
-                        : '创建用户：先直接点击“校验并提交”，一次查看四个字段的错误。修正后再次提交；确认密码还需要与密码一致。'}
+                        ? 'Create a user: submit the empty form to see all four errors at once. Errors clear as you correct the fields; submit again when ready.'
+                        : '创建用户：先直接点击“校验并提交”，一次查看四个字段的错误。修改后会即时更新错误提示，全部修正后再次提交。'}
                     </p>
+                    <SegmentedControl<'inline' | 'toast'>
+                      aria-label={language === 'en-US' ? 'Error feedback' : '错误展示方式'}
+                      value={formErrorDisplay}
+                      onChange={setFormErrorDisplay}
+                      options={[
+                        { value: 'inline', label: language === 'en-US' ? 'Below fields' : '字段下方' },
+                        { value: 'toast', label: language === 'en-US' ? 'Toast feedback' : 'Toast 提示' },
+                      ]}
+                    />
                     <Form
                       aria-label={language === 'en-US' ? 'Create user' : '创建用户'}
+                      showErrors={formErrorDisplay === 'inline'}
+                      onValidationFailed={(errors) => {
+                        if (formErrorDisplay === 'toast') {
+                          Toast.error(Object.values(errors).filter(Boolean).join('；'), { duration: 6000 });
+                        }
+                      }}
                       values={formValues}
                       validate={(values) => ({
                         name: values.name.trim() ? undefined : language === 'en-US' ? 'Enter a name.' : '请输入姓名',
-                        email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim()) ? undefined : language === 'en-US' ? 'Enter a valid email.' : '请输入有效的邮箱地址',
+                        email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim()) ? undefined : language === 'en-US' ? 'Enter a valid email.' : '邮箱格式不正确',
                         password: values.password.length >= 8 ? undefined : language === 'en-US' ? 'Use at least 8 characters.' : '密码至少需要 8 位',
-                        confirmPassword: values.confirmPassword && values.confirmPassword === values.password ? undefined : language === 'en-US' ? 'Confirm the matching password.' : '请确认密码，且两次输入必须一致',
+                        confirmPassword: values.confirmPassword && values.confirmPassword === values.password ? undefined : language === 'en-US' ? 'Passwords must match.' : '两次密码须一致',
                       })}
                       onFinish={async (values) => {
                         await new Promise((resolve) => window.setTimeout(resolve, 600));
@@ -2603,15 +2619,8 @@ export default function App() {
                         setFormSubmitted('');
                       }}
                     >
-                      {({ errors, isSubmitting, submitError }) => (
+                      {({ isSubmitting, submitError }) => (
                         <>
-                          {Object.keys(errors).length > 0 && (
-                            <Alert variant="danger" title={language === 'en-US'
-                              ? `${Object.keys(errors).length} fields need attention. Nothing was submitted.`
-                              : `共 ${Object.keys(errors).length} 个字段未通过校验，尚未提交。`}>
-                              {language === 'en-US' ? 'All fields were checked together. Focus moved to the first error.' : '已一次性检查全部字段，并定位到第一个错误。'}
-                            </Alert>
-                          )}
                           <fieldset disabled={isSubmitting} className="grid min-w-0 gap-4 border-0 p-0 pad:grid-cols-2">
                             {([
                               { name: 'name', label: language === 'en-US' ? 'Name' : '姓名', type: 'text', autoComplete: 'name' },
@@ -2619,7 +2628,13 @@ export default function App() {
                               { name: 'password', label: language === 'en-US' ? 'Password' : '密码', type: 'password', autoComplete: 'new-password' },
                               { name: 'confirmPassword', label: language === 'en-US' ? 'Confirm password' : '确认密码', type: 'password', autoComplete: 'new-password' },
                             ] as const).map((field) => (
-                              <FormField key={field.name} name={field.name} label={field.label} required>
+                              <FormField key={field.name} name={field.name} label={field.label} required
+                                helperText={field.name === 'password'
+                                  ? language === 'en-US' ? 'Use at least 8 characters.' : '密码至少需要 8 位'
+                                  : field.name === 'confirmPassword'
+                                    ? language === 'en-US' ? 'Repeat your password.' : '再次输入相同密码'
+                                    : undefined}
+                              >
                                 {(props) => (
                                   <Input
                                     {...props}

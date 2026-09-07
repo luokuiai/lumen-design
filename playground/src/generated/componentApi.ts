@@ -3816,6 +3816,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     },
     {
+      "name": "helperText",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 helperText。",
+      "descriptionEn": "Configures helper text.",
+      "required": false
+    },
+    {
       "name": "children",
       "type": "React.ReactNode | ((props: FormFieldRenderProps) => React.ReactNode)",
       "defaultValue": "-",
@@ -6156,6 +6164,22 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "description": "组件执行 Finish 对应操作时触发。",
       "descriptionEn": "Called when the finish action occurs.",
       "required": true
+    },
+    {
+      "name": "showErrors",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否显示 Errors。",
+      "descriptionEn": "Controls whether errors is shown.",
+      "required": false
+    },
+    {
+      "name": "onValidationFailed",
+      "type": "(errors: FormErrors<TValues>, values: TValues) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 ValidationFailed 对应操作时触发。",
+      "descriptionEn": "Called when the validation failed action occurs.",
+      "required": false
     },
     {
       "name": "focusFirstError",
