@@ -21,6 +21,7 @@ describe('public API', () => {
     expect(Lumen.CardHeader).toBeTypeOf('object');
     expect(Lumen.Collapse).toBeTypeOf('object');
     expect(Lumen.CollapseItem).toBeTypeOf('object');
+    expect(Lumen.Combobox).toBeTypeOf('object');
     expect(Lumen.DataTable).toBeTypeOf('function');
     expect(Lumen.Divider).toBeTypeOf('object');
     expect(Lumen.Empty).toBeTypeOf('object');

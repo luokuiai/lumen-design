@@ -4,7 +4,10 @@ import { ChevronDown, Clock } from 'lucide-react';
 import { Button } from './Button';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
+import { MobileTimeWheel } from './mobileTimeWheel';
+import { MobilePickerModal } from './mobilePickerModal';
 import { TimeSelector } from './TimeSelector';
+import { useMobilePicker } from './useMobilePicker';
 import { useOverlayPortalScope } from './useOverlayBehavior';
 import { useLumenLocale } from '../i18n';
 
@@ -65,6 +68,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   disabled = false,
 }) => {
   const locale = useLumenLocale();
+  const isMobile = useMobilePicker();
   const placeholder = placeholderProp ?? locale.timePicker.placeholder;
   const overlayScopeId = useOverlayPortalScope();
   const initialTime = resolveInitialTime(value);
@@ -95,6 +99,16 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   );
 
   const updatePosition = useCallback(() => {
+    if (isMobile) {
+      setDropDirection('down');
+      setPanelStyle({
+        position: 'relative',
+        width: 'min(100%, 344px)',
+        maxHeight: 'calc(100dvh - 24px)',
+        zIndex: 9999,
+      });
+      return;
+    }
     const rect = triggerRef.current?.getBoundingClientRect();
     if (!rect) return;
     const panelHeight =
@@ -116,7 +130,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
       maxHeight: 'calc(100dvh - 16px)',
       zIndex: 9999,
     });
-  }, []);
+  }, [isMobile]);
 
   const closeImmediate = useCallback(() => {
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
@@ -232,67 +246,98 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 
       {open
         ? createPortal(
-            <div
-              ref={panelRef}
-              data-ui="time-picker-panel"
-              data-time-picker-panel
-              data-lumen-overlay-scope={overlayScopeId ?? undefined}
-              className="overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]"
-              style={{
-                ...panelStyle,
-                animation: isAnimatingOut
-                  ? dropDirection === 'up'
-                    ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
-                    : 'lumen-dropdown-out 0.12s ease-in forwards'
-                  : dropDirection === 'up'
-                    ? 'lumen-dropdown-in-up 0.12s ease-out'
-                    : 'lumen-dropdown-in 0.12s ease-out',
-                transformOrigin: dropDirection === 'up' ? 'bottom' : 'top',
-              }}
+            <MobilePickerModal
+              mobile={isMobile}
+              open={open}
+              onRequestClose={close}
+              label={placeholder}
+              modalId="time-picker-panel"
+              maxWidth="max-w-[344px]"
             >
-              <TimeSelector
-                hour={draftHour}
-                minute={draftMinute}
-                second={draftSecond}
-                onHourChange={setDraftHour}
-                onMinuteChange={setDraftMinute}
-                onSecondChange={setDraftSecond}
-                precision={precision}
-                minuteStep={minuteStep}
-              />
-              <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-3 py-2.5">
-                <button
-                  type="button"
-                  onClick={() => {
-                    onChange('');
-                    closeImmediate();
-                  }}
-                  className="text-[12px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"
-                >
-                  {locale.common.clear}
-                </button>
-                <div className="flex items-center gap-2">
+              <div
+                ref={panelRef}
+                data-ui="time-picker-panel"
+                data-time-picker-panel
+                data-lumen-overlay-scope={overlayScopeId ?? undefined}
+                className={cn(
+                  isMobile
+                    ? 'contents'
+                    : 'overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]',
+                )}
+                style={isMobile ? undefined : {
+                  ...panelStyle,
+                  animation: isAnimatingOut
+                      ? dropDirection === 'up'
+                        ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
+                        : 'lumen-dropdown-out 0.12s ease-in forwards'
+                      : dropDirection === 'up'
+                        ? 'lumen-dropdown-in-up 0.12s ease-out'
+                        : 'lumen-dropdown-in 0.12s ease-out',
+                  transformOrigin: dropDirection === 'up' ? 'bottom' : 'top',
+                }}
+              >
+                {isMobile ? (
+                  <MobileTimeWheel
+                    hour={draftHour}
+                    minute={draftMinute}
+                    second={draftSecond}
+                    onHourChange={setDraftHour}
+                    onMinuteChange={setDraftMinute}
+                    onSecondChange={setDraftSecond}
+                    precision={precision}
+                    minuteStep={minuteStep}
+                    labels={{
+                      hour: locale.timePicker.hour,
+                      minute: locale.timePicker.minute,
+                      second: locale.timePicker.second,
+                    }}
+                  />
+                ) : (
+                  <TimeSelector
+                    hour={draftHour}
+                    minute={draftMinute}
+                    second={draftSecond}
+                    onHourChange={setDraftHour}
+                    onMinuteChange={setDraftMinute}
+                    onSecondChange={setDraftSecond}
+                    precision={precision}
+                    minuteStep={minuteStep}
+                  />
+                )}
+                <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-3 py-2.5">
                   <button
                     type="button"
-                    onClick={selectNow}
-                    className="text-[12px] font-medium text-[var(--lumen-color-primary)]"
-                  >
-                    {locale.common.now}
-                  </button>
-                  <Button
-                    type="button"
-                    size="sm"
-                    disabled={draftDisabled}
                     onClick={() => {
-                      onChange(draftTime);
+                      onChange('');
                       closeImmediate();
                     }}
+                    className="text-[12px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"
                   >
-                    {locale.common.confirm}
-                  </Button>
+                    {locale.common.clear}
+                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={selectNow}
+                      className="text-[12px] font-medium text-[var(--lumen-color-primary)]"
+                    >
+                      {locale.common.now}
+                    </button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      disabled={draftDisabled}
+                      onClick={() => {
+                        onChange(draftTime);
+                        closeImmediate();
+                      }}
+                    >
+                      {locale.common.confirm}
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>,
+            </MobilePickerModal>,
             document.body,
           )
         : null}

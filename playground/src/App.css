@@ -21,7 +21,7 @@ body {
 }
 
 .app-shell {
-  --playground-sidebar-width: 272px;
+  --playground-sidebar-width: 320px;
   --playground-topbar-height: 83px;
   height: 100dvh;
   overflow: hidden;

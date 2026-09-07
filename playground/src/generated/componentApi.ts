@@ -198,6 +198,38 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     },
     {
+      "name": "showFileSize",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否显示 FileSize。",
+      "descriptionEn": "Controls whether file size is shown.",
+      "required": false
+    },
+    {
+      "name": "wrapFileName",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "设置 wrapFileName。",
+      "descriptionEn": "Configures wrap file name.",
+      "required": false
+    },
+    {
+      "name": "getFileBadge",
+      "type": "(file: File) => FileListBadge | undefined",
+      "defaultValue": "undefined",
+      "description": "设置 getFileBadge。",
+      "descriptionEn": "Configures get file badge.",
+      "required": false
+    },
+    {
+      "name": "renderFileActions",
+      "type": "(file: File) => React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 renderFileActions。",
+      "descriptionEn": "Configures render file actions.",
+      "required": false
+    },
+    {
       "name": "uploading",
       "type": "boolean",
       "defaultValue": "false",
@@ -3784,6 +3816,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
   ],
   "FormField": [
     {
+      "name": "name",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置表单控件名称。",
+      "descriptionEn": "Sets the form control name.",
+      "required": false
+    },
+    {
       "name": "label",
       "type": "React.ReactNode",
       "defaultValue": "-",
@@ -3805,6 +3845,22 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "设置 error。",
       "descriptionEn": "Configures error.",
+      "required": false
+    },
+    {
+      "name": "helperText",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 helperText。",
+      "descriptionEn": "Configures helper text.",
+      "required": false
+    },
+    {
+      "name": "reserveMessageSpace",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "设置 reserveMessageSpace。",
+      "descriptionEn": "Configures reserve message space.",
       "required": false
     },
     {
@@ -5000,6 +5056,104 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     }
   ],
+  "Tree": [
+    {
+      "name": "nodes",
+      "type": "TreeNode[]",
+      "defaultValue": "-",
+      "description": "设置 nodes。",
+      "descriptionEn": "Configures nodes.",
+      "required": true
+    },
+    {
+      "name": "expandedKeys",
+      "type": "string[]",
+      "defaultValue": "undefined",
+      "description": "设置 expandedKeys。",
+      "descriptionEn": "Configures expanded keys.",
+      "required": false
+    },
+    {
+      "name": "defaultExpandedKeys",
+      "type": "string[]",
+      "defaultValue": "[]",
+      "description": "设置 ExpandedKeys 的初始值。",
+      "descriptionEn": "Sets the initial expanded keys.",
+      "required": false
+    },
+    {
+      "name": "onExpandedChange",
+      "type": "(keys: string[], node: TreeNode) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 ExpandedChange 对应操作时触发。",
+      "descriptionEn": "Called when the expanded change action occurs.",
+      "required": false
+    },
+    {
+      "name": "selectedKeys",
+      "type": "string[]",
+      "defaultValue": "undefined",
+      "description": "设置 selectedKeys。",
+      "descriptionEn": "Configures selected keys.",
+      "required": false
+    },
+    {
+      "name": "defaultSelectedKeys",
+      "type": "string[]",
+      "defaultValue": "[]",
+      "description": "设置 SelectedKeys 的初始值。",
+      "descriptionEn": "Sets the initial selected keys.",
+      "required": false
+    },
+    {
+      "name": "onSelectionChange",
+      "type": "(keys: string[], node: TreeNode) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 SelectionChange 对应操作时触发。",
+      "descriptionEn": "Called when the selection change action occurs.",
+      "required": false
+    },
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "允许选择多个值。",
+      "descriptionEn": "Allows multiple values to be selected.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "禁用组件及其交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
+      "description": "设置组件尺寸。",
+      "descriptionEn": "Sets the component size.",
+      "required": false
+    },
+    {
+      "name": "renderLabel",
+      "type": "(node: TreeNode) => React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 renderLabel。",
+      "descriptionEn": "Configures render label.",
+      "required": false
+    },
+    {
+      "name": "emptyContent",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 emptyContent。",
+      "descriptionEn": "Configures empty content.",
+      "required": false
+    }
+  ],
   "SwipeActions": [
     {
       "name": "children",
@@ -5309,6 +5463,272 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "覆盖“正在刷新”状态文案。",
       "descriptionEn": "Configures refreshing text.",
+      "required": false
+    }
+  ],
+  "Combobox": [
+    {
+      "name": "options",
+      "type": "ComboboxOption<T>[]",
+      "defaultValue": "-",
+      "description": "定义可选择的选项。",
+      "descriptionEn": "Defines the available options.",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "string | T",
+      "defaultValue": "-",
+      "description": "受控模式下的当前值。",
+      "descriptionEn": "Sets the current value in controlled mode.",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: T | string | null, option: ComboboxOption<T> | null) => void",
+      "defaultValue": "-",
+      "description": "值发生变化时触发。",
+      "descriptionEn": "Called when the value changes.",
+      "required": true
+    },
+    {
+      "name": "inputValue",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "受控模式下的当前输入内容。",
+      "descriptionEn": "Sets the current input text in controlled mode.",
+      "required": false
+    },
+    {
+      "name": "defaultInputValue",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "非受控模式下的初始输入内容。",
+      "descriptionEn": "Sets the initial input text in uncontrolled mode.",
+      "required": false
+    },
+    {
+      "name": "onInputValueChange",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "输入内容发生变化时触发。",
+      "descriptionEn": "Called when the input text changes.",
+      "required": false
+    },
+    {
+      "name": "allowCustomValue",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "允许提交不在选项列表中的自定义值。",
+      "descriptionEn": "Allows values that are not present in the option list.",
+      "required": false
+    },
+    {
+      "name": "onCreateOption",
+      "type": "(value: string) => void",
+      "defaultValue": "undefined",
+      "description": "提交自定义选项时触发。",
+      "descriptionEn": "Called when a custom option is submitted.",
+      "required": false
+    },
+    {
+      "name": "filterOptions",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否在本地过滤选项。",
+      "descriptionEn": "Controls whether options are filtered locally.",
+      "required": false
+    },
+    {
+      "name": "filterOption",
+      "type": "(option: ComboboxOption<T>, query: string) => boolean",
+      "defaultValue": "undefined",
+      "description": "自定义单个选项的匹配规则。",
+      "descriptionEn": "Customizes how each option is matched against the query.",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "显示加载状态并阻止重复操作。",
+      "descriptionEn": "Shows a loading state and prevents repeated actions.",
+      "required": false
+    },
+    {
+      "name": "loadingText",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "覆盖加载状态的提示内容。",
+      "descriptionEn": "Overrides the loading-state content.",
+      "required": false
+    },
+    {
+      "name": "emptyText",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "覆盖无匹配选项时的提示内容。",
+      "descriptionEn": "Overrides the content shown when no options match.",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "未选择或未输入时显示的提示。",
+      "descriptionEn": "Sets the hint shown when no value has been entered or selected.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "defaultValue": "'md'",
+      "description": "设置组件尺寸。",
+      "descriptionEn": "Sets the component size.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "禁用组件及其交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "标记组件当前处于校验错误状态。",
+      "descriptionEn": "Marks the component as having a validation error.",
+      "required": false
+    },
+    {
+      "name": "clearable",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "允许清除当前值。",
+      "descriptionEn": "Allows the current value to be cleared.",
+      "required": false
+    },
+    {
+      "name": "openOnFocus",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "聚焦输入框时自动打开选项列表。",
+      "descriptionEn": "Opens the option list when the input receives focus.",
+      "required": false
+    },
+    {
+      "name": "autoHighlight",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "打开列表时自动高亮首个可用选项。",
+      "descriptionEn": "Highlights the first enabled option when the list opens.",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "追加自定义 CSS 类名。",
+      "descriptionEn": "Adds custom CSS class names.",
+      "required": false
+    },
+    {
+      "name": "inputClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "追加输入框的 CSS 类名。",
+      "descriptionEn": "Adds custom CSS class names to the input.",
+      "required": false
+    },
+    {
+      "name": "dropdownClassName",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "追加选项浮层的 CSS 类名。",
+      "descriptionEn": "Adds custom CSS class names to the option overlay.",
+      "required": false
+    },
+    {
+      "name": "optionClassName",
+      "type": "(option: ComboboxOption<T>, state: ComboboxOptionRenderState) => string | undefined",
+      "defaultValue": "undefined",
+      "description": "根据选项状态追加 CSS 类名。",
+      "descriptionEn": "Adds CSS class names based on the option state.",
+      "required": false
+    },
+    {
+      "name": "renderOption",
+      "type": "(option: ComboboxOption<T>, state: ComboboxOptionRenderState) => React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "自定义选项内容的渲染方式。",
+      "descriptionEn": "Customizes how option content is rendered.",
+      "required": false
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "defaultValue": "undefined",
+      "description": "打开状态发生变化时触发。",
+      "descriptionEn": "Called when the open state changes.",
+      "required": false
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 id。",
+      "descriptionEn": "Configures id.",
+      "required": false
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置表单控件名称。",
+      "descriptionEn": "Sets the form control name.",
+      "required": false
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "标记表单值为必填。",
+      "descriptionEn": "Marks the form value as required.",
+      "required": false
+    },
+    {
+      "name": "autoComplete",
+      "type": "string",
+      "defaultValue": "'off'",
+      "description": "设置原生输入框的自动填充行为。",
+      "descriptionEn": "Sets the native input autocomplete behavior.",
+      "required": false
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置供辅助技术读取的名称。",
+      "descriptionEn": "Sets the accessible name read by assistive technology.",
+      "required": false
+    },
+    {
+      "name": "aria-labelledby",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "关联用于命名组件的元素 ID。",
+      "descriptionEn": "References the element that provides the accessible name.",
+      "required": false
+    },
+    {
+      "name": "aria-describedby",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "关联用于补充说明组件内容的元素 ID。",
+      "descriptionEn": "References the element that provides an accessible description.",
       "required": false
     }
   ],
@@ -5757,6 +6177,206 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "2600",
       "description": "设置消息显示时长，单位为毫秒。",
       "descriptionEn": "Sets the message duration in milliseconds.",
+      "required": false
+    }
+  ],
+  "Form": [
+    {
+      "name": "values",
+      "type": "TValues",
+      "defaultValue": "-",
+      "description": "设置 values。",
+      "descriptionEn": "Configures values.",
+      "required": true
+    },
+    {
+      "name": "validate",
+      "type": "(values: TValues) => FormErrors<TValues>",
+      "defaultValue": "-",
+      "description": "设置 validate。",
+      "descriptionEn": "Configures validate.",
+      "required": true
+    },
+    {
+      "name": "onFinish",
+      "type": "(values: TValues) => void | Promise<void>",
+      "defaultValue": "-",
+      "description": "组件执行 Finish 对应操作时触发。",
+      "descriptionEn": "Called when the finish action occurs.",
+      "required": true
+    },
+    {
+      "name": "showErrors",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否显示 Errors。",
+      "descriptionEn": "Controls whether errors is shown.",
+      "required": false
+    },
+    {
+      "name": "onValidationFailed",
+      "type": "(errors: FormErrors<TValues>, values: TValues) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 ValidationFailed 对应操作时触发。",
+      "descriptionEn": "Called when the validation failed action occurs.",
+      "required": false
+    },
+    {
+      "name": "focusFirstError",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "设置 focusFirstError。",
+      "descriptionEn": "Configures focus first error.",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "React.ReactNode | ((state: FormRenderProps<TValues>) => React.ReactNode)",
+      "defaultValue": "-",
+      "description": "组件承载的子内容。",
+      "descriptionEn": "Sets the child content rendered by the component.",
+      "required": true
+    }
+  ],
+  "FormRender": [
+    {
+      "name": "errors",
+      "type": "Partial<Record<Extract<keyof TValues, string>, string>>",
+      "defaultValue": "-",
+      "description": "设置 errors。",
+      "descriptionEn": "Configures errors.",
+      "required": true
+    },
+    {
+      "name": "isSubmitting",
+      "type": "boolean",
+      "defaultValue": "-",
+      "description": "设置 isSubmitting。",
+      "descriptionEn": "Configures is submitting.",
+      "required": true
+    },
+    {
+      "name": "submitError",
+      "type": "unknown",
+      "defaultValue": "-",
+      "description": "设置 submitError。",
+      "descriptionEn": "Configures submit error.",
+      "required": true
+    }
+  ],
+  "FileListItem": [
+    {
+      "name": "badgeMaxWidth",
+      "type": "string | number",
+      "defaultValue": "96",
+      "description": "设置 badgeMaxWidth。",
+      "descriptionEn": "Configures badge max width.",
+      "required": false
+    },
+    {
+      "name": "file",
+      "type": "FileListFile",
+      "defaultValue": "-",
+      "description": "设置 file。",
+      "descriptionEn": "Configures file.",
+      "required": true
+    },
+    {
+      "name": "showSize",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否显示 Size。",
+      "descriptionEn": "Controls whether size is shown.",
+      "required": false
+    },
+    {
+      "name": "wrapName",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "设置 wrapName。",
+      "descriptionEn": "Configures wrap name.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "禁用组件及其交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 actions。",
+      "descriptionEn": "Configures actions.",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "type": "(file: FileListFile) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 Remove 对应操作时触发。",
+      "descriptionEn": "Called when the remove action occurs.",
+      "required": false
+    }
+  ],
+  "FileList": [
+    {
+      "name": "badgeMaxWidth",
+      "type": "string | number",
+      "defaultValue": "undefined",
+      "description": "设置 badgeMaxWidth。",
+      "descriptionEn": "Configures badge max width.",
+      "required": false
+    },
+    {
+      "name": "renderActions",
+      "type": "(file: FileListFile) => React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 renderActions。",
+      "descriptionEn": "Configures render actions.",
+      "required": false
+    },
+    {
+      "name": "items",
+      "type": "FileListFile[]",
+      "defaultValue": "-",
+      "description": "定义组件渲染的数据项。",
+      "descriptionEn": "Defines the data items rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "showSize",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "控制是否显示 Size。",
+      "descriptionEn": "Controls whether size is shown.",
+      "required": false
+    },
+    {
+      "name": "wrapName",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "设置 wrapName。",
+      "descriptionEn": "Configures wrap name.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "禁用组件及其交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "type": "(file: FileListFile) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 Remove 对应操作时触发。",
+      "descriptionEn": "Called when the remove action occurs.",
       "required": false
     }
   ]

@@ -55,18 +55,46 @@
   font-family: inherit;
 }
 
-:where(button:not(:disabled), [role='button']:not([aria-disabled='true'])) {
-  cursor: pointer;
-}
+@layer base {
+  :where([data-ui='side-nav']:not([data-collapsed])) {
+    width: 320px;
+    max-width: 100%;
+  }
 
-:where(button:disabled, [role='button'][aria-disabled='true']) {
-  cursor: not-allowed;
+  :where(button:not(:disabled), [role='button']:not([aria-disabled='true'])) {
+    cursor: pointer;
+  }
+
+  :where(button:disabled, [role='button'][aria-disabled='true']) {
+    cursor: not-allowed;
+  }
 }
 
 :where([data-density='compact']) {
   --lumen-control-height-sm: 32px;
   --lumen-control-height-md: 36px;
   --lumen-control-height-lg: 40px;
+}
+
+/* Prevent iPhone Safari from zooming compact editable controls on focus. */
+@supports (-webkit-touch-callout: none) {
+  @media (width < 40rem) and (hover: none) and (pointer: coarse) {
+    [data-ui='combobox-input'] {
+      font-size: 16px;
+    }
+
+    [data-ui='combobox-control'][data-size='sm'] {
+      min-height: 40px;
+    }
+
+    [data-ui='combobox-control'][data-size='md'] {
+      min-height: 44px;
+    }
+
+    [data-ui='combobox-control'][data-size='lg'] {
+      min-height: 48px;
+    }
+  }
 }
 
 @keyframes lumen-page-fade-in {

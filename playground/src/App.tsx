@@ -36,7 +36,9 @@ import {
   ChevronRight,
   Code2,
   Copy,
+  Eye,
   Filter,
+  Folder,
   Languages,
   MapPin,
   LogOut,
@@ -82,6 +84,7 @@ import {
   Chip,
   Collapse,
   CollapseItem,
+  Combobox,
   CommandPalette,
   ConfirmDialog,
   ContextMenu,
@@ -93,8 +96,10 @@ import {
   Drawer,
   DropdownMenu,
   FileUpload,
+  FileList,
   FileTypeIcon,
   FormField,
+  Form,
   Empty,
   Fab,
   Input,
@@ -133,6 +138,7 @@ import {
   Tooltip,
   Transfer,
   TreeSelect,
+  Tree,
   Typography,
   VirtualList,
   Watermark,
@@ -267,7 +273,7 @@ const renderSections: Section[] = [
   { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button useLongPress ContextMenu DragHandle Badge Chip Avatar Tooltip', icon: Plus },
   { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input SearchBar NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
-  { id: 'pickers', title: 'Pickers', description: '选择器、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
+  { id: 'pickers', title: 'Pickers', description: '选择器、输入建议、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Combobox Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem VirtualList SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
   { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Carousel Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
   { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、命令面板、确认和消息提示。', keywords: 'Modal Drawer CommandPalette ConfirmDialog Toast', icon: Bell },
@@ -328,13 +334,10 @@ const galleryCategories: GalleryCategory[] = [
     id: 'actions',
     title: 'Actions',
     description: '触发操作、工具组和页面主要行为。',
-    keywords: 'Button useLongPress ContextMenu DragHandle Fab Toolbar DropdownMenu',
+    keywords: 'Button Fab Toolbar DropdownMenu ContextMenu useLongPress DragHandle SwipeActions',
     icon: Plus,
     demos: [
       demo('Button', 'buttons', 'Button', '    <Button variant="primary">保存</Button>'),
-      demo('useLongPress', 'buttons', 'Button, Typography, useLongPress', '    <div className="flex flex-col items-start gap-3">\n      <Button {...handlers} className="select-none touch-pan-y">移动端按住 500ms</Button>\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [message, setMessage] = useState('移动端长按，PC 端普通点击');\n  const handlers = useLongPress<HTMLButtonElement>({\n    onClick: () => setMessage('普通点击'),\n    onLongPress: () => setMessage('已触发长按'),\n  });", ['Long press'], []),
-      demo('ContextMenu', 'buttons', 'ContextMenu, Typography', '    <div className="flex flex-col gap-3">\n      <ContextMenu\n        ariaLabel="快捷操作"\n        menuClassName="menu-list"\n        content={<>\n          <button type="button" role="menuitem" onClick={() => setAction("复制")}>复制</button>\n          <button type="button" role="menuitem" onClick={() => setAction("收藏")}>收藏</button>\n          <button type="button" role="menuitem" onClick={() => setAction("删除")}>删除</button>\n        </>}\n      >\n        <div className="rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center">\n          PC 端右键，移动端长按\n        </div>\n      </ContextMenu>\n      <Typography variant="caption" color="muted">最近操作：{action}</Typography>\n    </div>', undefined, "const [action, setAction] = useState('暂无');", ['Context menu']),
-      demo('DragHandle', 'buttons', 'DragHandle', '    <DragHandle />'),
       {
         ...demo('Fab', 'buttons', 'Fab', '    <Fab position="static" icon={<Plus size={18} />} aria-label="新建任务" />', 'Plus', undefined, ['Icon only', 'Extended', 'Expandable', 'Submenu']),
         codeByCardTitle: {
@@ -346,33 +349,41 @@ const galleryCategories: GalleryCategory[] = [
       },
       demo('Toolbar', 'navigation', 'Button, Toolbar', '    <Toolbar\n      ariaLabel="列表操作"\n      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"\n    >\n      <Button size="sm" variant="ghost" icon={<Search size={15} />}>\n        搜索\n      </Button>\n      <Button size="sm" variant="ghost" icon={<Filter size={15} />}>\n        筛选\n      </Button>\n      <div className="flex-1" />\n      <Button size="sm" icon={<Plus size={15} />}>\n        新建\n      </Button>\n    </Toolbar>', 'Filter, Plus, Search'),
       demo('DropdownMenu', 'navigation', 'Button, DropdownMenu', '    <DropdownMenu\n      trigger={({ toggle }) => <Button onClick={toggle}>打开菜单</Button>}\n    >\n      {({ close }) => <button onClick={close}>复制</button>}\n    </DropdownMenu>'),
+      demo('ContextMenu', 'buttons', 'ContextMenu, Typography', '    <div className="flex flex-col gap-3">\n      <ContextMenu\n        ariaLabel="快捷操作"\n        menuClassName="menu-list"\n        content={<>\n          <button type="button" role="menuitem" onClick={() => setAction("复制")}>复制</button>\n          <button type="button" role="menuitem" onClick={() => setAction("收藏")}>收藏</button>\n          <button type="button" role="menuitem" onClick={() => setAction("删除")}>删除</button>\n        </>}\n      >\n        <div className="rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center">\n          PC 端右键，移动端长按\n        </div>\n      </ContextMenu>\n      <Typography variant="caption" color="muted">最近操作：{action}</Typography>\n    </div>', undefined, "const [action, setAction] = useState('暂无');", ['Context menu']),
+      demo('useLongPress', 'buttons', 'Button, Typography, useLongPress', '    <div className="flex flex-col items-start gap-3">\n      <Button {...handlers} className="select-none touch-pan-y">移动端按住 500ms</Button>\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [message, setMessage] = useState('移动端长按，PC 端普通点击');\n  const handlers = useLongPress<HTMLButtonElement>({\n    onClick: () => setMessage('普通点击'),\n    onLongPress: () => setMessage('已触发长按'),\n  });", ['Long press'], []),
+      demo('DragHandle', 'buttons', 'DragHandle', '    <DragHandle />'),
+      demo('SwipeActions', 'data', 'SwipeActions', '    <SwipeActions\n      startActions={[{ key: \'archive\', label: \'归档\', icon: <Archive size={18} />, tone: \'success\', onClick: () => setResult(\'已归档\') }]}\n      endActions={[{ key: \'delete\', label: \'删除\', icon: <Trash2 size={18} />, tone: \'danger\', onClick: () => setResult(\'已删除\') }]}\n      fullSwipe\n    >\n      <div className="px-4 py-3">向左或向右滑动这条事件</div>\n    </SwipeActions>', 'Archive, Trash2', "const [result, setResult] = useState('');"),
     ],
   },
   {
     id: 'forms',
     title: 'Forms',
     description: '输入、选择、日期时间和文件提交。',
-    keywords: 'Input SearchBar FormField Checkbox Radio Switch Slider Rating Select Cascader Date Time Calendar Transfer FileUpload',
+    keywords: 'Form Validation FormField Input Textarea SearchBar NumberInput OtpInput Checkbox Radio Switch SegmentedControl Slider Rating Select Combobox Cascader TreeSelect Transfer Calendar Date Time FileUpload',
     icon: Check,
     demos: [
-      demo('Input / FormField', 'forms', 'FormField, Input', '    <FormField label="项目名称" inputId="project-name">\n      {(props) => <Input {...props} />}\n    </FormField>', undefined, undefined, ['Input + FormField']),
-      demo('SearchBar', 'forms', 'SearchBar, Typography', '    <div className="max-w-[420px] space-y-2">\n      <SearchBar\n        value={value}\n        onChange={setValue}\n        onSearch={(keyword) => setMessage(keyword ? `正在搜索“${keyword}”` : \'请输入搜索内容\')}\n        placeholder="搜索组件、页面或命令"\n        aria-label="组件搜索"\n      />\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [value, setValue] = useState('');\n  const [message, setMessage] = useState('输入关键词后按 Enter 搜索');"),
+      demo('Form / FormField', 'forms', 'Form, FormField, Input, Button, Alert, SegmentedControl, Toast', '    <Form values={values} validate={validate} onFinish={submit}>\n      <FormField name="name" label="姓名" required>\n        {(props) => <Input {...props} value={values.name} onChange={(event) => setValues({ name: event.target.value })} />}\n      </FormField>\n      <Button type="submit">校验并提交</Button>\n    </Form>', undefined, "const [values, setValues] = useState({ name: '' });\n  const validate = (values: { name: string }) => ({ name: values.name.trim() ? undefined : '请输入姓名' });\n  const submit = (values: { name: string }) => console.log(values);"),
+      demo('Input', 'forms', 'Input', '    <Input aria-label="项目名称" placeholder="请输入项目名称" />'),
+      demo('Textarea', 'forms', 'FormField, Textarea', '    <FormField label="备注">\n      <Textarea value={value} onChange={setValue} maxLength={200} showCount />\n    </FormField>'),
       demo('NumberInput', 'forms', 'FormField, NumberInput', '    <FormField label="处置时限">\n      <NumberInput defaultValue={30} min={5} max={120} suffix="分钟" />\n    </FormField>'),
       demo('OtpInput', 'forms', 'FormField, OtpInput', '    <FormField label="短信验证码">\n      <OtpInput value={value} onChange={setValue} />\n    </FormField>', undefined, "const [value, setValue] = useState('');"),
-      demo('Textarea', 'forms', 'FormField, Textarea', '    <FormField label="备注">\n      <Textarea value={value} onChange={setValue} maxLength={200} showCount />\n    </FormField>'),
+      demo('SearchBar', 'forms', 'SearchBar, Typography', '    <div className="max-w-[420px] space-y-2">\n      <SearchBar\n        value={value}\n        onChange={setValue}\n        onSearch={(keyword) => setMessage(keyword ? `正在搜索“${keyword}”` : \'请输入搜索内容\')}\n        placeholder="搜索组件、页面或命令"\n        aria-label="组件搜索"\n      />\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [value, setValue] = useState('');\n  const [message, setMessage] = useState('输入关键词后按 Enter 搜索');"),
       demo('Checkbox', 'forms', 'Checkbox', '    <div className="flex items-center gap-5">\n      <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />\n      <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />\n      <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />\n    </div>'),
       demo('Radio', 'forms', 'Radio, RadioGroup', '    <div className="space-y-4">\n      <div className="flex items-center gap-5">\n        <Radio size="sm" checked label="Small" />\n        <Radio size="md" checked label="Medium" />\n        <Radio size="lg" checked label="Large" />\n      </div>\n      <RadioGroup size="md" value={value} onChange={setValue} options={options} />\n    </div>'),
       demo('Switch', 'forms', 'Switch', '    <div className="flex items-center gap-5">\n      <Switch size="sm" checked={enabled} onChange={setEnabled} label="Small" />\n      <Switch size="md" checked={enabled} onChange={setEnabled} label="Medium" />\n      <Switch size="lg" checked={enabled} onChange={setEnabled} label="Large" />\n    </div>'),
+      demo('SegmentedControl', 'feedback', 'SegmentedControl', '    <SegmentedControl value="all" options={options} onChange={setValue} />'),
       demo('Slider', 'forms', 'Slider', '    <Slider value={60} onChange={() => undefined} />'),
       demo('Rating', 'forms', 'Rating', '    <Rating value={4} onChange={() => undefined} />'),
       demo('Select', 'pickers', 'Select', '    <Select\n      value="review"\n      options={[{ label: \'设计评审\', value: \'review\' }]}\n      onChange={() => undefined}\n    />'),
-      demo('TreeSelect', 'pickers', 'TreeSelect', '    <TreeSelect nodes={nodes} value="frontend" onChange={setValue} searchable />'),
+      demo('Combobox', 'pickers', 'Combobox', '    <Combobox\n      value={value}\n      options={[\n        { label: \'设计评审\', value: \'review\' },\n        { label: \'需求同步\', value: \'sync\' },\n      ]}\n      onChange={(nextValue) => setValue(nextValue as string | null)}\n      placeholder="输入或选择事项"\n    />', undefined, "const [value, setValue] = useState<string | null>(null);"),
       demo('Cascader', 'pickers', 'Cascader', '    <Cascader options={options} value={[]} onChange={() => undefined} />'),
-      demo('DatePicker', 'pickers', 'DatePicker', '    <DatePicker value="2026-09-04" onChange={setValue} />'),
-      demo('TimePicker', 'pickers', 'TimePicker', '    <TimePicker value="09:30" onChange={setValue} minuteStep={5} />'),
-      demo('DateTimePicker', 'pickers', 'DateTimePicker', '    <DateTimePicker label="开始时间" value="2026-09-04 09:30:00" onChange={setValue} />'),
-      demo('Calendar', 'pickers', 'Calendar', '    <Calendar value="2026-09-04" onChange={() => undefined} />'),
+      demo('TreeSelect', 'pickers', 'TreeSelect', '    <TreeSelect nodes={nodes} value="frontend" onChange={setValue} searchable />'),
       demo('Transfer', 'pickers', 'Transfer', '    <Transfer items={items} targetKeys={[]} onChange={() => undefined} />'),
+      demo('Calendar', 'pickers', 'Calendar', '    <Calendar value="2026-09-04" onChange={() => undefined} />'),
+      demo('DatePicker', 'pickers', 'DatePicker', '    <DatePicker value="2026-09-04" onChange={setValue} />'),
+      demo('TimePicker', 'pickers', 'TimePicker', '    <TimePicker value="09:30" onChange={setValue} />'),
+      demo('DateTimePicker', 'pickers', 'DateTimePicker', '    <DateTimePicker label="开始时间" value="2026-09-04 09:30:00" onChange={setValue} />'),
+      demo('FileList', 'feedback', 'FileList', '<FileList items={[]} />', undefined, undefined, ['FileList', 'FileList Wrapped']),
       demo('FileUpload', 'feedback', 'FileUpload', '    <>\n      <FileUpload value={files} onChange={setFiles} multiple />\n      <FileUpload density="compact" value={files} onChange={setFiles} multiple />\n    </>', undefined, undefined, ['FileUpload', 'FileUpload Compact']),
     ],
   },
@@ -380,56 +391,57 @@ const galleryCategories: GalleryCategory[] = [
     id: 'navigation',
     title: 'Navigation',
     description: '应用级与页面级导航结构。',
-    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Carousel Tabs Steps Pagination ScrollToEdge',
+    keywords: 'AppBar BottomNavigation SideNav Breadcrumb Tabs Steps Pagination ScrollToEdge',
     icon: MoreHorizontal,
     demos: [
-      demo('Breadcrumb', 'navigation', 'Breadcrumb', '    <Breadcrumb items={[\n      { label: \'首页\', href: \'/\' },\n      { label: \'订单详情\' },\n    ]} />'),
+      demo('SideNav', 'navigation', 'SideNav', '    <SideNav sections={[{ items: [{ value: "overview", label: "总览" }, { value: "settings", label: "设置" }] }]} />'),
       demo('AppBar', 'navigation', 'AppBar, Button, Typography', '    <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <AppBar\n        position="absolute"\n        title="订单详情"\n        leading={(\n          <Button iconOnly variant="ghost" aria-label="返回" icon={<ArrowLeft size={19} />} />\n        )}\n        actions={(\n          <Button iconOnly variant="ghost" aria-label="更多操作" icon={<MoreHorizontal size={19} />} />\n        )}\n      />\n      <div className="px-5 pt-20">\n        <Typography variant="h3">#LM-20260904</Typography>\n        <Typography variant="caption" color="muted">等待审核</Typography>\n      </div>\n    </div>', 'ArrowLeft, MoreHorizontal'),
       demo('BottomNavigation', 'navigation', 'BottomNavigation, Typography', '    <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">\n        <Typography variant="h3">{value}</Typography>\n        <Typography variant="caption" color="muted">当前底部导航目标</Typography>\n      </div>\n      <BottomNavigation\n        position="absolute"\n        value={value}\n        onChange={setValue}\n        items={[\n          { value: \'home\', label: \'首页\', icon: Star },\n          { value: \'schedule\', label: \'日程\', icon: CalendarDays },\n          { value: \'messages\', label: \'消息\', icon: Bell, badge: 3, badgeLabel: \'3 条未读消息\' },\n          { value: \'profile\', label: \'我的\', icon: UserRound },\n        ]}\n      />\n    </div>', 'Bell, CalendarDays, Star, UserRound', "const [value, setValue] = useState('home');"),
-      demo('Carousel', 'navigation', 'Carousel', '    <Carousel\n      height={240}\n      items={[\n        { id: \'mobile\', content: <div className="p-8">移动体验升级</div> },\n        { id: \'motion\', content: <div className="p-8">统一交互节奏</div> },\n        { id: \'content\', content: <div className="p-8">承载任意内容</div> },\n      ]}\n    />'),
-      demo('ScrollToEdge', 'navigation', 'ScrollToEdge', '    <ScrollToEdge direction="top" threshold={240} />'),
-      demo('Pagination', 'data', 'Pagination', '    <Pagination currentPage={1} totalPages={5} onPageChange={setPage} />'),
+      demo('Breadcrumb', 'navigation', 'Breadcrumb', '    <Breadcrumb items={[\n      { label: \'首页\', href: \'/\' },\n      { label: \'订单详情\' },\n    ]} />'),
       demo('Tabs', 'navigation', 'Tabs, TabView', '    <div>\n      <Tabs\n        value={value}\n        idPrefix="account-tabs"\n        options={[\n          { value: \'overview\', label: \'总览\' },\n          { value: \'activity\', label: \'动态\' },\n        ]}\n        onChange={setValue}\n      />\n      <TabView\n        value={value}\n        idPrefix="account-tabs"\n        items={[\n          { value: \'overview\', content: \'总览内容\' },\n          { value: \'activity\', content: \'动态内容\' },\n        ]}\n        onChange={setValue}\n        swipeable\n      />\n    </div>', undefined, "const [value, setValue] = useState('overview');", ['Tabs'], ['Tabs', 'TabView']),
       demo('Steps', 'navigation', 'Steps', '    <Steps current={1} items={[{ title: \'提交\' }, { title: \'完成\' }]} />'),
+      demo('Pagination', 'data', 'Pagination', '    <Pagination currentPage={1} totalPages={5} onPageChange={setPage} />'),
+      demo('ScrollToEdge', 'navigation', 'ScrollToEdge', '    <ScrollToEdge direction="top" threshold={240} />'),
     ],
   },
   {
     id: 'data-display',
     title: 'Data Display',
     description: '状态、列表、表格与结构化内容。',
-    keywords: 'Badge Avatar Chip Timeline FileTypeIcon DataTable List VirtualList SwipeActions Scrollbar Collapse Accordion Divider Watermark',
+    keywords: 'Avatar Badge Chip FileTypeIcon List VirtualList Scrollbar DataTable Tree Timeline Carousel Collapse Accordion Divider Watermark',
     icon: Table2,
     demos: [
-      demo('Badge', 'buttons', 'Badge', '    <Badge variant="success">Success</Badge>'),
       demo('Avatar', 'buttons', 'Avatar', '    <Avatar name="Lumen Design" />'),
+      demo('Badge', 'buttons', 'Badge', '    <Badge variant="success">Success</Badge>'),
       demo('Chip', 'buttons', 'Chip', '    <Chip tone="neutral">设计系统</Chip>'),
-      demo('Timeline', 'navigation', 'Timeline', '    <Timeline items={[{ id: \'1\', title: \'已创建\' }]} />'),
-      demo('Watermark', 'data', 'Watermark', '    <Watermark content={[\'Lumen Design\', \'内部资料 · 用户 1024\']}>\n      <div className="p-6">敏感业务内容</div>\n    </Watermark>'),
       demo('FileTypeIcon', 'data', 'FileTypeIcon', '    <FileTypeIcon fileName="proposal.pdf" />'),
-      demo('DataTable', 'data', 'DataTable', '    <>\n      <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n    </>', undefined, undefined, ['DataTable · Sticky Header', 'DataTable · Embedded']),
       demo('List', 'data', 'List, ListItem', '    <List>\n      <ListItem title="设计评审" />\n    </List>'),
       demo('VirtualList', 'data', 'VirtualList', '    <VirtualList\n      aria-label="运行记录"\n      items={items}\n      itemSize={60}\n      height={320}\n      overscan={4}\n      getItemKey={(item) => item.id}\n      renderItem={(item) => (\n        <div className="flex h-full items-center border-b px-4">{item.title}</div>\n      )}\n    />', undefined, "const items = Array.from({ length: 10000 }, (_, index) => ({\n    id: index + 1,\n    title: `运行记录 ${index + 1}`,\n  }));"),
-      demo('SwipeActions', 'data', 'SwipeActions', '    <SwipeActions\n      startActions={[{ key: \'archive\', label: \'归档\', icon: <Archive size={18} />, tone: \'success\', onClick: () => setResult(\'已归档\') }]}\n      endActions={[{ key: \'delete\', label: \'删除\', icon: <Trash2 size={18} />, tone: \'danger\', onClick: () => setResult(\'已删除\') }]}\n      fullSwipe\n    >\n      <div className="px-4 py-3">向左或向右滑动这条事件</div>\n    </SwipeActions>', 'Archive, Trash2', "const [result, setResult] = useState('');"),
       demo('Scrollbar', 'data', 'Scrollbar', '    <Scrollbar className="h-64">{content}</Scrollbar>'),
+      demo('DataTable', 'data', 'DataTable', '    <>\n      <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n    </>', undefined, undefined, ['DataTable · Sticky Header', 'DataTable · Embedded']),
+      demo('Tree', 'data', 'Tree', '    <Tree\n      aria-label="项目文件"\n      nodes={[{ key: "src", label: "src", children: [{ key: "app", label: "App.tsx" }] }]}\n      defaultExpandedKeys={["src"]}\n      multiple\n    />'),
+      demo('Timeline', 'navigation', 'Timeline', '    <Timeline items={[{ id: \'1\', title: \'已创建\' }]} />'),
+      demo('Carousel', 'navigation', 'Carousel', '    <Carousel\n      height={240}\n      items={[\n        { id: \'mobile\', content: <div className="p-8">移动体验升级</div> },\n        { id: \'motion\', content: <div className="p-8">统一交互节奏</div> },\n        { id: \'content\', content: <div className="p-8">承载任意内容</div> },\n      ]}\n    />'),
       demo('Collapse', 'data', 'Collapse, CollapseItem', '    <Collapse defaultValue={[\'road\']}>\n      <CollapseItem value="road" title="路段信息">路段内容</CollapseItem>\n    </Collapse>'),
       demo('Accordion', 'data', 'Accordion, CollapseItem', '    <Accordion defaultValue="event">\n      <CollapseItem value="event" title="事件详情">事件内容</CollapseItem>\n    </Accordion>'),
       demo('Divider', 'data', 'Divider', '    <Divider label="更多信息" />'),
+      demo('Watermark', 'data', 'Watermark', '    <Watermark content={[\'Lumen Design\', \'内部资料 · 用户 1024\']}>\n      <div className="p-6">敏感业务内容</div>\n    </Watermark>'),
     ],
   },
   {
     id: 'feedback',
     title: 'Feedback',
     description: '操作结果、进度、加载与空状态。',
-    keywords: 'Alert Toast Progress Spinner PullToRefresh Skeleton Empty SegmentedControl',
+    keywords: 'Alert Toast Empty Spinner Progress Skeleton PullToRefresh',
     icon: Settings,
     demos: [
       demo('Alert', 'feedback', 'Alert', '    <Alert variant="success" title="保存成功" />'),
-      demo('Progress', 'feedback', 'Progress', '    <Progress value={64} />'),
-      demo('Spinner', 'feedback', 'Spinner', '    <Spinner aria-label="加载中" />'),
-      demo('PullToRefresh', 'feedback', 'PullToRefresh', '    <PullToRefresh\n      className="h-72 overflow-y-auto"\n      onRefresh={() => new Promise((resolve) => {\n        window.setTimeout(() => {\n          setRefreshCount((count) => count + 1);\n          resolve();\n        }, 800);\n      })}\n    >\n      <div>已刷新 {refreshCount} 次</div>\n    </PullToRefresh>', undefined, 'const [refreshCount, setRefreshCount] = useState(0);'),
+      demo('Toast', 'overlays', 'Button, Toast', '    <Button onClick={() => Toast.success(\'组件状态已保存\')}>Toast</Button>'),
       demo('Empty', 'feedback', 'Empty', '    <Empty title="暂无数据" />'),
-      demo('SegmentedControl', 'feedback', 'SegmentedControl', '    <SegmentedControl value="all" options={options} onChange={setValue} />'),
+      demo('Spinner', 'feedback', 'Spinner', '    <Spinner aria-label="加载中" />'),
+      demo('Progress', 'feedback', 'Progress', '    <Progress value={64} />'),
       demo('Skeleton', 'feedback', 'Skeleton', '    <Skeleton variant="rectangular" height={96} />'),
+      demo('PullToRefresh', 'feedback', 'PullToRefresh', '    <PullToRefresh\n      className="h-72 overflow-y-auto"\n      onRefresh={() => new Promise((resolve) => {\n        window.setTimeout(() => {\n          setRefreshCount((count) => count + 1);\n          resolve();\n        }, 800);\n      })}\n    >\n      <div>已刷新 {refreshCount} 次</div>\n    </PullToRefresh>', undefined, 'const [refreshCount, setRefreshCount] = useState(0);'),
     ],
   },
   {
@@ -439,13 +451,12 @@ const galleryCategories: GalleryCategory[] = [
     keywords: 'Modal Drawer BottomSheet ConfirmDialog CommandPalette Popover Tooltip',
     icon: Bell,
     demos: [
-      demo('CommandPalette', 'overlays', 'Button, CommandPalette', '    <Button onClick={() => setOpen(true)}>打开 CommandPalette</Button>'),
+      demo('Popover', 'overlays', 'Button, Popover', '    <Popover trigger={<Button>查看详情</Button>}>\n      上下文内容\n    </Popover>'),
       demo('Modal', 'overlays', 'Button, Modal', '    <Modal open={open} title="编辑配置" description="修改当前配置项。" onRequestClose={() => setOpen(false)}>{content}</Modal>'),
+      demo('ConfirmDialog', 'overlays', 'Button, ConfirmDialog', '    <Button variant="destructive" onClick={() => setOpen(true)}>打开 Confirm</Button>'),
       demo('Drawer', 'overlays', 'Button, Drawer', '    <Drawer open={open} closeOnSwipe title="配置面板" description="调整页面配置。" onRequestClose={() => setOpen(false)}>{content}</Drawer>'),
       demo('BottomSheet', 'overlays', 'BottomSheet, Button', '    <BottomSheet\n      open={open}\n      title="快捷操作"\n      description="选择要执行的操作。"\n      onRequestClose={() => setOpen(false)}\n    >\n      <div className="space-y-1 px-4 pb-4">\n        <Button variant="ghost" className="w-full justify-start">分享</Button>\n        <Button variant="ghost" className="w-full justify-start">保存到收藏</Button>\n      </div>\n    </BottomSheet>'),
-      demo('ConfirmDialog', 'overlays', 'Button, ConfirmDialog', '    <Button variant="destructive" onClick={() => setOpen(true)}>打开 Confirm</Button>'),
-      demo('Toast', 'overlays', 'Button, Toast', '    <Button onClick={() => Toast.success(\'组件状态已保存\')}>Toast</Button>'),
-      demo('Popover', 'overlays', 'Button, Popover', '    <Popover trigger={<Button>查看详情</Button>}>\n      上下文内容\n    </Popover>'),
+      demo('CommandPalette', 'overlays', 'Button, CommandPalette', '    <Button onClick={() => setOpen(true)}>打开 CommandPalette</Button>'),
     ],
   },
 ];
@@ -544,7 +555,8 @@ const zhDemoNames: Record<string, string> = {
   Fab: '浮动操作按钮',
   Toolbar: '工具栏',
   DropdownMenu: '下拉菜单',
-  'Input / FormField': '输入框 / 表单字段',
+  Input: '输入框',
+  'Form / FormField': '表单 / 表单字段',
   SearchBar: '搜索栏',
   NumberInput: '数字输入框',
   OtpInput: '验证码输入框',
@@ -555,7 +567,9 @@ const zhDemoNames: Record<string, string> = {
   Slider: '滑块',
   Rating: '评分',
   Select: '选择器',
+  Combobox: '组合框',
   TreeSelect: '树选择器',
+  Tree: '树形视图',
   Cascader: '级联选择器',
   DatePicker: '日期选择器',
   TimePicker: '时间选择器',
@@ -563,8 +577,11 @@ const zhDemoNames: Record<string, string> = {
   Calendar: '日历',
   Transfer: '穿梭框',
   FileUpload: '文件上传',
+  FileList: '文件列表',
+  'FileList Wrapped': '文件列表 · 换行与隐藏大小',
   Breadcrumb: '面包屑',
   AppBar: '应用栏',
+  SideNav: '侧边导航',
   BottomNavigation: '底部导航',
   Carousel: '轮播',
   Pagination: '分页',
@@ -609,7 +626,6 @@ const zhExampleNames: Record<string, string> = {
   Extended: '扩展形态',
   Expandable: '可展开',
   Submenu: '子菜单',
-  'Input + FormField': '输入框与表单字段',
   'DataTable · Sticky Header': '数据表格 · 固定表头',
   'DataTable · Embedded': '数据表格 · 嵌入式',
   'FileUpload Compact': '文件上传 · 紧凑模式',
@@ -719,6 +735,8 @@ const legacyCategoryAliases: Record<string, string> = {
   data: 'data-display',
 };
 const legacyDemoAliases: Record<string, string> = {
+  form: 'form-form-field',
+  'input-form-field': 'input',
   headings: 'typography',
   body: 'typography',
   dropdown: 'dropdown-menu',
@@ -741,8 +759,12 @@ const getRouteFromHash = () => {
 
   const [rawCategoryId, rawDemoId] = window.location.hash.slice(1).split('/');
   const categoryId = legacyCategoryAliases[rawCategoryId ?? ''] ?? rawCategoryId;
-  const category = galleryCategories.find((item) => item.id === categoryId) ?? fallbackCategory;
   const demoId = legacyDemoAliases[rawDemoId ?? ''] ?? rawDemoId;
+  const requestedCategory = galleryCategories.find((item) => item.id === categoryId);
+  const category = requestedCategory?.demos.some((item) => item.id === demoId)
+    ? requestedCategory
+    : galleryCategories.find((item) => item.demos.some((entry) => entry.id === demoId))
+      ?? requestedCategory ?? fallbackCategory;
   const selectedDemo = category.demos.find((item) => item.id === demoId) ?? category.demos[0]!;
   return { categoryId: category.id, demoId: selectedDemo.id };
 };
@@ -1151,8 +1173,8 @@ function DragHandleExample() {
         </SortableContext>
         <p className="pt-1 text-[12px] text-[var(--lumen-color-text-muted)]">
           {messages.locale === 'en-US'
-            ? 'Drag the handle to reorder, or focus it and use the arrow keys.'
-            : '拖动手柄排序，也可聚焦后按上下方向键。'}
+            ? 'Hover to grab the handle, then drag to reorder. Keyboard: focus and use the arrow keys.'
+            : '鼠标移至手柄显示抓取光标，拖动即可排序；也可聚焦后按上下方向键。'}
         </p>
       </div>
       <DragOverlay dropAnimation={{ duration: 200, easing: 'ease' }}>
@@ -1492,6 +1514,7 @@ function GalleryBrand({ className = '', subtitle }: { className?: string; subtit
 }
 
 export default function App() {
+  const [sideNavValue, setSideNavValue] = useState('overview');
   const [locale, setLocale] = useState(getInitialLocale);
   useEffect(() => {
     document.documentElement.lang = locale.locale;
@@ -1520,6 +1543,9 @@ export default function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
   const [meetingName, setMeetingName] = useState('项目周会');
+  const [formValues, setFormValues] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+  const [formSubmitted, setFormSubmitted] = useState('');
+  const [formErrorDisplay, setFormErrorDisplay] = useState<'inline' | 'toast'>('inline');
   const [longPressMessage, setLongPressMessage] = useState('移动端长按，PC 端普通点击');
   const [contextMenuAction, setContextMenuAction] = useState('暂无');
   const [searchBarValue, setSearchBarValue] = useState('');
@@ -1542,6 +1568,8 @@ export default function App() {
   const [stepsDirection, setStepsDirection] = useState<StepsDirection>('horizontal');
   const [basicSelectValue, setBasicSelectValue] = useState<string | null>(null);
   const [selectValue, setSelectValue] = useState<string | null>('review');
+  const [comboboxValue, setComboboxValue] = useState<string | null>(null);
+  const [customComboboxValue, setCustomComboboxValue] = useState<string | null>(null);
   const [multiSelectValue, setMultiSelectValue] = useState<Array<string | number>>(['review', 'release']);
   const [cascaderValue, setCascaderValue] = useState<string[]>(['east', 'shanghai', 'pudong']);
   const [treeValue, setTreeValue] = useState<string | null>('frontend');
@@ -1557,8 +1585,13 @@ export default function App() {
   const [selectedEventKeys, setSelectedEventKeys] = useState<React.Key[]>([]);
   const [warningAlertVisible, setWarningAlertVisible] = useState(true);
   const [pullRefreshCount, setPullRefreshCount] = useState(0);
-  const [files, setFiles] = useState<File[]>([]);
-  const [compactFiles, setCompactFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<File[]>(() => [
+    new File(['# 项目设计说明\n\n用于展示文件列表的示例附件。'], '应用于低压配电物联网的断路器管理方法及系统_20231024032440.md', { type: 'text/markdown' }),
+    new File(['<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="16" fill="royalblue" /></svg>'], '项目图标.svg', { type: 'image/svg+xml' }),
+  ]);
+  const [compactFiles, setCompactFiles] = useState<File[]>(() => [
+    new File(['# 设计评审记录\n\n用于展示紧凑文件列表的示例附件。'], '支持自动换行并完整展示文件名称的项目设计评审记录.md', { type: 'text/markdown' }),
+  ]);
   const [modalOpen, setModalOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [modalSelectValue, setModalSelectValue] = useState<string | null>(null);
@@ -2429,7 +2462,7 @@ export default function App() {
                       )}
                     >
                       <div className="select-none touch-pan-y rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center text-[14px] text-[var(--lumen-color-text)]">
-                        PC 端右键，移动端长按
+                        PC 端右键，移动端长按；菜单从触发位置展开，靠近窗口边缘时自动翻转
                       </div>
                     </ContextMenu>
                     <Typography variant="caption" color="muted">
@@ -2563,30 +2596,115 @@ export default function App() {
           if (section.id === 'forms') {
             return (
               <GallerySection key={section.id} section={section}>
-                <DemoCard title="Input + FormField" wide>
-                  <div className="form-grid">
-                    <FormField label="会议名称" required inputId="meeting-title">
-                      {(props) => (
-                        <Input
-                          {...props}
-                          id="meeting-title"
-                          value={meetingName}
-                          onChange={(event) => setMeetingName(event.target.value)}
-                          prefix={<CalendarDays size={15} />}
-                        />
+                <DemoCard title="Form / FormField" wide>
+                  <div className="mx-auto max-w-[640px] space-y-4">
+                    <p className="text-[14px] text-[var(--lumen-color-text-secondary)]">
+                      {language === 'en-US'
+                        ? 'Create a user: submit the empty form to see all four errors at once. Errors clear as you correct the fields; submit again when ready.'
+                        : '创建用户：先直接点击“校验并提交”，一次查看四个字段的错误。修改后会即时更新错误提示，全部修正后再次提交。'}
+                    </p>
+                    <SegmentedControl<'inline' | 'toast'>
+                      aria-label={language === 'en-US' ? 'Error feedback' : '错误展示方式'}
+                      value={formErrorDisplay}
+                      onChange={setFormErrorDisplay}
+                      options={[
+                        { value: 'inline', label: language === 'en-US' ? 'Below fields' : '字段下方' },
+                        { value: 'toast', label: language === 'en-US' ? 'Toast feedback' : 'Toast 提示' },
+                      ]}
+                    />
+                    <Form
+                      aria-label={language === 'en-US' ? 'Create user' : '创建用户'}
+                      showErrors={formErrorDisplay === 'inline'}
+                      onValidationFailed={(errors) => {
+                        if (formErrorDisplay === 'toast') {
+                          Toast.error(Object.values(errors).filter(Boolean).join('；'), { duration: 6000 });
+                        }
+                      }}
+                      values={formValues}
+                      validate={(values) => ({
+                        name: values.name.trim() ? undefined : language === 'en-US' ? 'Enter a name.' : '请输入姓名',
+                        email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim()) ? undefined : language === 'en-US' ? 'Enter a valid email.' : '邮箱格式不正确',
+                        password: values.password.length >= 8 ? undefined : language === 'en-US' ? 'Use at least 8 characters.' : '密码至少需要 8 位',
+                        confirmPassword: values.confirmPassword && values.confirmPassword === values.password ? undefined : language === 'en-US' ? 'Passwords must match.' : '两次密码须一致',
+                      })}
+                      onFinish={async (values) => {
+                        await new Promise((resolve) => window.setTimeout(resolve, 600));
+                        setFormSubmitted(`${values.name} · ${values.email}`);
+                      }}
+                      onChange={() => setFormSubmitted('')}
+                      onReset={() => {
+                        setFormValues({ name: '', email: '', password: '', confirmPassword: '' });
+                        setFormSubmitted('');
+                      }}
+                    >
+                      {({ isSubmitting, submitError }) => (
+                        <>
+                          <fieldset disabled={isSubmitting} className="grid min-w-0 gap-x-4 gap-y-0 border-0 p-0 pad:grid-cols-2">
+                            {([
+                              { name: 'name', label: language === 'en-US' ? 'Name' : '姓名', type: 'text', autoComplete: 'name' },
+                              { name: 'email', label: language === 'en-US' ? 'Email' : '邮箱', type: 'email', autoComplete: 'email' },
+                              { name: 'password', label: language === 'en-US' ? 'Password' : '密码', type: 'password', autoComplete: 'new-password' },
+                              { name: 'confirmPassword', label: language === 'en-US' ? 'Confirm password' : '确认密码', type: 'password', autoComplete: 'new-password' },
+                            ] as const).map((field) => (
+                              <FormField key={field.name} name={field.name} label={field.label} required>
+                                {(props) => (
+                                  <Input
+                                    {...props}
+                                    type={field.type}
+                                    placeholder={field.name === 'password'
+                                      ? language === 'en-US' ? 'At least 8 characters' : '密码至少 8 位'
+                                      : field.name === 'confirmPassword'
+                                        ? language === 'en-US' ? 'Repeat your password' : '再次输入相同密码'
+                                        : undefined}
+                                    autoComplete={field.autoComplete}
+                                    value={formValues[field.name]}
+                                    onChange={(event) => setFormValues((current) => ({ ...current, [field.name]: event.target.value }))}
+                                  />
+                                )}
+                              </FormField>
+                            ))}
+                          </fieldset>
+                          <div className="flex flex-wrap gap-2">
+                            <Button type="submit" disabled={isSubmitting}>
+                              {isSubmitting ? language === 'en-US' ? 'Submitting…' : '提交中…' : language === 'en-US' ? 'Validate and submit' : '校验并提交'}
+                            </Button>
+                            <Button type="button" variant="secondary" disabled={isSubmitting} onClick={() => {
+                              setFormValues({ name: 'Lumen', email: 'demo@example.com', password: 'lumen-demo-2026', confirmPassword: 'lumen-demo-2026' });
+                              setFormSubmitted('');
+                            }}>
+                              {language === 'en-US' ? 'Fill valid example' : '填入有效示例'}
+                            </Button>
+                            <Button type="reset" variant="secondary" disabled={isSubmitting}>
+                              {language === 'en-US' ? 'Reset' : '重置'}
+                            </Button>
+                          </div>
+                          {Boolean(submitError) && <Alert variant="danger" title={language === 'en-US' ? 'Submission failed. Please try again.' : '提交失败，请重试。'} />}
+                          {formSubmitted && <Alert variant="success" title={language === 'en-US' ? 'All four fields passed. Demo submission completed.' : '四个字段全部校验通过，模拟提交成功。'}>{formSubmitted}</Alert>}
+                        </>
                       )}
-                    </FormField>
-                    <FormField label="负责人">
-                      <Input placeholder="负责人姓名" suffix={<UserRound size={15} />} />
-                    </FormField>
-                    <FormField label="访问密码">
-                      <Input
-                        type="password"
-                        passwordToggle
-                        autoComplete="current-password"
-                        defaultValue="lumen-demo"
-                      />
-                    </FormField>
+                    </Form>
+                  </div>
+                </DemoCard>
+                <DemoCard title="Input" wide>
+                  <div className="form-grid">
+                    <Input
+                      aria-label={language === 'en-US' ? 'Meeting name' : '会议名称'}
+                      value={meetingName}
+                      onChange={(event) => setMeetingName(event.target.value)}
+                      prefix={<CalendarDays size={15} />}
+                    />
+                    <Input
+                      aria-label={language === 'en-US' ? 'Owner' : '负责人'}
+                      placeholder={language === 'en-US' ? 'Owner name' : '负责人姓名'}
+                      suffix={<UserRound size={15} />}
+                    />
+                    <Input
+                      aria-label={language === 'en-US' ? 'Access password' : '访问密码'}
+                      type="password"
+                      passwordToggle
+                      autoComplete="current-password"
+                      defaultValue="lumen-demo"
+                    />
                   </div>
                 </DemoCard>
                 <DemoCard title="SearchBar" wide>
@@ -2750,6 +2868,25 @@ export default function App() {
                     />
                   </div>
                 </DemoCard>
+                <DemoCard title="Combobox" wide>
+                  <div className="form-grid">
+                    <Combobox
+                      options={selectOptions}
+                      value={comboboxValue}
+                      onChange={(nextValue) => setComboboxValue(nextValue as string | null)}
+                      placeholder="输入或选择事项"
+                      aria-label="事项"
+                    />
+                    <Combobox
+                      options={selectOptions}
+                      value={customComboboxValue}
+                      onChange={(nextValue) => setCustomComboboxValue(nextValue as string | null)}
+                      allowCustomValue
+                      placeholder="输入事项，可创建新选项"
+                      aria-label="自定义事项"
+                    />
+                  </div>
+                </DemoCard>
                 <DemoCard title="TreeSelect" wide>
                   <div className="form-grid">
                     <TreeSelect
@@ -2797,11 +2934,12 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="TimePicker" wide>
-                  <TimePicker value={timeValue} onChange={setTimeValue} minuteStep={5} />
+                  <TimePicker value={timeValue} onChange={setTimeValue} />
                 </DemoCard>
                 <DemoCard title="DateTimePicker" wide>
-                  <div className="max-w-[420px]">
-                    <DateTimePicker label="开始时间" value={dateTimeValue} onChange={setDateTimeValue} minuteStep={5} />
+                  <div className="max-w-[420px] space-y-3">
+                    <DateTimePicker label="开始时间" value={dateTimeValue} onChange={setDateTimeValue} />
+                    <DateTimePicker label="开始时间（精确到分）" precision="minute" value={dateTimeValue} onChange={setDateTimeValue} />
                   </div>
                 </DemoCard>
                 <DemoCard title="Calendar" wide>
@@ -2825,6 +2963,19 @@ export default function App() {
           if (section.id === 'navigation') {
             return (
               <GallerySection key={section.id} section={section}>
+                <DemoCard title="SideNav" wide>
+                  <div className="space-y-3">
+                    <SideNav
+                      activeValue={sideNavValue}
+                      onSelect={setSideNavValue}
+                      sections={[{ items: [
+                        { value: 'overview', label: '运营总览', icon: Star },
+                        { value: 'settings', label: '系统设置', icon: Settings },
+                      ] }]}
+                    />
+                    <Typography variant="caption" color="muted">默认宽度 320px，窄容器内自动收缩。</Typography>
+                  </div>
+                </DemoCard>
                 <DemoCard title="Breadcrumb" wide>
                   <Breadcrumb
                     items={[
@@ -3212,6 +3363,36 @@ export default function App() {
                     onPageChange={setEventPage}
                   />
                 </DemoCard>
+                <DemoCard title="Tree" wide>
+                  <div className="grid gap-6 l:grid-cols-2">
+                    <Tree
+                      aria-label="项目文件"
+                      defaultExpandedKeys={['src']}
+                      defaultSelectedKeys={['app']}
+                      nodes={[
+                        { key: 'src', label: 'src', icon: <Folder size={16} />, children: [
+                          { key: 'components', label: 'components', icon: <Folder size={16} />, children: [{ key: 'button', label: 'Button.tsx' }] },
+                          { key: 'app', label: 'App.tsx' },
+                        ] },
+                        { key: 'readme', label: 'README.md' },
+                        { key: 'lock', label: 'bun.lock', disabled: true },
+                      ]}
+                    />
+                    <Tree
+                      aria-label="团队多选"
+                      multiple
+                      defaultExpandedKeys={['team']}
+                      defaultSelectedKeys={['design']}
+                      nodes={[
+                        { key: 'team', label: '产品团队', selectable: false, children: [
+                          { key: 'design', label: '设计' },
+                          { key: 'frontend', label: '前端' },
+                          { key: 'backend', label: '后端' },
+                        ] },
+                      ]}
+                    />
+                  </div>
+                </DemoCard>
                 <DemoCard title="List" wide>
                   <List aria-label="重点事件">
                     <ListItem
@@ -3572,28 +3753,96 @@ export default function App() {
                   )}
                 />
               </DemoCard>
+              <DemoCard title="FileList">
+                <div className="w-full max-w-2xl">
+                  <FileList
+                    items={[
+                      { id: 'pdf', name: '应用于低压配电物联网的断路器管理方法及系统_20231024032440.pdf', size: 1258291, badge: { label: '已上传', variant: 'success' } },
+                      { id: 'sheet', name: 'budget.xlsx', size: 4096, badge: { label: '等待财务部门与项目负责人共同审核后归档', variant: 'warning' } },
+                      { id: 'image', name: 'photo.png', size: 0 },
+                    ]}
+                    renderActions={(file) => (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        iconOnly
+                        icon={<Eye size={16} aria-hidden="true" />}
+                        aria-label={`查看附件：${file.name}`}
+                        title="查看"
+                        onClick={() => Toast.info(`查看附件：${file.name}`)}
+                      />
+                    )}
+                    onRemove={(file) => Toast.info(`移除附件：${file.name}`)}
+                  />
+                </div>
+              </DemoCard>
+              <DemoCard title="FileList Wrapped">
+                <div className="w-full max-w-2xl">
+                  <FileList
+                    wrapName
+                    showSize={false}
+                    badgeMaxWidth={72}
+                    items={[
+                      { id: 'doc', name: '这是一份完整显示名称并支持自动换行的项目设计说明文档.docx', size: 8192, badge: { label: '已归档至项目文档资料库', variant: 'neutral' } },
+                    ]}
+                  />
+                </div>
+              </DemoCard>
               <DemoCard title="FileUpload">
-                <FileUpload
-                  value={files}
-                  onChange={setFiles}
-                  multiple
-                  maxFiles={3}
-                  accept=".png,.jpg,.pdf"
-                  hint="支持 PNG、JPG、PDF，最多 3 个文件。"
-                  onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
-                />
+                <div className="w-full">
+                  <FileUpload
+                    value={files}
+                    onChange={setFiles}
+                    getFileBadge={(file) => ({
+                      label: file.type === 'text/markdown' ? '等待项目负责人及相关部门共同审核后归档' : '待上传',
+                      variant: file.type === 'text/markdown' ? 'warning' : 'neutral',
+                    })}
+                    renderFileActions={(file) => (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        iconOnly
+                        icon={<Eye size={16} aria-hidden="true" />}
+                        aria-label={`查看附件：${file.name}`}
+                        title="查看"
+                        onClick={() => Toast.info(`查看附件：${file.name}`)}
+                      />
+                    )}
+                    multiple
+                    maxFiles={3}
+                    accept=".png,.jpg,.pdf,.md,.svg"
+                    hint="内置 FileList：类型图标、大小、长名称与 badge 省略提示，以及右侧操作。最多 3 个文件。"
+                    onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
+                  />
+                </div>
               </DemoCard>
               <DemoCard title="FileUpload Compact">
-                <FileUpload
-                  density="compact"
-                  value={compactFiles}
-                  onChange={setCompactFiles}
-                  multiple
-                  maxFiles={3}
-                  accept=".png,.jpg,.pdf"
-                  hint="支持 PNG、JPG、PDF"
-                  onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
-                />
+                <div className="w-full">
+                  <FileUpload
+                    density="compact"
+                    value={compactFiles}
+                    onChange={setCompactFiles}
+                    wrapFileName
+                    showFileSize={false}
+                    getFileBadge={() => ({ label: '待上传', variant: 'neutral' })}
+                    renderFileActions={(file) => (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        iconOnly
+                        icon={<Eye size={16} aria-hidden="true" />}
+                        aria-label={`查看附件：${file.name}`}
+                        title="查看"
+                        onClick={() => Toast.info(`查看附件：${file.name}`)}
+                      />
+                    )}
+                    multiple
+                    maxFiles={3}
+                    accept=".png,.jpg,.pdf,.md,.svg"
+                    hint="名称完整换行，隐藏文件大小。最多 3 个文件。"
+                    onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
+                  />
+                </div>
               </DemoCard>
               <DemoCard title="SegmentedControl">
                   <SegmentedControl
