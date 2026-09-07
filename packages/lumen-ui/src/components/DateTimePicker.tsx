@@ -580,7 +580,8 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
               <div
                 className={cn('grid', isMobile && 'block')}
                 style={isMobile ? undefined : {
-                  gridTemplateColumns: `${DATE_PANEL_WIDTH}px ${timePanelWidth}px`,
+                  // Fit the content box after borders and any vertical scrollbar.
+                  gridTemplateColumns: `minmax(0, 1fr) ${timePanelWidth}px`,
                 }}
               >
                 <div className={cn('min-w-0 p-4', isMobile && mobileView !== 'date' && 'hidden')}>

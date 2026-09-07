@@ -55,12 +55,19 @@
   font-family: inherit;
 }
 
-:where(button:not(:disabled), [role='button']:not([aria-disabled='true'])) {
-  cursor: pointer;
-}
+@layer base {
+  :where([data-ui='side-nav']:not([data-collapsed])) {
+    width: 320px;
+    max-width: 100%;
+  }
 
-:where(button:disabled, [role='button'][aria-disabled='true']) {
-  cursor: not-allowed;
+  :where(button:not(:disabled), [role='button']:not([aria-disabled='true'])) {
+    cursor: pointer;
+  }
+
+  :where(button:disabled, [role='button'][aria-disabled='true']) {
+    cursor: not-allowed;
+  }
 }
 
 :where([data-density='compact']) {
