@@ -107,7 +107,7 @@ import {
   List,
   ListItem,
   LumenProvider,
-  Modal,
+  Dialog,
   NumberInput,
   OtpInput,
   Pagination,
@@ -277,7 +277,7 @@ const renderSections: Section[] = [
   { id: 'pickers', title: 'Pickers', description: '选择器、输入建议、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Combobox Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem VirtualList SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
   { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Carousel Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
-  { id: 'overlays', title: 'Overlays', description: '模态框、抽屉、命令面板、确认和消息提示。', keywords: 'Modal Drawer CommandPalette ConfirmDialog Toast', icon: Bell },
+  { id: 'overlays', title: 'Overlays', description: '对话框、抽屉、命令面板、确认和消息提示。', keywords: 'Dialog Drawer CommandPalette ConfirmDialog Toast', icon: Bell },
   { id: 'feedback', title: 'Feedback', description: '页面提示、加载、进度、空状态、上传和骨架屏。', keywords: 'Alert Spinner Progress Empty FileUpload Skeleton SegmentedControl', icon: Settings },
 ];
 
@@ -438,7 +438,7 @@ const galleryCategories: GalleryCategory[] = [
     icon: Settings,
     demos: [
       demo('Alert', 'feedback', 'Alert', '    <Alert variant="success" title="保存成功" />'),
-      demo('Toast', 'overlays', 'Button, Toast', '    <Button onClick={() => Toast.success(\'组件状态已保存\')}>Toast</Button>'),
+      demo('Toast', 'overlays', 'Button, Toast', '    <Button onClick={() => Toast.success(\'组件配置已成功保存，新的设置将在下次打开页面时自动生效。\')}>Toast</Button>'),
       demo('Empty', 'feedback', 'Empty', '    <Empty title="暂无数据" />'),
       demo('Spinner', 'feedback', 'Spinner', '    <Spinner aria-label="加载中" />'),
       demo('Progress', 'feedback', 'Progress', '    <Progress value={64} />'),
@@ -450,11 +450,11 @@ const galleryCategories: GalleryCategory[] = [
     id: 'overlays',
     title: 'Overlays',
     description: '覆盖页面的弹层、抽屉和上下文操作。',
-    keywords: 'Modal Drawer BottomSheet ConfirmDialog CommandPalette Popover Tooltip',
+    keywords: 'Dialog Drawer BottomSheet ConfirmDialog CommandPalette Popover Tooltip',
     icon: Bell,
     demos: [
       demo('Popover', 'overlays', 'Button, Popover', '    <Popover trigger={<Button>查看详情</Button>}>\n      上下文内容\n    </Popover>'),
-      demo('Modal', 'overlays', 'Button, Modal', '    <Modal open={open} title="编辑配置" description="修改当前配置项。" onRequestClose={() => setOpen(false)}>{content}</Modal>'),
+      demo('Dialog', 'overlays', 'Button, Dialog', '    <Dialog open={open} title="编辑配置" description="修改当前配置项。" onRequestClose={() => setOpen(false)}>{content}</Dialog>'),
       demo('ConfirmDialog', 'overlays', 'Button, ConfirmDialog', '    <Button variant="destructive" onClick={() => setOpen(true)}>打开 Confirm</Button>'),
       demo('Drawer', 'overlays', 'Button, Drawer', '    <Drawer open={open} closeOnSwipe title="配置面板" description="调整页面配置。" onRequestClose={() => setOpen(false)}>{content}</Drawer>'),
       demo('BottomSheet', 'overlays', 'BottomSheet, Button', '    <BottomSheet\n      open={open}\n      title="快捷操作"\n      description="选择要执行的操作。"\n      onRequestClose={() => setOpen(false)}\n    >\n      <div className="space-y-1 px-4 pb-4">\n        <Button variant="ghost" className="w-full justify-start">分享</Button>\n        <Button variant="ghost" className="w-full justify-start">保存到收藏</Button>\n      </div>\n    </BottomSheet>'),
@@ -539,7 +539,7 @@ const playgroundMessages = {
       navigation: { title: 'Navigation', description: 'Application-level and page-level navigation structures.' },
       'data-display': { title: 'Data Display', description: 'Status, lists, tables, and structured content.' },
       feedback: { title: 'Feedback', description: 'Results, progress, loading, and empty states.' },
-      overlays: { title: 'Overlays', description: 'Modals, drawers, and contextual actions above the page.' },
+      overlays: { title: 'Overlays', description: 'Dialogs, drawers, and contextual actions above the page.' },
     },
   },
 } as const;
@@ -614,7 +614,7 @@ const zhDemoNames: Record<string, string> = {
   SegmentedControl: '分段控制器',
   Skeleton: '骨架屏',
   CommandPalette: '命令面板',
-  Modal: '模态框',
+  Dialog: '对话框',
   Drawer: '抽屉',
   BottomSheet: '底部操作面板',
   ConfirmDialog: '确认对话框',
@@ -751,7 +751,7 @@ const legacyDemoAliases: Record<string, string> = {
   'data-table-embedded-pagination': 'data-table',
   'collapse-accordion': 'collapse',
   'skeleton-segmented-control': 'segmented-control',
-  'modal-drawer-confirm': 'modal',
+  'modal-drawer-confirm': 'dialog',
 };
 
 const getRouteFromHash = () => {
@@ -1595,9 +1595,9 @@ export default function App() {
   const [compactFiles, setCompactFiles] = useState<File[]>(() => [
     new File(['# 设计评审记录\n\n用于展示紧凑文件列表的示例附件。'], '支持自动换行并完整展示文件名称的项目设计评审记录.md', { type: 'text/markdown' }),
   ]);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
-  const [modalSelectValue, setModalSelectValue] = useState<string | null>(null);
+  const [dialogSelectValue, setDialogSelectValue] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -3597,8 +3597,8 @@ export default function App() {
                       打开 CommandPalette
                     </Button>
                 </DemoCard>
-                <DemoCard title="Modal" wide>
-                    <Button onClick={() => setModalOpen(true)}>打开 Modal</Button>
+                <DemoCard title="Dialog" wide>
+                    <Button onClick={() => setDialogOpen(true)}>打开 Dialog</Button>
                 </DemoCard>
                 <DemoCard title="Drawer" wide>
                     <Button variant="secondary" onClick={() => setDrawerOpen(true)}>打开 Drawer</Button>
@@ -3610,7 +3610,7 @@ export default function App() {
                     <Button variant="destructive" onClick={() => setConfirmOpen(true)}>打开 Confirm</Button>
                 </DemoCard>
                 <DemoCard title="Toast" wide>
-                    <Button variant="outline" icon={<Bell size={15} />} onClick={() => Toast.success('组件状态已保存')}>
+                    <Button variant="outline" icon={<Bell size={15} />} onClick={() => Toast.success('组件配置已成功保存，新的设置将在下次打开页面时自动生效。')}>
                       Toast
                     </Button>
                 </DemoCard>
@@ -3888,28 +3888,28 @@ export default function App() {
         </PullToRefresh>
       </main>
 
-      <Modal
-        open={modalOpen}
-        onRequestClose={() => setModalOpen(false)}
-        title="Modal 预览"
-        description="用于确认、编辑和短流程任务。当前画廊直接使用组件库 Modal。"
-        panelClassName="modal-panel"
+      <Dialog
+        open={dialogOpen}
+        onRequestClose={() => setDialogOpen(false)}
+        title="Dialog 预览"
+        description="用于确认、编辑和短流程任务。当前画廊直接使用组件库 Dialog。"
+        panelClassName="dialog-panel"
       >
         <div className="mt-5">
           <FormField label="负责人">
             <Select
               options={basicSelectOptions}
-              value={modalSelectValue}
-              onChange={(value) => setModalSelectValue(value as string | null)}
+              value={dialogSelectValue}
+              onChange={(value) => setDialogSelectValue(value as string | null)}
               placeholder="选择负责人"
             />
           </FormField>
         </div>
-        <div className="modal-actions">
-          <Button variant="outline" onClick={() => setModalOpen(false)}>关闭</Button>
-          <Button onClick={() => setModalOpen(false)}>保存</Button>
+        <div className="dialog-actions">
+          <Button variant="outline" onClick={() => setDialogOpen(false)}>关闭</Button>
+          <Button onClick={() => setDialogOpen(false)}>保存</Button>
         </div>
-      </Modal>
+      </Dialog>
 
       <BottomSheet
         open={bottomSheetOpen}

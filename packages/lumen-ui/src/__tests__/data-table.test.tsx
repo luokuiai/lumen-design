@@ -34,7 +34,8 @@ describe('DataTable', () => {
       'rounded-[8px]',
       'border-[var(--lumen-color-border)]',
     );
-    expect(screen.getByText('K12+400').closest('td')).toHaveClass('text-[14px]');
+    expect(screen.getByText('K12+400').closest('td')).toHaveClass('text-[14px]', 'py-2.5');
+    expect(screen.getByText('K12+400').closest('td')).not.toHaveClass('py-3');
     expect(screen.getByRole('columnheader', { name: /路段/ })).toHaveAttribute(
       'aria-sort',
       'ascending',
@@ -61,7 +62,7 @@ describe('DataTable', () => {
     );
 
     expect(screen.getByRole('columnheader', { name: '路段' })).toHaveClass('text-[13px]');
-    expect(screen.getByText('K12+400').closest('td')).toHaveClass('text-[13px]');
+    expect(screen.getByText('K12+400').closest('td')).toHaveClass('text-[13px]', 'py-2');
   });
 
   it('keeps the header visible inside a bounded scroll area', () => {

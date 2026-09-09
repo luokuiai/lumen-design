@@ -93,7 +93,7 @@ export function DataTable<T>({
   const someVisibleSelected = selectedVisibleCount > 0 && !allVisibleSelected;
   const cellPadding = density === 'compact'
     ? 'px-3 py-2 mobile:px-2.5'
-    : 'px-4 py-3 mobile:px-3 mobile:py-2.5';
+    : 'px-4 py-2.5 mobile:px-3';
   const cellTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
   const headerTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
   const scrollMaxHeight = maxHeight ?? (stickyHeader ? 400 : undefined);

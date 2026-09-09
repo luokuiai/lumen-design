@@ -15,7 +15,7 @@ describe('ConfirmDialog', () => {
       />,
     );
 
-    const panel = document.querySelector('[data-modal="confirm-dialog"]');
+    const panel = document.querySelector('[data-dialog="confirm-dialog"]');
     const actions = document.querySelector('[data-confirm-dialog-actions]');
     expect(screen.getByText('Confirm action')).toHaveClass(
       'text-[16px]',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
-import { Modal } from './Modal';
+import { Dialog } from './Dialog';
 import { Button } from './Button';
 import type { ButtonVariant } from './designTokens';
 import { useLumenLocale } from '../i18n';
@@ -36,10 +36,10 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 }) => {
   const locale = useLumenLocale();
   return (
-    <Modal
+    <Dialog
       open={open}
       onRequestClose={onCancel}
-      modalId="confirm-dialog"
+      dialogId="confirm-dialog"
       overlayId="confirm-dialog-overlay"
       closeOnOverlayClick={closeOnOverlayClick}
       role="alertdialog"
@@ -72,6 +72,6 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             {confirmText ?? locale.confirmDialog.confirm}
           </Button>
       </div>
-    </Modal>
+    </Dialog>
   );
 };

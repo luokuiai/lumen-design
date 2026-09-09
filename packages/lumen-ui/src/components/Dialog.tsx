@@ -2,14 +2,14 @@ import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { OverlayScopeContext, useOverlayBehavior } from './useOverlayBehavior';
 
-export interface ModalProps {
+export interface DialogProps {
   open: boolean;
   onRequestClose: () => void;
   onExited?: () => void;
   children: React.ReactNode;
   title?: React.ReactNode;
   description?: React.ReactNode;
-  modalId?: string;
+  dialogId?: string;
   overlayId?: string;
   overlayClassName?: string;
   panelClassName?: string;
@@ -27,14 +27,14 @@ export interface ModalProps {
 const overlayBaseClassName =
   'fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto overscroll-contain bg-[var(--lumen-color-overlay)] p-3 backdrop-blur-[2px] pad:p-4 l:p-5 xl:p-6';
 
-export const Modal: React.FC<ModalProps> = ({
+export const Dialog: React.FC<DialogProps> = ({
   open,
   onRequestClose,
   onExited,
   children,
   title,
   description,
-  modalId,
+  dialogId,
   overlayId,
   overlayClassName = '',
   panelClassName = '',
@@ -120,7 +120,7 @@ export const Modal: React.FC<ModalProps> = ({
   return createPortal(
     <OverlayScopeContext.Provider value={scopeId}>
       <div
-        data-modal-overlay={overlayId || modalId}
+        data-dialog-overlay={overlayId || dialogId}
         data-lumen-motion
         className={`${overlayBaseClassName} ${
           isClosing
@@ -153,7 +153,7 @@ export const Modal: React.FC<ModalProps> = ({
           aria-labelledby={resolvedAriaLabelledBy}
           aria-describedby={resolvedAriaDescribedBy}
           tabIndex={-1}
-          data-modal={modalId}
+          data-dialog={dialogId}
           data-lumen-motion
           className={`max-h-[calc(100dvh-1.5rem)] ${
             isClosing
@@ -163,11 +163,11 @@ export const Modal: React.FC<ModalProps> = ({
           onClick={(event) => event.stopPropagation()}
         >
           {hasTitle || hasDescription ? (
-            <div data-modal-header>
+            <div data-dialog-header>
               {hasTitle ? (
                 <div
                   id={generatedTitleId}
-                  data-modal-title
+                  data-dialog-title
                   className="text-[16px] font-semibold leading-6 text-[var(--lumen-color-text)]"
                 >
                   {displayTitle}
@@ -176,7 +176,7 @@ export const Modal: React.FC<ModalProps> = ({
               {hasDescription ? (
                 <div
                   id={generatedDescriptionId}
-                  data-modal-description
+                  data-dialog-description
                   className="mt-2 text-[14px] leading-6 text-[var(--lumen-color-text-secondary)]"
                 >
                   {displayDescription}
