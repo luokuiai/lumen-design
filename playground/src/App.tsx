@@ -95,6 +95,7 @@ import {
   DragHandle,
   Drawer,
   DropdownMenu,
+  DropdownMenuItem,
   FileUpload,
   FileList,
   FileTypeIcon,
@@ -338,6 +339,7 @@ const galleryCategories: GalleryCategory[] = [
     icon: Plus,
     demos: [
       demo('Button', 'buttons', 'Button', '    <Button variant="primary">保存</Button>'),
+      demo('Tooltip', 'buttons', 'Tooltip', '    <Tooltip content="完整内容" onlyWhenOverflow>\n      <span className="block max-w-24 truncate">这是一段会被省略的长文本</span>\n    </Tooltip>'),
       {
         ...demo('Fab', 'buttons', 'Fab', '    <Fab position="static" icon={<Plus size={18} />} aria-label="新建任务" />', 'Plus', undefined, ['Icon only', 'Extended', 'Expandable', 'Submenu']),
         codeByCardTitle: {
@@ -348,7 +350,7 @@ const galleryCategories: GalleryCategory[] = [
         },
       },
       demo('Toolbar', 'navigation', 'Button, Toolbar', '    <Toolbar\n      ariaLabel="列表操作"\n      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"\n    >\n      <Button size="sm" variant="ghost" icon={<Search size={15} />}>\n        搜索\n      </Button>\n      <Button size="sm" variant="ghost" icon={<Filter size={15} />}>\n        筛选\n      </Button>\n      <div className="flex-1" />\n      <Button size="sm" icon={<Plus size={15} />}>\n        新建\n      </Button>\n    </Toolbar>', 'Filter, Plus, Search'),
-      demo('DropdownMenu', 'navigation', 'Button, DropdownMenu', '    <DropdownMenu\n      trigger={({ toggle }) => <Button onClick={toggle}>打开菜单</Button>}\n    >\n      {({ close }) => <button onClick={close}>复制</button>}\n    </DropdownMenu>'),
+      demo('DropdownMenu', 'navigation', 'Button, DropdownMenu, DropdownMenuItem', '    <DropdownMenu\n      menuMode\n      trigger={({ toggle }) => <Button onClick={toggle}>打开菜单</Button>}\n    >\n      {({ close }) => <DropdownMenuItem onClick={close}>复制</DropdownMenuItem>}\n    </DropdownMenu>'),
       demo('ContextMenu', 'buttons', 'ContextMenu, Typography', '    <div className="flex flex-col gap-3">\n      <ContextMenu\n        ariaLabel="快捷操作"\n        menuClassName="menu-list"\n        content={<>\n          <button type="button" role="menuitem" onClick={() => setAction("复制")}>复制</button>\n          <button type="button" role="menuitem" onClick={() => setAction("收藏")}>收藏</button>\n          <button type="button" role="menuitem" onClick={() => setAction("删除")}>删除</button>\n        </>}\n      >\n        <div className="rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center">\n          PC 端右键，移动端长按\n        </div>\n      </ContextMenu>\n      <Typography variant="caption" color="muted">最近操作：{action}</Typography>\n    </div>', undefined, "const [action, setAction] = useState('暂无');", ['Context menu']),
       demo('useLongPress', 'buttons', 'Button, Typography, useLongPress', '    <div className="flex flex-col items-start gap-3">\n      <Button {...handlers} className="select-none touch-pan-y">移动端按住 500ms</Button>\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [message, setMessage] = useState('移动端长按，PC 端普通点击');\n  const handlers = useLongPress<HTMLButtonElement>({\n    onClick: () => setMessage('普通点击'),\n    onLongPress: () => setMessage('已触发长按'),\n  });", ['Long press'], []),
       demo('DragHandle', 'buttons', 'DragHandle', '    <DragHandle />'),
@@ -554,6 +556,7 @@ const zhDemoNames: Record<string, string> = {
   DragHandle: '拖拽手柄',
   Fab: '浮动操作按钮',
   Toolbar: '工具栏',
+  Tooltip: '文字提示',
   DropdownMenu: '下拉菜单',
   Input: '输入框',
   'Form / FormField': '表单 / 表单字段',
@@ -2429,6 +2432,11 @@ export default function App() {
                     </Tooltip>
                   </div>
                 </DemoCard>
+                <DemoCard title="Tooltip">
+                  <Tooltip content="这是一段会被省略的完整文本" onlyWhenOverflow>
+                    <span className="block max-w-40 truncate">这是一段会被省略的完整文本</span>
+                  </Tooltip>
+                </DemoCard>
                 <DemoCard title="Long press" wide>
                   <div className="flex flex-col items-start gap-3">
                     <Button {...longPressHandlers} className="select-none touch-pan-y">
@@ -2520,6 +2528,7 @@ export default function App() {
                     <Badge variant="warning">Warning</Badge>
                     <Badge variant="danger">Danger</Badge>
                     <Badge variant="neutral">Neutral</Badge>
+                    <Badge variant="success" shape="square">Success Square</Badge>
                     <Badge variant="outline" shape="square">Outline</Badge>
                   </div>
                 </DemoCard>
@@ -3210,19 +3219,19 @@ export default function App() {
                       )}
                     >
                       {({ close }) => (
-                        <div className="menu-list">
-                          <button type="button" role="menuitem" onClick={close}>
+                        <div className="min-w-[180px] px-2 py-1.5">
+                          <DropdownMenuItem onClick={close}>
                             <Copy size={15} />
                             复制组件名称
-                          </button>
-                          <button type="button" role="menuitem" onClick={close}>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={close}>
                             <Code2 size={15} />
                             查看源码路径
-                          </button>
-                          <button type="button" role="menuitem" onClick={close}>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={close}>
                             <Star size={15} />
                             标记为常用
-                          </button>
+                          </DropdownMenuItem>
                         </div>
                       )}
                     </DropdownMenu>

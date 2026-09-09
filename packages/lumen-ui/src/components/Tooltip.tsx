@@ -29,6 +29,8 @@ export interface TooltipProps {
   hideDelay?: number;
   /** 是否禁用 tooltip */
   disabled?: boolean;
+  /** 是否仅在触发元素内容溢出时显示 */
+  onlyWhenOverflow?: boolean;
   /** 自定义 className */
   className?: string;
   /** 与触发元素的间距 (px)，默认 12 */
@@ -79,6 +81,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   showDelay = 350,
   hideDelay = 150,
   disabled = false,
+  onlyWhenOverflow = false,
   className,
   offset = 12,
   showArrow = true,
@@ -130,11 +133,18 @@ export const Tooltip: React.FC<TooltipProps> = ({
   // 触发显示
   const show = useCallback(() => {
     if (disabled) return;
+    const trigger = triggerRef.current;
+    if (
+      onlyWhenOverflow &&
+      (!trigger ||
+        (trigger.scrollWidth <= trigger.clientWidth &&
+          trigger.scrollHeight <= trigger.clientHeight))
+    ) return;
     clearTimers();
     showTimerRef.current = setTimeout(() => {
       setPhase('entering');
     }, showDelay);
-  }, [disabled, showDelay, clearTimers]);
+  }, [disabled, onlyWhenOverflow, showDelay, clearTimers]);
 
   // 触发隐藏
   const hide = useCallback(() => {

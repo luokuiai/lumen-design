@@ -41,6 +41,30 @@ export interface DropdownMenuProps {
   onOpenChange?: (open: boolean) => void;
 }
 
+export interface DropdownMenuItemProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'role' | 'children'> {
+  /** 菜单项内容。 */
+  children: React.ReactNode;
+}
+
+export const DropdownMenuItem = React.forwardRef<
+  HTMLButtonElement,
+  DropdownMenuItemProps
+>(({ className, type = 'button', ...props }, ref) => (
+  <button
+    ref={ref}
+    type={type}
+    role="menuitem"
+    className={cn(
+      'flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-[6px] px-2.5 text-left text-[14px] font-normal text-[var(--lumen-color-text-secondary)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text)] focus-visible:bg-[var(--lumen-color-surface-muted)] focus-visible:text-[var(--lumen-color-text)] focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-border)] disabled:cursor-not-allowed disabled:opacity-45',
+      className,
+    )}
+    {...props}
+  />
+));
+
+DropdownMenuItem.displayName = 'DropdownMenuItem';
+
 const DEFAULT_CLOSE_DELAY_MS = 120;
 const OPEN_ANIMATION_DELAY_MS = 16;
 type DropdownMenuPhase = 'closed' | 'opening' | 'open' | 'closing';

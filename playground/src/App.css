@@ -95,7 +95,6 @@ body {
 
 .gallery-tree-category[data-active] {
   color: var(--lumen-color-primary);
-  font-weight: 500;
 }
 
 .gallery-tree-chevron {
@@ -138,7 +137,6 @@ body {
 .gallery-tree-item[data-active] {
   background: var(--lumen-color-primary-soft);
   color: var(--lumen-color-primary);
-  font-weight: 500;
 }
 
 .sidebar-collapsed .gallery-tree-nav {
