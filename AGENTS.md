@@ -67,8 +67,16 @@ and npm dist-tags stay aligned.
 ### Agent Rules
 
 - Start a release only after the user explicitly provides the target version.
-- Treat version changes, commits, merges, tags, pushes, and branch deletion as
-  separate operations. Do not perform a later operation without user approval.
+- A request to publish a specific version authorizes the complete standard release
+  workflow in this section: create the release branch, update and validate versions,
+  commit, merge and tag `main`, merge back to `develop`, push in release order,
+  verify publishing, and delete the local release branch. Execute these steps
+  continuously without asking for approval between them.
+- Pause and ask only when the worktree is not clean, a merge conflict or validation
+  failure occurs, the target version or tag already exists, publishing fails in a
+  way that requires code or metadata changes, or completion would require deviating
+  from this documented workflow. Respect any narrower boundary the user gives, such
+  as preparing a release without pushing it.
 - Start release branches from an up-to-date `develop` branch with a clean worktree.
 - Use an annotated tag named `v<VERSION>`. Never use a lightweight tag.
 - Never move, replace, or force-push a published tag.

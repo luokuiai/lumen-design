@@ -715,8 +715,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "invalid",
       "type": "boolean",
       "defaultValue": "false",
-      "description": "设置 invalid。",
-      "descriptionEn": "Configures invalid.",
+      "description": "标记组件当前处于校验错误状态。",
+      "descriptionEn": "Marks the component as having a validation error.",
       "required": false
     },
     {
@@ -887,8 +887,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "emptyText",
       "type": "React.ReactNode",
       "defaultValue": "undefined",
-      "description": "设置 emptyText。",
-      "descriptionEn": "Configures empty text.",
+      "description": "覆盖无匹配选项时的提示内容。",
+      "descriptionEn": "Overrides the content shown when no options match.",
       "required": false
     },
     {
@@ -903,8 +903,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "filterOption",
       "type": "(query: string, item: TransferItem) => boolean",
       "defaultValue": "(query: string, item: TransferItem) =>\n  `${item.label} ${typeof item.description === 'string' ? item.description : ''}`\n    .toLowerCase()\n    .includes(query.toLowerCase())",
-      "description": "设置 filterOption。",
-      "descriptionEn": "Configures filter option.",
+      "description": "自定义单个选项的匹配规则。",
+      "descriptionEn": "Customizes how each option is matched against the query.",
       "required": false
     },
     {
@@ -1601,7 +1601,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     },
     {
       "name": "placement",
-      "type": "\"left\" | \"right\" | \"top\" | \"bottom\"",
+      "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
       "defaultValue": "'bottom'",
       "description": "设置浮层或定位元素的位置。",
       "descriptionEn": "Sets the position of the overlay or positioned element.",
@@ -1609,7 +1609,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     },
     {
       "name": "align",
-      "type": "\"start\" | \"center\" | \"end\"",
+      "type": "\"start\" | \"end\" | \"center\"",
       "defaultValue": "'center'",
       "description": "设置内容或浮层的对齐方式。",
       "descriptionEn": "Sets the alignment of the content or overlay.",
@@ -1873,7 +1873,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     },
     {
       "name": "align",
-      "type": "\"left\" | \"right\" | \"auto\"",
+      "type": "\"auto\" | \"left\" | \"right\"",
       "defaultValue": "'auto'",
       "description": "设置内容或浮层的对齐方式。",
       "descriptionEn": "Sets the alignment of the content or overlay.",
@@ -1902,6 +1902,16 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "description": "打开状态发生变化时触发。",
       "descriptionEn": "Called when the open state changes.",
       "required": false
+    }
+  ],
+  "DropdownMenuItem": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "defaultValue": "-",
+      "description": "菜单项内容。",
+      "descriptionEn": "Sets the child content rendered by the component.",
+      "required": true
     }
   ],
   "Watermark": [
@@ -2087,8 +2097,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "emptyText",
       "type": "React.ReactNode",
       "defaultValue": "undefined",
-      "description": "设置 emptyText。",
-      "descriptionEn": "Configures empty text.",
+      "description": "覆盖无匹配选项时的提示内容。",
+      "descriptionEn": "Overrides the content shown when no options match.",
       "required": false
     },
     {
@@ -2433,7 +2443,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     },
     {
       "name": "align",
-      "type": "\"start\" | \"center\" | \"end\"",
+      "type": "\"start\" | \"end\" | \"center\"",
       "defaultValue": "'center'",
       "description": "设置内容或浮层的对齐方式。",
       "descriptionEn": "Sets the alignment of the content or overlay.",
@@ -2517,7 +2527,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     },
     {
       "name": "placement",
-      "type": "\"left\" | \"right\" | \"top\" | \"bottom\"",
+      "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
       "defaultValue": "'top'",
       "description": "放置位置，默认 'top'",
       "descriptionEn": "Sets the position of the overlay or positioned element.",
@@ -2545,6 +2555,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "false",
       "description": "是否禁用 tooltip",
       "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "onlyWhenOverflow",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "是否仅在触发元素内容溢出时显示",
+      "descriptionEn": "Called when the y when overflow action occurs.",
       "required": false
     },
     {
@@ -2708,7 +2726,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "boolean",
       "defaultValue": "true",
       "description": "是否显示清除按钮，默认 true",
-      "descriptionEn": "Configures clearable.",
+      "descriptionEn": "Allows the current value to be cleared.",
       "required": false
     },
     {
@@ -2917,8 +2935,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "invalid",
       "type": "boolean",
       "defaultValue": "false",
-      "description": "设置 invalid。",
-      "descriptionEn": "Configures invalid.",
+      "description": "标记组件当前处于校验错误状态。",
+      "descriptionEn": "Marks the component as having a validation error.",
       "required": false
     },
     {
@@ -2941,8 +2959,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "inputClassName",
       "type": "string",
       "defaultValue": "undefined",
-      "description": "设置 inputClassName。",
-      "descriptionEn": "Configures input class name.",
+      "description": "追加输入框的 CSS 类名。",
+      "descriptionEn": "Adds custom CSS class names to the input.",
       "required": false
     },
     {
@@ -3227,8 +3245,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "emptyText",
       "type": "string",
       "defaultValue": "undefined",
-      "description": "设置 emptyText。",
-      "descriptionEn": "Configures empty text.",
+      "description": "覆盖无匹配选项时的提示内容。",
+      "descriptionEn": "Overrides the content shown when no options match.",
       "required": false
     },
     {
@@ -4120,7 +4138,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "string",
       "defaultValue": "undefined",
       "description": "空状态文本",
-      "descriptionEn": "Configures empty text.",
+      "descriptionEn": "Overrides the content shown when no options match.",
       "required": false
     },
     {
@@ -4128,7 +4146,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "boolean",
       "defaultValue": "true",
       "description": "是否按搜索词本地过滤选项",
-      "descriptionEn": "Configures filter options.",
+      "descriptionEn": "Controls whether options are filtered locally.",
       "required": false
     },
     {
@@ -4136,7 +4154,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "string",
       "defaultValue": "undefined",
       "description": "加载状态文本",
-      "descriptionEn": "Configures loading text.",
+      "descriptionEn": "Overrides the loading-state content.",
       "required": false
     },
     {
@@ -4184,7 +4202,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "(option: SelectOption<T>, state: SelectOptionRenderState) => React.ReactNode",
       "defaultValue": "undefined",
       "description": "自定义选项内容",
-      "descriptionEn": "Configures render option.",
+      "descriptionEn": "Customizes how option content is rendered.",
       "required": false
     },
     {
@@ -4192,7 +4210,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "(option: SelectOption<T>, state: SelectOptionRenderState) => string | undefined",
       "defaultValue": "undefined",
       "description": "自定义选项按钮样式",
-      "descriptionEn": "Configures option class name.",
+      "descriptionEn": "Adds CSS class names based on the option state.",
       "required": false
     },
     {
@@ -4365,8 +4383,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "emptyText",
       "type": "React.ReactNode",
       "defaultValue": "undefined",
-      "description": "设置 emptyText。",
-      "descriptionEn": "Configures empty text.",
+      "description": "覆盖无匹配选项时的提示内容。",
+      "descriptionEn": "Overrides the content shown when no options match.",
       "required": false
     },
     {
@@ -4381,8 +4399,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "loadingText",
       "type": "React.ReactNode",
       "defaultValue": "undefined",
-      "description": "设置 loadingText。",
-      "descriptionEn": "Configures loading text.",
+      "description": "覆盖加载状态的提示内容。",
+      "descriptionEn": "Overrides the loading-state content.",
       "required": false
     },
     {
@@ -4545,8 +4563,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "invalid",
       "type": "boolean",
       "defaultValue": "undefined",
-      "description": "设置 invalid。",
-      "descriptionEn": "Configures invalid.",
+      "description": "标记组件当前处于校验错误状态。",
+      "descriptionEn": "Marks the component as having a validation error.",
       "required": false
     },
     {
@@ -4561,8 +4579,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "inputClassName",
       "type": "string",
       "defaultValue": "undefined",
-      "description": "设置 inputClassName。",
-      "descriptionEn": "Configures input class name.",
+      "description": "追加输入框的 CSS 类名。",
+      "descriptionEn": "Adds custom CSS class names to the input.",
       "required": false
     }
   ],
@@ -4638,6 +4656,90 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "description": "菜单的无障碍名称。",
       "descriptionEn": "Sets the accessible name of the component.",
       "required": false
+    }
+  ],
+  "FormRender": [
+    {
+      "name": "errors",
+      "type": "Partial<Record<Extract<keyof TValues, string>, string>>",
+      "defaultValue": "-",
+      "description": "设置 errors。",
+      "descriptionEn": "Configures errors.",
+      "required": true
+    },
+    {
+      "name": "isSubmitting",
+      "type": "boolean",
+      "defaultValue": "-",
+      "description": "设置 isSubmitting。",
+      "descriptionEn": "Configures is submitting.",
+      "required": true
+    },
+    {
+      "name": "submitError",
+      "type": "unknown",
+      "defaultValue": "-",
+      "description": "设置 submitError。",
+      "descriptionEn": "Configures submit error.",
+      "required": true
+    }
+  ],
+  "Form": [
+    {
+      "name": "values",
+      "type": "TValues",
+      "defaultValue": "-",
+      "description": "设置 values。",
+      "descriptionEn": "Configures values.",
+      "required": true
+    },
+    {
+      "name": "validate",
+      "type": "(values: TValues) => FormErrors<TValues>",
+      "defaultValue": "-",
+      "description": "设置 validate。",
+      "descriptionEn": "Configures validate.",
+      "required": true
+    },
+    {
+      "name": "onFinish",
+      "type": "(values: TValues) => void | Promise<void>",
+      "defaultValue": "-",
+      "description": "组件执行 Finish 对应操作时触发。",
+      "descriptionEn": "Called when the finish action occurs.",
+      "required": true
+    },
+    {
+      "name": "showErrors",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否显示 Errors。",
+      "descriptionEn": "Controls whether errors is shown.",
+      "required": false
+    },
+    {
+      "name": "onValidationFailed",
+      "type": "(errors: FormErrors<TValues>, values: TValues) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 ValidationFailed 对应操作时触发。",
+      "descriptionEn": "Called when the validation failed action occurs.",
+      "required": false
+    },
+    {
+      "name": "focusFirstError",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "设置 focusFirstError。",
+      "descriptionEn": "Configures focus first error.",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "React.ReactNode | ((state: FormRenderProps<TValues>) => React.ReactNode)",
+      "defaultValue": "-",
+      "description": "组件承载的子内容。",
+      "descriptionEn": "Sets the child content rendered by the component.",
+      "required": true
     }
   ],
   "OtpInput": [
@@ -4718,7 +4820,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "boolean",
       "defaultValue": "false",
       "description": "是否显示错误状态。",
-      "descriptionEn": "Configures invalid.",
+      "descriptionEn": "Marks the component as having a validation error.",
       "required": false
     },
     {
@@ -4742,7 +4844,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "string",
       "defaultValue": "'one-time-code'",
       "description": "第一格使用的自动填充提示。",
-      "descriptionEn": "Configures auto complete.",
+      "descriptionEn": "Sets the native input autocomplete behavior.",
       "required": false
     },
     {
@@ -4758,7 +4860,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "string",
       "defaultValue": "undefined",
       "description": "每个输入格的附加类名。",
-      "descriptionEn": "Configures input class name.",
+      "descriptionEn": "Adds custom CSS class names to the input.",
       "required": false
     },
     {
@@ -5011,8 +5113,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "clearable",
       "type": "boolean",
       "defaultValue": "true",
-      "description": "设置 clearable。",
-      "descriptionEn": "Configures clearable.",
+      "description": "允许清除当前值。",
+      "descriptionEn": "Allows the current value to be cleared.",
       "required": false
     },
     {
@@ -5322,7 +5424,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "boolean",
       "defaultValue": "true",
       "description": "是否显示清空按钮。",
-      "descriptionEn": "Configures clearable.",
+      "descriptionEn": "Allows the current value to be cleared.",
       "required": false
     },
     {
@@ -5354,7 +5456,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "type": "string",
       "defaultValue": "undefined",
       "description": "输入元素附加类名。",
-      "descriptionEn": "Configures input class name.",
+      "descriptionEn": "Adds custom CSS class names to the input.",
       "required": false
     },
     {
@@ -5843,8 +5945,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "clearable",
       "type": "boolean",
       "defaultValue": "true",
-      "description": "设置 clearable。",
-      "descriptionEn": "Configures clearable.",
+      "description": "允许清除当前值。",
+      "descriptionEn": "Allows the current value to be cleared.",
       "required": false
     },
     {
@@ -5867,8 +5969,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "emptyText",
       "type": "React.ReactNode",
       "defaultValue": "undefined",
-      "description": "设置 emptyText。",
-      "descriptionEn": "Configures empty text.",
+      "description": "覆盖无匹配选项时的提示内容。",
+      "descriptionEn": "Overrides the content shown when no options match.",
       "required": false
     },
     {
@@ -5883,8 +5985,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "loadingText",
       "type": "React.ReactNode",
       "defaultValue": "undefined",
-      "description": "设置 loadingText。",
-      "descriptionEn": "Configures loading text.",
+      "description": "覆盖加载状态的提示内容。",
+      "descriptionEn": "Overrides the loading-state content.",
       "required": false
     },
     {
@@ -5957,6 +6059,122 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "设置供辅助技术读取的名称。",
       "descriptionEn": "Sets the accessible name read by assistive technology.",
+      "required": false
+    }
+  ],
+  "FileListItem": [
+    {
+      "name": "file",
+      "type": "FileListFile",
+      "defaultValue": "-",
+      "description": "设置 file。",
+      "descriptionEn": "Configures file.",
+      "required": true
+    },
+    {
+      "name": "showSize",
+      "type": "boolean",
+      "defaultValue": "true",
+      "description": "控制是否显示 Size。",
+      "descriptionEn": "Controls whether size is shown.",
+      "required": false
+    },
+    {
+      "name": "wrapName",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "设置 wrapName。",
+      "descriptionEn": "Configures wrap name.",
+      "required": false
+    },
+    {
+      "name": "badgeMaxWidth",
+      "type": "string | number",
+      "defaultValue": "96",
+      "description": "设置 badgeMaxWidth。",
+      "descriptionEn": "Configures badge max width.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "禁用组件及其交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 actions。",
+      "descriptionEn": "Configures actions.",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "type": "(file: FileListFile) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 Remove 对应操作时触发。",
+      "descriptionEn": "Called when the remove action occurs.",
+      "required": false
+    }
+  ],
+  "FileList": [
+    {
+      "name": "badgeMaxWidth",
+      "type": "string | number",
+      "defaultValue": "undefined",
+      "description": "设置 badgeMaxWidth。",
+      "descriptionEn": "Configures badge max width.",
+      "required": false
+    },
+    {
+      "name": "renderActions",
+      "type": "(file: FileListFile) => React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "设置 renderActions。",
+      "descriptionEn": "Configures render actions.",
+      "required": false
+    },
+    {
+      "name": "items",
+      "type": "FileListFile[]",
+      "defaultValue": "-",
+      "description": "定义组件渲染的数据项。",
+      "descriptionEn": "Defines the data items rendered by the component.",
+      "required": true
+    },
+    {
+      "name": "showSize",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "控制是否显示 Size。",
+      "descriptionEn": "Controls whether size is shown.",
+      "required": false
+    },
+    {
+      "name": "wrapName",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "设置 wrapName。",
+      "descriptionEn": "Configures wrap name.",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "defaultValue": "undefined",
+      "description": "禁用组件及其交互。",
+      "descriptionEn": "Disables the component and its interactions.",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "type": "(file: FileListFile) => void",
+      "defaultValue": "undefined",
+      "description": "组件执行 Remove 对应操作时触发。",
+      "descriptionEn": "Called when the remove action occurs.",
       "required": false
     }
   ],
@@ -6177,206 +6395,6 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "2600",
       "description": "设置消息显示时长，单位为毫秒。",
       "descriptionEn": "Sets the message duration in milliseconds.",
-      "required": false
-    }
-  ],
-  "Form": [
-    {
-      "name": "values",
-      "type": "TValues",
-      "defaultValue": "-",
-      "description": "设置 values。",
-      "descriptionEn": "Configures values.",
-      "required": true
-    },
-    {
-      "name": "validate",
-      "type": "(values: TValues) => FormErrors<TValues>",
-      "defaultValue": "-",
-      "description": "设置 validate。",
-      "descriptionEn": "Configures validate.",
-      "required": true
-    },
-    {
-      "name": "onFinish",
-      "type": "(values: TValues) => void | Promise<void>",
-      "defaultValue": "-",
-      "description": "组件执行 Finish 对应操作时触发。",
-      "descriptionEn": "Called when the finish action occurs.",
-      "required": true
-    },
-    {
-      "name": "showErrors",
-      "type": "boolean",
-      "defaultValue": "true",
-      "description": "控制是否显示 Errors。",
-      "descriptionEn": "Controls whether errors is shown.",
-      "required": false
-    },
-    {
-      "name": "onValidationFailed",
-      "type": "(errors: FormErrors<TValues>, values: TValues) => void",
-      "defaultValue": "undefined",
-      "description": "组件执行 ValidationFailed 对应操作时触发。",
-      "descriptionEn": "Called when the validation failed action occurs.",
-      "required": false
-    },
-    {
-      "name": "focusFirstError",
-      "type": "boolean",
-      "defaultValue": "true",
-      "description": "设置 focusFirstError。",
-      "descriptionEn": "Configures focus first error.",
-      "required": false
-    },
-    {
-      "name": "children",
-      "type": "React.ReactNode | ((state: FormRenderProps<TValues>) => React.ReactNode)",
-      "defaultValue": "-",
-      "description": "组件承载的子内容。",
-      "descriptionEn": "Sets the child content rendered by the component.",
-      "required": true
-    }
-  ],
-  "FormRender": [
-    {
-      "name": "errors",
-      "type": "Partial<Record<Extract<keyof TValues, string>, string>>",
-      "defaultValue": "-",
-      "description": "设置 errors。",
-      "descriptionEn": "Configures errors.",
-      "required": true
-    },
-    {
-      "name": "isSubmitting",
-      "type": "boolean",
-      "defaultValue": "-",
-      "description": "设置 isSubmitting。",
-      "descriptionEn": "Configures is submitting.",
-      "required": true
-    },
-    {
-      "name": "submitError",
-      "type": "unknown",
-      "defaultValue": "-",
-      "description": "设置 submitError。",
-      "descriptionEn": "Configures submit error.",
-      "required": true
-    }
-  ],
-  "FileListItem": [
-    {
-      "name": "badgeMaxWidth",
-      "type": "string | number",
-      "defaultValue": "96",
-      "description": "设置 badgeMaxWidth。",
-      "descriptionEn": "Configures badge max width.",
-      "required": false
-    },
-    {
-      "name": "file",
-      "type": "FileListFile",
-      "defaultValue": "-",
-      "description": "设置 file。",
-      "descriptionEn": "Configures file.",
-      "required": true
-    },
-    {
-      "name": "showSize",
-      "type": "boolean",
-      "defaultValue": "true",
-      "description": "控制是否显示 Size。",
-      "descriptionEn": "Controls whether size is shown.",
-      "required": false
-    },
-    {
-      "name": "wrapName",
-      "type": "boolean",
-      "defaultValue": "false",
-      "description": "设置 wrapName。",
-      "descriptionEn": "Configures wrap name.",
-      "required": false
-    },
-    {
-      "name": "disabled",
-      "type": "boolean",
-      "defaultValue": "false",
-      "description": "禁用组件及其交互。",
-      "descriptionEn": "Disables the component and its interactions.",
-      "required": false
-    },
-    {
-      "name": "actions",
-      "type": "React.ReactNode",
-      "defaultValue": "undefined",
-      "description": "设置 actions。",
-      "descriptionEn": "Configures actions.",
-      "required": false
-    },
-    {
-      "name": "onRemove",
-      "type": "(file: FileListFile) => void",
-      "defaultValue": "undefined",
-      "description": "组件执行 Remove 对应操作时触发。",
-      "descriptionEn": "Called when the remove action occurs.",
-      "required": false
-    }
-  ],
-  "FileList": [
-    {
-      "name": "badgeMaxWidth",
-      "type": "string | number",
-      "defaultValue": "undefined",
-      "description": "设置 badgeMaxWidth。",
-      "descriptionEn": "Configures badge max width.",
-      "required": false
-    },
-    {
-      "name": "renderActions",
-      "type": "(file: FileListFile) => React.ReactNode",
-      "defaultValue": "undefined",
-      "description": "设置 renderActions。",
-      "descriptionEn": "Configures render actions.",
-      "required": false
-    },
-    {
-      "name": "items",
-      "type": "FileListFile[]",
-      "defaultValue": "-",
-      "description": "定义组件渲染的数据项。",
-      "descriptionEn": "Defines the data items rendered by the component.",
-      "required": true
-    },
-    {
-      "name": "showSize",
-      "type": "boolean",
-      "defaultValue": "undefined",
-      "description": "控制是否显示 Size。",
-      "descriptionEn": "Controls whether size is shown.",
-      "required": false
-    },
-    {
-      "name": "wrapName",
-      "type": "boolean",
-      "defaultValue": "undefined",
-      "description": "设置 wrapName。",
-      "descriptionEn": "Configures wrap name.",
-      "required": false
-    },
-    {
-      "name": "disabled",
-      "type": "boolean",
-      "defaultValue": "undefined",
-      "description": "禁用组件及其交互。",
-      "descriptionEn": "Disables the component and its interactions.",
-      "required": false
-    },
-    {
-      "name": "onRemove",
-      "type": "(file: FileListFile) => void",
-      "defaultValue": "undefined",
-      "description": "组件执行 Remove 对应操作时触发。",
-      "descriptionEn": "Called when the remove action occurs.",
       "required": false
     }
   ]

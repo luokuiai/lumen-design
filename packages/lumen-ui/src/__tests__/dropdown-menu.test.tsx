@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { DropdownMenu } from '../components/DropdownMenu';
+import { DropdownMenu, DropdownMenuItem } from '../components/DropdownMenu';
 
 describe('DropdownMenu', () => {
   afterEach(() => {
@@ -115,5 +115,13 @@ describe('DropdownMenu', () => {
     expect(menu).toHaveStyle({ left: '820px', top: '78px' });
     expect(menu).toHaveAttribute('data-align', 'right');
     expect(menu.firstElementChild).toHaveClass('origin-top-right');
+  });
+
+  it('provides an accessible styled menu item', () => {
+    render(<DropdownMenuItem disabled>Delete</DropdownMenuItem>);
+
+    const item = screen.getByRole('menuitem', { name: 'Delete' });
+    expect(item).toBeDisabled();
+    expect(item).toHaveClass('min-h-9', 'font-normal');
   });
 });

@@ -64,27 +64,17 @@ describe('FileList', () => {
     'only shows a tooltip for overflowing text: %s', (text) => {
       vi.useFakeTimers();
       let width = 500;
-      let resize = () => {};
-      const disconnect = vi.fn();
-      vi.stubGlobal('ResizeObserver', class {
-        constructor(callback: () => void) { resize = callback; }
-        observe() {}
-        disconnect = disconnect;
-      });
       vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(200);
       vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockImplementation(() => width);
-      const { unmount } = render(<FileList items={items.slice(0, 1)} />);
+      render(<FileList items={items.slice(0, 1)} />);
       fireEvent.pointerEnter(screen.getByText(text));
       act(() => { vi.advanceTimersByTime(400); });
       expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
       fireEvent.pointerLeave(screen.getByText(text));
       width = 80;
-      act(() => { resize(); window.dispatchEvent(new Event('resize')); });
       fireEvent.pointerEnter(screen.getByText(text));
       act(() => { vi.advanceTimersByTime(400); });
       expect(screen.getByRole('tooltip')).toHaveTextContent(text);
-      unmount();
-      expect(disconnect).toHaveBeenCalled();
     },
   );
 

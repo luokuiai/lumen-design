@@ -77,4 +77,27 @@ describe('Tooltip', () => {
     fireEvent.animationEnd(tooltip);
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
+
+  it('only shows for overflowing content when requested', () => {
+    vi.useFakeTimers();
+    render(
+      <Tooltip content="Full label" showDelay={0} onlyWhenOverflow>
+        <span>Label</span>
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByText('Label');
+    Object.defineProperties(trigger, {
+      clientWidth: { configurable: true, value: 80 },
+      scrollWidth: { configurable: true, value: 80 },
+    });
+    fireEvent.pointerEnter(trigger);
+    act(() => vi.advanceTimersByTime(0));
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+
+    Object.defineProperty(trigger, 'scrollWidth', { configurable: true, value: 120 });
+    fireEvent.pointerEnter(trigger);
+    act(() => vi.advanceTimersByTime(0));
+    expect(screen.getByRole('tooltip')).toHaveTextContent('Full label');
+  });
 });
