@@ -30,7 +30,7 @@ describe('Cascader', () => {
 
     await user.click(screen.getByRole('button', { name: 'Device location' }));
     const north = await screen.findByRole('option', { name: 'North region' });
-    north.focus();
+    await waitFor(() => expect(north).toHaveFocus());
     await user.keyboard('{ArrowRight}');
     await waitFor(() => expect(screen.getByRole('option', { name: 'Beijing' })).toHaveFocus());
 
