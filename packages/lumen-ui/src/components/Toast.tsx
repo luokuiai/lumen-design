@@ -186,7 +186,7 @@ const ToastViewport: React.FC = () => {
 
   return (
     <div
-      className="pointer-events-none fixed right-3 top-3 z-[120] flex w-[calc(100vw-1.5rem)] flex-col items-end gap-2 pad:right-4 pad:top-4 pad:w-[328px] pad:gap-3 l:w-[344px] xl:right-6 xl:top-6"
+      className="pointer-events-none fixed right-3 top-3 z-[120] flex w-[calc(100vw-1.5rem)] flex-col items-end gap-2 pad:right-4 pad:top-4 pad:w-[304px] pad:gap-3 l:w-[320px] xl:right-6 xl:top-6"
       data-toast-container
     >
       {items.map((item) => (

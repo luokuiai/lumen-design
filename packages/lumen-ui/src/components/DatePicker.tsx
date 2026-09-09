@@ -11,7 +11,7 @@ import { Button } from './Button';
 import { Calendar } from './calendar/Calendar';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
-import { MobilePickerModal } from './mobilePickerModal';
+import { MobilePickerDialog } from './mobilePickerDialog';
 import { useMobilePicker } from './useMobilePicker';
 import { useOverlayPortalScope } from './useOverlayBehavior';
 import { type LumenLocale, useLumenLocale, zhCN } from '../i18n';
@@ -542,12 +542,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       {/* 下拉面板（portal 到 body） */}
       {open &&
         createPortal(
-          <MobilePickerModal
+          <MobilePickerDialog
             mobile={isMobile}
             open={open}
             onRequestClose={closeDropdown}
             label={placeholder}
-            modalId="date-picker-panel"
+            dialogId="date-picker-panel"
             maxWidth="max-w-[320px]"
           >
             <div
@@ -639,7 +639,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                 </div>
               ) : null}
             </div>
-          </MobilePickerModal>,
+          </MobilePickerDialog>,
           document.body,
         )}
     </div>

@@ -1,37 +1,37 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { Modal } from '../components/Modal';
+import { Dialog } from '../components/Dialog';
 import { Select } from '../components/Select';
 
-describe('Modal', () => {
+describe('Dialog', () => {
   it('retains content until the close animation finishes', () => {
     const onExited = vi.fn();
     const { rerender } = render(
-      <Modal
+      <Dialog
         open
         onRequestClose={() => undefined}
         onExited={onExited}
-        modalId="demo"
+        dialogId="demo"
       >
-        <p>Modal content</p>
-      </Modal>,
+        <p>Dialog content</p>
+      </Dialog>,
     );
 
     rerender(
-      <Modal
+      <Dialog
         open={false}
         onRequestClose={() => undefined}
         onExited={onExited}
-        modalId="demo"
+        dialogId="demo"
       >
         {null}
-      </Modal>,
+      </Dialog>,
     );
 
-    expect(screen.getByText('Modal content')).toBeInTheDocument();
-    const overlay = document.querySelector('[data-modal-overlay="demo"]');
-    const panel = document.querySelector('[data-modal="demo"]');
+    expect(screen.getByText('Dialog content')).toBeInTheDocument();
+    const overlay = document.querySelector('[data-dialog-overlay="demo"]');
+    const panel = document.querySelector('[data-dialog="demo"]');
     expect(overlay).toHaveClass('backdrop-blur-[2px]');
     expect(overlay).toHaveClass('items-center');
     expect(overlay).not.toHaveClass('mobile:items-end');
@@ -39,20 +39,20 @@ describe('Modal', () => {
 
     fireEvent.animationEnd(overlay!);
 
-    expect(screen.queryByText('Modal content')).not.toBeInTheDocument();
+    expect(screen.queryByText('Dialog content')).not.toBeInTheDocument();
     expect(onExited).toHaveBeenCalledOnce();
   });
 
   it('closes when the overlay is clicked', () => {
     const onRequestClose = vi.fn();
     render(
-      <Modal open onRequestClose={onRequestClose} modalId="clickable">
+      <Dialog open onRequestClose={onRequestClose} dialogId="clickable">
         Content
-      </Modal>,
+      </Dialog>,
     );
 
     fireEvent.click(
-      document.querySelector('[data-modal-overlay="clickable"]')!,
+      document.querySelector('[data-dialog-overlay="clickable"]')!,
     );
 
     expect(onRequestClose).toHaveBeenCalledOnce();
@@ -61,13 +61,13 @@ describe('Modal', () => {
   it('does not treat a pointer gesture starting in the panel as an overlay click', () => {
     const onRequestClose = vi.fn();
     render(
-      <Modal open onRequestClose={onRequestClose} modalId="drag-safe">
+      <Dialog open onRequestClose={onRequestClose} dialogId="drag-safe">
         Content
-      </Modal>,
+      </Dialog>,
     );
 
-    const overlay = document.querySelector('[data-modal-overlay="drag-safe"]')!;
-    const panel = document.querySelector('[data-modal="drag-safe"]')!;
+    const overlay = document.querySelector('[data-dialog-overlay="drag-safe"]')!;
+    const panel = document.querySelector('[data-dialog="drag-safe"]')!;
     fireEvent.pointerDown(panel);
     fireEvent.click(overlay);
 
@@ -79,23 +79,23 @@ describe('Modal', () => {
 
   it('renders and automatically associates its title and description', () => {
     render(
-      <Modal
+      <Dialog
         open
         title="Edit profile"
         description="Update the account details."
         onRequestClose={() => undefined}
       >
         Content
-      </Modal>,
+      </Dialog>,
     );
 
     const dialog = screen.getByRole('dialog', { name: 'Edit profile' });
     expect(dialog).toHaveAccessibleDescription('Update the account details.');
-    expect(document.querySelector('[data-modal-title]')).toHaveTextContent(
+    expect(document.querySelector('[data-dialog-title]')).toHaveTextContent(
       'Edit profile',
     );
     expect(
-      document.querySelector('[data-modal-description]'),
+      document.querySelector('[data-dialog-description]'),
     ).toHaveTextContent('Update the account details.');
   });
 
@@ -105,10 +105,10 @@ describe('Modal', () => {
     trigger.focus();
     const onRequestClose = vi.fn();
     const { unmount } = render(
-      <Modal open onRequestClose={onRequestClose} aria-label="Edit profile">
+      <Dialog open onRequestClose={onRequestClose} aria-label="Edit profile">
         <button type="button">First action</button>
         <button type="button">Last action</button>
-      </Modal>,
+      </Dialog>,
     );
 
     const dialog = screen.getByRole('dialog', { name: 'Edit profile' });
@@ -129,10 +129,10 @@ describe('Modal', () => {
     trigger.remove();
   });
 
-  it('keeps an owned Select portal in the focus scope and dismisses it before the modal', async () => {
+  it('keeps an owned Select portal in the focus scope and dismisses it before the dialog', async () => {
     const onRequestClose = vi.fn();
     render(
-      <Modal open onRequestClose={onRequestClose} aria-label="Edit profile">
+      <Dialog open onRequestClose={onRequestClose} aria-label="Edit profile">
         <Select
           searchable
           aria-label="Role"
@@ -140,7 +140,7 @@ describe('Modal', () => {
           value={null}
           onChange={() => undefined}
         />
-      </Modal>,
+      </Dialog>,
     );
 
     fireEvent.click(screen.getByTestId('select-trigger'));
@@ -158,14 +158,14 @@ describe('Modal', () => {
     const firstClose = vi.fn();
     const secondClose = vi.fn();
     const first = render(
-      <Modal open onRequestClose={firstClose} aria-label="First dialog">
+      <Dialog open onRequestClose={firstClose} aria-label="First dialog">
         First
-      </Modal>,
+      </Dialog>,
     );
     const second = render(
-      <Modal open onRequestClose={secondClose} aria-label="Second dialog">
+      <Dialog open onRequestClose={secondClose} aria-label="Second dialog">
         Second
-      </Modal>,
+      </Dialog>,
     );
 
     expect(document.body.style.overflow).toBe('hidden');

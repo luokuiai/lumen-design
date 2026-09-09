@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react';
 import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { Modal } from '../Modal';
+import { Dialog } from '../Dialog';
 import { Scrollbar } from '../Scrollbar';
 import { cn } from '../classNames';
 import { useLumenLocale } from '../../i18n';
@@ -174,10 +174,10 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   let itemIndex = -1;
 
   return (
-    <Modal
+    <Dialog
       open={open}
       onRequestClose={() => onOpenChange(false)}
-      modalId="command-palette"
+      dialogId="command-palette"
       aria-label={label}
       initialFocusRef={inputRef}
       overlayClassName="items-start pt-[max(12vh,3rem)]"
@@ -274,6 +274,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           )}
         </Scrollbar>
       </div>
-    </Modal>
+    </Dialog>
   );
 };

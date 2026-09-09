@@ -36,7 +36,7 @@ describe('public API', () => {
     expect(Lumen.zhCN.locale).toBe('zh-CN');
     expect(Lumen.enUS.locale).toBe('en-US');
     expect(Lumen.Select).toBeTypeOf('function');
-    expect(Lumen.Modal).toBeTypeOf('function');
+    expect(Lumen.Dialog).toBeTypeOf('function');
     expect(Lumen.NumberInput).toBeTypeOf('object');
     expect(Lumen.OtpInput).toBeTypeOf('object');
     expect(Lumen.SearchBar).toBeTypeOf('object');
