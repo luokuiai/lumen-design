@@ -947,20 +947,20 @@ body {
   gap: 8px;
 }
 
-.modal-panel,
+.dialog-panel,
 .drawer-panel {
   border: 1px solid var(--lumen-color-border);
   background: var(--lumen-color-surface);
   box-shadow: var(--lumen-shadow-modal);
 }
 
-.modal-panel {
+.dialog-panel {
   width: min(480px, calc(100vw - 24px));
   border-radius: 12px;
   padding: 22px;
 }
 
-.modal-panel h2,
+.dialog-panel h2,
 .drawer-panel h2 {
   margin: 0;
   color: var(--lumen-color-text-strong);
@@ -969,14 +969,14 @@ body {
   line-height: 24px;
 }
 
-.modal-panel p {
+.dialog-panel p {
   margin: 10px 0 0;
   color: var(--lumen-color-text-muted);
   font-size: 14px;
   line-height: 24px;
 }
 
-.modal-actions {
+.dialog-actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;

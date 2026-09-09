@@ -41,7 +41,7 @@ export * from './components/form/Form';
 export * from './components/Input';
 export * from './components/List';
 export * from './components/LumenProvider';
-export * from './components/Modal';
+export * from './components/Dialog';
 export * from './components/number-input/NumberInput';
 export * from './components/otp-input/OtpInput';
 export * from './components/search-bar/SearchBar';

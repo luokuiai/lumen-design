@@ -44,7 +44,7 @@ describe('responsive layouts', () => {
     );
   });
 
-  it('uses touch wheels in a modal on a narrow mobile viewport', async () => {
+  it('uses touch wheels in a dialog on a narrow mobile viewport', async () => {
     Object.defineProperty(window, 'innerWidth', {
       configurable: true,
       value: 200,
@@ -55,10 +55,10 @@ describe('responsive layouts', () => {
     await user.click(screen.getByRole('button', { name: '请选择时间' }));
 
     const panel = document.querySelector<HTMLElement>('[data-time-picker-panel]');
-    const modal = document.querySelector<HTMLElement>('[data-modal="time-picker-panel"]');
-    expect(document.querySelector('[data-modal-overlay="time-picker-panel"]')).toBeInTheDocument();
-    expect(modal).toHaveAttribute('role', 'dialog');
-    expect(modal).toHaveClass('max-w-[344px]');
+    const dialog = document.querySelector<HTMLElement>('[data-dialog="time-picker-panel"]');
+    expect(document.querySelector('[data-dialog-overlay="time-picker-panel"]')).toBeInTheDocument();
+    expect(dialog).toHaveAttribute('role', 'dialog');
+    expect(dialog).toHaveClass('max-w-[344px]');
     expect(panel).toHaveClass('contents');
     expect(
       screen.getByRole('listbox', { name: '时' }).querySelector('[aria-selected="true"]'),
@@ -66,7 +66,7 @@ describe('responsive layouts', () => {
     expect(document.querySelector('[data-time-selector-column]')).not.toBeInTheDocument();
   });
 
-  it('uses the shared modal treatment for the mobile date picker', async () => {
+  it('uses the shared dialog treatment for the mobile date picker', async () => {
     Object.defineProperty(window, 'innerWidth', {
       configurable: true,
       value: 300,
@@ -77,14 +77,14 @@ describe('responsive layouts', () => {
     await user.click(screen.getByRole('button', { name: '请选择日期' }));
 
     const panel = document.querySelector<HTMLElement>('[data-date-picker-portal]');
-    const modal = document.querySelector<HTMLElement>('[data-modal="date-picker-panel"]');
-    expect(document.querySelector('[data-modal-overlay="date-picker-panel"]')).toBeInTheDocument();
-    expect(modal).toHaveAttribute('role', 'dialog');
-    expect(modal).toHaveClass('max-w-[320px]');
+    const dialog = document.querySelector<HTMLElement>('[data-dialog="date-picker-panel"]');
+    expect(document.querySelector('[data-dialog-overlay="date-picker-panel"]')).toBeInTheDocument();
+    expect(dialog).toHaveAttribute('role', 'dialog');
+    expect(dialog).toHaveClass('max-w-[320px]');
     expect(panel).toHaveClass('contents');
   });
 
-  it('uses a stepped modal date-time flow on mobile', async () => {
+  it('uses a stepped dialog date-time flow on mobile', async () => {
     Object.defineProperty(window, 'innerWidth', {
       configurable: true,
       value: 300,
@@ -101,10 +101,10 @@ describe('responsive layouts', () => {
     await user.click(screen.getByRole('button', { name: '请选择日期时间' }));
 
     const panel = document.querySelector<HTMLElement>('[data-date-time-picker-panel]');
-    const modal = document.querySelector<HTMLElement>('[data-modal="date-time-picker-panel"]');
-    expect(document.querySelector('[data-modal-overlay="date-time-picker-panel"]')).toBeInTheDocument();
-    expect(modal).toHaveAttribute('role', 'dialog');
-    expect(modal).toHaveClass('max-w-[360px]');
+    const dialog = document.querySelector<HTMLElement>('[data-dialog="date-time-picker-panel"]');
+    expect(document.querySelector('[data-dialog-overlay="date-time-picker-panel"]')).toBeInTheDocument();
+    expect(dialog).toHaveAttribute('role', 'dialog');
+    expect(dialog).toHaveClass('max-w-[360px]');
     expect(panel).toHaveClass('contents');
     expect(document.querySelector('[data-date-time-picker-time-column]')).not.toBeInTheDocument();
 
@@ -124,12 +124,12 @@ describe('responsive layouts', () => {
     });
 
     const toast = await screen.findByRole('status');
-    expect(toast).toHaveClass('w-full', 'min-w-0');
+    expect(toast).toHaveClass('w-full', 'min-w-0', 'max-w-full');
     expect(toast.parentElement).toHaveClass(
       'right-3',
       'w-[calc(100vw-1.5rem)]',
-      'pad:w-[328px]',
-      'l:w-[344px]',
+      'pad:w-[304px]',
+      'l:w-[320px]',
     );
   });
 });

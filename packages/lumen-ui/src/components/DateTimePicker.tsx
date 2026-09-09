@@ -11,7 +11,7 @@ import { Button } from './Button';
 import { cn } from './classNames';
 import { radiusTokens } from './designTokens';
 import { MobileTimeWheel } from './mobileTimeWheel';
-import { MobilePickerModal } from './mobilePickerModal';
+import { MobilePickerDialog } from './mobilePickerDialog';
 import { TimeSelector } from './TimeSelector';
 import { useMobilePicker } from './useMobilePicker';
 import { useOverlayPortalScope } from './useOverlayBehavior';
@@ -508,12 +508,12 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
 
       {open
         ? createPortal(
-            <MobilePickerModal
+            <MobilePickerDialog
               mobile={isMobile}
               open={open}
               onRequestClose={closePanel}
               label={label}
-              modalId="date-time-picker-panel"
+              dialogId="date-time-picker-panel"
               maxWidth="max-w-[360px]"
             >
             <div
@@ -729,7 +729,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                 </div>
               </div>
             </div>
-            </MobilePickerModal>,
+            </MobilePickerDialog>,
             document.body,
           )
         : null}
