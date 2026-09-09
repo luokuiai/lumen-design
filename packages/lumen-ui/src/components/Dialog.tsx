@@ -157,8 +157,8 @@ export const Dialog: React.FC<DialogProps> = ({
           data-lumen-motion
           className={`max-h-[calc(100dvh-1.5rem)] ${
             isClosing
-              ? 'animate-[lumen-modal-out_150ms_ease-in_forwards]'
-              : 'animate-[lumen-modal-in_200ms_ease-out]'
+              ? 'animate-[lumen-dialog-out_150ms_ease-in_forwards]'
+              : 'animate-[lumen-dialog-in_200ms_ease-out]'
           } ${panelClassName}`.trim()}
           onClick={(event) => event.stopPropagation()}
         >

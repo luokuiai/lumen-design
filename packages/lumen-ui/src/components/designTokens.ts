@@ -6,7 +6,7 @@ export const radiusTokens = {
   button: 'rounded-[var(--lumen-radius-control)]',
   icon: 'rounded-[var(--lumen-radius-icon)]',
   card: 'rounded-[var(--lumen-radius-card)]',
-  modal: 'rounded-[var(--lumen-radius-modal)]',
+  dialog: 'rounded-[var(--lumen-radius-dialog)]',
   pill: 'rounded-[var(--lumen-radius-pill)]',
 } as const;
 
@@ -17,11 +17,11 @@ export const radiusNormalizationMap = {
   'rounded-[11px]': radiusTokens.icon,
   'rounded-[14px]': radiusTokens.card,
   'rounded-[16px]': radiusTokens.card,
-  'rounded-[20px]': radiusTokens.modal,
-  'rounded-[22px]': radiusTokens.modal,
-  'rounded-[24px]': radiusTokens.modal,
+  'rounded-[20px]': radiusTokens.dialog,
+  'rounded-[22px]': radiusTokens.dialog,
+  'rounded-[24px]': radiusTokens.dialog,
   'rounded-xl': radiusTokens.card,
-  'rounded-2xl': radiusTokens.modal,
+  'rounded-2xl': radiusTokens.dialog,
 } as const;
 
 export const buttonSizeTokens = {
@@ -229,11 +229,11 @@ export const selectionPickerClassNames = {
   summaryHint: 'text-[12px] text-[var(--lumen-color-text-placeholder)]',
   neutralBadge: 'border-[var(--lumen-color-info-border)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-primary-hover)]',
   infoBadge: 'border-[var(--lumen-color-info-border)] bg-[var(--lumen-color-primary-soft-hover)] text-[var(--lumen-color-primary-hover)]',
-  modalPanel:
+  dialogPanel:
     'flex max-h-[calc(100dvh-1.5rem)] w-full max-w-[980px] flex-col overflow-hidden rounded-[12px] bg-[var(--lumen-color-surface)] shadow-[0_18px_60px_var(--lumen-color-shadow)] pad:max-h-[86vh] pad:rounded-[16px] l:rounded-[18px]',
-  modalHeader: 'border-[var(--lumen-color-border)]',
-  modalTitle: 'text-[16px] font-semibold text-[var(--lumen-color-text-strong)]',
-  modalDescription: 'text-[12px] text-[var(--lumen-color-text-muted)]',
+  dialogHeader: 'border-[var(--lumen-color-border)]',
+  dialogTitle: 'text-[16px] font-semibold text-[var(--lumen-color-text-strong)]',
+  dialogDescription: 'text-[12px] text-[var(--lumen-color-text-muted)]',
   navigation:
     'border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]',
   navigationTitle: 'text-[12px] font-semibold text-[var(--lumen-color-text-muted)]',
