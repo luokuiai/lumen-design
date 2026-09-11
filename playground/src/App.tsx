@@ -3820,7 +3820,7 @@ export default function App() {
                     multiple
                     maxFiles={3}
                     accept=".png,.jpg,.pdf,.md,.svg"
-                    hint="内置 FileList：类型图标、大小、长名称与 badge 省略提示，以及右侧操作。最多 3 个文件。"
+                    hint="内置 FileList：移动端将右侧操作收进更多菜单。最多 3 个文件。"
                     onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
                   />
                 </div>
@@ -3848,7 +3848,7 @@ export default function App() {
                     multiple
                     maxFiles={3}
                     accept=".png,.jpg,.pdf,.md,.svg"
-                    hint="名称完整换行，隐藏文件大小。最多 3 个文件。"
+                    hint="名称完整换行，隐藏文件大小；移动端操作收进更多菜单。最多 3 个文件。"
                     onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
                   />
                 </div>

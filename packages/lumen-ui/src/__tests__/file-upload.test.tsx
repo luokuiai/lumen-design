@@ -26,6 +26,7 @@ describe('FileUpload', () => {
     expect(screen.getByRole('button', { name: '文件上传' })).toHaveClass(
       'min-h-11',
       'px-3',
+      'py-2',
     );
   });
 });
