@@ -212,7 +212,7 @@ body {
   overflow-y: hidden;
   border-right: 1px solid var(--lumen-color-border);
   background: var(--lumen-color-surface);
-  box-shadow: var(--lumen-shadow-modal);
+  box-shadow: var(--lumen-shadow-dialog);
 }
 
 .mobile-nav-header {
@@ -951,7 +951,7 @@ body {
 .drawer-panel {
   border: 1px solid var(--lumen-color-border);
   background: var(--lumen-color-surface);
-  box-shadow: var(--lumen-shadow-modal);
+  box-shadow: var(--lumen-shadow-dialog);
 }
 
 .dialog-panel {

@@ -123,6 +123,8 @@ export interface LumenLocale {
     dragOrClick: string;
     dragOrChoose: string;
     progress: string;
+    fileActions: (name: string) => string;
+    removeAction: string;
     removeFile: (name: string) => string;
   };
   dataTable: {
@@ -216,7 +218,7 @@ export const zhCN: LumenLocale = {
   fileUpload: {
     inputLabel: '文件上传', unsupportedType: '文件格式不受支持', maxSize: (size) => `文件大小不能超过 ${size}`, maxFiles: (count) => `最多选择 ${count} 个文件`,
     uploading: '正在上传文件', dropToUpload: '释放文件以上传', dragOrClick: '拖拽文件到此处，或点击上传', dragOrChoose: '拖拽文件到此处，或点击选择文件',
-    progress: '上传进度', removeFile: (name) => `移除 ${name}`,
+    progress: '上传进度', fileActions: (name) => `${name} 的更多操作`, removeAction: '移除', removeFile: (name) => `移除 ${name}`,
   },
   dataTable: { emptyText: '暂无数据', selectAll: '选择当前页全部行', selectRow: (index) => `选择第 ${index} 行` },
   timeline: { emptyText: '暂无记录', details: '详情', before: '变更前', after: '变更后', remaining: (count) => `还有 ${count} 条记录` },
@@ -279,7 +281,7 @@ export const enUS: LumenLocale = {
   fileUpload: {
     inputLabel: 'Upload files', unsupportedType: 'Unsupported file type', maxSize: (size) => `File size must not exceed ${size}`, maxFiles: (count) => `Select up to ${count} files`,
     uploading: 'Uploading files', dropToUpload: 'Drop files to upload', dragOrClick: 'Drag files here or click to upload', dragOrChoose: 'Drag files here or click to choose files',
-    progress: 'Upload progress', removeFile: (name) => `Remove ${name}`,
+    progress: 'Upload progress', fileActions: (name) => `More actions for ${name}`, removeAction: 'Remove', removeFile: (name) => `Remove ${name}`,
   },
   dataTable: { emptyText: 'No data', selectAll: 'Select all rows on this page', selectRow: (index) => `Select row ${index}` },
   timeline: { emptyText: 'No records', details: 'Details', before: 'Before', after: 'After', remaining: (count) => `${count} more records` },

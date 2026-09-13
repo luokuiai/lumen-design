@@ -80,7 +80,7 @@ describe('DropdownMenu', () => {
     expect(menu).toHaveStyle({ left: '100px', top: '78px' });
     expect(menu).toHaveAttribute('data-align', 'left');
     expect(menu).toHaveFocus();
-    expect(menu.firstElementChild).toHaveClass('min-w-40', 'max-w-[320px]');
+    expect(menu.firstElementChild).toHaveClass('min-w-32', 'max-w-[320px]');
     expect(screen.getByRole('menuitem', { name: 'First' })).not.toHaveFocus();
   });
 

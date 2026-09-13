@@ -187,7 +187,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         ref={panelRef}
         data-ui="command-palette"
         className={cn(
-          'isolate w-full overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] shadow-[var(--lumen-shadow-modal)]',
+          'isolate w-full overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] shadow-[var(--lumen-shadow-dialog)]',
           className,
         )}
         onKeyDown={(event) => handleKeyDown(event as React.KeyboardEvent<HTMLInputElement>)}

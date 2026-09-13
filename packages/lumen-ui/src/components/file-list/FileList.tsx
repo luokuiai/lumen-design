@@ -1,6 +1,7 @@
 import React from 'react';
-import { X } from 'lucide-react';
+import { EllipsisVertical, X } from 'lucide-react';
 import { Badge, type BadgeVariant } from '../Badge';
+import { DropdownMenu, DropdownMenuItem } from '../DropdownMenu';
 import { FileTypeIcon } from '../file-type-icon/FileTypeIcon';
 import { cn } from '../classNames';
 import { radiusTokens } from '../designTokens';
@@ -37,11 +38,62 @@ export interface FileListItemProps extends React.HTMLAttributes<HTMLLIElement> {
   onRemove?: (file: FileListFile) => void;
 }
 
+interface FileActionElementProps {
+  'aria-label'?: string;
+  children?: React.ReactNode;
+  disabled?: boolean;
+  icon?: React.ReactNode;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+  title?: string;
+}
+
+const renderActionMenuItems = (
+  actions: React.ReactNode,
+  close: () => void,
+  parentDisabled: boolean,
+): React.ReactNode => React.Children.map(actions, (action) => {
+  if (!React.isValidElement(action)) return null;
+
+  const actionProps = action.props as FileActionElementProps;
+  if (action.type === React.Fragment) {
+    return renderActionMenuItems(actionProps.children, close, parentDisabled);
+  }
+
+  const label = actionProps.title ?? actionProps.children ?? actionProps['aria-label'];
+  if (label == null || !actionProps.onClick) return null;
+
+  return (
+    <DropdownMenuItem
+      key={action.key}
+      disabled={parentDisabled || actionProps.disabled}
+      onClick={(event) => {
+        actionProps.onClick?.(event);
+        if (!event.defaultPrevented) close();
+      }}
+    >
+      {actionProps.icon}
+      {label}
+    </DropdownMenuItem>
+  );
+});
+
 export function FileListItem({
   file, showSize = true, wrapName = false, badgeMaxWidth = 96,
   disabled = false, onRemove, actions, className, style, ...props
 }: FileListItemProps) {
   const locale = useLumenLocale();
+  const renderRemoveButton = () => onRemove ? (
+    <button
+      type="button"
+      disabled={disabled}
+      aria-label={locale.fileUpload.removeFile(file.name)}
+      onClick={() => onRemove(file)}
+      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[var(--lumen-color-text-placeholder)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-danger)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-45"
+    >
+      <X size={14} aria-hidden="true" />
+    </button>
+  ) : null;
+
   return (
     <li
       {...props}
@@ -70,20 +122,51 @@ export function FileListItem({
         </Badge>
       ) : null}
       {actions != null || onRemove ? (
-        <div className="flex shrink-0 items-center justify-end gap-1">
-          {actions}
-          {onRemove ? (
-            <button
-              type="button"
-              disabled={disabled}
-              aria-label={locale.fileUpload.removeFile(file.name)}
-              onClick={() => onRemove(file)}
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[var(--lumen-color-text-placeholder)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-danger)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-45"
+        <>
+          <div className={cn('shrink-0 items-center justify-end gap-1', actions != null ? 'flex mobile:hidden' : 'flex')}>
+            {actions}
+            {renderRemoveButton()}
+          </div>
+          {actions != null ? (
+            <DropdownMenu
+              align="right"
+              menuMode
+              className="hidden shrink-0 mobile:block"
+              trigger={({ open, menuId, toggle }) => (
+                <button
+                  type="button"
+                  aria-label={locale.fileUpload.fileActions(file.name)}
+                  aria-controls={open ? menuId : undefined}
+                  aria-expanded={open}
+                  disabled={disabled}
+                  onClick={toggle}
+                  className="flex h-7 w-7 items-center justify-center rounded-full text-[var(--lumen-color-text-placeholder)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-45"
+                >
+                  <EllipsisVertical size={16} aria-hidden="true" />
+                </button>
+              )}
             >
-              <X size={14} aria-hidden="true" />
-            </button>
+              {({ close }) => (
+                <>
+                  {renderActionMenuItems(actions, close, disabled)}
+                  {onRemove ? (
+                    <DropdownMenuItem
+                      disabled={disabled}
+                      className="text-[var(--lumen-color-danger)] hover:text-[var(--lumen-color-danger)] focus-visible:text-[var(--lumen-color-danger)]"
+                      onClick={() => {
+                        onRemove(file);
+                        close();
+                      }}
+                    >
+                      <X size={14} aria-hidden="true" />
+                      {locale.fileUpload.removeAction}
+                    </DropdownMenuItem>
+                  ) : null}
+                </>
+              )}
+            </DropdownMenu>
           ) : null}
-        </div>
+        </>
       ) : null}
     </li>
   );

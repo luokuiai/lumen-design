@@ -85,7 +85,27 @@ describe('FileList', () => {
     )} />);
     fireEvent.click(screen.getByRole('button', { name: 'Preview budget.xlsx' }));
     expect(preview).toHaveBeenCalledWith('sheet');
-    expect(screen.getAllByRole('button')).toHaveLength(3);
+    expect(screen.getAllByRole('button')).toHaveLength(6);
+  });
+
+  it('collapses custom actions into a mobile overflow menu', () => {
+    const preview = vi.fn();
+    const remove = vi.fn();
+    render(<FileList items={items.slice(0, 1)} onRemove={remove} renderActions={(file) => (
+      <button title="Preview" onClick={() => preview(file.id)}>Preview {file.name}</button>
+    )} />);
+
+    const desktopActions = screen.getByText('Preview report.pdf').parentElement;
+    expect(desktopActions).toHaveClass('mobile:hidden');
+
+    const trigger = screen.getByRole('button', { name: 'report.pdf 的更多操作' });
+    expect(trigger.parentElement).toHaveClass('mobile:block');
+    fireEvent.click(trigger);
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: '移除' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Preview' }));
+    expect(preview).toHaveBeenCalledWith('pdf');
+    expect(screen.getByTestId('dropdown-menu')).toHaveAttribute('data-state', 'closing');
   });
 
   it('does not show a name tooltip in wrapping mode', () => {
@@ -116,7 +136,7 @@ describe('FileUpload file list integration', () => {
     fireEvent.click(screen.getByRole('button', { name: '移除 report.pdf' }));
     expect(onChange).toHaveBeenCalledWith([files[1]]);
     rerender(<FileUpload value={files} onChange={onChange} uploading />);
-    expect(screen.getByRole('button', { name: /report.pdf/ })).toBeDisabled();
+    expect(screen.getByRole('button', { name: '移除 report.pdf' })).toBeDisabled();
     rerender(<FileUpload value={files} onChange={onChange} showFileList={false} />);
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });

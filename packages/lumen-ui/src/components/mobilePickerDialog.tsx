@@ -33,7 +33,7 @@ export const MobilePickerDialog: React.FC<MobilePickerDialogProps> = ({
       overlayClassName="backdrop-blur-none"
       panelClassName={cn(
         'w-full overflow-hidden border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]',
-        radiusTokens.modal,
+        radiusTokens.dialog,
         maxWidth,
       )}
     >

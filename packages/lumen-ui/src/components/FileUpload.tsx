@@ -172,7 +172,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           className={cn(
             'relative w-full min-w-0 border-dashed text-[var(--lumen-color-text-muted)] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-60',
             compact
-              ? 'min-h-11 rounded-[7px] border px-3'
+              ? 'min-h-11 rounded-[7px] border px-3 py-2'
               : 'rounded-[var(--lumen-radius-card)] border-2 px-5 py-3',
             isDragOver
               ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]'
@@ -180,7 +180,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           )}
         >
           {compact ? (
-            <span className="flex min-h-11 items-center justify-center gap-2 text-[12px]">
+            <span className="flex items-center justify-center gap-2 text-[12px]">
               {uploading ? (
                 <LoaderCircle size={16} className="shrink-0 animate-spin" />
               ) : (
