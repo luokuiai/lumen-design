@@ -3021,8 +3021,32 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "collapsed",
       "type": "boolean",
       "defaultValue": "false",
-      "description": "设置 collapsed。",
+      "description": "收起为图标导航；点击分组前往首个可用子项。",
       "descriptionEn": "Configures collapsed.",
+      "required": false
+    },
+    {
+      "name": "expandedValues",
+      "type": "T[]",
+      "defaultValue": "undefined",
+      "description": "受控的已展开分组。",
+      "descriptionEn": "Configures expanded values.",
+      "required": false
+    },
+    {
+      "name": "defaultExpandedValues",
+      "type": "T[]",
+      "defaultValue": "[]",
+      "description": "非受控模式下默认展开的分组。",
+      "descriptionEn": "Sets the initial expanded values.",
+      "required": false
+    },
+    {
+      "name": "onExpandedValuesChange",
+      "type": "(values: T[]) => void",
+      "defaultValue": "undefined",
+      "description": "分组展开状态变化时触发。",
+      "descriptionEn": "Called when the expanded values change action occurs.",
       "required": false
     },
     {

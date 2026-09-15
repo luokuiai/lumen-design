@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { Tabs } from '../components/Tabs';
 
@@ -9,6 +10,26 @@ const options = [
 ];
 
 describe('Tabs', () => {
+  it.each(['default', 'pill', 'card'] as const)('keeps keyboard focus separate from selection in %s tabs', async (variant) => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(<Tabs value="overview" options={options} variant={variant} onChange={onChange} />);
+
+    await user.tab();
+    expect(screen.getByRole('tab', { name: 'Overview' })).toHaveFocus();
+    await user.tab();
+    const activity = screen.getByRole('tab', { name: 'Activity' });
+    expect(activity).toHaveFocus();
+    expect(activity).toHaveAttribute('aria-selected', 'false');
+    expect(onChange).not.toHaveBeenCalled();
+
+    await user.keyboard('{Enter}');
+    expect(onChange).toHaveBeenLastCalledWith('activity');
+    onChange.mockClear();
+    await user.keyboard(' ');
+    expect(onChange).toHaveBeenCalledExactlyOnceWith('activity');
+  });
+
   it('uses the line treatment by default', () => {
     render(
       <Tabs value="overview" options={options} onChange={() => undefined} />,

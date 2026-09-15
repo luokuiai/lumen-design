@@ -1,5 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { TabView } from '../components/TabView';
 
@@ -21,6 +22,41 @@ const touchPointer = (type: string, x: number, y: number) => {
 };
 
 describe('TabView', () => {
+  it.each([false, true])('skips the panel itself in both Tab directions (contains controls: %s)', async (hasControls) => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <button type="button">Before view</button>
+        <TabView
+          value="overview"
+          items={[{
+            value: 'overview',
+            content: hasControls
+              ? <button type="button">Panel action</button>
+              : <p>Read-only panel content</p>,
+          }]}
+          onChange={() => undefined}
+        />
+        <button type="button">After view</button>
+      </>,
+    );
+
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'Before view' })).toHaveFocus();
+    if (hasControls) {
+      await user.tab();
+      expect(screen.getByRole('button', { name: 'Panel action' })).toHaveFocus();
+    }
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'After view' })).toHaveFocus();
+    if (hasControls) {
+      await user.tab({ shift: true });
+      expect(screen.getByRole('button', { name: 'Panel action' })).toHaveFocus();
+    }
+    await user.tab({ shift: true });
+    expect(screen.getByRole('button', { name: 'Before view' })).toHaveFocus();
+  });
+
   it('renders controlled panels with inactive content removed from interaction', () => {
     const { container } = render(
       <TabView

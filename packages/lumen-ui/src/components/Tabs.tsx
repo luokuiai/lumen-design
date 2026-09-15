@@ -101,6 +101,8 @@ export const Tabs = <T extends string>({
                 className={cn(
                   styles.base,
                   active ? styles.active : styles.inactive,
+                  'focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-[var(--lumen-color-primary)] focus-visible:-outline-offset-4 focus-visible:bg-[var(--lumen-color-primary-soft)]',
+                  variant === 'default' ? 'rounded-[8px]' : '',
                   option.disabled ? 'cursor-not-allowed opacity-45 hover:translate-y-0' : '',
                   itemClassName,
                 )}
