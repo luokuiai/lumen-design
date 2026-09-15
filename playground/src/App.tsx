@@ -3072,7 +3072,7 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="Tabs" wide>
-                  <div className="mx-auto w-full max-w-[480px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
+                  <div className="mx-auto w-full max-w-[480px] l:max-w-[720px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
                     <Tabs
                       value={tab}
                       onChange={setTab}

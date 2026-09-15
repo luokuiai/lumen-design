@@ -27,6 +27,8 @@
   --clarity-picker-surface: rgba(255, 255, 255, 0.87);
   --clarity-toast-surface: rgba(255, 255, 255, 0.78);
   --clarity-toast-border: rgba(228, 234, 241, 0.58);
+  --clarity-table-header-background: #f9fafc;
+  --clarity-table-header-text: var(--lumen-color-text-muted);
   --lumen-color-overlay: rgba(0, 0, 0, 0.35);
   --lumen-color-border: #e4eaf1;
   --lumen-color-divider: #e7ecf2;
@@ -99,6 +101,8 @@
   --clarity-picker-surface: rgba(24, 26, 31, 0.88);
   --clarity-toast-surface: rgba(24, 26, 31, 0.82);
   --clarity-toast-border: rgba(69, 75, 85, 0.62);
+  --clarity-table-header-background: var(--lumen-color-surface-subtle);
+  --clarity-table-header-text: var(--lumen-color-text-secondary);
   --lumen-color-overlay: rgba(0, 0, 0, 0.68);
   --lumen-color-border: #343840;
   --lumen-color-divider: #292c32;
@@ -152,6 +156,16 @@
   --lumen-color-primary-soft-hover: rgba(139, 92, 246, 0.24);
   --lumen-color-on-primary: #171020;
   --lumen-color-focus-ring: rgba(167, 139, 250, 0.32);
+}
+
+:where(:root:not([data-lumen-theme])) [data-ui='data-table'] thead,
+[data-lumen-theme='clarity'] [data-ui='data-table'] thead {
+  background: var(--clarity-table-header-background);
+}
+
+:where(:root:not([data-lumen-theme])) [data-ui='data-table'] thead th,
+[data-lumen-theme='clarity'] [data-ui='data-table'] thead th {
+  color: var(--clarity-table-header-text);
 }
 
 :where(:root:not([data-lumen-theme])) [data-ui='dropdown-surface'],

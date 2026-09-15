@@ -112,7 +112,7 @@ export const tabVariantClassNames = {
   default: {
     container: 'bg-[var(--lumen-color-surface)] px-1',
     base:
-      'group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 text-[14px] font-normal transition-colors duration-200 after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out',
+      'group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 l:py-3.5 text-[14px] font-normal transition-colors duration-200 after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out',
     active:
       'text-[var(--lumen-color-primary)] after:scale-x-100 after:opacity-100',
     inactive:
@@ -129,7 +129,7 @@ export const tabVariantClassNames = {
     container:
       'rounded-[16px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-subtle)] px-5 py-4 shadow-[0_6px_18px_var(--lumen-color-shadow)]',
     base:
-      'group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[14px] transition-all',
+      'group inline-flex items-center gap-2 rounded-full border px-4 py-2 l:py-2.5 text-[14px] transition-all',
     active:
       'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]',
     inactive:
@@ -146,7 +146,7 @@ export const tabVariantClassNames = {
     container:
       'rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-4 py-4 shadow-sm',
     base:
-      'group inline-flex min-h-[46px] items-center gap-2.5 rounded-[8px] border px-4 py-2 text-[14px] font-normal tracking-[0.01em] transition-all duration-200',
+      'group inline-flex min-h-[46px] items-center gap-2.5 rounded-[8px] border px-4 py-2 l:py-2.5 text-[14px] font-normal tracking-[0.01em] transition-all duration-200',
     active:
       'border-[var(--lumen-color-info-border)] bg-[linear-gradient(180deg,var(--lumen-color-info-soft)_0%,var(--lumen-color-surface)_100%)] text-[var(--lumen-color-primary-active)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]',
     inactive:
