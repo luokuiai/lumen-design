@@ -3326,7 +3326,11 @@ export default function App() {
                       defaultSelectedKeys={['app']}
                       nodes={[
                         { key: 'src', label: 'src', icon: <Folder size={16} />, children: [
-                          { key: 'components', label: 'components', icon: <Folder size={16} />, children: [{ key: 'button', label: 'Button.tsx' }] },
+                          { key: 'components', label: 'components', icon: <Folder size={16} />, children: [
+                            { key: 'button', label: 'Button.tsx' },
+                            { key: 'tabs', label: 'Tabs.tsx' },
+                            { key: 'tree', label: 'Tree.tsx' },
+                          ] },
                           { key: 'app', label: 'App.tsx' },
                         ] },
                         { key: 'readme', label: 'README.md' },
