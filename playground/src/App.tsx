@@ -3072,26 +3072,26 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="Tabs" wide>
-                  <div className="mx-auto w-full max-w-[480px] l:max-w-[720px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
+                  <div className="w-full overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
                     <Tabs
                       value={tab}
                       onChange={setTab}
-                      idPrefix="mobile-tab-view"
+                      idPrefix="workspace-tabs"
                       options={[
-                        { value: 'overview', label: '总览', count: 12, icon: Bell },
-                        { value: 'usage', label: '使用', count: 8, icon: Check },
-                        { value: 'tokens', label: 'Tokens', count: 32, icon: Settings },
+                        { value: 'overview', label: '运营总览', count: 12, icon: Bell },
+                        { value: 'usage', label: '使用情况', count: 8, icon: Check },
+                        { value: 'tokens', label: '设计令牌', count: 32, icon: Settings },
                       ]}
-                      className="px-4 pt-2"
+                      className="px-4 pt-2 l:px-6"
                       aside={<Button size="sm" variant="secondary">导出</Button>}
                     />
                     <TabView
                       value={tab}
                       onChange={setTab}
-                      idPrefix="mobile-tab-view"
+                      idPrefix="workspace-tabs"
                       swipeable
                       className="border-t border-[var(--lumen-color-divider)]"
-                      panelClassName="min-h-52 p-5"
+                      panelClassName="min-h-52 p-5 l:min-h-72 l:p-6"
                       items={[
                         {
                           value: 'overview',
@@ -3099,8 +3099,21 @@ export default function App() {
                             <div>
                               <Typography variant="h3">运营总览</Typography>
                               <Typography variant="body" color="muted" className="mt-2">
-                                在移动端向左滑动，直接切换到下一个可用视图。
+                                查看本月项目运行情况与团队使用概况。
                               </Typography>
+                              <div className="mt-6 grid grid-cols-1 gap-4 l:grid-cols-3">
+                                {[
+                                  { label: '活跃项目', value: '12', detail: '本月新增 2 个项目' },
+                                  { label: '团队成员', value: '48', detail: '覆盖 6 个业务团队' },
+                                  { label: '任务完成率', value: '98.6%', detail: '较上月提升 1.2%' },
+                                ].map((metric) => (
+                                  <div key={metric.label} className="rounded-[8px] border border-[var(--lumen-color-border)] p-4">
+                                    <Typography variant="body" color="muted">{metric.label}</Typography>
+                                    <Typography variant="h2" className="mt-2">{metric.value}</Typography>
+                                    <Typography variant="body" color="muted" className="mt-2">{metric.detail}</Typography>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           ),
                         },
@@ -3110,7 +3123,7 @@ export default function App() {
                             <div>
                               <Typography variant="h3">使用情况</Typography>
                               <Typography variant="body" color="muted" className="mt-2">
-                                继续左右滑动，可在相邻视图之间自然切换。
+                                汇总各项目的访问量与资源使用情况，可通过右侧导出按钮生成报告。
                               </Typography>
                             </div>
                           ),
@@ -3121,10 +3134,10 @@ export default function App() {
                             <div>
                               <Typography variant="h3">设计令牌</Typography>
                               <Typography variant="body" color="muted" className="mt-2">
-                                向右滑动可返回上一个视图。
+                                管理工作空间共用的颜色、间距与排版设置。
                               </Typography>
                               <Button className="mt-5" size="sm" variant="secondary">
-                                面板内按钮
+                                查看令牌配置
                               </Button>
                             </div>
                           ),
