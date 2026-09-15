@@ -54,105 +54,6 @@ body {
   padding-right: 10px;
 }
 
-.gallery-tree-nav {
-  display: grid;
-  gap: 3px;
-}
-
-.gallery-tree-group {
-  min-width: 0;
-}
-
-.gallery-tree-category,
-.gallery-tree-item {
-  width: 100%;
-  cursor: pointer;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--lumen-color-text-secondary);
-  font: inherit;
-  text-align: left;
-}
-
-.gallery-tree-category {
-  display: grid;
-  min-height: 44px;
-  grid-template-columns: 20px minmax(0, 1fr) 16px;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-}
-
-.gallery-tree-category:hover,
-.gallery-tree-category:focus-visible,
-.gallery-tree-item:hover,
-.gallery-tree-item:focus-visible {
-  background: var(--lumen-color-surface-muted);
-  color: var(--lumen-color-text-strong);
-  outline: none;
-}
-
-.gallery-tree-category[data-active] {
-  color: var(--lumen-color-primary);
-}
-
-.gallery-tree-chevron {
-  transition: transform 160ms ease;
-}
-
-.gallery-tree-group[data-expanded] .gallery-tree-chevron {
-  transform: rotate(180deg);
-}
-
-.gallery-tree-children {
-  position: relative;
-  display: grid;
-  max-height: 0;
-  gap: 2px;
-  margin: 0 0 0 28px;
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    max-height 220ms ease,
-    margin 220ms ease,
-    opacity 140ms ease;
-}
-
-.gallery-tree-group[data-expanded] .gallery-tree-children {
-  max-height: 1200px;
-  margin-block: 2px 6px;
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.gallery-tree-item {
-  position: relative;
-  min-height: 34px;
-  padding: 9px 10px;
-  font-size: 14px;
-}
-
-.gallery-tree-item[data-active] {
-  background: var(--lumen-color-primary-soft);
-  color: var(--lumen-color-primary);
-}
-
-.sidebar-collapsed .gallery-tree-nav {
-  justify-items: center;
-}
-
-.sidebar-collapsed .gallery-tree-category {
-  display: flex;
-  width: 44px;
-  justify-content: center;
-  padding: 0;
-}
-
-.sidebar-collapsed .gallery-tree-category[data-active] {
-  background: var(--lumen-color-primary-soft);
-}
 
 .brand {
   display: flex;
@@ -1002,17 +903,6 @@ body {
 
   .sidebar {
     display: none;
-  }
-
-  .mobile-navigation-content .gallery-tree-category,
-  .mobile-navigation-content .gallery-tree-item {
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  .mobile-navigation-content .gallery-tree-item {
-    min-height: 40px;
-    padding-block: 8px;
   }
 
   .mobile-menu-button {

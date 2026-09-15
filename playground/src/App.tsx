@@ -1414,90 +1414,6 @@ function DemoCard({
   );
 }
 
-function GalleryTreeNav({
-  categories,
-  activeCategoryId,
-  activeDemoId,
-  expandedCategoryIds,
-  collapsed = false,
-  ariaLabel,
-  getDemoLabel,
-  onToggleCategory,
-  onSelectDemo,
-}: {
-  categories: GalleryCategory[];
-  activeCategoryId: string;
-  activeDemoId: string;
-  expandedCategoryIds: string[];
-  collapsed?: boolean;
-  ariaLabel: string;
-  getDemoLabel: (title: string) => string;
-  onToggleCategory: (categoryId: string) => void;
-  onSelectDemo: (categoryId: string, demoId: string) => void;
-}) {
-  return (
-    <nav className="gallery-tree-nav" aria-label={ariaLabel}>
-      {categories.map((category) => {
-        const Icon = category.icon;
-        const expanded = expandedCategoryIds.includes(category.id);
-        const categoryButton = (
-          <button
-            type="button"
-            className="gallery-tree-category"
-            data-active={category.id === activeCategoryId || undefined}
-            aria-expanded={collapsed ? undefined : expanded}
-            aria-controls={collapsed ? undefined : `category-${category.id}`}
-            aria-label={collapsed ? category.title : undefined}
-            onClick={() => {
-              if (collapsed) {
-                onSelectDemo(category.id, category.demos[0]!.id);
-              } else {
-                onToggleCategory(category.id);
-              }
-            }}
-          >
-            <Icon aria-hidden="true" size={19} />
-            {collapsed ? null : (
-              <>
-                <span>{category.title}</span>
-                <ChevronDown className="gallery-tree-chevron" aria-hidden="true" size={16} />
-              </>
-            )}
-          </button>
-        );
-
-        return (
-          <div key={category.id} className="gallery-tree-group" data-expanded={expanded || undefined}>
-            {collapsed ? (
-              <Tooltip content={category.title} placement="right">{categoryButton}</Tooltip>
-            ) : categoryButton}
-            {!collapsed ? (
-              <div
-                id={`category-${category.id}`}
-                className="gallery-tree-children"
-                aria-hidden={!expanded}
-              >
-                {category.demos.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className="gallery-tree-item"
-                    data-active={item.id === activeDemoId || undefined}
-                    aria-current={item.id === activeDemoId ? 'page' : undefined}
-                    tabIndex={expanded ? undefined : -1}
-                    onClick={() => onSelectDemo(category.id, item.id)}
-                  >
-                    {getDemoLabel(item.title)}
-                  </button>
-                ))}
-              </div>
-            ) : null}
-          </div>
-        );
-      })}
-    </nav>
-  );
-}
 
 function GalleryBrand({ className = '', subtitle }: { className?: string; subtitle: string }) {
   return (
@@ -1683,10 +1599,21 @@ export default function App() {
     window.history.replaceState(null, '', `#${category.id}/${selectedDemo.id}`);
   };
 
-  const toggleCategory = (categoryId: string) => {
-    setExpandedCategoryIds((current) => current.includes(categoryId)
-      ? current.filter((item) => item !== categoryId)
-      : [...current, categoryId]);
+  const navigationSections = [{
+    items: filteredCategories.map((category) => ({
+      value: category.id,
+      label: category.title,
+      icon: category.icon,
+      children: category.demos.map((item) => ({
+        value: item.id,
+        label: demoLabels[item.title] ?? item.title,
+      })),
+    })),
+  }];
+
+  const selectNavigationItem = (demoId: string) => {
+    const category = galleryCategories.find((item) => item.demos.some((entry) => entry.id === demoId));
+    if (category) navigateToDemo(category.id, demoId);
   };
 
   const copyActiveDemoCode = async (title: string, code: string) => {
@@ -1785,16 +1712,14 @@ export default function App() {
       <aside className="sidebar">
         <GalleryBrand subtitle={messages.brandSubtitle} />
         <Scrollbar className="sidebar-navigation" size="sm" tabIndex={-1} aria-label={messages.navigationLabel}>
-          <GalleryTreeNav
-            categories={filteredCategories}
+          <SideNav
+            sections={navigationSections}
             ariaLabel={messages.navigationLabel}
-            getDemoLabel={(title) => demoLabels[title] ?? title}
-            activeCategoryId={activeSection}
-            activeDemoId={activeDemo.id}
-            expandedCategoryIds={expandedCategoryIds}
+            activeValue={activeDemo.id}
+            expandedValues={expandedCategoryIds}
+            onExpandedValuesChange={setExpandedCategoryIds}
             collapsed={sidebarCollapsed}
-            onToggleCategory={toggleCategory}
-            onSelectDemo={navigateToDemo}
+            onSelect={selectNavigationItem}
           />
         </Scrollbar>
       </aside>
@@ -1830,16 +1755,14 @@ export default function App() {
             mobileNavigationScrollTopRef.current = event.currentTarget.scrollTop;
           }}
         >
-          <GalleryTreeNav
-            categories={filteredCategories}
+          <SideNav
+            sections={navigationSections}
             ariaLabel={messages.navigationLabel}
-            getDemoLabel={(title) => demoLabels[title] ?? title}
-            activeCategoryId={activeSection}
-            activeDemoId={activeDemo.id}
-            expandedCategoryIds={expandedCategoryIds}
-            onToggleCategory={toggleCategory}
-            onSelectDemo={(categoryId, demoId) => {
-              navigateToDemo(categoryId, demoId);
+            activeValue={activeDemo.id}
+            expandedValues={expandedCategoryIds}
+            onExpandedValuesChange={setExpandedCategoryIds}
+            onSelect={(demoId) => {
+              selectNavigationItem(demoId);
               setMobileNavOpen(false);
             }}
           />
@@ -2974,16 +2897,25 @@ export default function App() {
             return (
               <GallerySection key={section.id} section={section}>
                 <DemoCard title="SideNav" wide>
-                  <div className="space-y-3">
+                  <div className="w-full max-w-[320px]">
                     <SideNav
                       activeValue={sideNavValue}
                       onSelect={setSideNavValue}
+                      defaultExpandedValues={['workspace']}
                       sections={[{ items: [
-                        { value: 'overview', label: '运营总览', icon: Star },
+                        {
+                          value: 'workspace',
+                          label: '工作空间',
+                          icon: Star,
+                          children: [
+                            { value: 'overview', label: '运营总览' },
+                            { value: 'reports', label: '分析报表' },
+                            { value: 'archived', label: '已归档', disabled: true },
+                          ],
+                        },
                         { value: 'settings', label: '系统设置', icon: Settings },
                       ] }]}
                     />
-                    <Typography variant="caption" color="muted">默认宽度 320px，窄容器内自动收缩。</Typography>
                   </div>
                 </DemoCard>
                 <DemoCard title="Breadcrumb" wide>

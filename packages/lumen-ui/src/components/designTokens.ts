@@ -182,20 +182,23 @@ export const tabBadgeClassNames = {
 } as const;
 
 export const sideNavClassNames = {
-  root: 'flex min-w-0 flex-col gap-2',
-  section: 'flex min-w-0 flex-col gap-1',
+  root: 'flex min-w-0 flex-col gap-[3px]',
+  section: 'flex min-w-0 flex-col gap-[3px]',
   sectionTitle:
     'flex h-7 items-center px-3 text-[13px] font-normal text-[var(--lumen-color-text-placeholder)]',
   collapsedDivider:
     'mx-auto my-1 h-px w-8 bg-[var(--lumen-color-border)]',
   item:
-    'group relative flex min-h-[44px] w-full items-center rounded-[8px] text-left text-[14px] font-normal transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
-  expandedItem: 'gap-3 px-3',
-  collapsedItem: 'justify-center px-0',
+    'relative flex w-full min-w-0 cursor-pointer items-center rounded-[6px] border-0 text-left text-[14px] font-normal leading-[21px] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-[var(--lumen-color-primary)] focus-visible:-outline-offset-2',
+  expandedItem: 'min-h-[44px] gap-2.5 px-3 py-[9px]',
+  collapsedItem: 'h-11 w-11 justify-center p-0',
+  childItem: 'min-h-[39px] gap-2.5 px-2.5 py-[9px]',
+  children: 'ml-7 mt-0.5 mb-1.5 flex min-w-0 flex-col gap-0.5',
+  activeGroup: 'bg-transparent text-[var(--lumen-color-primary)] hover:bg-[var(--lumen-color-surface-muted)]',
   activeItem:
-    'bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary-hover)] before:absolute before:left-0 before:top-2 before:h-7 before:w-[3px] before:rounded-r-full before:bg-[var(--lumen-color-primary)]',
+    'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]',
   inactiveItem:
-    'text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary-hover)]',
+    'bg-transparent text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-strong)]',
   disabledItem: 'cursor-not-allowed opacity-45',
 } as const;
 
