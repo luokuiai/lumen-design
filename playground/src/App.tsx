@@ -3139,6 +3139,9 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="Tabs" wide>
+                  <Typography variant="caption" color="muted">
+                    按 Tab 键查看标签的圆角焦点提示，按 Enter 或空格切换内容。
+                  </Typography>
                   <div className="mx-auto w-full max-w-[480px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
                     <Tabs
                       value={tab}
