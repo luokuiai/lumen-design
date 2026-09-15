@@ -6,6 +6,9 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   base: process.env.GITHUB_ACTIONS ? '/lumen-design/' : '/',
   plugins: [react(), tailwindcss()],
+  server: {
+    allowedHosts: true,
+  },
   resolve: {
     alias: {
       '@luokuiai/lumen-theme-clarity': resolve(__dirname, '../packages/lumen-theme-clarity/clarity.css'),
