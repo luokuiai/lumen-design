@@ -126,7 +126,7 @@ export function Tree({
         aria-disabled={isDisabled || undefined}
         tabIndex={!disabled && activeKey === node.key ? 0 : -1}
         ref={(element) => { if (element) items.current.set(node.key, element); else items.current.delete(node.key); }}
-        className="outline-none [&:focus-visible>div:first-child]:ring-2 [&:focus-visible>div:first-child]:ring-[var(--lumen-color-primary)]"
+        className="outline-none [&:focus-visible>div:first-child]:ring-2 [&:focus-visible>div:first-child]:ring-inset [&:focus-visible>div:first-child]:ring-[var(--lumen-color-primary)]"
         onFocus={(event) => { if (event.target === event.currentTarget) setFocusedKey(node.key); }}
         onKeyDown={(event) => {
           if (event.target !== event.currentTarget) return;
@@ -150,12 +150,22 @@ export function Tree({
             className="flex h-8 w-8 shrink-0 items-center justify-center"
             onClick={(event) => { if (!branch) return; event.stopPropagation(); focus(node.key); toggleExpanded(node); }}
           >
-            {branch && <ChevronRight size={16} className={cn('transition-transform motion-reduce:transition-none', expanded.has(node.key) && 'rotate-90')} />}
+            {branch && <ChevronRight size={16} className={cn('transition-transform duration-200 motion-reduce:transition-none', expanded.has(node.key) && 'rotate-90')} />}
           </span>
           {node.icon && <span aria-hidden="true" className="flex shrink-0 items-center">{node.icon}</span>}
           <span className="min-w-0 break-words py-1">{renderLabel?.(node) ?? node.label}</span>
         </div>
-        {branch && expanded.has(node.key) && <div role="group">{renderNodes(node.children!, level + 1)}</div>}
+        {branch && (
+          <div
+            role="group"
+            aria-hidden={!expanded.has(node.key) || undefined}
+            inert={!expanded.has(node.key)}
+            className="grid transition-[grid-template-rows,opacity] duration-200 ease-out motion-reduce:transition-none"
+            style={{ gridTemplateRows: expanded.has(node.key) ? '1fr' : '0fr', opacity: expanded.has(node.key) ? 1 : 0 }}
+          >
+            <div className="min-h-0 overflow-hidden">{renderNodes(node.children!, level + 1)}</div>
+          </div>
+        )}
       </div>
     );
   });

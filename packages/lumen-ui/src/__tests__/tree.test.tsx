@@ -14,6 +14,23 @@ const nodes: TreeNode[] = [
 const item = (name: string) => screen.getByRole('treeitem', { name });
 
 describe('Tree', () => {
+  it('preserves child content while collapsed branches leave accessible navigation', () => {
+    render(<Tree nodes={nodes} defaultExpandedKeys={['docs']} />);
+    const guide = item('Guide');
+    const group = guide.closest('[role="group"]')!;
+    fireEvent.click(item('Documents').querySelector('svg')!);
+    expect(guide).toBeInTheDocument();
+    expect(group).toHaveAttribute('inert');
+    expect(group).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.queryByRole('treeitem', { name: 'Guide' })).not.toBeInTheDocument();
+    fireEvent.keyDown(item('Documents'), { key: 'ArrowDown' });
+    expect(item('Archive')).toHaveFocus();
+    fireEvent.click(item('Documents').querySelector('svg')!);
+    expect(item('Guide')).toBe(guide);
+    expect(group).not.toHaveAttribute('inert');
+    expect(group).not.toHaveAttribute('aria-hidden');
+  });
+
   it('expands using the pointer without selecting and respects disabled branches', () => {
     const onSelectionChange = vi.fn();
     const { rerender } = render(<Tree nodes={nodes} onSelectionChange={onSelectionChange} />);
