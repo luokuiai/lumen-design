@@ -1784,7 +1784,7 @@ export default function App() {
     >
       <aside className="sidebar">
         <GalleryBrand subtitle={messages.brandSubtitle} />
-        <Scrollbar className="sidebar-navigation" size="sm" aria-label={messages.navigationLabel}>
+        <Scrollbar className="sidebar-navigation" size="sm" tabIndex={-1} aria-label={messages.navigationLabel}>
           <GalleryTreeNav
             categories={filteredCategories}
             ariaLabel={messages.navigationLabel}
@@ -1824,6 +1824,7 @@ export default function App() {
           }}
           className="mobile-navigation-content"
           size="sm"
+          tabIndex={-1}
           aria-label={messages.mobileNavigationLabel}
           onScroll={(event) => {
             mobileNavigationScrollTopRef.current = event.currentTarget.scrollTop;
@@ -3139,9 +3140,6 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="Tabs" wide>
-                  <Typography variant="caption" color="muted">
-                    按 Tab 键查看标签的圆角焦点提示，按 Enter 或空格切换内容。
-                  </Typography>
                   <div className="mx-auto w-full max-w-[480px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
                     <Tabs
                       value={tab}

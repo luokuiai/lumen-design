@@ -208,7 +208,7 @@ export const TabView = <T extends string>({
               inert={!active}
               data-active={active || undefined}
               data-value={item.value}
-              tabIndex={active ? 0 : -1}
+              tabIndex={-1}
               className={cn('w-full shrink-0', panelClassName, item.className)}
             >
               {item.content}
