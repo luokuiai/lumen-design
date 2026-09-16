@@ -82,23 +82,29 @@ export const Button: React.FC<ButtonProps> = ({
     >
       {icon && <span className="shrink-0">{icon}</span>}
       {!iconOnly && children}
-      {ripples.map((ripple) => (
-        <span
-          key={ripple.id}
-          aria-hidden="true"
-          data-button-ripple
-          className="lumen-button-ripple"
-          style={{
-            width: ripple.size,
-            height: ripple.size,
-            left: ripple.x,
-            top: ripple.y,
-          }}
-          onAnimationEnd={() => {
-            setRipples((current) => current.filter((item) => item.id !== ripple.id));
-          }}
-        />
-      ))}
+      <span
+        aria-hidden="true"
+        data-button-ripple-layer
+        className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]"
+      >
+        {ripples.map((ripple) => (
+          <span
+            key={ripple.id}
+            aria-hidden="true"
+            data-button-ripple
+            className="lumen-button-ripple"
+            style={{
+              width: ripple.size,
+              height: ripple.size,
+              left: ripple.x,
+              top: ripple.y,
+            }}
+            onAnimationEnd={() => {
+              setRipples((current) => current.filter((item) => item.id !== ripple.id));
+            }}
+          />
+        ))}
+      </span>
     </button>
   );
 };
