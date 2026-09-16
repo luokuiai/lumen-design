@@ -1486,6 +1486,7 @@ export default function App() {
   const [cascaderValue, setCascaderValue] = useState<string[]>(['east', 'shanghai', 'pudong']);
   const [treeValue, setTreeValue] = useState<string | null>('frontend');
   const [treeValues, setTreeValues] = useState(['product-design', 'frontend']);
+  const [treeSelectDialogOpen, setTreeSelectDialogOpen] = useState(false);
   const [transferTargetKeys, setTransferTargetKeys] = useState<React.Key[]>(['camera-north', 'radar']);
   const [dateValue, setDateValue] = useState('2026-08-21');
   const [monthValue, setMonthValue] = useState('2026-08');
@@ -2714,31 +2715,60 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="TreeSelect" wide>
-                  <div className="form-grid">
-                    <TreeSelect
-                      nodes={treeNodes}
-                      value={treeValue}
-                      onChange={(value) => setTreeValue(value)}
-                      searchable
-                      getValue={(node) => node.id}
-                      getLabel={(node) => node.label}
-                      isNodeSelectable={isTreeNodeSelectable}
-                      placeholder="选择组织"
-                    />
-                    <TreeSelect
-                      nodes={treeNodes}
-                      value={null}
-                      values={treeValues}
-                      multiple
-                      onChange={() => undefined}
-                      onMultiChange={(values) => setTreeValues(values)}
-                      searchable
-                      getValue={(node) => node.id}
-                      getLabel={(node) => node.label}
-                      isNodeSelectable={isTreeNodeSelectable}
-                      placeholder="选择多个组织"
-                    />
+                  <div className="flex flex-col items-start gap-4">
+                    <div className="form-grid w-full">
+                      <TreeSelect
+                        nodes={treeNodes}
+                        value={treeValue}
+                        onChange={(value) => setTreeValue(value)}
+                        searchable
+                        getValue={(node) => node.id}
+                        getLabel={(node) => node.label}
+                        isNodeSelectable={isTreeNodeSelectable}
+                        placeholder="选择组织"
+                      />
+                      <TreeSelect
+                        nodes={treeNodes}
+                        value={null}
+                        values={treeValues}
+                        multiple
+                        onChange={() => undefined}
+                        onMultiChange={(values) => setTreeValues(values)}
+                        searchable
+                        getValue={(node) => node.id}
+                        getLabel={(node) => node.label}
+                        isNodeSelectable={isTreeNodeSelectable}
+                        placeholder="选择多个组织"
+                      />
+                    </div>
+                    <Button variant="outline" onClick={() => setTreeSelectDialogOpen(true)}>
+                      弹窗内树形多选
+                    </Button>
                   </div>
+                  <Dialog
+                    open={treeSelectDialogOpen}
+                    onRequestClose={() => setTreeSelectDialogOpen(false)}
+                    title="树形多选"
+                    description="展开分支后可连续选择，内容超出可用高度时在下拉框内滚动。"
+                    panelClassName="dialog-panel"
+                  >
+                    <div className="mt-5">
+                      <TreeSelect
+                        nodes={treeNodes.map((node) => ({ ...node }))}
+                        value={null}
+                        values={treeValues}
+                        multiple
+                        defaultExpandedDepth={0}
+                        onChange={() => undefined}
+                        onMultiChange={setTreeValues}
+                        searchable
+                        getValue={(node) => node.id}
+                        getLabel={(node) => node.label}
+                        isNodeSelectable={isTreeNodeSelectable}
+                        placeholder="选择多个组织"
+                      />
+                    </div>
+                  </Dialog>
                 </DemoCard>
                 <DemoCard title="Cascader" wide>
                   <div className="max-w-[420px]">
