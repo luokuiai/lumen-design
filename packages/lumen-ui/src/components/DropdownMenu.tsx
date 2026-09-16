@@ -383,7 +383,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             data-lumen-motion
             data-ui="dropdown-surface"
             className={cn(
-              'rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] py-1 shadow-[var(--lumen-shadow-dropdown)]',
+              'rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[var(--lumen-shadow-dropdown)]',
               resolvedAlign === 'right' ? 'origin-top-right' : 'origin-top-left',
               menuMode && 'min-w-32 max-w-[320px] whitespace-nowrap [&_svg]:shrink-0',
               menuClassName,

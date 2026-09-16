@@ -56,6 +56,10 @@
 }
 
 @layer base {
+  :where([data-ui='dropdown-surface']) {
+    padding: 8px;
+  }
+
   :where([data-ui='side-nav']:not([data-collapsed])) {
     width: 320px;
     max-width: 100%;
