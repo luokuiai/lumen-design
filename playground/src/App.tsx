@@ -2061,7 +2061,7 @@ export default function App() {
             </Tooltip>
             <DropdownMenu
               className="topbar-notification"
-              menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden py-0"
+              menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden p-0"
               trigger={({ open, toggle }) => (
                 <Tooltip content="通知" placement="bottom">
                   <Button
@@ -3058,7 +3058,7 @@ export default function App() {
                       )}
                     >
                       {({ close }) => (
-                        <div className="min-w-[180px] px-2 py-1.5">
+                        <>
                           <DropdownMenuItem onClick={close}>
                             <Copy size={15} />
                             复制组件名称
@@ -3071,7 +3071,7 @@ export default function App() {
                             <Star size={15} />
                             标记为常用
                           </DropdownMenuItem>
-                        </div>
+                        </>
                       )}
                     </DropdownMenu>
                   </div>
