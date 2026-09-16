@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { CommandPalette } from '../components/command-palette/CommandPalette';
@@ -16,6 +16,25 @@ const groups = [
 ];
 
 describe('CommandPalette', () => {
+  it('focuses the search input and restores the trigger after Escape', async () => {
+    const user = userEvent.setup();
+    const Harness = () => {
+      const [open, setOpen] = useState(false);
+      return <>
+        <button onClick={() => setOpen(true)}>Search components</button>
+        <CommandPalette open={open} onOpenChange={setOpen} groups={groups} />
+      </>;
+    };
+    render(<Harness />);
+    const trigger = screen.getByRole('button', { name: 'Search components' });
+    await user.click(trigger);
+    await waitFor(() => expect(screen.getByRole('combobox')).toHaveFocus());
+    await user.keyboard('{Escape}');
+    fireEvent.animationEnd(document.querySelector('[data-dialog-overlay="command-palette"]')!);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
+  });
+
   it('filters commands and selects the active result with the keyboard', async () => {
     const user = userEvent.setup();
     const onOpenChange = vi.fn();
@@ -69,6 +88,7 @@ describe('CommandPalette', () => {
     render(<Harness />);
     await user.keyboard('{Control>}k{/Control}');
     expect(screen.getByRole('dialog', { name: '命令面板' })).toBeVisible();
+    await waitFor(() => expect(screen.getByRole('combobox')).toHaveFocus());
 
     await user.keyboard('{ArrowDown}{Enter}');
     expect(firstAction).not.toHaveBeenCalled();

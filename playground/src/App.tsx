@@ -1446,7 +1446,6 @@ export default function App() {
 
   const mainScrollRef = useRef<HTMLDivElement>(null);
   const scrollToEdgeDemoRef = useRef<HTMLDivElement>(null);
-  const mobileSearchInputRef = useRef<HTMLInputElement>(null);
   const mobileNavigationScrollTopRef = useRef(0);
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [colorScheme, setColorScheme] = useState<ColorScheme>(initialColorScheme);
@@ -1457,7 +1456,6 @@ export default function App() {
   const [expandedCodeTitle, setExpandedCodeTitle] = useState<string>();
   const [copiedCodeTitle, setCopiedCodeTitle] = useState<string>();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileMoreView, setMobileMoreView] = useState<'root' | 'language' | 'theme'>('root');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
@@ -1541,29 +1539,10 @@ export default function App() {
     [language],
   );
 
-  const normalizedSearch = gallerySearch.trim().toLowerCase();
   const activeCategory = localizedCategories.find((category) => category.id === activeSection)
     ?? localizedCategories[0]!;
   const activeDemo = activeCategory.demos.find((item) => item.id === activeDemoId)
     ?? activeCategory.demos[0]!;
-  const filteredCategories = useMemo(
-    () => localizedCategories.filter((category) =>
-      `${category.title} ${category.description} ${category.keywords} ${category.demos.map((item) => demoLabels[item.title]).join(' ')}`
-        .toLowerCase()
-        .includes(normalizedSearch),
-    ),
-    [demoLabels, localizedCategories, normalizedSearch],
-  );
-  const mobileSearchResults = useMemo(() => {
-    if (!normalizedSearch) return [];
-    return localizedCategories.flatMap((category) => category.demos
-      .filter((demoItem) => (
-        `${demoItem.title} ${demoLabels[demoItem.title] ?? ''} ${category.title} ${category.description}`
-          .toLowerCase()
-          .includes(normalizedSearch)
-      ))
-      .map((demoItem) => ({ category, demo: demoItem })));
-  }, [demoLabels, localizedCategories, normalizedSearch]);
   const activeSections = useMemo(() => {
     const sourceSection = renderSections.find((section) => section.id === activeDemo.sourceSection);
     return sourceSection
@@ -1577,16 +1556,6 @@ export default function App() {
       : [];
   }, [activeCategory.description, activeCategory.title, activeDemo, demoLabels, language]);
 
-  const navigateToCategory = (categoryId: string) => {
-    const category = galleryCategories.find((item) => item.id === categoryId);
-    if (!category) return;
-    const nextDemo = category.demos[0]!;
-    setActiveSection(category.id);
-    setActiveDemoId(nextDemo.id);
-    setExpandedCategoryIds((current) => current.includes(category.id) ? current : [...current, category.id]);
-    window.history.replaceState(null, '', `#${category.id}/${nextDemo.id}`);
-  };
-
   const navigateToDemo = (categoryId: string, demoId: string) => {
     const category = galleryCategories.find((item) => item.id === categoryId);
     if (!category) return;
@@ -1594,13 +1563,12 @@ export default function App() {
     if (!selectedDemo) return;
     setActiveSection(category.id);
     setActiveDemoId(selectedDemo.id);
-    setMobileSearchOpen(false);
     setExpandedCategoryIds((current) => current.includes(category.id) ? current : [...current, category.id]);
     window.history.replaceState(null, '', `#${category.id}/${selectedDemo.id}`);
   };
 
   const navigationSections = [{
-    items: filteredCategories.map((category) => ({
+    items: localizedCategories.map((category) => ({
       value: category.id,
       label: category.title,
       icon: category.icon,
@@ -1648,10 +1616,6 @@ export default function App() {
     mainScrollRef.current?.scrollTo({ top: 0 });
     setExpandedCodeTitle(undefined);
   }, [activeDemoId, activeSection]);
-
-  useEffect(() => {
-    if (mobileSearchOpen) mobileSearchInputRef.current?.focus();
-  }, [mobileSearchOpen]);
 
   useEffect(() => {
     document.documentElement.dataset.lumenTheme = theme;
@@ -1771,7 +1735,7 @@ export default function App() {
 
       <main className="main">
         <AppHeader
-          className={`topbar${mobileSearchOpen ? ' topbar-search-open' : ''}`}
+          className="topbar"
           title="Lumen UI Gallery"
           description={messages.appDescription}
           navigation={(
@@ -1798,43 +1762,18 @@ export default function App() {
             </>
           )}
           search={(
-            <>
-              <SearchBar
-                id="gallery-search"
-                className="topbar-search desktop-topbar-search"
-                size="md"
-                value={gallerySearch}
-                onChange={setGallerySearch}
-                placeholder={messages.searchPlaceholder}
-                aria-label={messages.searchPlaceholder}
-              />
-              <SearchBar
-                ref={mobileSearchInputRef}
-                id="mobile-gallery-search"
-                className="mobile-appbar-search"
-                size="lg"
-                value={gallerySearch}
-                onChange={setGallerySearch}
-                placeholder={messages.searchPlaceholder}
-                aria-label={messages.searchPlaceholder}
-                onKeyDown={(event) => {
-                  if (event.key === 'Escape' && !gallerySearch) {
-                    event.preventDefault();
-                    setMobileSearchOpen(false);
-                  }
-                }}
-                prefix={(
-                  <button
-                    type="button"
-                    className="mobile-search-back"
-                    aria-label={messages.closeSearch}
-                    onClick={() => setMobileSearchOpen(false)}
-                  >
-                    <ArrowLeft aria-hidden="true" size={20} />
-                  </button>
-                )}
-              />
-            </>
+            <button
+              type="button"
+              className="topbar-search-trigger"
+              aria-label={messages.openSearch}
+              aria-haspopup="dialog"
+              aria-expanded={commandPaletteOpen}
+              onClick={() => setCommandPaletteOpen(true)}
+            >
+              <Search aria-hidden="true" size={16} />
+              <span>{messages.searchPlaceholder}</span>
+              <kbd>Ctrl / ⌘ K</kbd>
+            </button>
           )}
           actions={(
             <>
@@ -1844,10 +1783,10 @@ export default function App() {
               variant="ghost"
               className="mobile-search-button"
               aria-label={messages.openSearch}
-              aria-expanded={mobileSearchOpen}
-              aria-controls="mobile-gallery-search"
+              aria-expanded={commandPaletteOpen}
+              aria-haspopup="dialog"
               icon={<Search size={18} />}
-              onClick={() => setMobileSearchOpen(true)}
+              onClick={() => setCommandPaletteOpen(true)}
             />
             <DropdownMenu
               menuMode
@@ -2282,32 +2221,7 @@ export default function App() {
             }}>
               <div className="gallery-workspace">
                 <div className="gallery-preview">
-                  {mobileSearchOpen && normalizedSearch ? (
-                    <section className="mobile-search-content" aria-live="polite">
-                      <h2>{messages.searchResults}</h2>
-                      {mobileSearchResults.length ? (
-                        <div className="mobile-search-content-list">
-                          {mobileSearchResults.map(({ category, demo: demoItem }) => (
-                            <button
-                              key={`${category.id}-${demoItem.id}`}
-                              type="button"
-                              className="mobile-search-content-result"
-                              onClick={() => navigateToDemo(category.id, demoItem.id)}
-                            >
-                              <Search aria-hidden="true" size={18} />
-                              <span>
-                                <strong>{demoLabels[demoItem.title] ?? demoItem.title}</strong>
-                                <small>{category.title}</small>
-                              </span>
-                              <ChevronRight aria-hidden="true" size={18} />
-                            </button>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="mobile-search-content-empty">{messages.noSearchResults}</p>
-                      )}
-                    </section>
-                  ) : activeSections.map((section) => {
+                  {activeSections.map((section) => {
           if (section.id === 'typography') {
             return (
               <GallerySection key={section.id} section={section}>
@@ -3879,50 +3793,27 @@ export default function App() {
 
       <CommandPalette
         open={commandPaletteOpen}
-        onOpenChange={setCommandPaletteOpen}
+        onOpenChange={(open) => {
+          setCommandPaletteOpen(open);
+          if (!open) setGallerySearch('');
+        }}
         enableShortcut
-        groups={[
-          {
-            heading: '组件分类',
-            items: galleryCategories.map((category) => ({
-              id: category.id,
-              label: category.title,
-              description: category.description,
-              keywords: category.keywords.split(' '),
-              icon: <category.icon size={16} />,
-              onSelect: () => navigateToCategory(category.id),
-            })),
-          },
-          {
-            heading: '组件',
-            items: allDemos.map((item) => {
-              const category = galleryCategories.find((candidate) => candidate.demos.includes(item))!;
-              return {
-                id: `component-${item.id}`,
-                label: item.title,
-                description: category.title,
-                keywords: [category.title, item.title],
-                onSelect: () => {
-                  setActiveSection(category.id);
-                  setActiveDemoId(item.id);
-                  window.history.replaceState(null, '', `#${category.id}/${item.id}`);
-                },
-              };
-            }),
-          },
-          {
-            heading: '操作',
-            items: [
-              {
-                id: 'toggle-theme',
-                label: colorScheme === 'dark' ? '切换到浅色模式' : '切换到深色模式',
-                icon: colorScheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />,
-                shortcut: 'T',
-                onSelect: () => setColorScheme((scheme) => (scheme === 'dark' ? 'light' : 'dark')),
-              },
-            ],
-          },
-        ]}
+        label={messages.openSearch}
+        placeholder={messages.searchPlaceholder}
+        emptyText={messages.noSearchResults}
+        searchValue={gallerySearch}
+        onSearchValueChange={setGallerySearch}
+        groups={localizedCategories.map((category) => ({
+          heading: category.title,
+          items: category.demos.map((item) => ({
+            id: item.id,
+            label: demoLabels[item.title] ?? item.title,
+            description: category.title,
+            keywords: [item.title, category.title],
+            icon: <category.icon size={16} />,
+            onSelect: () => navigateToDemo(category.id, item.id),
+          })),
+        }))}
       />
 
       <Drawer
