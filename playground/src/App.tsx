@@ -119,7 +119,6 @@ import {
   Rating,
   Scrollbar,
   ScrollToEdge,
-  SearchBar,
   SegmentedControl,
   Select,
   SideNav,
@@ -273,7 +272,7 @@ type SafetyEvent = {
 const renderSections: Section[] = [
   { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button useLongPress ContextMenu DragHandle Badge Chip Avatar Tooltip', icon: Plus },
-  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input SearchBar NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
+  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、输入建议、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Combobox Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem VirtualList SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
   { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Carousel Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
@@ -361,7 +360,7 @@ const galleryCategories: GalleryCategory[] = [
     id: 'forms',
     title: 'Forms',
     description: '输入、选择、日期时间和文件提交。',
-    keywords: 'Form Validation FormField Input Textarea SearchBar NumberInput OtpInput Checkbox Radio Switch SegmentedControl Slider Rating Select Combobox Cascader TreeSelect Transfer Calendar Date Time FileUpload',
+    keywords: 'Form Validation FormField Input Textarea NumberInput OtpInput Checkbox Radio Switch SegmentedControl Slider Rating Select Combobox Cascader TreeSelect Transfer Calendar Date Time FileUpload',
     icon: Check,
     demos: [
       demo('Form / FormField', 'forms', 'Form, FormField, Input, Button, Alert, SegmentedControl, Toast', '    <Form values={values} validate={validate} onFinish={submit}>\n      <FormField name="name" label="姓名" required>\n        {(props) => <Input {...props} value={values.name} onChange={(event) => setValues({ name: event.target.value })} />}\n      </FormField>\n      <Button type="submit">校验并提交</Button>\n    </Form>', undefined, "const [values, setValues] = useState({ name: '' });\n  const validate = (values: { name: string }) => ({ name: values.name.trim() ? undefined : '请输入姓名' });\n  const submit = (values: { name: string }) => console.log(values);"),
@@ -369,7 +368,6 @@ const galleryCategories: GalleryCategory[] = [
       demo('Textarea', 'forms', 'FormField, Textarea', '    <FormField label="备注">\n      <Textarea value={value} onChange={setValue} maxLength={200} showCount />\n    </FormField>'),
       demo('NumberInput', 'forms', 'FormField, NumberInput', '    <FormField label="处置时限">\n      <NumberInput defaultValue={30} min={5} max={120} suffix="分钟" />\n    </FormField>'),
       demo('OtpInput', 'forms', 'FormField, OtpInput', '    <FormField label="短信验证码">\n      <OtpInput value={value} onChange={setValue} />\n    </FormField>', undefined, "const [value, setValue] = useState('');"),
-      demo('SearchBar', 'forms', 'SearchBar, Typography', '    <div className="max-w-[420px] space-y-2">\n      <SearchBar\n        value={value}\n        onChange={setValue}\n        onSearch={(keyword) => setMessage(keyword ? `正在搜索“${keyword}”` : \'请输入搜索内容\')}\n        placeholder="搜索组件、页面或命令"\n        aria-label="组件搜索"\n      />\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [value, setValue] = useState('');\n  const [message, setMessage] = useState('输入关键词后按 Enter 搜索');"),
       demo('Checkbox', 'forms', 'Checkbox', '    <div className="flex items-center gap-5">\n      <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />\n      <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />\n      <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />\n    </div>'),
       demo('Radio', 'forms', 'Radio, RadioGroup', '    <div className="space-y-4">\n      <div className="flex items-center gap-5">\n        <Radio size="sm" checked label="Small" />\n        <Radio size="md" checked label="Medium" />\n        <Radio size="lg" checked label="Large" />\n      </div>\n      <RadioGroup size="md" value={value} onChange={setValue} options={options} />\n    </div>'),
       demo('Switch', 'forms', 'Switch', '    <div className="flex items-center gap-5">\n      <Switch size="sm" checked={enabled} onChange={setEnabled} label="Small" />\n      <Switch size="md" checked={enabled} onChange={setEnabled} label="Medium" />\n      <Switch size="lg" checked={enabled} onChange={setEnabled} label="Large" />\n    </div>'),
@@ -560,7 +558,6 @@ const zhDemoNames: Record<string, string> = {
   DropdownMenu: '下拉菜单',
   Input: '输入框',
   'Form / FormField': '表单 / 表单字段',
-  SearchBar: '搜索栏',
   NumberInput: '数字输入框',
   OtpInput: '验证码输入框',
   Textarea: '多行文本框',
@@ -1465,8 +1462,6 @@ export default function App() {
   const [formErrorDisplay, setFormErrorDisplay] = useState<'inline' | 'toast'>('inline');
   const [longPressMessage, setLongPressMessage] = useState('移动端长按，PC 端普通点击');
   const [contextMenuAction, setContextMenuAction] = useState('暂无');
-  const [searchBarValue, setSearchBarValue] = useState('');
-  const [searchBarMessage, setSearchBarMessage] = useState('输入关键词后按 Enter 搜索');
   const [swipeActionMessage, setSwipeActionMessage] = useState('向左右滑动事件行');
   const [otpValue, setOtpValue] = useState('');
   const [textareaText, setTextareaText] = useState('记录评审结论和后续动作。');
@@ -2552,22 +2547,6 @@ export default function App() {
                       autoComplete="current-password"
                       defaultValue="lumen-demo"
                     />
-                  </div>
-                </DemoCard>
-                <DemoCard title="SearchBar" wide>
-                  <div className="max-w-[420px] space-y-2">
-                    <SearchBar
-                      value={searchBarValue}
-                      onChange={setSearchBarValue}
-                      onSearch={(keyword) => setSearchBarMessage(
-                        keyword ? `正在搜索“${keyword}”` : '请输入搜索内容',
-                      )}
-                      placeholder="搜索组件、页面或命令"
-                      aria-label="组件搜索"
-                    />
-                    <Typography variant="caption" color="muted">
-                      {searchBarMessage}
-                    </Typography>
                   </div>
                 </DemoCard>
                 <DemoCard title="NumberInput" wide>
