@@ -83,7 +83,9 @@ export const Typography = React.forwardRef<HTMLElement, TypographyProps>(
         data-variant={variant}
         className={cn(
           typographyVariantClassNames[variant],
-          typographyToneClassNames[resolvedTone],
+          tone === undefined && isHeadingVariant(variant)
+            ? 'text-[var(--lumen-color-text-heading,var(--lumen-color-text-strong))]'
+            : typographyToneClassNames[resolvedTone],
           className,
         )}
       />

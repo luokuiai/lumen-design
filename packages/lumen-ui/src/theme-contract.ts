@@ -11,6 +11,7 @@ export const lumenThemeVariables = [
   '--lumen-color-primary-soft-hover',
   '--lumen-color-on-primary',
   '--lumen-color-text-strong',
+  '--lumen-color-text-heading',
   '--lumen-color-text',
   '--lumen-color-text-secondary',
   '--lumen-color-text-muted',

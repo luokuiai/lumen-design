@@ -49,6 +49,8 @@
 :where([data-lumen-theme]) {
   font-family: var(--lumen-font-family);
   color: var(--lumen-color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 :where([data-lumen-theme]) :where(button, input, textarea, select) {
