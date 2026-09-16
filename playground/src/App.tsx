@@ -119,7 +119,6 @@ import {
   Rating,
   Scrollbar,
   ScrollToEdge,
-  SearchBar,
   SegmentedControl,
   Select,
   SideNav,
@@ -273,7 +272,7 @@ type SafetyEvent = {
 const renderSections: Section[] = [
   { id: 'typography', title: 'Typography', description: '标题、正文和辅助文字层级。', keywords: 'Typography H1 H2 H3 H4 H5 H6 Body Caption', icon: TypeIcon },
   { id: 'buttons', title: 'Buttons', description: '按钮、徽标、Chip、头像和 Tooltip。', keywords: 'Button useLongPress ContextMenu DragHandle Badge Chip Avatar Tooltip', icon: Plus },
-  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input SearchBar NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
+  { id: 'forms', title: 'Forms', description: '输入、校验、开关、单选和多行文本。', keywords: 'Input NumberInput OtpInput FormField Textarea Checkbox Radio RadioGroup Rating Switch Slider', icon: Check },
   { id: 'pickers', title: 'Pickers', description: '选择器、输入建议、级联选择、树选择、穿梭框、日历、日期和时间选择。', keywords: 'Select Combobox Cascader TreeSelect Transfer Calendar DatePicker TimePicker DateTimePicker', icon: CalendarDays },
   { id: 'data', title: 'Data Display', description: '文件类型、数据表格、列表、滚动区域、分隔和折叠内容。', keywords: 'FileTypeIcon DataTable List ListItem VirtualList SwipeActions Pagination Scrollbar Divider Collapse Accordion', icon: Table2 },
   { id: 'navigation', title: 'Navigation', description: '应用栏、工具栏、底部导航和页面导航。', keywords: 'AppBar Toolbar BottomNavigation Breadcrumb Carousel Tabs Steps DropdownMenu Timeline SideNav', icon: MoreHorizontal },
@@ -361,7 +360,7 @@ const galleryCategories: GalleryCategory[] = [
     id: 'forms',
     title: 'Forms',
     description: '输入、选择、日期时间和文件提交。',
-    keywords: 'Form Validation FormField Input Textarea SearchBar NumberInput OtpInput Checkbox Radio Switch SegmentedControl Slider Rating Select Combobox Cascader TreeSelect Transfer Calendar Date Time FileUpload',
+    keywords: 'Form Validation FormField Input Textarea NumberInput OtpInput Checkbox Radio Switch SegmentedControl Slider Rating Select Combobox Cascader TreeSelect Transfer Calendar Date Time FileUpload',
     icon: Check,
     demos: [
       demo('Form / FormField', 'forms', 'Form, FormField, Input, Button, Alert, SegmentedControl, Toast', '    <Form values={values} validate={validate} onFinish={submit}>\n      <FormField name="name" label="姓名" required>\n        {(props) => <Input {...props} value={values.name} onChange={(event) => setValues({ name: event.target.value })} />}\n      </FormField>\n      <Button type="submit">校验并提交</Button>\n    </Form>', undefined, "const [values, setValues] = useState({ name: '' });\n  const validate = (values: { name: string }) => ({ name: values.name.trim() ? undefined : '请输入姓名' });\n  const submit = (values: { name: string }) => console.log(values);"),
@@ -369,7 +368,6 @@ const galleryCategories: GalleryCategory[] = [
       demo('Textarea', 'forms', 'FormField, Textarea', '    <FormField label="备注">\n      <Textarea value={value} onChange={setValue} maxLength={200} showCount />\n    </FormField>'),
       demo('NumberInput', 'forms', 'FormField, NumberInput', '    <FormField label="处置时限">\n      <NumberInput defaultValue={30} min={5} max={120} suffix="分钟" />\n    </FormField>'),
       demo('OtpInput', 'forms', 'FormField, OtpInput', '    <FormField label="短信验证码">\n      <OtpInput value={value} onChange={setValue} />\n    </FormField>', undefined, "const [value, setValue] = useState('');"),
-      demo('SearchBar', 'forms', 'SearchBar, Typography', '    <div className="max-w-[420px] space-y-2">\n      <SearchBar\n        value={value}\n        onChange={setValue}\n        onSearch={(keyword) => setMessage(keyword ? `正在搜索“${keyword}”` : \'请输入搜索内容\')}\n        placeholder="搜索组件、页面或命令"\n        aria-label="组件搜索"\n      />\n      <Typography variant="caption" color="muted">{message}</Typography>\n    </div>', undefined, "const [value, setValue] = useState('');\n  const [message, setMessage] = useState('输入关键词后按 Enter 搜索');"),
       demo('Checkbox', 'forms', 'Checkbox', '    <div className="flex items-center gap-5">\n      <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />\n      <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />\n      <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />\n    </div>'),
       demo('Radio', 'forms', 'Radio, RadioGroup', '    <div className="space-y-4">\n      <div className="flex items-center gap-5">\n        <Radio size="sm" checked label="Small" />\n        <Radio size="md" checked label="Medium" />\n        <Radio size="lg" checked label="Large" />\n      </div>\n      <RadioGroup size="md" value={value} onChange={setValue} options={options} />\n    </div>'),
       demo('Switch', 'forms', 'Switch', '    <div className="flex items-center gap-5">\n      <Switch size="sm" checked={enabled} onChange={setEnabled} label="Small" />\n      <Switch size="md" checked={enabled} onChange={setEnabled} label="Medium" />\n      <Switch size="lg" checked={enabled} onChange={setEnabled} label="Large" />\n    </div>'),
@@ -560,7 +558,6 @@ const zhDemoNames: Record<string, string> = {
   DropdownMenu: '下拉菜单',
   Input: '输入框',
   'Form / FormField': '表单 / 表单字段',
-  SearchBar: '搜索栏',
   NumberInput: '数字输入框',
   OtpInput: '验证码输入框',
   Textarea: '多行文本框',
@@ -1446,7 +1443,6 @@ export default function App() {
 
   const mainScrollRef = useRef<HTMLDivElement>(null);
   const scrollToEdgeDemoRef = useRef<HTMLDivElement>(null);
-  const mobileSearchInputRef = useRef<HTMLInputElement>(null);
   const mobileNavigationScrollTopRef = useRef(0);
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [colorScheme, setColorScheme] = useState<ColorScheme>(initialColorScheme);
@@ -1457,7 +1453,6 @@ export default function App() {
   const [expandedCodeTitle, setExpandedCodeTitle] = useState<string>();
   const [copiedCodeTitle, setCopiedCodeTitle] = useState<string>();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileMoreView, setMobileMoreView] = useState<'root' | 'language' | 'theme'>('root');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [gallerySearch, setGallerySearch] = useState('');
@@ -1467,8 +1462,6 @@ export default function App() {
   const [formErrorDisplay, setFormErrorDisplay] = useState<'inline' | 'toast'>('inline');
   const [longPressMessage, setLongPressMessage] = useState('移动端长按，PC 端普通点击');
   const [contextMenuAction, setContextMenuAction] = useState('暂无');
-  const [searchBarValue, setSearchBarValue] = useState('');
-  const [searchBarMessage, setSearchBarMessage] = useState('输入关键词后按 Enter 搜索');
   const [swipeActionMessage, setSwipeActionMessage] = useState('向左右滑动事件行');
   const [otpValue, setOtpValue] = useState('');
   const [textareaText, setTextareaText] = useState('记录评审结论和后续动作。');
@@ -1541,29 +1534,10 @@ export default function App() {
     [language],
   );
 
-  const normalizedSearch = gallerySearch.trim().toLowerCase();
   const activeCategory = localizedCategories.find((category) => category.id === activeSection)
     ?? localizedCategories[0]!;
   const activeDemo = activeCategory.demos.find((item) => item.id === activeDemoId)
     ?? activeCategory.demos[0]!;
-  const filteredCategories = useMemo(
-    () => localizedCategories.filter((category) =>
-      `${category.title} ${category.description} ${category.keywords} ${category.demos.map((item) => demoLabels[item.title]).join(' ')}`
-        .toLowerCase()
-        .includes(normalizedSearch),
-    ),
-    [demoLabels, localizedCategories, normalizedSearch],
-  );
-  const mobileSearchResults = useMemo(() => {
-    if (!normalizedSearch) return [];
-    return localizedCategories.flatMap((category) => category.demos
-      .filter((demoItem) => (
-        `${demoItem.title} ${demoLabels[demoItem.title] ?? ''} ${category.title} ${category.description}`
-          .toLowerCase()
-          .includes(normalizedSearch)
-      ))
-      .map((demoItem) => ({ category, demo: demoItem })));
-  }, [demoLabels, localizedCategories, normalizedSearch]);
   const activeSections = useMemo(() => {
     const sourceSection = renderSections.find((section) => section.id === activeDemo.sourceSection);
     return sourceSection
@@ -1577,16 +1551,6 @@ export default function App() {
       : [];
   }, [activeCategory.description, activeCategory.title, activeDemo, demoLabels, language]);
 
-  const navigateToCategory = (categoryId: string) => {
-    const category = galleryCategories.find((item) => item.id === categoryId);
-    if (!category) return;
-    const nextDemo = category.demos[0]!;
-    setActiveSection(category.id);
-    setActiveDemoId(nextDemo.id);
-    setExpandedCategoryIds((current) => current.includes(category.id) ? current : [...current, category.id]);
-    window.history.replaceState(null, '', `#${category.id}/${nextDemo.id}`);
-  };
-
   const navigateToDemo = (categoryId: string, demoId: string) => {
     const category = galleryCategories.find((item) => item.id === categoryId);
     if (!category) return;
@@ -1594,13 +1558,12 @@ export default function App() {
     if (!selectedDemo) return;
     setActiveSection(category.id);
     setActiveDemoId(selectedDemo.id);
-    setMobileSearchOpen(false);
     setExpandedCategoryIds((current) => current.includes(category.id) ? current : [...current, category.id]);
     window.history.replaceState(null, '', `#${category.id}/${selectedDemo.id}`);
   };
 
   const navigationSections = [{
-    items: filteredCategories.map((category) => ({
+    items: localizedCategories.map((category) => ({
       value: category.id,
       label: category.title,
       icon: category.icon,
@@ -1648,10 +1611,6 @@ export default function App() {
     mainScrollRef.current?.scrollTo({ top: 0 });
     setExpandedCodeTitle(undefined);
   }, [activeDemoId, activeSection]);
-
-  useEffect(() => {
-    if (mobileSearchOpen) mobileSearchInputRef.current?.focus();
-  }, [mobileSearchOpen]);
 
   useEffect(() => {
     document.documentElement.dataset.lumenTheme = theme;
@@ -1771,7 +1730,7 @@ export default function App() {
 
       <main className="main">
         <AppHeader
-          className={`topbar${mobileSearchOpen ? ' topbar-search-open' : ''}`}
+          className="topbar"
           title="Lumen UI Gallery"
           description={messages.appDescription}
           navigation={(
@@ -1798,43 +1757,18 @@ export default function App() {
             </>
           )}
           search={(
-            <>
-              <SearchBar
-                id="gallery-search"
-                className="topbar-search desktop-topbar-search"
-                size="md"
-                value={gallerySearch}
-                onChange={setGallerySearch}
-                placeholder={messages.searchPlaceholder}
-                aria-label={messages.searchPlaceholder}
-              />
-              <SearchBar
-                ref={mobileSearchInputRef}
-                id="mobile-gallery-search"
-                className="mobile-appbar-search"
-                size="lg"
-                value={gallerySearch}
-                onChange={setGallerySearch}
-                placeholder={messages.searchPlaceholder}
-                aria-label={messages.searchPlaceholder}
-                onKeyDown={(event) => {
-                  if (event.key === 'Escape' && !gallerySearch) {
-                    event.preventDefault();
-                    setMobileSearchOpen(false);
-                  }
-                }}
-                prefix={(
-                  <button
-                    type="button"
-                    className="mobile-search-back"
-                    aria-label={messages.closeSearch}
-                    onClick={() => setMobileSearchOpen(false)}
-                  >
-                    <ArrowLeft aria-hidden="true" size={20} />
-                  </button>
-                )}
-              />
-            </>
+            <button
+              type="button"
+              className="topbar-search-trigger"
+              aria-label={messages.openSearch}
+              aria-haspopup="dialog"
+              aria-expanded={commandPaletteOpen}
+              onClick={() => setCommandPaletteOpen(true)}
+            >
+              <Search aria-hidden="true" size={16} />
+              <span>{messages.searchPlaceholder}</span>
+              <kbd>Ctrl / ⌘ K</kbd>
+            </button>
           )}
           actions={(
             <>
@@ -1844,10 +1778,10 @@ export default function App() {
               variant="ghost"
               className="mobile-search-button"
               aria-label={messages.openSearch}
-              aria-expanded={mobileSearchOpen}
-              aria-controls="mobile-gallery-search"
+              aria-expanded={commandPaletteOpen}
+              aria-haspopup="dialog"
               icon={<Search size={18} />}
-              onClick={() => setMobileSearchOpen(true)}
+              onClick={() => setCommandPaletteOpen(true)}
             />
             <DropdownMenu
               menuMode
@@ -2282,32 +2216,7 @@ export default function App() {
             }}>
               <div className="gallery-workspace">
                 <div className="gallery-preview">
-                  {mobileSearchOpen && normalizedSearch ? (
-                    <section className="mobile-search-content" aria-live="polite">
-                      <h2>{messages.searchResults}</h2>
-                      {mobileSearchResults.length ? (
-                        <div className="mobile-search-content-list">
-                          {mobileSearchResults.map(({ category, demo: demoItem }) => (
-                            <button
-                              key={`${category.id}-${demoItem.id}`}
-                              type="button"
-                              className="mobile-search-content-result"
-                              onClick={() => navigateToDemo(category.id, demoItem.id)}
-                            >
-                              <Search aria-hidden="true" size={18} />
-                              <span>
-                                <strong>{demoLabels[demoItem.title] ?? demoItem.title}</strong>
-                                <small>{category.title}</small>
-                              </span>
-                              <ChevronRight aria-hidden="true" size={18} />
-                            </button>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="mobile-search-content-empty">{messages.noSearchResults}</p>
-                      )}
-                    </section>
-                  ) : activeSections.map((section) => {
+                  {activeSections.map((section) => {
           if (section.id === 'typography') {
             return (
               <GallerySection key={section.id} section={section}>
@@ -2638,22 +2547,6 @@ export default function App() {
                       autoComplete="current-password"
                       defaultValue="lumen-demo"
                     />
-                  </div>
-                </DemoCard>
-                <DemoCard title="SearchBar" wide>
-                  <div className="max-w-[420px] space-y-2">
-                    <SearchBar
-                      value={searchBarValue}
-                      onChange={setSearchBarValue}
-                      onSearch={(keyword) => setSearchBarMessage(
-                        keyword ? `正在搜索“${keyword}”` : '请输入搜索内容',
-                      )}
-                      placeholder="搜索组件、页面或命令"
-                      aria-label="组件搜索"
-                    />
-                    <Typography variant="caption" color="muted">
-                      {searchBarMessage}
-                    </Typography>
                   </div>
                 </DemoCard>
                 <DemoCard title="NumberInput" wide>
@@ -3879,50 +3772,27 @@ export default function App() {
 
       <CommandPalette
         open={commandPaletteOpen}
-        onOpenChange={setCommandPaletteOpen}
+        onOpenChange={(open) => {
+          setCommandPaletteOpen(open);
+          if (!open) setGallerySearch('');
+        }}
         enableShortcut
-        groups={[
-          {
-            heading: '组件分类',
-            items: galleryCategories.map((category) => ({
-              id: category.id,
-              label: category.title,
-              description: category.description,
-              keywords: category.keywords.split(' '),
-              icon: <category.icon size={16} />,
-              onSelect: () => navigateToCategory(category.id),
-            })),
-          },
-          {
-            heading: '组件',
-            items: allDemos.map((item) => {
-              const category = galleryCategories.find((candidate) => candidate.demos.includes(item))!;
-              return {
-                id: `component-${item.id}`,
-                label: item.title,
-                description: category.title,
-                keywords: [category.title, item.title],
-                onSelect: () => {
-                  setActiveSection(category.id);
-                  setActiveDemoId(item.id);
-                  window.history.replaceState(null, '', `#${category.id}/${item.id}`);
-                },
-              };
-            }),
-          },
-          {
-            heading: '操作',
-            items: [
-              {
-                id: 'toggle-theme',
-                label: colorScheme === 'dark' ? '切换到浅色模式' : '切换到深色模式',
-                icon: colorScheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />,
-                shortcut: 'T',
-                onSelect: () => setColorScheme((scheme) => (scheme === 'dark' ? 'light' : 'dark')),
-              },
-            ],
-          },
-        ]}
+        label={messages.openSearch}
+        placeholder={messages.searchPlaceholder}
+        emptyText={messages.noSearchResults}
+        searchValue={gallerySearch}
+        onSearchValueChange={setGallerySearch}
+        groups={localizedCategories.map((category) => ({
+          heading: category.title,
+          items: category.demos.map((item) => ({
+            id: item.id,
+            label: demoLabels[item.title] ?? item.title,
+            description: category.title,
+            keywords: [item.title, category.title],
+            icon: <category.icon size={16} />,
+            onSelect: () => navigateToDemo(category.id, item.id),
+          })),
+        }))}
       />
 
       <Drawer

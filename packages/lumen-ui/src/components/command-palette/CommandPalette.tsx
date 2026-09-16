@@ -71,11 +71,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   const optionIdPrefix = useId();
   const effectiveSearchValue = searchValue ?? internalSearchValue;
 
-  const setInputRef = useCallback((node: HTMLInputElement | null) => {
-    inputRef.current = node;
-    if (node && open) node.focus();
-  }, [open]);
-
   const updateSearchValue = useCallback(
     (value: string) => {
       if (searchValue === undefined) setInternalSearchValue(value);
@@ -195,7 +190,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         <div className="flex h-12 items-center gap-3 border-b border-[var(--lumen-color-border)] px-4">
           <Search aria-hidden="true" className="shrink-0 text-[var(--lumen-color-text-muted)]" size={18} />
           <input
-            ref={setInputRef}
+            ref={inputRef}
             role="combobox"
             aria-autocomplete="list"
             aria-label={placeholder}
