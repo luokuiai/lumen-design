@@ -20,7 +20,7 @@ describe('Typography', () => {
       `text-[${size}]`,
       lineHeight,
       weight,
-      'text-[var(--lumen-color-text-strong)]',
+      'text-[var(--lumen-color-text-heading,var(--lumen-color-text-strong))]',
     );
   });
 

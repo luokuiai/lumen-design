@@ -137,7 +137,7 @@ export function Tree({
       >
         <div
           className={cn(
-            'flex items-center gap-1 rounded-[var(--lumen-radius-control)] pr-2 text-[var(--lumen-color-text)]',
+            'flex items-center gap-1 rounded-[var(--lumen-radius-control)] pr-2 text-[var(--lumen-color-text-secondary)]',
             sizes[size],
             selected.has(node.key) && 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]',
             isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-[var(--lumen-color-surface-muted)]',

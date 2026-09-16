@@ -326,7 +326,7 @@ const galleryCategories: GalleryCategory[] = [
     keywords: 'Typography Headings Body',
     icon: TypeIcon,
     demos: [
-      demo('Typography', 'typography', 'Typography', '    <>\n      <Typography variant="h1">H1 运营总览</Typography>\n      <Typography variant="h2">H2 事件处置</Typography>\n      <Typography>正文用于承载主要说明和数据内容。</Typography>\n      <Typography variant="caption" tone="muted">辅助文字用于简短提示。</Typography>\n    </>', undefined, undefined, ['Headings', 'Body']),
+      demo('Typography', 'typography', 'Typography', '    <>\n      <Typography variant="h1">H1 运营总览</Typography>\n      <Typography variant="h2">组织架构与人员管理</Typography>\n      <Typography>正文用于承载主要说明和数据内容。</Typography>\n      <Typography variant="caption" tone="muted">辅助文字用于简短提示。</Typography>\n    </>', undefined, undefined, ['Headings', 'Body']),
       demo('Locale', 'typography', 'LumenProvider, Pagination, Select, enUS', '    <LumenProvider locale={enUS}>\n      <div className="space-y-4">\n        <Select options={[]} value={null} onChange={() => undefined} />\n        <Pagination currentPage={2} totalPages={8} totalItems={72} onPageChange={() => undefined} />\n      </div>\n    </LumenProvider>', undefined, undefined, ['Locale'], ['LumenProvider']),
     ],
   },
@@ -2224,7 +2224,7 @@ export default function App() {
                 <DemoCard title="Headings">
                   <div className="stack">
                     <Typography variant="h1">H1 运营总览</Typography>
-                    <Typography variant="h2">H2 事件处置</Typography>
+                    <Typography variant="h2">组织架构与人员管理</Typography>
                     <Typography variant="h3">H3 实时监测</Typography>
                     <Typography variant="h4">H4 设备状态</Typography>
                     <Typography variant="h5">H5 基础配置</Typography>
