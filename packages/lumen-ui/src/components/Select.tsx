@@ -9,6 +9,7 @@ import React, {
 import { createPortal } from 'react-dom';
 import { Check, ChevronDown, LoaderCircle, Search, X } from 'lucide-react';
 import { cn } from './classNames';
+import { Scrollbar } from './Scrollbar';
 import { radiusTokens } from './designTokens';
 import { dropdownTransformOrigin } from './dropdownMotion';
 import { useOverlayPortalScope } from './useOverlayBehavior';
@@ -649,7 +650,7 @@ export const Select = <T extends string | number = string>({
           option.disabled && 'cursor-not-allowed opacity-40',
           !renderOption &&
             (isSelected
-              ? 'bg-[var(--lumen-color-primary-soft)] font-medium text-[var(--lumen-color-primary)]'
+              ? 'bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary)]'
               : 'text-[var(--lumen-select-option-text,var(--lumen-color-text-secondary))] hover:bg-[var(--lumen-color-surface-muted)]'),
           !renderOption &&
             isHighlighted &&
@@ -777,30 +778,32 @@ export const Select = <T extends string | number = string>({
           >
             {searchable && renderSearchSection()}
 
-            <div className="flex max-h-[252px] flex-col gap-1 overflow-y-auto p-2">
-              {loading ? (
-                <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
-                  {loadingText}
-                </div>
-              ) : filteredOptions.length === 0 ? (
-                renderEmptyState()
-              ) : (
-                filteredOptions.map((option, index) => {
-                  const previousGroup = filteredOptions[index - 1]?.group;
-                  const shouldRenderGroup = option.group && option.group !== previousGroup;
-                  return (
-                    <React.Fragment key={String(option.value)}>
-                      {shouldRenderGroup && (
-                <div className="px-3 pb-1 pt-2 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]">
-                          {option.group}
-                        </div>
-                      )}
-                      {renderOptionNode(option, index)}
-                    </React.Fragment>
-                  );
-                })
-              )}
-            </div>
+            <Scrollbar size="sm" autoHide tabIndex={-1} className="max-h-[252px]">
+              <div className="flex flex-col gap-1 p-2">
+                {loading ? (
+                  <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
+                    {loadingText}
+                  </div>
+                ) : filteredOptions.length === 0 ? (
+                  renderEmptyState()
+                ) : (
+                  filteredOptions.map((option, index) => {
+                    const previousGroup = filteredOptions[index - 1]?.group;
+                    const shouldRenderGroup = option.group && option.group !== previousGroup;
+                    return (
+                      <React.Fragment key={String(option.value)}>
+                        {shouldRenderGroup && (
+                  <div className="px-3 pb-1 pt-2 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]">
+                            {option.group}
+                          </div>
+                        )}
+                        {renderOptionNode(option, index)}
+                      </React.Fragment>
+                    );
+                  })
+                )}
+              </div>
+            </Scrollbar>
 
             {mode === 'multiple' && selectedValues.length > 0 && renderFooter()}
           </div>,

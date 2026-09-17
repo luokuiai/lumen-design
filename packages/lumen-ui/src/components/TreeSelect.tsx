@@ -14,6 +14,7 @@ import {
   X,
 } from 'lucide-react';
 import { cn } from './classNames';
+import { Scrollbar } from './Scrollbar';
 import { radiusTokens } from './designTokens';
 import { dropdownTransformOrigin } from './dropdownMotion';
 import { useOverlayPortalScope } from './useOverlayBehavior';
@@ -718,19 +719,21 @@ export const TreeSelect = <TNode,>({
                 </div>
               </div>
             ) : null}
-            <div className="min-h-0 max-h-[280px] overflow-y-auto overscroll-contain px-2.5 py-1.5">
-              {loading ? (
-                <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
-                  {locale.treeSelect.loadingText}
-                </div>
-              ) : visibleNodes.length === 0 ? (
-                <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
-                  {emptyText}
-                </div>
-              ) : (
-                visibleNodes.map((node) => renderNode(node, 0))
-              )}
-            </div>
+            <Scrollbar size="sm" autoHide tabIndex={-1} className="min-h-0 max-h-[280px]">
+              <div className="px-2.5 py-1.5">
+                {loading ? (
+                  <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
+                    {locale.treeSelect.loadingText}
+                  </div>
+                ) : visibleNodes.length === 0 ? (
+                  <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
+                    {emptyText}
+                  </div>
+                ) : (
+                  visibleNodes.map((node) => renderNode(node, 0))
+                )}
+              </div>
+            </Scrollbar>
             {multiple && selectedValues.some((item) => !lockedValueSet.has(item)) ? (
               <div className="flex shrink-0 items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-3 py-2.5">
                 <span className="text-[12px] text-[var(--lumen-color-text-placeholder)]">{locale.treeSelect.selectedCount(selectedValues.length)}</span>

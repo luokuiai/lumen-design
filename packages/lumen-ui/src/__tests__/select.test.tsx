@@ -23,6 +23,10 @@ describe('Select', () => {
 
     expect(option).toHaveClass('p-2', 'text-[14px]');
     expect(option?.parentElement).toHaveClass('flex', 'flex-col', 'gap-1', 'p-2');
+    const scrollbar = option?.closest('[data-ui="scrollbar"]');
+    expect(scrollbar).toHaveAttribute('data-size', 'sm');
+    expect(scrollbar).toHaveAttribute('tabindex', '-1');
+    expect(option?.parentElement?.parentElement).toBe(scrollbar);
   });
 
   it('inherits the trigger font size for multiple-value chips', () => {
