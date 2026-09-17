@@ -3071,6 +3071,7 @@ export default function App() {
                 </DemoCard>
                 <DemoCard title="DropdownMenu">
                   <div className="stack">
+                    <p>菜单默认最小宽度为 160px。</p>
                     <DropdownMenu
                       menuMode
                       trigger={({ toggle, open, menuId }) => (

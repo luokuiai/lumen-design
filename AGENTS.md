@@ -251,3 +251,8 @@ git push origin --delete release-1.0.0-alpha.1
   reviewer-facing impact.
 - Write `Changes` as 3-7 specific, reviewable English bullets.
 - Ensure the pull request title follows Conventional Commits style.
+- Keep pull request titles and bodies focused on the change and its impact. Do not
+  include test-related or validation content, including test changes, test counts,
+  check commands, pass/fail results, or Testing, Validation, and Verification sections.
+- Continue running all required checks before committing or opening a pull request;
+  omit those details from the pull request content only.
