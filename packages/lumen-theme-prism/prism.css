@@ -2,7 +2,7 @@
   color-scheme: light;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
-  --lumen-font-family: 'PingFang SC', 'Microsoft YaHei UI', 'Microsoft YaHei', 'HarmonyOS Sans', 'Roboto', 'Helvetica Neue', sans-serif;
+  --lumen-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Roboto', 'HarmonyOS Sans', 'Segoe UI', 'Helvetica Neue', sans-serif;
   --lumen-font-weight-normal: 400;
   --lumen-font-weight-medium: 500;
   --lumen-font-weight-strong: 600;
