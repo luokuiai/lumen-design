@@ -14,6 +14,14 @@ const nodes: TreeNode[] = [
 const item = (name: string) => screen.getByRole('treeitem', { name });
 
 describe('Tree', () => {
+  it('uses primary text for normal rows without overriding selected text', () => {
+    render(<Tree nodes={nodes} defaultSelectedKeys={['readme']} />);
+    expect(item('Documents').firstElementChild).toHaveClass('text-[var(--lumen-color-text)]');
+    const selectedRow = item('Readme').firstElementChild;
+    expect(selectedRow).toHaveClass('text-[var(--lumen-color-primary)]');
+    expect(selectedRow).not.toHaveClass('text-[var(--lumen-color-text)]', 'text-[var(--lumen-color-text-secondary)]');
+  });
+
   it('preserves child content while collapsed branches leave accessible navigation', () => {
     render(<Tree nodes={nodes} defaultExpandedKeys={['docs']} />);
     const guide = item('Guide');
