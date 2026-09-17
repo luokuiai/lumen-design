@@ -326,7 +326,7 @@ const galleryCategories: GalleryCategory[] = [
     keywords: 'Typography Headings Body',
     icon: TypeIcon,
     demos: [
-      demo('Typography', 'typography', 'Typography', '    <>\n      <Typography variant="h1">H1 运营总览</Typography>\n      <Typography variant="h2">H2 事件处置</Typography>\n      <Typography>正文用于承载主要说明和数据内容。</Typography>\n      <Typography variant="caption" tone="muted">辅助文字用于简短提示。</Typography>\n    </>', undefined, undefined, ['Headings', 'Body']),
+      demo('Typography', 'typography', 'Typography', '    <>\n      <Typography variant="h1">H1 运营总览</Typography>\n      <Typography variant="h2">组织架构与人员管理</Typography>\n      <Typography>正文用于承载主要说明和数据内容。</Typography>\n      <Typography variant="caption" tone="muted">辅助文字用于简短提示。</Typography>\n    </>', undefined, undefined, ['Headings', 'Body']),
       demo('Locale', 'typography', 'LumenProvider, Pagination, Select, enUS', '    <LumenProvider locale={enUS}>\n      <div className="space-y-4">\n        <Select options={[]} value={null} onChange={() => undefined} />\n        <Pagination currentPage={2} totalPages={8} totalItems={72} onPageChange={() => undefined} />\n      </div>\n    </LumenProvider>', undefined, undefined, ['Locale'], ['LumenProvider']),
     ],
   },
@@ -1224,7 +1224,7 @@ function GallerySection({ section, children }: { section: Section; children: Rea
     <section id={section.id} className="gallery-section">
       <header className="section-header">
         <div>
-          <h2>{section.title}</h2>
+          <Typography as="h2" variant="h4">{section.title}</Typography>
           <p>{section.description}</p>
         </div>
       </header>
@@ -1486,6 +1486,7 @@ export default function App() {
   const [cascaderValue, setCascaderValue] = useState<string[]>(['east', 'shanghai', 'pudong']);
   const [treeValue, setTreeValue] = useState<string | null>('frontend');
   const [treeValues, setTreeValues] = useState(['product-design', 'frontend']);
+  const [treeSelectDialogOpen, setTreeSelectDialogOpen] = useState(false);
   const [transferTargetKeys, setTransferTargetKeys] = useState<React.Key[]>(['camera-north', 'radar']);
   const [dateValue, setDateValue] = useState('2026-08-21');
   const [monthValue, setMonthValue] = useState('2026-08');
@@ -2061,7 +2062,7 @@ export default function App() {
             </Tooltip>
             <DropdownMenu
               className="topbar-notification"
-              menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden py-0"
+              menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden p-0"
               trigger={({ open, toggle }) => (
                 <Tooltip content="通知" placement="bottom">
                   <Button
@@ -2223,7 +2224,7 @@ export default function App() {
                 <DemoCard title="Headings">
                   <div className="stack">
                     <Typography variant="h1">H1 运营总览</Typography>
-                    <Typography variant="h2">H2 事件处置</Typography>
+                    <Typography variant="h2">组织架构与人员管理</Typography>
                     <Typography variant="h3">H3 实时监测</Typography>
                     <Typography variant="h4">H4 设备状态</Typography>
                     <Typography variant="h5">H5 基础配置</Typography>
@@ -2590,10 +2591,17 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="Checkbox">
-                  <div className="flex flex-wrap items-center gap-5">
-                    <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />
-                    <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />
-                    <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />
+                  <div className="stack">
+                    <div className="flex flex-wrap items-center gap-5">
+                      <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />
+                      <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />
+                      <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />
+                    </div>
+                    <div className="flex flex-wrap items-center gap-5">
+                      <Checkbox label="Mobile" />
+                      <Checkbox label="Pad" defaultChecked />
+                      <Checkbox label="Desktop" />
+                    </div>
                   </div>
                 </DemoCard>
                 <DemoCard title="Radio">
@@ -2714,31 +2722,60 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="TreeSelect" wide>
-                  <div className="form-grid">
-                    <TreeSelect
-                      nodes={treeNodes}
-                      value={treeValue}
-                      onChange={(value) => setTreeValue(value)}
-                      searchable
-                      getValue={(node) => node.id}
-                      getLabel={(node) => node.label}
-                      isNodeSelectable={isTreeNodeSelectable}
-                      placeholder="选择组织"
-                    />
-                    <TreeSelect
-                      nodes={treeNodes}
-                      value={null}
-                      values={treeValues}
-                      multiple
-                      onChange={() => undefined}
-                      onMultiChange={(values) => setTreeValues(values)}
-                      searchable
-                      getValue={(node) => node.id}
-                      getLabel={(node) => node.label}
-                      isNodeSelectable={isTreeNodeSelectable}
-                      placeholder="选择多个组织"
-                    />
+                  <div className="flex flex-col items-start gap-4">
+                    <div className="form-grid w-full">
+                      <TreeSelect
+                        nodes={treeNodes}
+                        value={treeValue}
+                        onChange={(value) => setTreeValue(value)}
+                        searchable
+                        getValue={(node) => node.id}
+                        getLabel={(node) => node.label}
+                        isNodeSelectable={isTreeNodeSelectable}
+                        placeholder="选择组织"
+                      />
+                      <TreeSelect
+                        nodes={treeNodes}
+                        value={null}
+                        values={treeValues}
+                        multiple
+                        onChange={() => undefined}
+                        onMultiChange={(values) => setTreeValues(values)}
+                        searchable
+                        getValue={(node) => node.id}
+                        getLabel={(node) => node.label}
+                        isNodeSelectable={isTreeNodeSelectable}
+                        placeholder="选择多个组织"
+                      />
+                    </div>
+                    <Button variant="outline" onClick={() => setTreeSelectDialogOpen(true)}>
+                      弹窗内树形多选
+                    </Button>
                   </div>
+                  <Dialog
+                    open={treeSelectDialogOpen}
+                    onRequestClose={() => setTreeSelectDialogOpen(false)}
+                    title="树形多选"
+                    description="展开分支后可连续选择，内容超出可用高度时在下拉框内滚动。"
+                    panelClassName="dialog-panel"
+                  >
+                    <div className="mt-5">
+                      <TreeSelect
+                        nodes={treeNodes.map((node) => ({ ...node }))}
+                        value={null}
+                        values={treeValues}
+                        multiple
+                        defaultExpandedDepth={0}
+                        onChange={() => undefined}
+                        onMultiChange={setTreeValues}
+                        searchable
+                        getValue={(node) => node.id}
+                        getLabel={(node) => node.label}
+                        isNodeSelectable={isTreeNodeSelectable}
+                        placeholder="选择多个组织"
+                      />
+                    </div>
+                  </Dialog>
                 </DemoCard>
                 <DemoCard title="Cascader" wide>
                   <div className="max-w-[420px]">
@@ -3041,6 +3078,7 @@ export default function App() {
                 </DemoCard>
                 <DemoCard title="DropdownMenu">
                   <div className="stack">
+                    <p>菜单默认最小宽度为 160px。</p>
                     <DropdownMenu
                       menuMode
                       trigger={({ toggle, open, menuId }) => (
@@ -3058,7 +3096,7 @@ export default function App() {
                       )}
                     >
                       {({ close }) => (
-                        <div className="min-w-[180px] px-2 py-1.5">
+                        <>
                           <DropdownMenuItem onClick={close}>
                             <Copy size={15} />
                             复制组件名称
@@ -3071,7 +3109,7 @@ export default function App() {
                             <Star size={15} />
                             标记为常用
                           </DropdownMenuItem>
-                        </div>
+                        </>
                       )}
                     </DropdownMenu>
                   </div>

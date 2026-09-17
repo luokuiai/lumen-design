@@ -146,6 +146,8 @@ describe('SideNav', () => {
       'text-[14px]',
       'font-normal',
     );
+    expect(activeItem).not.toHaveClass('font-medium');
+    expect(screen.getByRole('button', { name: 'Settings' })).toHaveClass('font-normal');
     expect(screen.getByText('Workspace')).toHaveClass('text-[13px]', 'font-normal');
 
     fireEvent.click(activeItem);

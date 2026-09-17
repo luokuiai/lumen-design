@@ -21,6 +21,7 @@ export type TypographyTone =
   | 'inherit';
 
 export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
+  'data-ui'?: string;
   variant?: TypographyVariant;
   tone?: TypographyTone;
   as?: React.ElementType;
@@ -64,6 +65,7 @@ const isHeadingVariant = (variant: TypographyVariant) => variant.startsWith('h')
 export const Typography = React.forwardRef<HTMLElement, TypographyProps>(
   (
     {
+      'data-ui': dataUi = 'typography',
       variant = 'body',
       tone,
       as,
@@ -79,11 +81,13 @@ export const Typography = React.forwardRef<HTMLElement, TypographyProps>(
       <Component
         {...props}
         ref={ref}
-        data-ui="typography"
+        data-ui={dataUi}
         data-variant={variant}
         className={cn(
           typographyVariantClassNames[variant],
-          typographyToneClassNames[resolvedTone],
+          tone === undefined && isHeadingVariant(variant)
+            ? 'text-[var(--lumen-color-text-heading,var(--lumen-color-text-strong))]'
+            : typographyToneClassNames[resolvedTone],
           className,
         )}
       />

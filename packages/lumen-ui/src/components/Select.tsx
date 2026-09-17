@@ -493,7 +493,7 @@ export const Select = <T extends string | number = string>({
     return (
       <div className="flex min-w-0 flex-1 items-center gap-2">
         {selected?.icon && <span className="shrink-0">{selected.icon}</span>}
-        <span className="truncate text-[var(--lumen-color-text)]">{selected?.label}</span>
+        <span className="truncate text-[var(--lumen-select-text,var(--lumen-color-text))]">{selected?.label}</span>
       </div>
     );
   };
@@ -511,7 +511,7 @@ export const Select = <T extends string | number = string>({
       return (
         <div className="flex min-w-0 flex-1 py-1">
           {selectedValues.length > 0 ? (
-            <span className="truncate text-[var(--lumen-color-text)]">
+            <span className="truncate text-[var(--lumen-select-text,var(--lumen-color-text))]">
               {multipleCountLabel(selectedValues.length)}
             </span>
           ) : (
@@ -555,7 +555,7 @@ export const Select = <T extends string | number = string>({
         <input
           ref={searchInputRef}
           className={cn(
-            'w-full bg-transparent text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]',
+            'w-full bg-transparent text-[var(--lumen-select-text,var(--lumen-color-text))] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]',
             selectTextSizeTokens[size],
           )}
           placeholder={searchPlaceholder}
@@ -595,7 +595,7 @@ export const Select = <T extends string | number = string>({
             !renderOption &&
               (isSelected
                 ? 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]'
-                : 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]'),
+                : 'text-[var(--lumen-select-option-text,var(--lumen-color-text-secondary))] hover:bg-[var(--lumen-color-surface-muted)]'),
             !renderOption &&
               isHighlighted &&
               !option.disabled &&
@@ -649,8 +649,8 @@ export const Select = <T extends string | number = string>({
           option.disabled && 'cursor-not-allowed opacity-40',
           !renderOption &&
             (isSelected
-              ? 'bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary)]'
-              : 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]'),
+              ? 'bg-[var(--lumen-color-primary-soft)] font-medium text-[var(--lumen-color-primary)]'
+              : 'text-[var(--lumen-select-option-text,var(--lumen-color-text-secondary))] hover:bg-[var(--lumen-color-surface-muted)]'),
           !renderOption &&
             isHighlighted &&
             !option.disabled &&
@@ -791,7 +791,7 @@ export const Select = <T extends string | number = string>({
                   return (
                     <React.Fragment key={String(option.value)}>
                       {shouldRenderGroup && (
-                <div className="px-3 pb-1 pt-2 text-[12px] font-normal text-[var(--lumen-color-text-placeholder)]">
+                <div className="px-3 pb-1 pt-2 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]">
                           {option.group}
                         </div>
                       )}

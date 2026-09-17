@@ -1114,6 +1114,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
   ],
   "Typography": [
     {
+      "name": "data-ui",
+      "type": "string",
+      "defaultValue": "undefined",
+      "description": "设置 data-ui。",
+      "descriptionEn": "Configures data ui.",
+      "required": false
+    },
+    {
       "name": "variant",
       "type": "\"h1\" | \"h2\" | \"h3\" | \"h4\" | \"h5\" | \"h6\" | \"body\" | \"body-sm\" | \"caption\"",
       "defaultValue": "'body'",
@@ -1123,7 +1131,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     },
     {
       "name": "tone",
-      "type": "\"default\" | \"secondary\" | \"placeholder\" | \"strong\" | \"muted\" | \"inherit\"",
+      "type": "\"strong\" | \"default\" | \"secondary\" | \"muted\" | \"placeholder\" | \"inherit\"",
       "defaultValue": "undefined",
       "description": "设置内容的语义色调。",
       "descriptionEn": "Sets the semantic color tone.",

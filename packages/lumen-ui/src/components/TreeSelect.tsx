@@ -259,6 +259,10 @@ export const TreeSelect = <TNode,>({
   const containerRef = useRef<HTMLDivElement>(null);
   const portalRef = useRef<HTMLDivElement>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const openingDirectionRef = useRef<boolean | null>(null);
+  const defaultExpansionKey = JSON.stringify(
+    getDefaultExpandedKeys(nodes, getValue, getChildren, defaultExpandedDepth),
+  );
 
   const updateDropdownPosition = useCallback(() => {
     if (!containerRef.current) {
@@ -269,10 +273,16 @@ export const TreeSelect = <TNode,>({
     const dropdownHeight = portalRef.current?.offsetHeight || estimatedHeight;
     const gap = 6;
     const viewportPadding = 8;
-    const shouldOpenUp = window.innerHeight - rect.bottom < dropdownHeight;
+    const spaceBelow = Math.max(0, window.innerHeight - rect.bottom - gap - viewportPadding);
+    const spaceAbove = Math.max(0, rect.top - gap - viewportPadding);
+    if (openingDirectionRef.current === null) {
+      openingDirectionRef.current = spaceAbove > spaceBelow;
+    }
+    const shouldOpenUp = openingDirectionRef.current;
+    const maxHeight = shouldOpenUp ? spaceAbove : spaceBelow;
     const top = shouldOpenUp
-      ? Math.max(viewportPadding, rect.top - dropdownHeight - gap)
-      : Math.min(window.innerHeight - viewportPadding, rect.bottom + gap);
+      ? Math.max(viewportPadding, rect.top - Math.min(dropdownHeight, maxHeight) - gap)
+      : Math.max(viewportPadding, Math.min(window.innerHeight - viewportPadding, rect.bottom + gap));
     const availableWidth = Math.max(0, window.innerWidth - viewportPadding * 2);
     const triggerWidth = Math.min(rect.width, availableWidth);
     const maxWidth = Math.min(Math.max(triggerWidth, triggerWidth * 2.8), availableWidth, 480);
@@ -296,6 +306,7 @@ export const TreeSelect = <TNode,>({
       width: 'max-content',
       minWidth: triggerWidth,
       maxWidth,
+      maxHeight,
       zIndex: 9999,
     });
     setIsPositioned(true);
@@ -324,17 +335,9 @@ export const TreeSelect = <TNode,>({
     expandSearchResults && searchable && searchKeyword.trim().length > 0;
 
   useEffect(() => {
-    setExpandedKeys(
-      getDefaultExpandedKeys(
-        nodes,
-        getValue,
-        getChildren,
-        defaultExpandedDepth,
-      ),
-    );
-    // Reset expansion only when the tree data/depth changes; callback props may be inline.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultExpandedDepth, nodes]);
+    // Compare expansion defaults by value: controlled selection may recreate nodes.
+    setExpandedKeys(JSON.parse(defaultExpansionKey) as string[]);
+  }, [defaultExpansionKey]);
 
   useEffect(() => {
     return () => {
@@ -377,11 +380,16 @@ export const TreeSelect = <TNode,>({
 
     updateDropdownPosition();
     const frameId = window.requestAnimationFrame(updateDropdownPosition);
+    const resizeObserver = typeof ResizeObserver === 'undefined'
+      ? null : new ResizeObserver(updateDropdownPosition);
+    if (containerRef.current) resizeObserver?.observe(containerRef.current);
+    if (portalRef.current) resizeObserver?.observe(portalRef.current);
     window.addEventListener('scroll', updateDropdownPosition, true);
     window.addEventListener('resize', updateDropdownPosition);
 
     return () => {
       window.cancelAnimationFrame(frameId);
+      resizeObserver?.disconnect();
       window.removeEventListener('scroll', updateDropdownPosition, true);
       window.removeEventListener('resize', updateDropdownPosition);
     };
@@ -421,8 +429,8 @@ export const TreeSelect = <TNode,>({
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
     }
+    openingDirectionRef.current = null;
     setIsPositioned(false);
-    updateDropdownPosition();
     setIsOpen(true);
     setIsAnimatingOut(false);
   };
@@ -674,10 +682,11 @@ export const TreeSelect = <TNode,>({
             ref={portalRef}
             data-ui="tree-select-dropdown"
             data-testid="tree-select-dropdown"
+            data-placement={shouldDropUp ? 'top' : 'bottom'}
             data-lumen-overlay-scope={overlayScopeId ?? undefined}
             className={cn(
               radiusTokens.card,
-              'border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]',
+              'flex flex-col overflow-hidden border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]',
             )}
             style={{
               ...dropdownStyle,
@@ -693,7 +702,7 @@ export const TreeSelect = <TNode,>({
             }}
           >
             {searchable ? (
-              <div className="border-b border-[var(--lumen-color-surface-muted)] p-2.5">
+              <div className="shrink-0 border-b border-[var(--lumen-color-surface-muted)] p-2.5">
                 <div className="flex items-center gap-2 rounded-[8px] bg-[var(--lumen-color-surface-muted)] px-3 py-2">
                   <Search size={14} className="shrink-0 text-[var(--lumen-color-text-placeholder)]" />
                   <input
@@ -709,7 +718,7 @@ export const TreeSelect = <TNode,>({
                 </div>
               </div>
             ) : null}
-            <div className="max-h-[280px] overflow-y-auto px-2.5 py-1.5">
+            <div className="min-h-0 max-h-[280px] overflow-y-auto overscroll-contain px-2.5 py-1.5">
               {loading ? (
                 <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
                   {locale.treeSelect.loadingText}
@@ -723,7 +732,7 @@ export const TreeSelect = <TNode,>({
               )}
             </div>
             {multiple && selectedValues.some((item) => !lockedValueSet.has(item)) ? (
-              <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-3 py-2.5">
+              <div className="flex shrink-0 items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-3 py-2.5">
                 <span className="text-[12px] text-[var(--lumen-color-text-placeholder)]">{locale.treeSelect.selectedCount(selectedValues.length)}</span>
                 <button
                   type="button"

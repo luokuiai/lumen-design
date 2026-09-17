@@ -253,7 +253,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                     >
                       {item.icon ? <span className="shrink-0 text-[var(--lumen-color-text-muted)]">{item.icon}</span> : null}
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-[13px] font-medium">{item.label}</span>
+                        <span className="block truncate text-[14px] font-normal text-[color-mix(in_srgb,var(--lumen-color-text)_65%,var(--lumen-color-text-strong))]">{item.label}</span>
                         {item.description ? (
                           <span className="mt-0.5 block truncate text-[12px] text-[var(--lumen-color-text-muted)]">{item.description}</span>
                         ) : null}

@@ -2,6 +2,7 @@ node_modules/
 dist/
 coverage/
 .codex/
+.pi/
 *.log
 .DS_Store
 /paseo.json
