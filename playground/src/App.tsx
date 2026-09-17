@@ -785,6 +785,11 @@ const basicSelectOptions = [
   { label: '需求同步', value: 'sync' },
   { label: '线上发布', value: 'release' },
   { label: '回归测试', value: 'qa' },
+  { label: '代码审查', value: 'code-review' },
+  { label: '性能优化', value: 'performance' },
+  { label: '安全检查', value: 'security' },
+  { label: '文档更新', value: 'documentation' },
+  { label: '版本复盘', value: 'retrospective' },
 ];
 
 const selectOptions = [
@@ -3396,6 +3401,7 @@ export default function App() {
                   <div className="form-grid items-start">
                     <Scrollbar
                       aria-label="告警记录"
+                      placement="outer"
                       className="h-48 rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
                     >
                       <div className="divide-y divide-[var(--lumen-color-surface-muted)] px-4">

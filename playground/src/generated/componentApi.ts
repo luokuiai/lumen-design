@@ -3264,6 +3264,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "description": "仅在悬停或获得焦点时显示滑块",
       "descriptionEn": "Configures auto hide.",
       "required": false
+    },
+    {
+      "name": "placement",
+      "type": "\"inner\" | \"outer\"",
+      "defaultValue": "'inner'",
+      "description": "inner 使用原生轨道；outer 在内容外侧单独预留轨道区域。",
+      "descriptionEn": "Sets the position of the overlay or positioned element.",
+      "required": false
     }
   ],
   "TreeSelect": [

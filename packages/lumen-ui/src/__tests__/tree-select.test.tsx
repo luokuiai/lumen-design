@@ -30,6 +30,10 @@ describe('TreeSelect', () => {
     fireEvent.click(screen.getByTestId('tree-select-expand-parent'));
     fireEvent.click(screen.getByTestId('tree-select-option-first'));
     expect(screen.getByTestId('tree-select-dropdown')).toBeInTheDocument();
+    const scrollbar = screen.getByTestId('tree-select-dropdown').querySelector('[data-ui="scrollbar"]');
+    expect(scrollbar).toHaveAttribute('data-size', 'sm');
+    expect(scrollbar).toHaveAttribute('tabindex', '-1');
+    expect(scrollbar?.firstElementChild).toHaveClass('px-2.5', 'py-1.5');
     expect(screen.getByTestId('tree-select-expand-parent')).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getByTestId('tree-select-option-second').closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'false');
     fireEvent.click(screen.getByTestId('tree-select-option-second'));
