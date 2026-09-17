@@ -18,6 +18,9 @@
   --lumen-color-text-secondary: #605968;
   --lumen-color-text-muted: #67616d;
   --lumen-color-text-placeholder: #938f99;
+  --lumen-select-text: var(--lumen-color-text);
+  --lumen-select-option-text: var(--lumen-color-text-secondary);
+  --lumen-side-nav-text: var(--lumen-color-text-secondary);
   --lumen-color-surface: #fffbfe;
   --lumen-color-surface-muted: #f3edf7;
   --lumen-color-surface-subtle: #f9f5fa;
@@ -98,6 +101,9 @@
   --lumen-color-text-secondary: #cac4d0;
   --lumen-color-text-muted: #aea9b4;
   --lumen-color-text-placeholder: #938f99;
+  --lumen-select-text: var(--lumen-color-text);
+  --lumen-select-option-text: var(--lumen-color-text-secondary);
+  --lumen-side-nav-text: var(--lumen-color-text-secondary);
   --lumen-color-surface: #141218;
   --lumen-color-surface-muted: #211f26;
   --lumen-color-surface-subtle: #1d1b20;

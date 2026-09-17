@@ -63,7 +63,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     <label
       htmlFor={inputId}
       className={cn(
-        'inline-flex gap-3',
+        'inline-flex gap-3 py-1.5',
         hasDescription ? 'items-start' : 'items-center',
         isSmall && 'gap-2',
         disabled ? 'cursor-not-allowed opacity-55' : 'cursor-pointer',
@@ -99,7 +99,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             indicatorRadius,
             indicatorVisible
               ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]'
-              : 'border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-transparent',
+              : 'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_70%,var(--lumen-color-surface))] bg-[var(--lumen-color-surface)] text-transparent',
             !disabled && 'peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--lumen-color-info-border)]/70 peer-focus-visible:ring-offset-2',
             !disabled && !indicatorVisible && 'hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)]',
           )}
@@ -118,7 +118,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
               id={labelId}
               className={cn(
                 'block font-normal',
-                indicatorVisible ? 'text-[var(--lumen-color-text)]' : 'text-[var(--lumen-color-text-muted)]',
+                'text-[var(--lumen-color-text)]',
                 'text-[14px] leading-5',
               )}
             >

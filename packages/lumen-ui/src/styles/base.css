@@ -8,6 +8,15 @@
   --breakpoint-xxxl: 160rem;
 }
 
+@theme inline {
+  --font-weight-normal: var(--lumen-font-weight-normal);
+  --font-weight-medium: var(--lumen-font-weight-medium);
+  --font-weight-semibold: var(--lumen-font-weight-strong);
+  --font-weight-bold: var(--lumen-font-weight-strong);
+  --font-weight-extrabold: var(--lumen-font-weight-strong);
+  --font-weight-black: var(--lumen-font-weight-strong);
+}
+
 @custom-variant mobile (@media (width < 40rem));
 @custom-variant pad (@media (40rem <= width < 64rem));
 
@@ -48,7 +57,11 @@
 
 :where([data-lumen-theme]) {
   font-family: var(--lumen-font-family);
+  font-weight: var(--lumen-font-weight-normal);
   color: var(--lumen-color-text);
+}
+
+:where([data-lumen-theme]) :where(h1, h2, h3, h4, h5, h6) {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

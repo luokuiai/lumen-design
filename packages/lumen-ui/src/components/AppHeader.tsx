@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from './classNames';
+import { Typography } from './Typography';
 
 export interface AppHeaderProps
   extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
@@ -45,12 +46,14 @@ export const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>(
           </div>
         ) : null}
         <div className="min-w-0">
-          <h1
+          <Typography
+            as="h1"
+            variant="h2"
             data-ui="app-header-title"
-            className="m-0 truncate text-[20px] font-medium leading-[1.25] text-[var(--lumen-color-text-strong)]"
+            className="truncate"
           >
             {title}
-          </h1>
+          </Typography>
           {description ? (
             <p
               data-ui="app-header-description"

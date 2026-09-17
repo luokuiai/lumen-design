@@ -1224,7 +1224,7 @@ function GallerySection({ section, children }: { section: Section; children: Rea
     <section id={section.id} className="gallery-section">
       <header className="section-header">
         <div>
-          <h2>{section.title}</h2>
+          <Typography as="h2" variant="h4">{section.title}</Typography>
           <p>{section.description}</p>
         </div>
       </header>
@@ -2591,10 +2591,17 @@ export default function App() {
                   </div>
                 </DemoCard>
                 <DemoCard title="Checkbox">
-                  <div className="flex flex-wrap items-center gap-5">
-                    <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />
-                    <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />
-                    <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />
+                  <div className="stack">
+                    <div className="flex flex-wrap items-center gap-5">
+                      <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />
+                      <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />
+                      <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />
+                    </div>
+                    <div className="flex flex-wrap items-center gap-5">
+                      <Checkbox label="Mobile" />
+                      <Checkbox label="Pad" defaultChecked />
+                      <Checkbox label="Desktop" />
+                    </div>
                   </div>
                 </DemoCard>
                 <DemoCard title="Radio">

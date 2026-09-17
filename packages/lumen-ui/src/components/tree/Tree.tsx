@@ -137,9 +137,11 @@ export function Tree({
       >
         <div
           className={cn(
-            'flex items-center gap-1 rounded-[var(--lumen-radius-control)] pr-2 text-[var(--lumen-color-text-secondary)]',
+            'flex items-center gap-1 rounded-[var(--lumen-radius-control)] pr-2',
             sizes[size],
-            selected.has(node.key) && 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]',
+            selected.has(node.key)
+              ? 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]'
+              : 'text-[var(--lumen-color-text)]',
             isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-[var(--lumen-color-surface-muted)]',
           )}
           style={{ paddingInlineStart: level * 20 + 4 }}

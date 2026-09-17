@@ -25,6 +25,10 @@ describe('AppHeader', () => {
       'text-[20px]',
       'font-medium',
     );
+    const heading = screen.getByRole('heading', { name: 'Operations', level: 1 });
+    expect(heading).toHaveAttribute('data-ui', 'app-header-title');
+    expect(heading).toHaveAttribute('data-variant', 'h2');
+    expect(heading).toHaveClass('text-[var(--lumen-color-text-heading,var(--lumen-color-text-strong))]');
     expect(screen.getByText('Monitor active work')).toHaveClass('text-[12px]');
     expect(screen.getByRole('button', { name: 'Menu' })).toBeInTheDocument();
     expect(screen.getByRole('searchbox', { name: 'Search' })).toBeInTheDocument();

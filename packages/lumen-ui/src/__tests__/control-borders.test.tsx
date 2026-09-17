@@ -12,7 +12,7 @@ import { TimePicker } from '../components/TimePicker';
 const standardBorderClassName = 'border-[var(--lumen-color-border)]';
 
 describe('control borders', () => {
-  it('uses the standard border token for resting controls', () => {
+  it('uses muted choice borders and standard borders for other controls', () => {
     render(
       <>
         <Input aria-label="Name" />
@@ -39,10 +39,10 @@ describe('control borders', () => {
       standardBorderClassName,
     );
     expect(screen.getByRole('checkbox', { name: 'Enable' }).nextElementSibling).toHaveClass(
-      standardBorderClassName,
+      'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_70%,var(--lumen-color-surface))]',
     );
     expect(screen.getByRole('radio', { name: 'Choose' }).nextElementSibling).toHaveClass(
-      standardBorderClassName,
+      'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_70%,var(--lumen-color-surface))]',
     );
     expect(screen.getByText('Status')).toHaveClass(standardBorderClassName);
     expect(screen.getByRole('button', { name: '文件上传' })).toHaveClass(
