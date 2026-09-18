@@ -1983,7 +1983,7 @@ export default function App() {
                     [zhCN, '简体中文'],
                     [enUS, 'English'],
                   ] as const).map(([option, label]) => (
-                    <button
+                    <DropdownMenuItem
                       key={option.locale}
                       type="button"
                       role="menuitemradio"
@@ -1996,7 +1996,7 @@ export default function App() {
                     >
                       <span>{label}</span>
                       {locale === option ? <Check aria-hidden="true" size={15} /> : null}
-                    </button>
+                    </DropdownMenuItem>
                   ))}
                 </div>
               )}
@@ -2037,7 +2037,7 @@ export default function App() {
                     const selected = theme === themeValue
                       && (themeValue !== 'clarity' || accent === accentValue);
                     return (
-                    <button
+                    <DropdownMenuItem
                       key={`${themeValue}-${accentValue ?? 'default'}`}
                       type="button"
                       role="menuitemradio"
@@ -2052,7 +2052,7 @@ export default function App() {
                       <span className={`accent-swatch accent-swatch-${accentValue ?? themeValue}`} />
                       <span>{label}</span>
                       {selected ? <Check aria-hidden="true" size={15} /> : null}
-                    </button>
+                    </DropdownMenuItem>
                     );
                   })}
                 </div>
@@ -2180,20 +2180,20 @@ export default function App() {
                     </span>
                   </div>
                   <div className="account-menu-actions">
-                    <button type="button" role="menuitem" onClick={close}>
+                    <DropdownMenuItem type="button" role="menuitem" onClick={close}>
                       <UserRound size={16} />
                       个人信息
-                    </button>
-                    <button type="button" role="menuitem" onClick={close}>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem type="button" role="menuitem" onClick={close}>
                       <Settings size={16} />
                       账户设置
-                    </button>
+                    </DropdownMenuItem>
                   </div>
                   <div className="account-menu-actions account-menu-footer">
-                    <button type="button" role="menuitem" className="account-menu-logout" onClick={close}>
+                    <DropdownMenuItem type="button" role="menuitem" className="account-menu-logout" onClick={close}>
                       <LogOut size={16} />
                       退出登录
-                    </button>
+                    </DropdownMenuItem>
                   </div>
                 </div>
               )}

@@ -43,6 +43,8 @@ export interface DropdownMenuProps {
 
 export interface DropdownMenuItemProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'role' | 'children'> {
+  /** 菜单项的无障碍语义：普通项、单选项或复选项。 */
+  role?: 'menuitem' | 'menuitemradio' | 'menuitemcheckbox';
   /** 菜单项内容。 */
   children: React.ReactNode;
 }
@@ -50,11 +52,11 @@ export interface DropdownMenuItemProps
 export const DropdownMenuItem = React.forwardRef<
   HTMLButtonElement,
   DropdownMenuItemProps
->(({ className, type = 'button', ...props }, ref) => (
+>(({ className, type = 'button', role = 'menuitem', ...props }, ref) => (
   <button
     ref={ref}
     type={type}
-    role="menuitem"
+    role={role}
     className={cn(
       'flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-[6px] px-2.5 text-left text-[14px] font-normal text-[var(--lumen-color-text-strong)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] focus-visible:bg-[var(--lumen-color-surface-muted)] focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-border)] disabled:cursor-not-allowed disabled:opacity-45',
       className,
@@ -169,7 +171,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   const getMenuItems = useCallback(
     () =>
       Array.from(
-        menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ??
+        menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"]') ??
           [],
       ).filter(
         (item) =>

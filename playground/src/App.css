@@ -448,28 +448,7 @@ body {
 .locale-option {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 16px;
-  align-items: center;
   gap: 12px;
-  width: 100%;
-  min-height: 36px;
-  padding: 7px 9px;
-  border: 0;
-  border-radius: var(--lumen-radius-control);
-  background: transparent;
-  color: var(--lumen-color-text-secondary);
-  text-align: left;
-  cursor: pointer;
-}
-
-.locale-option:hover,
-.locale-option:focus-visible {
-  background: var(--lumen-color-surface-muted);
-  color: var(--lumen-color-text-strong);
-}
-
-.locale-option:focus-visible {
-  outline: 2px solid var(--lumen-color-primary);
-  outline-offset: -2px;
 }
 
 .accent-options {
@@ -479,25 +458,8 @@ body {
 
 .accent-option {
   display: grid;
-  width: 100%;
-  min-height: 36px;
-  cursor: pointer;
   grid-template-columns: 18px minmax(0, 1fr) 16px;
-  align-items: center;
   gap: 9px;
-  border: 0;
-  border-radius: var(--lumen-radius-control);
-  background: transparent;
-  padding: 7px 9px;
-  color: var(--lumen-color-text-secondary);
-  text-align: left;
-}
-
-.accent-option:hover,
-.accent-option:focus-visible {
-  background: var(--lumen-color-surface-muted);
-  color: var(--lumen-color-text-strong);
-  outline: none;
 }
 
 .accent-swatch {
@@ -613,30 +575,6 @@ body {
 .account-menu-actions {
   display: grid;
   padding: 5px;
-}
-
-.account-menu-actions button {
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  gap: 9px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  padding: 8px 9px;
-  color: var(--lumen-color-text-secondary);
-  font-size: 14px;
-  text-align: left;
-}
-
-.account-menu-actions button:hover,
-.account-menu-actions button:focus-visible {
-  background: var(--lumen-color-surface-muted);
-  color: var(--lumen-color-text);
-}
-
-.account-menu-actions button:focus {
-  outline: none;
 }
 
 .account-menu-footer {

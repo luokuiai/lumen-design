@@ -1971,8 +1971,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "role",
       "type": "\"dialog\" | \"alertdialog\"",
       "defaultValue": "'dialog'",
-      "description": "设置 dialog 或 alertdialog 无障碍语义。",
-      "descriptionEn": "Sets the dialog or alertdialog accessibility role.",
+      "description": "设置组件的无障碍角色。",
+      "descriptionEn": "Sets the component accessibility role.",
       "required": false
     },
     {
@@ -2067,6 +2067,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     }
   ],
   "DropdownMenuItem": [
+    {
+      "name": "role",
+      "type": "\"menuitem\" | \"menuitemcheckbox\" | \"menuitemradio\"",
+      "defaultValue": "'menuitem'",
+      "description": "菜单项的无障碍语义：普通项、单选项或复选项。",
+      "descriptionEn": "Sets the component accessibility role.",
+      "required": false
+    },
     {
       "name": "children",
       "type": "React.ReactNode",
