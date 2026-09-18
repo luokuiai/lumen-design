@@ -185,14 +185,14 @@ export const sideNavClassNames = {
   root: 'flex min-w-0 flex-col gap-[3px]',
   section: 'flex min-w-0 flex-col gap-[3px]',
   sectionTitle:
-    'flex h-7 items-center px-3 text-[13px] font-normal text-[var(--lumen-color-text-placeholder)]',
+    'flex h-7 items-center px-3 text-[13px] font-normal text-[var(--lumen-color-text-muted)]',
   collapsedDivider:
     'mx-auto my-1 h-px w-8 bg-[var(--lumen-color-border)]',
   item:
-    'relative flex min-w-0 cursor-pointer items-center rounded-[6px] border-0 text-left text-[14px] leading-[21px] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-[var(--lumen-color-primary)] focus-visible:-outline-offset-2',
-  expandedItem: 'min-h-[44px] w-full gap-2.5 px-3 py-[9px]',
+    'relative flex min-w-0 cursor-pointer items-center rounded-[6px] border-0 text-left text-[14px] leading-[21px] min-[1920px]:text-[15px] min-[1920px]:leading-[22px] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-[var(--lumen-color-primary)] focus-visible:-outline-offset-2',
+  expandedItem: 'min-h-[40px] w-full gap-2.5 px-3 py-[7px]',
   collapsedItem: 'h-11 w-11 justify-center p-0',
-  childItem: 'min-h-[39px] w-full gap-2.5 px-2.5 py-[9px]',
+  childItem: 'min-h-[35px] w-full gap-2.5 px-2.5 py-[7px]',
   children: 'ml-7 mt-0.5 mb-1.5 flex min-w-0 flex-col gap-0.5',
   activeGroup: 'font-normal bg-transparent text-[var(--lumen-color-primary)] hover:bg-[var(--lumen-color-surface-muted)]',
   activeItem:
