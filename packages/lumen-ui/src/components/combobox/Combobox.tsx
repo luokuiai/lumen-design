@@ -442,6 +442,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
         role="listbox"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabel ? undefined : inputId}
+        tabIndex={-1}
         className="lumen-scrollbar flex max-h-60 flex-col gap-1 overflow-y-auto p-2"
       >
         {loading ? (

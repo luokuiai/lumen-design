@@ -1,6 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import userEvent from '@testing-library/user-event';
 import { TreeSelect } from '../components/TreeSelect';
 
 const nodes = [
@@ -14,6 +15,29 @@ const nodes = [
 ];
 
 describe('TreeSelect', () => {
+  it('focuses the trigger and tree controls without stopping on content wrappers', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(<TreeSelect nodes={nodes} value={null} onChange={onChange}
+      getValue={(node) => node.value} getLabel={(node) => node.label}
+      isNodeSelectable={(node) => node.selectable !== false} />);
+    const trigger = screen.getByTestId('tree-select-trigger');
+    await user.tab();
+    expect(trigger).toHaveFocus();
+    expect(trigger).toHaveClass('focus-visible:border-[var(--lumen-color-primary)]', 'focus-visible:ring-2');
+    expect(onChange).not.toHaveBeenCalled();
+    await user.keyboard('{Enter}');
+    await user.tab();
+    expect(screen.getByTestId('tree-select-expand-parent')).toHaveFocus();
+    await user.tab();
+    const child = screen.getByTestId('tree-select-option-child');
+    expect(child).toHaveFocus();
+    expect(child).toHaveClass('outline-none', 'rounded-[inherit]');
+    expect(child.parentElement).toHaveAttribute('data-ui', 'tree-select-row');
+    await user.keyboard('{Enter}');
+    expect(onChange).toHaveBeenCalledWith('child', nodes[0]!.children![0]);
+  });
+
   it('keeps manually expanded branches open across controlled multi-selection rerenders', () => {
     const Harness = () => {
       const [values, setValues] = React.useState<string[]>([]);

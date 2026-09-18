@@ -51,6 +51,7 @@ const TimeColumn: React.FC<TimeColumnProps> = ({
     <div
       data-time-selector-column
       data-date-time-picker-time-column
+      tabIndex={-1}
       className="date-time-picker-time-column time-selector-column max-h-[266px] overflow-y-auto p-1"
     >
       {values.map((item) => {

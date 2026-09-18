@@ -3401,6 +3401,7 @@ export default function App() {
                   <div className="form-grid items-start">
                     <Scrollbar
                       aria-label="告警记录"
+                      tabIndex={0}
                       placement="outer"
                       className="h-48 rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
                     >
@@ -3414,6 +3415,7 @@ export default function App() {
                     </Scrollbar>
                     <Scrollbar
                       aria-label="巡检看板"
+                      tabIndex={0}
                       orientation="horizontal"
                       size="sm"
                       autoHide

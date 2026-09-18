@@ -82,7 +82,7 @@ export const Chip: React.FC<ChipProps> = ({
           type="button"
           aria-pressed={selected}
           disabled={disabled}
-          className="inline-flex min-w-0 items-center gap-1.5 self-stretch px-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-current/30 disabled:cursor-not-allowed"
+          className="inline-flex min-w-0 items-center gap-1.5 self-stretch rounded-[inherit] px-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-current/30 disabled:cursor-not-allowed"
           onClick={() => onSelect(!selected)}
         >
           {content}

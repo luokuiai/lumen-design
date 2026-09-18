@@ -159,13 +159,13 @@ export const Pagination = ({
           </div>
         ) : null}
       </div>
-      <div className="flex max-w-full flex-wrap items-center gap-0.5 overflow-x-auto">
+      <div tabIndex={-1} className="flex max-w-full flex-wrap items-center gap-0.5 overflow-x-auto">
         <button
           type="button"
           aria-label={locale.pagination.previous}
           onClick={() => onPageChange(safeCurrentPage - 1)}
           disabled={safeCurrentPage <= 1 || loading}
-          className="flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] disabled:cursor-not-allowed disabled:opacity-30"
+          className="flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20 hover:bg-[var(--lumen-color-primary-soft)] disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronLeft size={14} />
         </button>
@@ -178,10 +178,10 @@ export const Pagination = ({
               disabled={loading}
               aria-current={item === safeCurrentPage ? 'page' : undefined}
               className={cn(
-                'h-[28px] w-[28px] rounded-[6px] text-[12px] transition-colors',
+                'h-[28px] w-[28px] rounded-[6px] text-[12px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset',
                 item === safeCurrentPage
-                  ? 'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)]'
-                  : 'text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-primary-soft)]',
+                  ? 'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] focus-visible:ring-[var(--lumen-color-on-primary)]/70'
+                  : 'text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-primary-soft)] focus-visible:ring-[var(--lumen-color-primary)]/20',
               )}
             >
               {item}
@@ -200,7 +200,7 @@ export const Pagination = ({
           aria-label={locale.pagination.next}
           onClick={() => onPageChange(safeCurrentPage + 1)}
           disabled={safeCurrentPage >= safeTotalPages || loading}
-          className="flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] disabled:cursor-not-allowed disabled:opacity-30"
+          className="flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20 hover:bg-[var(--lumen-color-primary-soft)] disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronRight size={14} />
         </button>

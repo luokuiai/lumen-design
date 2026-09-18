@@ -3242,6 +3242,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
   ],
   "Scrollbar": [
     {
+      "name": "tabIndex",
+      "type": "number",
+      "defaultValue": "-1",
+      "description": "默认跳过容器，直接聚焦内部控件；纯内容滚动区可设置为 0。",
+      "descriptionEn": "Configures tab index.",
+      "required": false
+    },
+    {
       "name": "orientation",
       "type": "\"vertical\" | \"horizontal\" | \"both\"",
       "defaultValue": "'vertical'",

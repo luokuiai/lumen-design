@@ -162,6 +162,7 @@ export const Transfer: React.FC<TransferProps> = ({
           </div>
         ) : null}
         <ul
+          tabIndex={-1}
           aria-label={locale.transfer.list(side)}
           className="h-64 overflow-y-auto p-1.5"
         >

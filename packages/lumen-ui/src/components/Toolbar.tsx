@@ -76,6 +76,7 @@ export const Toolbar = React.forwardRef<HTMLDivElement, ToolbarProps>(
 
     return (
       <div
+        tabIndex={-1}
         {...props}
         ref={ref}
         role={role}

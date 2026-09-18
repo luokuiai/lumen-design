@@ -589,6 +589,7 @@ export const Select = <T extends string | number = string>({
           onClick={() => !option.disabled && handleSelect(option.value)}
           onMouseEnter={() => !option.disabled && setHighlightedIndex(index)}
           className={cn(
+            'outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20',
             renderOption
               ? 'block w-full text-left transition-all'
               : 'flex w-full items-center gap-2.5 rounded-[8px] p-2 text-left text-[14px] transition-colors',
@@ -644,6 +645,7 @@ export const Select = <T extends string | number = string>({
         onClick={() => !option.disabled && handleSelect(option.value)}
         onMouseEnter={() => !option.disabled && setHighlightedIndex(index)}
         className={cn(
+          'outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20',
           renderOption
             ? 'block w-full text-left transition-all'
             : 'flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] transition-colors',
@@ -696,7 +698,7 @@ export const Select = <T extends string | number = string>({
         type="button"
         data-ui="select-trigger"
         onClick={handleClearAll}
-        className="text-[12px] text-[var(--lumen-color-text-placeholder)] transition-colors hover:text-[var(--lumen-color-text-muted)]"
+        className="rounded-[6px] text-[12px] text-[var(--lumen-color-text-placeholder)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 transition-colors hover:text-[var(--lumen-color-text-muted)]"
       >
         {locale.common.clear}
       </button>
@@ -723,7 +725,7 @@ export const Select = <T extends string | number = string>({
           else openDropdown();
         }}
         className={cn(
-          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left font-normal outline-none transition-all',
+          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left font-normal outline-none transition-all focus-visible:border-[var(--lumen-color-primary)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
           radius ?? radiusTokens.control,
           selectSizeTokens[size],
           disabled || isPreparingOpen

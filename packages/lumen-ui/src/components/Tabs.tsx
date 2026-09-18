@@ -76,6 +76,7 @@ export const Tabs = <T extends string>({
         <div
           ref={tabListRef}
           role="tablist"
+          tabIndex={-1}
           data-testid="tabs-grid"
           className={cn(resolvedGridClassName, aside ? 'min-w-0 flex-1' : '')}
         >
@@ -101,7 +102,7 @@ export const Tabs = <T extends string>({
                 className={cn(
                   styles.base,
                   active ? styles.active : styles.inactive,
-                  'focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-[var(--lumen-color-primary)] focus-visible:-outline-offset-4 focus-visible:bg-[var(--lumen-color-primary-soft)]',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)] focus-visible:bg-[var(--lumen-color-primary-soft)]',
                   variant === 'default' ? 'rounded-[8px]' : '',
                   option.disabled ? 'cursor-not-allowed opacity-45 hover:translate-y-0' : '',
                   itemClassName,

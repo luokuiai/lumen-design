@@ -256,6 +256,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
             >
               <div
                 ref={panelRef}
+                tabIndex={-1}
                 data-ui="time-picker-panel"
                 data-time-picker-panel
                 data-lumen-overlay-scope={overlayScopeId ?? undefined}

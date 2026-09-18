@@ -280,6 +280,7 @@ export const Popover: React.FC<PopoverProps> = ({
           <div
             data-lumen-motion
             data-ui="popover"
+            tabIndex={-1}
             className={cn(
               'max-h-[inherit] max-w-[inherit] overflow-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4 shadow-[var(--lumen-shadow-dropdown)]',
               getTransformOriginClassName(actualPlacement, align),

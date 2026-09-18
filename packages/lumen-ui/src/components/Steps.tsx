@@ -51,6 +51,7 @@ export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
     ref,
   ) => (
     <ol
+      tabIndex={-1}
       {...props}
       ref={ref}
       data-ui="steps"
@@ -171,7 +172,7 @@ export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
               <button
                 type="button"
                 className={cn(
-                  'flex w-full gap-3 rounded-[8px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
+                  'flex w-full gap-3 rounded-[8px] focus:outline-none',
                   direction === 'horizontal'
                     ? 'flex-col items-center px-2 text-center'
                     : 'items-start text-left',

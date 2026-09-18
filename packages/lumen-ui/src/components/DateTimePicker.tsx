@@ -484,7 +484,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
           }
         }}
         className={cn(
-          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left outline-none transition-all',
+          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left outline-none transition-all focus-visible:border-[var(--lumen-color-primary)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
           dateTimePickerSizeTokens[size],
           radiusTokens.control,
           disabled
@@ -518,6 +518,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
             >
             <div
               ref={panelRef}
+              tabIndex={-1}
               data-date-time-picker-panel
               data-lumen-overlay-scope={overlayScopeId ?? undefined}
               className={cn(

@@ -203,7 +203,7 @@ const TimeWheelColumn: React.FC<TimeWheelColumnProps> = ({
           aria-activedescendant={`${id}-${selectedIndex}`}
           tabIndex={0}
           data-mobile-time-wheel-column
-          className="relative overflow-hidden overscroll-contain outline-none"
+          className="relative overflow-hidden overscroll-contain rounded-[var(--lumen-radius-control)] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]"
           style={{ height: WHEEL_HEIGHT, touchAction: 'none' }}
           onWheel={(event) => {
             event.preventDefault();

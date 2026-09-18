@@ -458,6 +458,7 @@ export const TreeSelect = <TNode,>({
     return (
       <div key={nodeValue}>
         <div
+          data-ui="tree-select-row"
           className={cn(
             'flex items-center rounded-[8px] px-2 py-1.5 transition-colors',
             optionSizeTokens[size],
@@ -475,7 +476,7 @@ export const TreeSelect = <TNode,>({
               type="button"
               data-testid={`tree-select-expand-${nodeValue}`}
               aria-expanded={isExpanded}
-              className="mr-1 flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)]"
+              className="mr-1 flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20 transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)]"
               onClick={(event) => {
                 event.stopPropagation();
                 toggleExpand(nodeValue);
@@ -495,10 +496,11 @@ export const TreeSelect = <TNode,>({
           <button
             type="button"
             data-testid={`tree-select-option-${nodeValue}`}
+            data-ui="tree-select-option"
             aria-disabled={!selectable}
             disabled={!selectable}
             className={cn(
-              'flex min-w-0 flex-1 items-center gap-2 bg-transparent text-left text-inherit',
+              'flex min-w-0 flex-1 items-center gap-2 rounded-[inherit] bg-transparent text-left text-inherit outline-none',
               selectable ? 'cursor-pointer' : '!cursor-default',
             )}
             onClick={() => {
@@ -609,7 +611,7 @@ export const TreeSelect = <TNode,>({
           openDropdown();
         }}
         className={cn(
-          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left font-normal outline-none transition-all',
+          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left font-normal outline-none transition-all focus-visible:border-[var(--lumen-color-primary)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
           radiusTokens.control,
           sizeTokens[size],
           disabled
@@ -739,7 +741,7 @@ export const TreeSelect = <TNode,>({
                 <span className="text-[12px] text-[var(--lumen-color-text-placeholder)]">{locale.treeSelect.selectedCount(selectedValues.length)}</span>
                 <button
                   type="button"
-                  className="text-[12px] text-[var(--lumen-color-text-placeholder)] transition-colors hover:text-[var(--lumen-color-text-muted)]"
+                  className="rounded-[6px] text-[12px] text-[var(--lumen-color-text-placeholder)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 transition-colors hover:text-[var(--lumen-color-text-muted)]"
                   onClick={() => {
                     const nextValues = latestSelectedValuesRef.current.filter((item) =>
                       lockedValueSet.has(item));
