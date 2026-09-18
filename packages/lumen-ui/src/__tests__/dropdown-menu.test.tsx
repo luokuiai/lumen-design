@@ -1,5 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { DropdownMenu, DropdownMenuItem } from '../components/DropdownMenu';
 
@@ -123,5 +124,32 @@ describe('DropdownMenu', () => {
     const item = screen.getByRole('menuitem', { name: 'Delete' });
     expect(item).toBeDisabled();
     expect(item).toHaveClass('min-h-9', 'font-normal');
+  });
+
+  it('navigates selectable menu items and activates them with the keyboard', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    render(
+      <DropdownMenu menuMode trigger={({ toggle }) => <button onClick={toggle}>Open</button>}>
+        <DropdownMenuItem role="menuitemradio" aria-checked={false} onClick={onSelect}>中文</DropdownMenuItem>
+        <DropdownMenuItem role="menuitemradio" aria-checked={false} disabled>Unavailable</DropdownMenuItem>
+        <DropdownMenuItem role="menuitemcheckbox" aria-checked={true}>Notifications</DropdownMenuItem>
+        <DropdownMenuItem>Account</DropdownMenuItem>
+      </DropdownMenu>,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Open' }));
+    const menu = screen.getByRole('menu');
+    const language = screen.getByRole('menuitemradio', { name: '中文' });
+    fireEvent.keyDown(menu, { key: 'ArrowDown' });
+    expect(language).toHaveFocus();
+    expect(language).toHaveAttribute('aria-checked', 'false');
+    fireEvent.keyDown(language, { key: 'ArrowDown' });
+    expect(screen.getByRole('menuitemcheckbox')).toHaveFocus();
+    fireEvent.keyDown(menu, { key: 'End' });
+    expect(screen.getByRole('menuitem', { name: 'Account' })).toHaveFocus();
+    fireEvent.keyDown(menu, { key: 'Home' });
+    expect(language).toHaveFocus();
+    await user.keyboard('{Enter}');
+    expect(onSelect).toHaveBeenCalledOnce();
   });
 });

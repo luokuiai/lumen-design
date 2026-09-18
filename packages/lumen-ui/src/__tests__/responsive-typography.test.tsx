@@ -173,7 +173,7 @@ describe('responsive typography', () => {
 
     expect(screen.getByRole('button', { name: '提交' })).toHaveClass(
       'text-[14px]',
-      'font-normal',
+      'font-medium',
     );
     expect(screen.getByTestId('select-trigger')).toHaveClass('text-[14px]', 'font-normal');
     expect(screen.getByTestId('tree-select-trigger')).toHaveClass('text-[14px]', 'font-normal');
