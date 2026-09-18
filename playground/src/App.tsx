@@ -39,9 +39,11 @@ import {
   Eye,
   Filter,
   Folder,
+  FolderTree,
   Languages,
   MapPin,
   LogOut,
+  Lock,
   MoreHorizontal,
   Menu,
   PanelLeftClose,
@@ -58,6 +60,7 @@ import {
   Trash2,
   Type as TypeIcon,
   UserRound,
+  UsersRound,
   X,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -3110,16 +3113,20 @@ export default function App() {
                       {({ close }) => (
                         <>
                           <DropdownMenuItem onClick={close}>
-                            <Copy size={15} />
-                            复制组件名称
+                            <UsersRound size={14} />
+                            群组管理
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={close}>
-                            <Code2 size={15} />
-                            查看源码路径
+                            <FolderTree size={14} />
+                            部门分组
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={close}>
-                            <Star size={15} />
-                            标记为常用
+                            <Lock size={14} />
+                            修改密码
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={close}>
+                            <LogOut size={14} />
+                            退出登录
                           </DropdownMenuItem>
                         </>
                       )}
