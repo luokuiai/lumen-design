@@ -165,7 +165,9 @@ export function Tree({
             className="grid transition-[grid-template-rows,opacity] duration-200 ease-out motion-reduce:transition-none"
             style={{ gridTemplateRows: expanded.has(node.key) ? '1fr' : '0fr', opacity: expanded.has(node.key) ? 1 : 0 }}
           >
-            <div className="min-h-0 overflow-hidden">{renderNodes(node.children!, level + 1)}</div>
+            <div className="min-h-0 overflow-hidden">
+              <div className="flex flex-col gap-0.5 pt-0.5">{renderNodes(node.children!, level + 1)}</div>
+            </div>
           </div>
         )}
       </div>
@@ -178,7 +180,7 @@ export function Tree({
       role="tree"
       aria-multiselectable={multiple || undefined}
       aria-disabled={disabled || undefined}
-      className={cn('min-w-0', className)}
+      className={cn('flex min-w-0 flex-col gap-0.5', className)}
     >
       {nodes.length ? renderNodes(nodes, 0) : emptyContent}
     </div>
