@@ -3090,7 +3090,7 @@ export default function App() {
                 </DemoCard>
                 <DemoCard title="DropdownMenu">
                   <div className="stack">
-                    <p>菜单默认最小宽度为 160px。</p>
+                    <p>菜单默认最小宽度为 160px，文字使用强调色，悬停和聚焦时保持字色。</p>
                     <DropdownMenu
                       menuMode
                       trigger={({ toggle, open, menuId }) => (

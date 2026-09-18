@@ -56,7 +56,7 @@ export const DropdownMenuItem = React.forwardRef<
     type={type}
     role="menuitem"
     className={cn(
-      'flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-[6px] px-2.5 text-left text-[14px] font-normal text-[var(--lumen-color-text-secondary)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text)] focus-visible:bg-[var(--lumen-color-surface-muted)] focus-visible:text-[var(--lumen-color-text)] focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-border)] disabled:cursor-not-allowed disabled:opacity-45',
+      'flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-[6px] px-2.5 text-left text-[14px] font-normal text-[var(--lumen-color-text-strong)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] focus-visible:bg-[var(--lumen-color-surface-muted)] focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-border)] disabled:cursor-not-allowed disabled:opacity-45',
       className,
     )}
     {...props}
