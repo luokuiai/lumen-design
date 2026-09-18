@@ -6,6 +6,8 @@ export type ScrollbarOrientation = 'vertical' | 'horizontal' | 'both';
 export type ScrollbarSize = 'sm' | 'md';
 
 export interface ScrollbarProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** 默认跳过容器，直接聚焦内部控件；纯内容滚动区可设置为 0。 */
+  tabIndex?: number;
   /** 可滚动方向 */
   orientation?: ScrollbarOrientation;
   /** 滚动条粗细 */
@@ -30,7 +32,7 @@ export const Scrollbar = React.forwardRef<HTMLDivElement, ScrollbarProps>(
       autoHide = false,
       placement = 'inner',
       className,
-      tabIndex = 0,
+      tabIndex = -1,
       ...props
     },
     ref,

@@ -520,3 +520,41 @@
     animation: none !important;
   }
 }
+
+/* Draw keyboard focus on the same rounded surface as the scroll container. */
+.lumen-scrollbar[data-placement='inner']:focus-visible,
+.lumen-scrollbar-outer:has(> .lumen-scrollbar-viewport:focus-visible) {
+  outline: 2px solid var(--lumen-color-primary);
+  outline-offset: -2px;
+}
+.lumen-scrollbar-viewport {
+  border-radius: inherit;
+}
+.lumen-scrollbar-viewport:focus-visible {
+  outline: none;
+}
+
+/* Edge controls follow the rounded outline of their list or accordion. */
+[data-ui='list'] > [data-ui='list-item']:first-child,
+[data-ui='collapse'] > [data-ui='collapse-item']:first-child {
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+[data-ui='list'] > [data-ui='list-item']:last-child,
+[data-ui='collapse'] > [data-ui='collapse-item']:last-child {
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+[data-ui='list-item'] > button,
+[data-ui='collapse-item'] > button {
+  border-radius: inherit;
+}
+[data-ui='collapse-item'][data-state='open'] > button {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+[data-ui='tree-select-row']:has(> [data-ui='tree-select-option']:focus-visible) {
+  outline: 2px solid var(--lumen-color-focus-ring);
+  outline-offset: -2px;
+}

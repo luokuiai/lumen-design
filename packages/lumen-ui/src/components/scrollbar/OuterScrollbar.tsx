@@ -8,7 +8,7 @@ const emptyMetrics: Metrics = { width: 0, height: 0, scrollWidth: 0, scrollHeigh
 
 /** Keep the forwarded ref and DOM events on the actual scroll viewport. */
 export const OuterScrollbar = React.forwardRef<HTMLDivElement, ScrollbarProps>(
-  ({ orientation = 'vertical', size = 'md', autoHide = false, className, style, children, tabIndex = 0, onScroll, ...props }, ref) => {
+  ({ orientation = 'vertical', size = 'md', autoHide = false, className, style, children, tabIndex = -1, onScroll, ...props }, ref) => {
     const viewportRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
     const drag = React.useRef<{ axis: Axis; start: number; scroll: number; ratio: number } | null>(null);

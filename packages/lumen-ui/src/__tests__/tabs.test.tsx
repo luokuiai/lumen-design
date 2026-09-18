@@ -15,6 +15,7 @@ describe('Tabs', () => {
     const onChange = vi.fn();
     render(<Tabs value="overview" options={options} variant={variant} onChange={onChange} />);
 
+    expect(screen.getByRole('tablist')).toHaveAttribute('tabindex', '-1');
     await user.tab();
     expect(screen.getByRole('tab', { name: 'Overview' })).toHaveFocus();
     await user.tab();

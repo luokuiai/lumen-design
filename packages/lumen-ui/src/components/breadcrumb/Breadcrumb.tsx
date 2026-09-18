@@ -42,6 +42,7 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
     const locale = useLumenLocale();
     return (
     <nav
+      tabIndex={-1}
       {...props}
       ref={ref}
       aria-label={ariaLabel ?? locale.navigation.breadcrumb}
@@ -59,7 +60,7 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
             </>
           );
           const itemClassName = cn(
-            'inline-flex items-center gap-1 rounded-[var(--lumen-radius-tag)] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
+            'inline-flex items-center gap-1 rounded-[var(--lumen-radius-tag)] outline-none transition-colors focus-visible:text-[var(--lumen-color-primary)]',
             current
               ? 'text-[var(--lumen-color-text)]'
               : 'text-[var(--lumen-color-text-placeholder)]',
