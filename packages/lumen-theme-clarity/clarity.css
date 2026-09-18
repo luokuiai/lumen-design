@@ -182,7 +182,7 @@
   isolation: isolate;
   border-color: var(--clarity-dropdown-border);
   background: transparent;
-  box-shadow: none;
+  box-shadow: var(--lumen-shadow-dropdown);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
