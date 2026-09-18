@@ -180,7 +180,7 @@
 [data-lumen-theme='clarity'] [data-ui='dropdown-surface'] {
   position: relative;
   isolation: isolate;
-  border-color: var(--clarity-dropdown-border);
+  border: 0;
   background: transparent;
   box-shadow: var(--lumen-shadow-dropdown);
   -webkit-backdrop-filter: none;
