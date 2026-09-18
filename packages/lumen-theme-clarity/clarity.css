@@ -1,7 +1,7 @@
 :root,
 [data-lumen-theme='clarity'] {
   color-scheme: light;
-  --lumen-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Roboto', 'HarmonyOS Sans', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --lumen-font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --lumen-font-weight-normal: 400;
   --lumen-font-weight-medium: 500;
   --lumen-font-weight-strong: 600;
@@ -11,7 +11,7 @@
   --lumen-color-primary-soft: #eff6ff;
   --lumen-color-primary-soft-hover: #eaf3ff;
   --lumen-color-on-primary: #ffffff;
-  --lumen-color-text-strong: #0f172a;
+  --lumen-color-text-strong: #060721;
   --lumen-color-text-heading: #060721;
   --lumen-color-text: #0f172a;
   --lumen-color-text-secondary: #334155;
@@ -19,7 +19,7 @@
   --lumen-color-text-placeholder: #94a3b8;
   --lumen-select-text: #0f172a;
   --lumen-select-option-text: #1e293b;
-  --lumen-side-nav-text: #334155;
+  --lumen-side-nav-text: #282d35;
   --lumen-color-surface: #ffffff;
   --lumen-color-surface-muted: #f8fafc;
   --lumen-color-surface-subtle: #fcfdfe;
@@ -238,4 +238,9 @@
   background: var(--clarity-picker-surface);
   -webkit-backdrop-filter: blur(12px) saturate(115%);
   backdrop-filter: blur(12px) saturate(115%);
+}
+
+:where(:root:not([data-lumen-theme]):not([data-color-scheme='dark']):not([data-accent='purple'])) [data-ui='side-nav'],
+[data-lumen-theme='clarity']:not([data-color-scheme='dark']):not([data-accent='purple']) [data-ui='side-nav'] {
+  --lumen-color-primary: #1456f0;
 }

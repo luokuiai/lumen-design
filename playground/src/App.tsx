@@ -1072,9 +1072,16 @@ const safetyEventColumns: DataTableColumn<SafetyEvent>[] = [
     className: 'whitespace-nowrap mobile:hidden',
     headerClassName: 'mobile:hidden',
     render: (event) => (
-      <Button size="sm" variant="ghost" onClick={() => Toast.info(`查看 ${event.id}`)}>
-        查看
-      </Button>
+      <Tooltip content="查看">
+        <Button
+          size="sm"
+          variant="ghost"
+          iconOnly
+          aria-label={`查看 ${event.id}`}
+          icon={<Eye size={16} aria-hidden="true" />}
+          onClick={() => Toast.info(`查看 ${event.id}`)}
+        />
+      </Tooltip>
     ),
   },
 ];

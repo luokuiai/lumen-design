@@ -59,11 +59,10 @@
   font-family: var(--lumen-font-family);
   font-weight: var(--lumen-font-weight-normal);
   color: var(--lumen-color-text);
-}
-
-:where([data-lumen-theme]) :where(h1, h2, h3, h4, h5, h6) {
+  font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 :where([data-lumen-theme]) :where(button, input, textarea, select) {

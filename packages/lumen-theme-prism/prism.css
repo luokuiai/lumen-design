@@ -2,7 +2,7 @@
   color-scheme: light;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
-  --lumen-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Roboto', 'HarmonyOS Sans', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --lumen-font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --lumen-font-weight-normal: 400;
   --lumen-font-weight-medium: 500;
   --lumen-font-weight-strong: 600;
@@ -12,10 +12,10 @@
   --lumen-color-primary-soft: #e6e1ff;
   --lumen-color-primary-soft-hover: #dcd5ff;
   --lumen-color-on-primary: #ffffff;
-  --lumen-color-text-strong: #393340;
-  --lumen-color-text-heading: #342e3b;
-  --lumen-color-text: #504a58;
-  --lumen-color-text-secondary: #605968;
+  --lumen-color-text-strong: #060721;
+  --lumen-color-text-heading: #060721;
+  --lumen-color-text: #0f172a;
+  --lumen-color-text-secondary: #334155;
   --lumen-color-text-muted: #67616d;
   --lumen-color-text-placeholder: #938f99;
   --lumen-select-text: var(--lumen-color-text);
@@ -454,4 +454,8 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+[data-lumen-theme='prism']:not([data-color-scheme='dark']) [data-ui='data-table'] thead th {
+  color: #605968;
 }

@@ -228,7 +228,7 @@ export function DataTable<T>({
                     }
                     className={cn(
                       cellPadding,
-                      'whitespace-nowrap font-normal leading-5 text-[var(--lumen-color-text-secondary)]',
+                      'whitespace-nowrap font-medium leading-5 text-[var(--lumen-color-text-secondary)]',
                       headerTextSize,
                       column.align === 'center' && 'text-center',
                       column.align === 'right' && 'text-right',

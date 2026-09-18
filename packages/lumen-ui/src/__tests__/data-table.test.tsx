@@ -42,7 +42,7 @@ describe('DataTable', () => {
     );
     expect(screen.getByRole('columnheader', { name: /路段/ })).toHaveClass(
       'text-[14px]',
-      'font-normal',
+      'font-medium',
     );
     expect(screen.getByRole('columnheader', { name: /路段/ }).parentElement?.className).toContain(
       '--lumen-color-divider',

@@ -76,7 +76,7 @@ export const CardDescription = React.forwardRef<
     ref={ref}
     data-ui="card-description"
     className={cn(
-      'mt-1 text-[13px] leading-5 text-[var(--lumen-color-text-muted)]',
+      'mt-1 text-[13px] leading-5 text-[var(--lumen-color-text-secondary)]',
       className,
     )}
     {...props}
