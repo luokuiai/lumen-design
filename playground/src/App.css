@@ -814,40 +814,18 @@ body {
   gap: 8px;
 }
 
-.dialog-panel,
 .drawer-panel {
   border: 1px solid var(--lumen-color-border);
   background: var(--lumen-color-surface);
   box-shadow: var(--lumen-shadow-dialog);
 }
 
-.dialog-panel {
-  width: min(480px, calc(100vw - 24px));
-  border-radius: 12px;
-  padding: 22px;
-}
-
-.dialog-panel h2,
 .drawer-panel h2 {
   margin: 0;
   color: var(--lumen-color-text-strong);
   font-size: 16px;
   font-weight: 600;
   line-height: 24px;
-}
-
-.dialog-panel p {
-  margin: 10px 0 0;
-  color: var(--lumen-color-text-muted);
-  font-size: 14px;
-  line-height: 24px;
-}
-
-.dialog-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 22px;
 }
 
 .drawer-panel {
