@@ -70,6 +70,42 @@
 }
 
 @layer base {
+  :where([data-ui='dialog']) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 480px;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: var(--lumen-radius-dialog);
+    background: var(--lumen-color-surface);
+    color: var(--lumen-color-text);
+    box-shadow: var(--lumen-shadow-dialog);
+  }
+
+  :where([data-ui='dialog'] > [data-dialog-header]) {
+    flex-shrink: 0;
+    padding: 12px 22px;
+  }
+
+  :where([data-ui='dialog'] > [data-dialog-body]) {
+    flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+    overflow: auto;
+    padding: 22px;
+  }
+
+  :where([data-ui='dialog'] > [data-dialog-footer]) {
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 12px 22px;
+  }
+
   :where([data-ui='dropdown-surface']) {
     padding: 8px;
   }

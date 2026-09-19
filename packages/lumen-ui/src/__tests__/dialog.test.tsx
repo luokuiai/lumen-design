@@ -5,6 +5,41 @@ import { Dialog } from '../components/Dialog';
 import { Select } from '../components/Select';
 
 describe('Dialog', () => {
+  it('keeps header and actions outside the customizable content region', () => {
+    const onSave = vi.fn();
+    render(
+      <Dialog open title="Edit" description="Details" onRequestClose={() => undefined}
+        bodyClassName="p-0" footer={<button onClick={onSave}>Save</button>}>
+        <p>Form content</p>
+      </Dialog>,
+    );
+    const panel = screen.getByRole('dialog', { name: 'Edit' });
+    expect(panel).toHaveAttribute('data-ui', 'dialog');
+    const body = panel.querySelector('[data-dialog-body]');
+    const header = panel.querySelector('[data-dialog-header]');
+    const footer = panel.querySelector('[data-dialog-footer]');
+    expect(body).toHaveClass('p-0');
+    expect(body).toContainElement(screen.getByText('Form content'));
+    expect(body).not.toContainElement(header as HTMLElement);
+    expect(body).not.toContainElement(footer as HTMLElement);
+    expect(header?.parentElement).toBe(panel);
+    expect(footer?.parentElement).toBe(panel);
+    fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+    expect(onSave).toHaveBeenCalledOnce();
+  });
+
+  it('retains footer actions through the closing animation', () => {
+    const { rerender } = render(
+      <Dialog open title="Edit" onRequestClose={() => undefined}
+        footer={<button>Save</button>}>Content</Dialog>,
+    );
+    rerender(<Dialog open={false} onRequestClose={() => undefined} />);
+    expect(screen.getByRole('dialog', { name: 'Edit' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
+    fireEvent.animationEnd(screen.getByRole('dialog').parentElement!);
+    expect(screen.queryByRole('button', { name: 'Save' })).not.toBeInTheDocument();
+  });
+
   it('retains content until the close animation finishes', () => {
     const onExited = vi.fn();
     const { rerender } = render(

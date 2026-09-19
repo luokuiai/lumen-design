@@ -452,7 +452,7 @@ const galleryCategories: GalleryCategory[] = [
     icon: Bell,
     demos: [
       demo('Popover', 'overlays', 'Button, Popover', '    <Popover trigger={<Button>查看详情</Button>}>\n      上下文内容\n    </Popover>'),
-      demo('Dialog', 'overlays', 'Button, Dialog', '    <Dialog open={open} title="编辑配置" description="修改当前配置项。" onRequestClose={() => setOpen(false)}>{content}</Dialog>'),
+      demo('Dialog', 'overlays', 'Button, Dialog', '    <Dialog open={open} title="编辑配置" description="修改当前配置项。" onRequestClose={() => setOpen(false)}\n      footer={<Button onClick={() => setOpen(false)}>保存</Button>}\n    >{content}</Dialog>'),
       demo('ConfirmDialog', 'overlays', 'Button, ConfirmDialog', '    <Button variant="destructive" onClick={() => setOpen(true)}>打开 Confirm</Button>'),
       demo('Drawer', 'overlays', 'Button, Drawer', '    <Drawer open={open} closeOnSwipe title="配置面板" description="调整页面配置。" onRequestClose={() => setOpen(false)}>{content}</Drawer>'),
       demo('BottomSheet', 'overlays', 'BottomSheet, Button', '    <BottomSheet\n      open={open}\n      title="快捷操作"\n      description="选择要执行的操作。"\n      onRequestClose={() => setOpen(false)}\n    >\n      <div className="space-y-1 px-4 pb-4">\n        <Button variant="ghost" className="w-full justify-start">分享</Button>\n        <Button variant="ghost" className="w-full justify-start">保存到收藏</Button>\n      </div>\n    </BottomSheet>'),
@@ -2769,9 +2769,8 @@ export default function App() {
                     onRequestClose={() => setTreeSelectDialogOpen(false)}
                     title="树形多选"
                     description="展开分支后可连续选择，内容超出可用高度时在下拉框内滚动。"
-                    panelClassName="dialog-panel"
                   >
-                    <div className="mt-5">
+                    <div>
                       <TreeSelect
                         nodes={treeNodes.map((node) => ({ ...node }))}
                         value={null}
@@ -3789,9 +3788,14 @@ export default function App() {
         onRequestClose={() => setDialogOpen(false)}
         title="Dialog 预览"
         description="用于确认、编辑和短流程任务。当前画廊直接使用组件库 Dialog。"
-        panelClassName="dialog-panel"
+        footer={
+          <>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>关闭</Button>
+            <Button onClick={() => setDialogOpen(false)}>保存</Button>
+          </>
+        }
       >
-        <div className="mt-5">
+        <div>
           <FormField label="负责人">
             <Select
               options={basicSelectOptions}
@@ -3800,10 +3804,6 @@ export default function App() {
               placeholder="选择负责人"
             />
           </FormField>
-        </div>
-        <div className="dialog-actions">
-          <Button variant="outline" onClick={() => setDialogOpen(false)}>关闭</Button>
-          <Button onClick={() => setDialogOpen(false)}>保存</Button>
         </div>
       </Dialog>
 

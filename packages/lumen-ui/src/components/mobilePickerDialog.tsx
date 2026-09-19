@@ -31,8 +31,9 @@ export const MobilePickerDialog: React.FC<MobilePickerDialogProps> = ({
       aria-label={label}
       dialogId={dialogId}
       overlayClassName="backdrop-blur-none"
+      bodyClassName="p-0"
       panelClassName={cn(
-        'w-full overflow-hidden border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]',
+        'w-full overflow-hidden border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-0 shadow-[0_18px_46px_var(--lumen-color-shadow)]',
         radiusTokens.dialog,
         maxWidth,
       )}

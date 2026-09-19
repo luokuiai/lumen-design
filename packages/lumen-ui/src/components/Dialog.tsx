@@ -6,13 +6,18 @@ export interface DialogProps {
   open: boolean;
   onRequestClose: () => void;
   onExited?: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   title?: React.ReactNode;
   description?: React.ReactNode;
+  /** 底部操作组件，由 Dialog 统一右对齐并固定在内容区下方。 */
+  footer?: React.ReactNode;
   dialogId?: string;
   overlayId?: string;
   overlayClassName?: string;
+  /** 自定义面板样式；默认提供主题背景、圆角、阴影和 480px 最大宽度。 */
   panelClassName?: string;
+  /** 自定义可滚动内容区，不影响标题区和操作区布局。 */
+  bodyClassName?: string;
   closeOnOverlayClick?: boolean;
   closeOnEscape?: boolean;
   lockScroll?: boolean;
@@ -34,10 +39,12 @@ export const Dialog: React.FC<DialogProps> = ({
   children,
   title,
   description,
+  footer,
   dialogId,
   overlayId,
   overlayClassName = '',
   panelClassName = '',
+  bodyClassName = '',
   closeOnOverlayClick = true,
   closeOnEscape = true,
   lockScroll = true,
@@ -55,6 +62,7 @@ export const Dialog: React.FC<DialogProps> = ({
   const [cachedTitle, setCachedTitle] = useState<React.ReactNode>(title);
   const [cachedDescription, setCachedDescription] =
     useState<React.ReactNode>(description);
+  const [cachedFooter, setCachedFooter] = useState<React.ReactNode>(footer);
   const panelRef = useRef<HTMLDivElement>(null);
   const pointerStartedInsideRef = useRef(false);
   const generatedTitleId = useId();
@@ -79,18 +87,20 @@ export const Dialog: React.FC<DialogProps> = ({
       setCachedChildren(children);
       setCachedTitle(title);
       setCachedDescription(description);
+      setCachedFooter(footer);
     } else if (mounted) {
       setClosing(true);
     }
-  }, [children, description, mounted, open, title]);
+  }, [children, description, footer, mounted, open, title]);
 
   useEffect(() => {
     if (open && children != null) {
       setCachedChildren(children);
       setCachedTitle(title);
       setCachedDescription(description);
+      setCachedFooter(footer);
     }
-  }, [children, description, open, title]);
+  }, [children, description, footer, open, title]);
 
   const handleAnimationEnd = useCallback(
     (event: React.AnimationEvent<HTMLDivElement>) => {
@@ -99,6 +109,7 @@ export const Dialog: React.FC<DialogProps> = ({
       setMounted(false);
       setClosing(false);
       setCachedChildren(null);
+      setCachedFooter(null);
       onExited?.();
     },
     [closing, onExited],
@@ -109,6 +120,7 @@ export const Dialog: React.FC<DialogProps> = ({
   const displayChildren = isClosing ? cachedChildren : children;
   const displayTitle = isClosing ? cachedTitle : title;
   const displayDescription = isClosing ? cachedDescription : description;
+  const displayFooter = isClosing ? cachedFooter : footer;
   const hasTitle = displayTitle !== undefined && displayTitle !== null;
   const hasDescription =
     displayDescription !== undefined && displayDescription !== null;
@@ -153,6 +165,7 @@ export const Dialog: React.FC<DialogProps> = ({
           aria-labelledby={resolvedAriaLabelledBy}
           aria-describedby={resolvedAriaDescribedBy}
           tabIndex={-1}
+          data-ui="dialog"
           data-dialog={dialogId}
           data-lumen-motion
           className={`max-h-[calc(100dvh-1.5rem)] ${
@@ -184,7 +197,14 @@ export const Dialog: React.FC<DialogProps> = ({
               ) : null}
             </div>
           ) : null}
-          {displayChildren}
+          {displayChildren !== undefined && displayChildren !== null && displayChildren !== false ? (
+            <div data-dialog-body className={bodyClassName}>
+              {displayChildren}
+            </div>
+          ) : null}
+          {displayFooter !== undefined && displayFooter !== null && displayFooter !== false ? (
+            <div data-dialog-footer>{displayFooter}</div>
+          ) : null}
         </div>
       </div>
     </OverlayScopeContext.Provider>,

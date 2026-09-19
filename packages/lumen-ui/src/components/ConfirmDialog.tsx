@@ -45,12 +45,9 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       role="alertdialog"
       title={title}
       description={message}
-      panelClassName="w-full max-w-[420px] rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4 shadow-[0_24px_70px_var(--lumen-color-shadow)] pad:p-5 l:p-6"
-    >
-      <div
-        data-confirm-dialog-actions
-        className="mt-5 flex items-center justify-end gap-2.5 pad:mt-6 l:mt-6"
-      >
+      panelClassName="max-w-[420px]"
+      footer={
+        <>
           <Button
             disabled={cancelDisabled}
             variant="outline"
@@ -71,7 +68,8 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             )}
             {confirmText ?? locale.confirmDialog.confirm}
           </Button>
-      </div>
-    </Dialog>
+        </>
+      }
+    />
   );
 };

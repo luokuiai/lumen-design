@@ -1874,10 +1874,10 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "children",
       "type": "React.ReactNode",
-      "defaultValue": "-",
+      "defaultValue": "undefined",
       "description": "组件承载的子内容。",
       "descriptionEn": "Sets the child content rendered by the component.",
-      "required": true
+      "required": false
     },
     {
       "name": "title",
@@ -1893,6 +1893,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "补充说明内容。",
       "descriptionEn": "Provides supporting descriptive content.",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "底部操作组件，由 Dialog 统一右对齐并固定在内容区下方。",
+      "descriptionEn": "Configures footer.",
       "required": false
     },
     {
@@ -1923,8 +1931,16 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "panelClassName",
       "type": "string",
       "defaultValue": "''",
-      "description": "设置 panelClassName。",
+      "description": "自定义面板样式；默认提供主题背景、圆角、阴影和 480px 最大宽度。",
       "descriptionEn": "Configures panel class name.",
+      "required": false
+    },
+    {
+      "name": "bodyClassName",
+      "type": "string",
+      "defaultValue": "''",
+      "description": "自定义可滚动内容区，不影响标题区和操作区布局。",
+      "descriptionEn": "Configures body class name.",
       "required": false
     },
     {

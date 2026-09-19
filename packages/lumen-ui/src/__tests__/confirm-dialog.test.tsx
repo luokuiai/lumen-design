@@ -16,16 +16,18 @@ describe('ConfirmDialog', () => {
     );
 
     const panel = document.querySelector('[data-dialog="confirm-dialog"]');
-    const actions = document.querySelector('[data-confirm-dialog-actions]');
+    const actions = document.querySelector('[data-dialog-footer]');
     expect(screen.getByText('Confirm action')).toHaveClass(
       'text-[16px]',
       'font-semibold',
       'leading-6',
     );
-    expect(panel).toHaveClass('w-full', 'max-w-[420px]');
+    expect(panel).toHaveClass('max-w-[420px]');
     expect(panel).not.toHaveClass('max-w-full');
-    expect(actions).toHaveClass('flex', 'items-center', 'justify-end');
-    expect(actions).not.toHaveClass('flex-col', 'flex-col-reverse');
+    expect(actions?.parentElement).toBe(panel);
+    expect(actions).toContainElement(screen.getByRole('button', { name: '确认' }));
+    expect(actions).toContainElement(screen.getByRole('button', { name: '取消' }));
+    expect(panel?.querySelector('[data-dialog-body]')).toBeNull();
     const dialog = screen.getByRole('alertdialog', { name: 'Confirm action' });
     expect(dialog).toHaveAccessibleDescription('This action cannot be undone.');
     expect(dialog).toHaveAttribute('aria-modal', 'true');
