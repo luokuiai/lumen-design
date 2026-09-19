@@ -66,7 +66,7 @@ export const BottomNavigation = <T extends string = string>({
         const selected = item.value === value;
         const Icon = item.icon;
         const itemClasses = cn(
-          'relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 text-center text-[12px] font-normal leading-none transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/25',
+          'relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[8px] px-1 py-2 text-center text-[12px] font-normal leading-none transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/25',
           selected
             ? 'text-[var(--lumen-color-primary)]'
             : 'text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-text)]',

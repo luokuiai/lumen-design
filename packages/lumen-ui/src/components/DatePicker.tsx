@@ -552,6 +552,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
           >
             <div
               ref={portalRef}
+              tabIndex={-1}
               data-ui="date-picker-panel"
               data-date-picker-portal
               data-lumen-overlay-scope={overlayScopeId ?? undefined}

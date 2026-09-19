@@ -452,7 +452,7 @@ const galleryCategories: GalleryCategory[] = [
     icon: Bell,
     demos: [
       demo('Popover', 'overlays', 'Button, Popover', '    <Popover trigger={<Button>查看详情</Button>}>\n      上下文内容\n    </Popover>'),
-      demo('Dialog', 'overlays', 'Button, Dialog', '    <Dialog open={open} title="编辑配置" description="修改当前配置项。" onRequestClose={() => setOpen(false)}>{content}</Dialog>'),
+      demo('Dialog', 'overlays', 'Button, Dialog', '    <Dialog open={open} title="编辑配置" description="修改当前配置项。" onRequestClose={() => setOpen(false)}\n      footer={<Button onClick={() => setOpen(false)}>保存</Button>}\n    >{content}</Dialog>'),
       demo('ConfirmDialog', 'overlays', 'Button, ConfirmDialog', '    <Button variant="destructive" onClick={() => setOpen(true)}>打开 Confirm</Button>'),
       demo('Drawer', 'overlays', 'Button, Drawer', '    <Drawer open={open} closeOnSwipe title="配置面板" description="调整页面配置。" onRequestClose={() => setOpen(false)}>{content}</Drawer>'),
       demo('BottomSheet', 'overlays', 'BottomSheet, Button', '    <BottomSheet\n      open={open}\n      title="快捷操作"\n      description="选择要执行的操作。"\n      onRequestClose={() => setOpen(false)}\n    >\n      <div className="space-y-1 px-4 pb-4">\n        <Button variant="ghost" className="w-full justify-start">分享</Button>\n        <Button variant="ghost" className="w-full justify-start">保存到收藏</Button>\n      </div>\n    </BottomSheet>'),
@@ -785,6 +785,11 @@ const basicSelectOptions = [
   { label: '需求同步', value: 'sync' },
   { label: '线上发布', value: 'release' },
   { label: '回归测试', value: 'qa' },
+  { label: '代码审查', value: 'code-review' },
+  { label: '性能优化', value: 'performance' },
+  { label: '安全检查', value: 'security' },
+  { label: '文档更新', value: 'documentation' },
+  { label: '版本复盘', value: 'retrospective' },
 ];
 
 const selectOptions = [
@@ -1067,9 +1072,16 @@ const safetyEventColumns: DataTableColumn<SafetyEvent>[] = [
     className: 'whitespace-nowrap mobile:hidden',
     headerClassName: 'mobile:hidden',
     render: (event) => (
-      <Button size="sm" variant="ghost" onClick={() => Toast.info(`查看 ${event.id}`)}>
-        查看
-      </Button>
+      <Tooltip content="查看">
+        <Button
+          size="sm"
+          variant="ghost"
+          iconOnly
+          aria-label={`查看 ${event.id}`}
+          icon={<Eye size={16} aria-hidden="true" />}
+          onClick={() => Toast.info(`查看 ${event.id}`)}
+        />
+      </Tooltip>
     ),
   },
 ];
@@ -1971,7 +1983,7 @@ export default function App() {
                     [zhCN, '简体中文'],
                     [enUS, 'English'],
                   ] as const).map(([option, label]) => (
-                    <button
+                    <DropdownMenuItem
                       key={option.locale}
                       type="button"
                       role="menuitemradio"
@@ -1984,7 +1996,7 @@ export default function App() {
                     >
                       <span>{label}</span>
                       {locale === option ? <Check aria-hidden="true" size={15} /> : null}
-                    </button>
+                    </DropdownMenuItem>
                   ))}
                 </div>
               )}
@@ -2025,7 +2037,7 @@ export default function App() {
                     const selected = theme === themeValue
                       && (themeValue !== 'clarity' || accent === accentValue);
                     return (
-                    <button
+                    <DropdownMenuItem
                       key={`${themeValue}-${accentValue ?? 'default'}`}
                       type="button"
                       role="menuitemradio"
@@ -2040,7 +2052,7 @@ export default function App() {
                       <span className={`accent-swatch accent-swatch-${accentValue ?? themeValue}`} />
                       <span>{label}</span>
                       {selected ? <Check aria-hidden="true" size={15} /> : null}
-                    </button>
+                    </DropdownMenuItem>
                     );
                   })}
                 </div>
@@ -2168,20 +2180,20 @@ export default function App() {
                     </span>
                   </div>
                   <div className="account-menu-actions">
-                    <button type="button" role="menuitem" onClick={close}>
+                    <DropdownMenuItem type="button" role="menuitem" onClick={close}>
                       <UserRound size={16} />
                       个人信息
-                    </button>
-                    <button type="button" role="menuitem" onClick={close}>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem type="button" role="menuitem" onClick={close}>
                       <Settings size={16} />
                       账户设置
-                    </button>
+                    </DropdownMenuItem>
                   </div>
                   <div className="account-menu-actions account-menu-footer">
-                    <button type="button" role="menuitem" className="account-menu-logout" onClick={close}>
+                    <DropdownMenuItem type="button" role="menuitem" className="account-menu-logout" onClick={close}>
                       <LogOut size={16} />
                       退出登录
-                    </button>
+                    </DropdownMenuItem>
                   </div>
                 </div>
               )}
@@ -2757,9 +2769,8 @@ export default function App() {
                     onRequestClose={() => setTreeSelectDialogOpen(false)}
                     title="树形多选"
                     description="展开分支后可连续选择，内容超出可用高度时在下拉框内滚动。"
-                    panelClassName="dialog-panel"
                   >
-                    <div className="mt-5">
+                    <div>
                       <TreeSelect
                         nodes={treeNodes.map((node) => ({ ...node }))}
                         value={null}
@@ -3078,7 +3089,7 @@ export default function App() {
                 </DemoCard>
                 <DemoCard title="DropdownMenu">
                   <div className="stack">
-                    <p>菜单默认最小宽度为 160px。</p>
+                    <p>菜单默认最小宽度为 160px，文字使用强调色，悬停和聚焦时保持字色。</p>
                     <DropdownMenu
                       menuMode
                       trigger={({ toggle, open, menuId }) => (
@@ -3396,6 +3407,8 @@ export default function App() {
                   <div className="form-grid items-start">
                     <Scrollbar
                       aria-label="告警记录"
+                      tabIndex={0}
+                      placement="outer"
                       className="h-48 rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
                     >
                       <div className="divide-y divide-[var(--lumen-color-surface-muted)] px-4">
@@ -3408,6 +3421,7 @@ export default function App() {
                     </Scrollbar>
                     <Scrollbar
                       aria-label="巡检看板"
+                      tabIndex={0}
                       orientation="horizontal"
                       size="sm"
                       autoHide
@@ -3774,9 +3788,14 @@ export default function App() {
         onRequestClose={() => setDialogOpen(false)}
         title="Dialog 预览"
         description="用于确认、编辑和短流程任务。当前画廊直接使用组件库 Dialog。"
-        panelClassName="dialog-panel"
+        footer={
+          <>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>关闭</Button>
+            <Button onClick={() => setDialogOpen(false)}>保存</Button>
+          </>
+        }
       >
-        <div className="mt-5">
+        <div>
           <FormField label="负责人">
             <Select
               options={basicSelectOptions}
@@ -3785,10 +3804,6 @@ export default function App() {
               placeholder="选择负责人"
             />
           </FormField>
-        </div>
-        <div className="dialog-actions">
-          <Button variant="outline" onClick={() => setDialogOpen(false)}>关闭</Button>
-          <Button onClick={() => setDialogOpen(false)}>保存</Button>
         </div>
       </Dialog>
 

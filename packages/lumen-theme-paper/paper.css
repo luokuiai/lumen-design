@@ -2,7 +2,7 @@
   color-scheme: light;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
-  --lumen-font-family: 'PingFang SC', 'Microsoft YaHei UI', 'Microsoft YaHei', 'HarmonyOS Sans', 'Roboto', 'Helvetica Neue', sans-serif;
+  --lumen-font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --lumen-font-weight-normal: 400;
   --lumen-font-weight-medium: 500;
   --lumen-font-weight-strong: 600;
@@ -12,10 +12,10 @@
   --lumen-color-primary-soft: #eeeeee;
   --lumen-color-primary-soft-hover: #e4e4e4;
   --lumen-color-on-primary: #ffffff;
-  --lumen-color-text-strong: #333333;
-  --lumen-color-text-heading: #2e2e2e;
-  --lumen-color-text: #4b4b4b;
-  --lumen-color-text-secondary: #606060;
+  --lumen-color-text-strong: #060721;
+  --lumen-color-text-heading: #060721;
+  --lumen-color-text: #0f172a;
+  --lumen-color-text-secondary: #334155;
   --lumen-color-text-muted: #717171;
   --lumen-color-text-placeholder: #9a9a9a;
   --lumen-select-text: var(--lumen-color-text);
@@ -166,4 +166,8 @@
 
 [data-lumen-theme='paper'] [data-ui='toast'] {
   box-shadow: 0 1px 2px var(--lumen-color-shadow), 0 8px 24px var(--lumen-color-shadow);
+}
+
+[data-lumen-theme='paper']:not([data-color-scheme='dark']) [data-ui='data-table'] thead th {
+  color: #606060;
 }

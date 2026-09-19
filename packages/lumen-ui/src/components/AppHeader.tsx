@@ -57,7 +57,7 @@ export const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>(
           {description ? (
             <p
               data-ui="app-header-description"
-              className="mb-0 mt-1.5 truncate text-[12px] leading-[1.55] text-[var(--lumen-color-text-muted)]"
+              className="mb-0 mt-1.5 truncate text-[12px] leading-[1.55] text-[var(--lumen-color-text-secondary)]"
             >
               {description}
             </p>

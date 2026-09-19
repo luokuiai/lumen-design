@@ -99,7 +99,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             indicatorRadius,
             indicatorVisible
               ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]'
-              : 'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_70%,var(--lumen-color-surface))] bg-[var(--lumen-color-surface)] text-transparent',
+              : 'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_60%,var(--lumen-color-surface))] bg-[var(--lumen-color-surface)] text-transparent',
             !disabled && 'peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--lumen-color-info-border)]/70 peer-focus-visible:ring-offset-2',
             !disabled && !indicatorVisible && 'hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)]',
           )}

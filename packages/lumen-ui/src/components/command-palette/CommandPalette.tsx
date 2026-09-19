@@ -176,7 +176,8 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       aria-label={label}
       initialFocusRef={inputRef}
       overlayClassName="items-start pt-[max(12vh,3rem)]"
-      panelClassName="w-full max-w-[640px]"
+      panelClassName="w-full max-w-[640px] overflow-visible rounded-none bg-transparent p-0 shadow-none"
+      bodyClassName="overflow-visible p-0"
     >
       <div
         ref={panelRef}

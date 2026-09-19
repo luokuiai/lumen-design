@@ -1,6 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import userEvent from '@testing-library/user-event';
 import { Select } from '../components/Select';
 
 const options = [
@@ -9,6 +10,27 @@ const options = [
 ];
 
 describe('Select', () => {
+  it('shows keyboard focus on the closed trigger without selecting a value', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(<>
+      <Select options={options} value={null} onChange={onChange} />
+      <button>Next</button>
+    </>);
+    const trigger = screen.getByTestId('select-trigger');
+    await user.tab();
+    expect(trigger).toHaveFocus();
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger).toHaveClass('focus-visible:border-[var(--lumen-color-primary)]', 'focus-visible:ring-2');
+    expect(onChange).not.toHaveBeenCalled();
+    await user.tab();
+    expect(screen.getByText('Next')).toHaveFocus();
+    await user.tab({ shift: true });
+    expect(trigger).toHaveFocus();
+    await user.keyboard('{Enter}');
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  });
+
   it('uses equal compact padding around options with visible item spacing', () => {
     render(
       <Select
@@ -23,6 +45,10 @@ describe('Select', () => {
 
     expect(option).toHaveClass('p-2', 'text-[14px]');
     expect(option?.parentElement).toHaveClass('flex', 'flex-col', 'gap-1', 'p-2');
+    const scrollbar = option?.closest('[data-ui="scrollbar"]');
+    expect(scrollbar).toHaveAttribute('data-size', 'sm');
+    expect(scrollbar).toHaveAttribute('tabindex', '-1');
+    expect(option?.parentElement?.parentElement).toBe(scrollbar);
   });
 
   it('inherits the trigger font size for multiple-value chips', () => {

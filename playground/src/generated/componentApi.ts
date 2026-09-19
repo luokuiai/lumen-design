@@ -1874,10 +1874,10 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "children",
       "type": "React.ReactNode",
-      "defaultValue": "-",
+      "defaultValue": "undefined",
       "description": "组件承载的子内容。",
       "descriptionEn": "Sets the child content rendered by the component.",
-      "required": true
+      "required": false
     },
     {
       "name": "title",
@@ -1893,6 +1893,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "补充说明内容。",
       "descriptionEn": "Provides supporting descriptive content.",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "React.ReactNode",
+      "defaultValue": "undefined",
+      "description": "底部操作组件，由 Dialog 统一右对齐并固定在内容区下方。",
+      "descriptionEn": "Configures footer.",
       "required": false
     },
     {
@@ -1923,8 +1931,16 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "panelClassName",
       "type": "string",
       "defaultValue": "''",
-      "description": "设置 panelClassName。",
+      "description": "自定义面板样式；默认提供主题背景、圆角、阴影和 480px 最大宽度。",
       "descriptionEn": "Configures panel class name.",
+      "required": false
+    },
+    {
+      "name": "bodyClassName",
+      "type": "string",
+      "defaultValue": "''",
+      "description": "自定义可滚动内容区，不影响标题区和操作区布局。",
+      "descriptionEn": "Configures body class name.",
       "required": false
     },
     {
@@ -1971,8 +1987,8 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "name": "role",
       "type": "\"dialog\" | \"alertdialog\"",
       "defaultValue": "'dialog'",
-      "description": "设置 dialog 或 alertdialog 无障碍语义。",
-      "descriptionEn": "Sets the dialog or alertdialog accessibility role.",
+      "description": "设置组件的无障碍角色。",
+      "descriptionEn": "Sets the component accessibility role.",
       "required": false
     },
     {
@@ -2067,6 +2083,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     }
   ],
   "DropdownMenuItem": [
+    {
+      "name": "role",
+      "type": "\"menuitem\" | \"menuitemcheckbox\" | \"menuitemradio\"",
+      "defaultValue": "'menuitem'",
+      "description": "菜单项的无障碍语义：普通项、单选项或复选项。",
+      "descriptionEn": "Sets the component accessibility role.",
+      "required": false
+    },
     {
       "name": "children",
       "type": "React.ReactNode",
@@ -3242,6 +3266,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
   ],
   "Scrollbar": [
     {
+      "name": "tabIndex",
+      "type": "number",
+      "defaultValue": "-1",
+      "description": "默认跳过容器，直接聚焦内部控件；纯内容滚动区可设置为 0。",
+      "descriptionEn": "Configures tab index.",
+      "required": false
+    },
+    {
       "name": "orientation",
       "type": "\"vertical\" | \"horizontal\" | \"both\"",
       "defaultValue": "'vertical'",
@@ -3263,6 +3295,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "false",
       "description": "仅在悬停或获得焦点时显示滑块",
       "descriptionEn": "Configures auto hide.",
+      "required": false
+    },
+    {
+      "name": "placement",
+      "type": "\"inner\" | \"outer\"",
+      "defaultValue": "'inner'",
+      "description": "inner 使用原生轨道；outer 在内容外侧单独预留轨道区域。",
+      "descriptionEn": "Sets the position of the overlay or positioned element.",
       "required": false
     }
   ],

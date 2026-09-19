@@ -39,10 +39,10 @@ describe('control borders', () => {
       standardBorderClassName,
     );
     expect(screen.getByRole('checkbox', { name: 'Enable' }).nextElementSibling).toHaveClass(
-      'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_70%,var(--lumen-color-surface))]',
+      'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_60%,var(--lumen-color-surface))]',
     );
     expect(screen.getByRole('radio', { name: 'Choose' }).nextElementSibling).toHaveClass(
-      'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_70%,var(--lumen-color-surface))]',
+      'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_60%,var(--lumen-color-surface))]',
     );
     expect(screen.getByText('Status')).toHaveClass(standardBorderClassName);
     expect(screen.getByRole('button', { name: '文件上传' })).toHaveClass(
