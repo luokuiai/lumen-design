@@ -226,12 +226,12 @@ export const Drawer: React.FC<DrawerProps> = ({
         onClick={
           closeOnOverlayClick
             ? (event) => {
-                const startedInside = pointerStartedInsideRef.current;
-                pointerStartedInsideRef.current = false;
-                if (!startedInside && event.target === event.currentTarget) {
-                  requestCloseIfTopmost();
-                }
+              const startedInside = pointerStartedInsideRef.current;
+              pointerStartedInsideRef.current = false;
+              if (!startedInside && event.target === event.currentTarget) {
+                requestCloseIfTopmost();
               }
+            }
             : undefined
         }
         {...buildDataAttributes(overlayDataAttributes)}
@@ -253,11 +253,11 @@ export const Drawer: React.FC<DrawerProps> = ({
           style={
             dragOffset > 0
               ? {
-                  transform: `translateX(${
-                    placement === 'right' ? dragOffset : -dragOffset
-                  }px)`,
-                  transition: dragging ? 'none' : 'transform 180ms ease-out',
-                }
+                transform: `translateX(${
+                  placement === 'right' ? dragOffset : -dragOffset
+                }px)`,
+                transition: dragging ? 'none' : 'transform 180ms ease-out',
+              }
               : { touchAction: 'pan-y' }
           }
           onClick={(event) => event.stopPropagation()}

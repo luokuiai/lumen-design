@@ -101,11 +101,11 @@ const getParsedTimestamp = (value?: string) => {
   const parsed = parseDateTime(value);
   return parsed
     ? getDateTimeTimestamp(
-        parsed.date,
-        parsed.hour,
-        parsed.minute,
-        parsed.second,
-      )
+      parsed.date,
+      parsed.hour,
+      parsed.minute,
+      parsed.second,
+    )
     : null;
 };
 
@@ -234,12 +234,12 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   const minDateTimeValue = getParsedTimestamp(minDateTime);
   const displayValue = parsed
     ? formatDisplayDateTime(
-        parsed.date,
-        parsed.hour,
-        parsed.minute,
-        parsed.second,
-        precision,
-      )
+      parsed.date,
+      parsed.hour,
+      parsed.minute,
+      parsed.second,
+      precision,
+    )
     : '';
 
   const syncDraftFromValue = useCallback(() => {
@@ -508,14 +508,14 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
 
       {open
         ? createPortal(
-            <MobilePickerDialog
-              mobile={isMobile}
-              open={open}
-              onRequestClose={closePanel}
-              label={label}
-              dialogId="date-time-picker-panel"
-              maxWidth="max-w-[360px]"
-            >
+          <MobilePickerDialog
+            mobile={isMobile}
+            open={open}
+            onRequestClose={closePanel}
+            label={label}
+            dialogId="date-time-picker-panel"
+            maxWidth="max-w-[360px]"
+          >
             <div
               ref={panelRef}
               tabIndex={-1}
@@ -529,12 +529,12 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
               style={isMobile ? undefined : {
                 ...panelStyle,
                 animation: isAnimatingOut
-                    ? dropDirection === 'up'
-                      ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
-                      : 'lumen-dropdown-out 0.12s ease-in forwards'
-                    : dropDirection === 'up'
-                      ? 'lumen-dropdown-in-up 0.12s ease-out'
-                      : 'lumen-dropdown-in 0.12s ease-out',
+                  ? dropDirection === 'up'
+                    ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
+                    : 'lumen-dropdown-out 0.12s ease-in forwards'
+                  : dropDirection === 'up'
+                    ? 'lumen-dropdown-in-up 0.12s ease-out'
+                    : 'lumen-dropdown-in 0.12s ease-out',
                 transformOrigin: dropDirection === 'up' ? 'bottom' : 'top',
               }}
             >
@@ -730,9 +730,9 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                 </div>
               </div>
             </div>
-            </MobilePickerDialog>,
-            document.body,
-          )
+          </MobilePickerDialog>,
+          document.body,
+        )
         : null}
     </div>
   );

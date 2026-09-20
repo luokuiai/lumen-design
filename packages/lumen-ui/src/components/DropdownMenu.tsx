@@ -125,8 +125,8 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         containerRef.current?.contains(activeElement)
           ? activeElement
           : (containerRef.current?.querySelector<HTMLElement>(
-              'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-            ) ?? null);
+            'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          ) ?? null);
     }
     setPhase('opening');
     onOpenChange?.(true);
@@ -367,43 +367,43 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
       {mounted &&
         createPortal(
-        <div
-          id={menuId}
-          role={menuMode ? 'menu' : undefined}
-          aria-orientation={menuMode ? 'vertical' : undefined}
-          tabIndex={menuMode ? -1 : undefined}
-          data-testid="dropdown-menu"
-          data-state={phase}
-          data-align={resolvedAlign}
-          data-lumen-overlay-scope={overlayScopeId ?? undefined}
-          ref={menuRef}
-          onKeyDown={handleMenuKeyDown}
-          style={menuStyle}
-          className="z-[90] outline-none"
-        >
           <div
-            data-lumen-motion
-            data-ui="dropdown-surface"
-            className={cn(
-              'rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[var(--lumen-shadow-dropdown)]',
-              resolvedAlign === 'right' ? 'origin-top-right' : 'origin-top-left',
-              menuMode && 'min-w-40 max-w-[320px] whitespace-nowrap [&_svg]:shrink-0',
-              menuClassName,
-            )}
-            style={{
-              animation:
+            id={menuId}
+            role={menuMode ? 'menu' : undefined}
+            aria-orientation={menuMode ? 'vertical' : undefined}
+            tabIndex={menuMode ? -1 : undefined}
+            data-testid="dropdown-menu"
+            data-state={phase}
+            data-align={resolvedAlign}
+            data-lumen-overlay-scope={overlayScopeId ?? undefined}
+            ref={menuRef}
+            onKeyDown={handleMenuKeyDown}
+            style={menuStyle}
+            className="z-[90] outline-none"
+          >
+            <div
+              data-lumen-motion
+              data-ui="dropdown-surface"
+              className={cn(
+                'rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[var(--lumen-shadow-dropdown)]',
+                resolvedAlign === 'right' ? 'origin-top-right' : 'origin-top-left',
+                menuMode && 'min-w-40 max-w-[320px] whitespace-nowrap [&_svg]:shrink-0',
+                menuClassName,
+              )}
+              style={{
+                animation:
                 phase === 'closing'
                   ? 'lumen-dropdown-out 0.12s ease-in forwards'
                   : 'lumen-dropdown-in 0.12s ease-out',
-            }}
-          >
-            {typeof children === 'function'
-              ? children({ open: triggerOpen, close: closeMenu })
-              : children}
-          </div>
-        </div>,
-        document.body,
-      )}
+              }}
+            >
+              {typeof children === 'function'
+                ? children({ open: triggerOpen, close: closeMenu })
+                : children}
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 };

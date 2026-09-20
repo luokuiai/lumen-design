@@ -52,7 +52,7 @@ export const Switch: React.FC<SwitchProps> = ({
       {(label || description) && (
         <span className="min-w-0">
           {label ? (
-          <span id={labelId} className="block text-[14px] font-normal text-[var(--lumen-color-text)]">
+            <span id={labelId} className="block text-[14px] font-normal text-[var(--lumen-color-text)]">
               {label}
             </span>
           ) : null}

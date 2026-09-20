@@ -272,98 +272,98 @@ export function DataTable<T>({
           >
             {loading
               ? Array.from({ length: Math.max(1, loadingRowCount) }, (_, rowIndex) => (
-                  <tr
-                    key={`loading-${rowIndex}`}
-                    className={cn(
-                      'border-b border-[var(--lumen-color-surface-muted)] last:border-b-0',
-                      stickyHeader && 'table w-full table-fixed',
-                    )}
-                  >
-                    {selectable ? (
-                      <td className={cellPadding} style={{ minWidth: 48, width: 48 }} />
-                    ) : null}
-                    {columns.map((column, columnIndex) => (
-                      <td
-                        key={column.key}
-                        className={cellPadding}
-                        style={{
-                          width: toCssSize(column.width),
-                          minWidth: toCssSize(column.minWidth),
-                        }}
-                      >
-                        <span
-                          className="block h-3 animate-pulse rounded-[4px] bg-[var(--lumen-color-surface-muted)]"
-                          style={{ width: loadingCellWidths[columnIndex % loadingCellWidths.length] }}
-                        />
-                      </td>
-                    ))}
-                  </tr>
-                ))
+                <tr
+                  key={`loading-${rowIndex}`}
+                  className={cn(
+                    'border-b border-[var(--lumen-color-surface-muted)] last:border-b-0',
+                    stickyHeader && 'table w-full table-fixed',
+                  )}
+                >
+                  {selectable ? (
+                    <td className={cellPadding} style={{ minWidth: 48, width: 48 }} />
+                  ) : null}
+                  {columns.map((column, columnIndex) => (
+                    <td
+                      key={column.key}
+                      className={cellPadding}
+                      style={{
+                        width: toCssSize(column.width),
+                        minWidth: toCssSize(column.minWidth),
+                      }}
+                    >
+                      <span
+                        className="block h-3 animate-pulse rounded-[4px] bg-[var(--lumen-color-surface-muted)]"
+                        style={{ width: loadingCellWidths[columnIndex % loadingCellWidths.length] }}
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))
               : data.length === 0
                 ? (
-                    <tr className={cn(stickyHeader && 'table w-full table-fixed')}>
-                      <td
-                        colSpan={totalColumns}
-                        className={cn(
-                          'px-4 py-14 text-center text-[var(--lumen-color-text-placeholder)]',
-                          cellTextSize,
-                        )}
-                      >
-                        {emptyText}
-                      </td>
-                    </tr>
-                  )
+                  <tr className={cn(stickyHeader && 'table w-full table-fixed')}>
+                    <td
+                      colSpan={totalColumns}
+                      className={cn(
+                        'px-4 py-14 text-center text-[var(--lumen-color-text-placeholder)]',
+                        cellTextSize,
+                      )}
+                    >
+                      {emptyText}
+                    </td>
+                  </tr>
+                )
                 : data.map((row, rowIndex) => {
-                    const key = getRowKey(row);
-                    const rowSelectable = isRowSelectable?.(row) ?? true;
-                    const resolvedRowClassName = typeof rowClassName === 'function'
-                      ? rowClassName(row, rowIndex)
-                      : rowClassName;
-                    return (
-                      <tr
-                        key={key}
-                        data-selected={selectedKeys.has(key) || undefined}
-                        className={cn(
-                          'border-b border-[var(--lumen-color-surface-muted)] transition-colors last:border-b-0 hover:bg-[var(--lumen-color-surface-hover)] data-[selected=true]:bg-[var(--lumen-color-info-soft)]',
-                          stickyHeader && 'table w-full table-fixed',
-                          resolvedRowClassName,
-                        )}
-                      >
-                        {selectable ? (
-                          <td
-                            className={cellPadding}
-                            style={{ minWidth: 48, width: 48 }}
-                          >
-                            <Checkbox
-                              aria-label={locale.dataTable.selectRow(rowIndex + 1)}
-                              checked={selectedKeys.has(key)}
-                              disabled={!rowSelectable}
-                              onChange={(checked) => updateRowSelection(key, checked)}
-                            />
-                          </td>
-                        ) : null}
-                        {columns.map((column) => (
-                          <td
-                            key={column.key}
-                            className={cn(
-                              cellPadding,
-                              'font-normal leading-5 text-[var(--lumen-color-text-secondary)]',
-                              cellTextSize,
-                              column.align === 'center' && 'text-center',
-                              column.align === 'right' && 'text-right',
-                              column.className,
-                            )}
-                            style={{
-                              width: toCssSize(column.width),
-                              minWidth: toCssSize(column.minWidth),
-                            }}
-                          >
-                            {column.render(row, rowIndex)}
-                          </td>
-                        ))}
-                      </tr>
-                    );
-                  })}
+                  const key = getRowKey(row);
+                  const rowSelectable = isRowSelectable?.(row) ?? true;
+                  const resolvedRowClassName = typeof rowClassName === 'function'
+                    ? rowClassName(row, rowIndex)
+                    : rowClassName;
+                  return (
+                    <tr
+                      key={key}
+                      data-selected={selectedKeys.has(key) || undefined}
+                      className={cn(
+                        'border-b border-[var(--lumen-color-surface-muted)] transition-colors last:border-b-0 hover:bg-[var(--lumen-color-surface-hover)] data-[selected=true]:bg-[var(--lumen-color-info-soft)]',
+                        stickyHeader && 'table w-full table-fixed',
+                        resolvedRowClassName,
+                      )}
+                    >
+                      {selectable ? (
+                        <td
+                          className={cellPadding}
+                          style={{ minWidth: 48, width: 48 }}
+                        >
+                          <Checkbox
+                            aria-label={locale.dataTable.selectRow(rowIndex + 1)}
+                            checked={selectedKeys.has(key)}
+                            disabled={!rowSelectable}
+                            onChange={(checked) => updateRowSelection(key, checked)}
+                          />
+                        </td>
+                      ) : null}
+                      {columns.map((column) => (
+                        <td
+                          key={column.key}
+                          className={cn(
+                            cellPadding,
+                            'font-normal leading-5 text-[var(--lumen-color-text-secondary)]',
+                            cellTextSize,
+                            column.align === 'center' && 'text-center',
+                            column.align === 'right' && 'text-right',
+                            column.className,
+                          )}
+                          style={{
+                            width: toCssSize(column.width),
+                            minWidth: toCssSize(column.minWidth),
+                          }}
+                        >
+                          {column.render(row, rowIndex)}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
           </tbody>
         </table>
       </div>

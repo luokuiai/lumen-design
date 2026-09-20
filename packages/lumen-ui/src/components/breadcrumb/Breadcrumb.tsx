@@ -41,78 +41,78 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
   ) => {
     const locale = useLumenLocale();
     return (
-    <nav
-      tabIndex={-1}
-      {...props}
-      ref={ref}
-      aria-label={ariaLabel ?? locale.navigation.breadcrumb}
-      data-ui="breadcrumb"
-      data-size={size}
-      className={cn('max-w-full overflow-x-auto', sizeClassNames[size], className)}
-    >
-      <ol className="flex min-w-max items-center gap-1.5 whitespace-nowrap">
-        {items.map((item, index) => {
-          const current = index === items.length - 1;
-          const content = (
-            <>
-              {item.icon ? <span className="shrink-0">{item.icon}</span> : null}
-              <span>{item.label}</span>
-            </>
-          );
-          const itemClassName = cn(
-            'inline-flex items-center gap-1 rounded-[var(--lumen-radius-tag)] outline-none transition-colors focus-visible:text-[var(--lumen-color-primary)]',
-            current
-              ? 'text-[var(--lumen-color-text)]'
-              : 'text-[var(--lumen-color-text-placeholder)]',
-            !current && !item.disabled && 'hover:text-[var(--lumen-color-primary)]',
-            item.disabled && 'cursor-not-allowed opacity-50',
-          );
+      <nav
+        tabIndex={-1}
+        {...props}
+        ref={ref}
+        aria-label={ariaLabel ?? locale.navigation.breadcrumb}
+        data-ui="breadcrumb"
+        data-size={size}
+        className={cn('max-w-full overflow-x-auto', sizeClassNames[size], className)}
+      >
+        <ol className="flex min-w-max items-center gap-1.5 whitespace-nowrap">
+          {items.map((item, index) => {
+            const current = index === items.length - 1;
+            const content = (
+              <>
+                {item.icon ? <span className="shrink-0">{item.icon}</span> : null}
+                <span>{item.label}</span>
+              </>
+            );
+            const itemClassName = cn(
+              'inline-flex items-center gap-1 rounded-[var(--lumen-radius-tag)] outline-none transition-colors focus-visible:text-[var(--lumen-color-primary)]',
+              current
+                ? 'text-[var(--lumen-color-text)]'
+                : 'text-[var(--lumen-color-text-placeholder)]',
+              !current && !item.disabled && 'hover:text-[var(--lumen-color-primary)]',
+              item.disabled && 'cursor-not-allowed opacity-50',
+            );
 
-          let itemContent: React.ReactNode;
-          if (item.disabled) {
-            itemContent = (
-              <span aria-disabled="true" className={itemClassName}>
-                {content}
-              </span>
-            );
-          } else if (item.href) {
-            itemContent = (
-              <a
-                href={item.href}
-                aria-current={current ? 'page' : undefined}
-                className={itemClassName}
-                onClick={item.onClick}
-              >
-                {content}
-              </a>
-            );
-          } else if (item.onClick && !current) {
-            itemContent = (
-              <button type="button" className={itemClassName} onClick={item.onClick}>
-                {content}
-              </button>
-            );
-          } else {
-            itemContent = (
-              <span aria-current={current ? 'page' : undefined} className={itemClassName}>
-                {content}
-              </span>
-            );
-          }
-
-          return (
-            <li key={item.key ?? index} className="flex items-center gap-1.5">
-              {index > 0 ? (
-                <span aria-hidden="true" className="text-[var(--lumen-color-text-placeholder)]">
-                  {separator}
+            let itemContent: React.ReactNode;
+            if (item.disabled) {
+              itemContent = (
+                <span aria-disabled="true" className={itemClassName}>
+                  {content}
                 </span>
-              ) : null}
-              {itemContent}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
+              );
+            } else if (item.href) {
+              itemContent = (
+                <a
+                  href={item.href}
+                  aria-current={current ? 'page' : undefined}
+                  className={itemClassName}
+                  onClick={item.onClick}
+                >
+                  {content}
+                </a>
+              );
+            } else if (item.onClick && !current) {
+              itemContent = (
+                <button type="button" className={itemClassName} onClick={item.onClick}>
+                  {content}
+                </button>
+              );
+            } else {
+              itemContent = (
+                <span aria-current={current ? 'page' : undefined} className={itemClassName}>
+                  {content}
+                </span>
+              );
+            }
+
+            return (
+              <li key={item.key ?? index} className="flex items-center gap-1.5">
+                {index > 0 ? (
+                  <span aria-hidden="true" className="text-[var(--lumen-color-text-placeholder)]">
+                    {separator}
+                  </span>
+                ) : null}
+                {itemContent}
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
     );
   },
 );

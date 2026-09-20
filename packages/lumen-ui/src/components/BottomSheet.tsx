@@ -186,12 +186,12 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
         onClick={
           closeOnOverlayClick && !persistent
             ? (event) => {
-                const startedInside = pointerStartedInsideRef.current;
-                pointerStartedInsideRef.current = false;
-                if (!startedInside && event.target === event.currentTarget) {
-                  requestCloseIfTopmost();
-                }
+              const startedInside = pointerStartedInsideRef.current;
+              pointerStartedInsideRef.current = false;
+              if (!startedInside && event.target === event.currentTarget) {
+                requestCloseIfTopmost();
               }
+            }
             : undefined
         }
       >

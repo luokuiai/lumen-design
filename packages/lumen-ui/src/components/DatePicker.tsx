@@ -564,12 +564,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
               style={isMobile ? undefined : {
                 ...dropdownStyle,
                 animation: isAnimatingOut
-                    ? dropDirection === 'up'
-                      ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
-                      : 'lumen-dropdown-out 0.12s ease-in forwards'
-                    : dropDirection === 'up'
-                      ? 'lumen-dropdown-in-up 0.12s ease-out'
-                      : 'lumen-dropdown-in 0.12s ease-out',
+                  ? dropDirection === 'up'
+                    ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
+                    : 'lumen-dropdown-out 0.12s ease-in forwards'
+                  : dropDirection === 'up'
+                    ? 'lumen-dropdown-in-up 0.12s ease-out'
+                    : 'lumen-dropdown-in 0.12s ease-out',
                 transformOrigin: dropDirection === 'up' ? 'bottom' : 'top',
               }}
             >
@@ -585,37 +585,37 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                 />
               ) : (
                 <MonthModeContent
-                tokens={tokens}
-                viewYear={viewYear}
-                showYearPicker={showYearPicker}
-                yearPickerStart={yearPickerStart}
-                canGoPrevYearRange={canGoPrevYearRange}
-                canGoNextYearRange={canGoNextYearRange}
-                selectedMonth={selectedMonth}
-                todayDate={todayDate}
-                slideDirection={slideDirection}
-                selectMonth={selectMonth}
-                selectYear={selectYear}
-                prevYear={prevYear}
-                nextYear={nextYear}
-                prevYearRange={prevYearRange}
-                nextYearRange={nextYearRange}
-                setShowYearPicker={setShowYearPicker}
-                onAnimationEnd={handleAnimationEnd}
-                showToday={showToday}
-                clearable={clearable}
-                onClear={() => {
-                  if (isMobile) setMobileDraftValue('');
-                  else {
-                    onChange('');
-                    closeDropdown();
+                  tokens={tokens}
+                  viewYear={viewYear}
+                  showYearPicker={showYearPicker}
+                  yearPickerStart={yearPickerStart}
+                  canGoPrevYearRange={canGoPrevYearRange}
+                  canGoNextYearRange={canGoNextYearRange}
+                  selectedMonth={selectedMonth}
+                  todayDate={todayDate}
+                  slideDirection={slideDirection}
+                  selectMonth={selectMonth}
+                  selectYear={selectYear}
+                  prevYear={prevYear}
+                  nextYear={nextYear}
+                  prevYearRange={prevYearRange}
+                  nextYearRange={nextYearRange}
+                  setShowYearPicker={setShowYearPicker}
+                  onAnimationEnd={handleAnimationEnd}
+                  showToday={showToday}
+                  clearable={clearable}
+                  onClear={() => {
+                    if (isMobile) setMobileDraftValue('');
+                    else {
+                      onChange('');
+                      closeDropdown();
+                    }
+                  }}
+                  onSelectToday={() =>
+                    selectMonth(todayDate.year, todayDate.month)
                   }
-                }}
-                onSelectToday={() =>
-                  selectMonth(todayDate.year, todayDate.month)
-                }
-                isMonthDisabled={isMonthDisabled}
-                isYearDisabled={isYearDisabled}
+                  isMonthDisabled={isMonthDisabled}
+                  isYearDisabled={isYearDisabled}
                 />
               )}
               {isMobile ? (
@@ -702,184 +702,184 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
 }) => {
   const locale = useLumenLocale();
   return (
-  <>
-    <div className={cn(tokens.dropdown, 'pb-0')}>
-      {showYearPicker ? (
+    <>
+      <div className={cn(tokens.dropdown, 'pb-0')}>
+        {showYearPicker ? (
         // ─── 年份选择器 ──────────────────────────
-        <>
-          <div className="mb-3 flex items-center justify-between">
-            <button
-              type="button"
-              disabled={!canGoPrevYearRange}
-              onClick={prevYearRange}
-              className={cn(
-                pickerIconButtonClassName,
-                !canGoPrevYearRange && 'opacity-40',
-              )}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <span className={cn(tokens.header, 'font-semibold text-[var(--lumen-color-text)]')}>
-              {yearPickerStart} - {yearPickerStart + 19}
-            </span>
-            <button
-              type="button"
-              disabled={!canGoNextYearRange}
-              onClick={nextYearRange}
-              className={cn(
-                pickerIconButtonClassName,
-                !canGoNextYearRange && 'opacity-40',
-              )}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-          <div className="grid grid-cols-5 gap-1 text-center">
-            {Array.from({ length: 20 }, (_, i) => yearPickerStart + i).map(
-              (y) => {
-                const disabled = isYearDisabled(y);
-                const isCurrent = y === todayDate.year;
-                const isSelected = y === viewYear;
-                return (
-                  <button
-                    key={y}
-                    type="button"
-                    disabled={disabled}
-                    onClick={() => selectYear(y)}
-                    className={cn(
-                      'mx-auto flex h-10 w-12 items-center justify-center rounded-full text-[13px] transition-all',
-                      pickerOptionFocusClassName,
-                      isSelected &&
+          <>
+            <div className="mb-3 flex items-center justify-between">
+              <button
+                type="button"
+                disabled={!canGoPrevYearRange}
+                onClick={prevYearRange}
+                className={cn(
+                  pickerIconButtonClassName,
+                  !canGoPrevYearRange && 'opacity-40',
+                )}
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <span className={cn(tokens.header, 'font-semibold text-[var(--lumen-color-text)]')}>
+                {yearPickerStart} - {yearPickerStart + 19}
+              </span>
+              <button
+                type="button"
+                disabled={!canGoNextYearRange}
+                onClick={nextYearRange}
+                className={cn(
+                  pickerIconButtonClassName,
+                  !canGoNextYearRange && 'opacity-40',
+                )}
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+            <div className="grid grid-cols-5 gap-1 text-center">
+              {Array.from({ length: 20 }, (_, i) => yearPickerStart + i).map(
+                (y) => {
+                  const disabled = isYearDisabled(y);
+                  const isCurrent = y === todayDate.year;
+                  const isSelected = y === viewYear;
+                  return (
+                    <button
+                      key={y}
+                      type="button"
+                      disabled={disabled}
+                      onClick={() => selectYear(y)}
+                      className={cn(
+                        'mx-auto flex h-10 w-12 items-center justify-center rounded-full text-[13px] transition-all',
+                        pickerOptionFocusClassName,
+                        isSelected &&
                         'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
-                      !isSelected &&
+                        !isSelected &&
                         isCurrent &&
                         'font-semibold text-[var(--lumen-color-primary)]',
-                      !isSelected &&
+                        !isSelected &&
                         !isCurrent &&
                         !disabled &&
                         'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)]',
-                      disabled && 'cursor-not-allowed text-[var(--lumen-color-border-hover)]',
-                    )}
-                  >
-                    {y}
-                  </button>
-                );
-              },
-            )}
-          </div>
-        </>
-      ) : (
-        // ─── 月份选择器 ──────────────────────────
-        <>
-          <div className="mb-3 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={prevYear}
-              className={pickerIconButtonClassName}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowYearPicker(true)}
-              className={cn(
-                tokens.header,
-                pickerHeaderButtonClassName,
-              )}
-            >
-              {locale.calendar.year(viewYear)}
-            </button>
-            <button
-              type="button"
-              onClick={nextYear}
-              className={pickerIconButtonClassName}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-          <div className="overflow-hidden">
-            <div
-              onAnimationEnd={onAnimationEnd}
-              style={
-                slideDirection === 'left'
-                  ? { animation: 'calendarSlideLeft 0.2s ease-out' }
-                  : slideDirection === 'right'
-                    ? { animation: 'calendarSlideRight 0.2s ease-out' }
-                    : undefined
-              }
-            >
-              <div className="grid grid-cols-4 gap-2">
-                {locale.calendar.months.map((label, idx) => {
-                  const isSelected =
-                    selectedMonth?.year === viewYear &&
-                    selectedMonth?.month === idx;
-                  const isCurrent =
-                    viewYear === todayDate.year && idx === todayDate.month;
-                  const disabled = isMonthDisabled(viewYear, idx);
-                  return (
-                    <button
-                      key={idx}
-                      type="button"
-                      disabled={disabled}
-                      onClick={() => selectMonth(viewYear, idx)}
-                      className={cn(
-                        'relative mx-auto flex h-10 w-10 items-center justify-center rounded-full text-[13px] transition-all',
-                        pickerOptionFocusClassName,
-                        isSelected &&
-                          'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
-                        !isSelected &&
-                          isCurrent &&
-                          'font-semibold text-[var(--lumen-color-primary)]',
-                        !isSelected &&
-                          !isCurrent &&
-                          !disabled &&
-                          'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
                         disabled && 'cursor-not-allowed text-[var(--lumen-color-border-hover)]',
                       )}
                     >
-                      {label}
-                      {isCurrent && !isSelected && (
-                        <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[var(--lumen-color-primary)]" />
-                      )}
+                      {y}
                     </button>
                   );
-                })}
+                },
+              )}
+            </div>
+          </>
+        ) : (
+        // ─── 月份选择器 ──────────────────────────
+          <>
+            <div className="mb-3 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={prevYear}
+                className={pickerIconButtonClassName}
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowYearPicker(true)}
+                className={cn(
+                  tokens.header,
+                  pickerHeaderButtonClassName,
+                )}
+              >
+                {locale.calendar.year(viewYear)}
+              </button>
+              <button
+                type="button"
+                onClick={nextYear}
+                className={pickerIconButtonClassName}
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+            <div className="overflow-hidden">
+              <div
+                onAnimationEnd={onAnimationEnd}
+                style={
+                  slideDirection === 'left'
+                    ? { animation: 'calendarSlideLeft 0.2s ease-out' }
+                    : slideDirection === 'right'
+                      ? { animation: 'calendarSlideRight 0.2s ease-out' }
+                      : undefined
+                }
+              >
+                <div className="grid grid-cols-4 gap-2">
+                  {locale.calendar.months.map((label, idx) => {
+                    const isSelected =
+                      selectedMonth?.year === viewYear &&
+                    selectedMonth?.month === idx;
+                    const isCurrent =
+                      viewYear === todayDate.year && idx === todayDate.month;
+                    const disabled = isMonthDisabled(viewYear, idx);
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        disabled={disabled}
+                        onClick={() => selectMonth(viewYear, idx)}
+                        className={cn(
+                          'relative mx-auto flex h-10 w-10 items-center justify-center rounded-full text-[13px] transition-all',
+                          pickerOptionFocusClassName,
+                          isSelected &&
+                          'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
+                          !isSelected &&
+                          isCurrent &&
+                          'font-semibold text-[var(--lumen-color-primary)]',
+                          !isSelected &&
+                          !isCurrent &&
+                          !disabled &&
+                          'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
+                          disabled && 'cursor-not-allowed text-[var(--lumen-color-border-hover)]',
+                        )}
+                      >
+                        {label}
+                        {isCurrent && !isSelected && (
+                          <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[var(--lumen-color-primary)]" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </div>
-        </>
-      )}
-    </div>
-
-    {/* 底部操作 */}
-    {(showToday || (clearable && selectedMonth)) && (
-      <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-4 py-3">
-        {showToday && (
-          <button
-            type="button"
-            onClick={onSelectToday}
-            className={cn(
-              tokens.footer,
-              'font-medium text-[var(--lumen-color-primary)] hover:text-[var(--lumen-color-primary-active)] transition-colors',
-            )}
-          >
-            {locale.common.today}
-          </button>
-        )}
-        {clearable && selectedMonth && (
-          <button
-            type="button"
-            onClick={onClear}
-            className={cn(
-              tokens.footer,
-              'text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)] transition-colors ml-auto',
-            )}
-          >
-            {locale.common.clear}
-          </button>
+          </>
         )}
       </div>
-    )}
-  </>
+
+      {/* 底部操作 */}
+      {(showToday || (clearable && selectedMonth)) && (
+        <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-4 py-3">
+          {showToday && (
+            <button
+              type="button"
+              onClick={onSelectToday}
+              className={cn(
+                tokens.footer,
+                'font-medium text-[var(--lumen-color-primary)] hover:text-[var(--lumen-color-primary-active)] transition-colors',
+              )}
+            >
+              {locale.common.today}
+            </button>
+          )}
+          {clearable && selectedMonth && (
+            <button
+              type="button"
+              onClick={onClear}
+              className={cn(
+                tokens.footer,
+                'text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)] transition-colors ml-auto',
+              )}
+            >
+              {locale.common.clear}
+            </button>
+          )}
+        </div>
+      )}
+    </>
   );
 };

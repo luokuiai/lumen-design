@@ -98,22 +98,22 @@ export const Watermark = React.forwardRef<HTMLDivElement, WatermarkProps>(
 
     const patternStyle: React.CSSProperties = image
       ? {
-          backgroundImage: pattern,
-          backgroundPosition: `${offsetX}px ${offsetY}px`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: `${tileWidth}px ${tileHeight}px`,
-        }
+        backgroundImage: pattern,
+        backgroundPosition: `${offsetX}px ${offsetY}px`,
+        backgroundRepeat: 'repeat',
+        backgroundSize: `${tileWidth}px ${tileHeight}px`,
+      }
       : {
-          backgroundColor: color,
-          maskImage: pattern,
-          maskPosition: `${offsetX}px ${offsetY}px`,
-          maskRepeat: 'repeat',
-          maskSize: `${tileWidth}px ${tileHeight}px`,
-          WebkitMaskImage: pattern,
-          WebkitMaskPosition: `${offsetX}px ${offsetY}px`,
-          WebkitMaskRepeat: 'repeat',
-          WebkitMaskSize: `${tileWidth}px ${tileHeight}px`,
-        };
+        backgroundColor: color,
+        maskImage: pattern,
+        maskPosition: `${offsetX}px ${offsetY}px`,
+        maskRepeat: 'repeat',
+        maskSize: `${tileWidth}px ${tileHeight}px`,
+        WebkitMaskImage: pattern,
+        WebkitMaskPosition: `${offsetX}px ${offsetY}px`,
+        WebkitMaskRepeat: 'repeat',
+        WebkitMaskSize: `${tileWidth}px ${tileHeight}px`,
+      };
 
     return (
       <div

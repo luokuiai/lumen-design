@@ -452,54 +452,54 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
           </div>
         ) : filteredOptions.length || canCreateCustomValue ? <>
           {filteredOptions.map((option, index) => {
-          const selected = option.value === value;
-          const highlighted = index === highlightedIndex;
-          const state: ComboboxOptionRenderState = {
-            selected,
-            highlighted,
-            disabled: Boolean(option.disabled),
-            index,
-          };
-          return (
-            <button
-              key={String(option.value)}
-              id={`${listboxId}-option-${index}`}
-              type="button"
-              role="option"
-              aria-selected={selected}
-              disabled={option.disabled}
-              data-ui="combobox-option"
-              data-selected={selected || undefined}
-              data-highlighted={highlighted || undefined}
-              className={cn(
-                renderOption
-                  ? 'block w-full text-left transition-colors'
-                  : 'flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] transition-colors',
-                option.disabled && 'cursor-not-allowed opacity-40',
-                !renderOption && selected && 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]',
-                !renderOption && highlighted && !selected && !option.disabled && 'bg-[var(--lumen-color-surface-muted)]',
-                !renderOption && !selected && 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]',
-                optionClassName?.(option, state),
-              )}
-              onMouseDown={(event) => event.preventDefault()}
-              onMouseEnter={() => !option.disabled && setHighlightedIndex(index)}
-              onClick={() => selectOption(option)}
-            >
-              {renderOption ? renderOption(option, state) : (
-                <>
-                  {option.icon ? <span className="shrink-0">{option.icon}</span> : null}
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate leading-5">{option.label}</span>
-                    {option.description ? (
-                      <span className="block truncate text-[12px] text-[var(--lumen-color-text-placeholder)]">
-                        {option.description}
-                      </span>
-                    ) : null}
-                  </span>
-                  {selected ? <Check aria-hidden="true" size={15} className="shrink-0" /> : null}
-                </>
-              )}
-            </button>
+            const selected = option.value === value;
+            const highlighted = index === highlightedIndex;
+            const state: ComboboxOptionRenderState = {
+              selected,
+              highlighted,
+              disabled: Boolean(option.disabled),
+              index,
+            };
+            return (
+              <button
+                key={String(option.value)}
+                id={`${listboxId}-option-${index}`}
+                type="button"
+                role="option"
+                aria-selected={selected}
+                disabled={option.disabled}
+                data-ui="combobox-option"
+                data-selected={selected || undefined}
+                data-highlighted={highlighted || undefined}
+                className={cn(
+                  renderOption
+                    ? 'block w-full text-left transition-colors'
+                    : 'flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] transition-colors',
+                  option.disabled && 'cursor-not-allowed opacity-40',
+                  !renderOption && selected && 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]',
+                  !renderOption && highlighted && !selected && !option.disabled && 'bg-[var(--lumen-color-surface-muted)]',
+                  !renderOption && !selected && 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]',
+                  optionClassName?.(option, state),
+                )}
+                onMouseDown={(event) => event.preventDefault()}
+                onMouseEnter={() => !option.disabled && setHighlightedIndex(index)}
+                onClick={() => selectOption(option)}
+              >
+                {renderOption ? renderOption(option, state) : (
+                  <>
+                    {option.icon ? <span className="shrink-0">{option.icon}</span> : null}
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate leading-5">{option.label}</span>
+                      {option.description ? (
+                        <span className="block truncate text-[12px] text-[var(--lumen-color-text-placeholder)]">
+                          {option.description}
+                        </span>
+                      ) : null}
+                    </span>
+                    {selected ? <Check aria-hidden="true" size={15} className="shrink-0" /> : null}
+                  </>
+                )}
+              </button>
             );
           })}
           {canCreateCustomValue ? (

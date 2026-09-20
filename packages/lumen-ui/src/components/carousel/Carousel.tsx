@@ -233,10 +233,10 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
     ?? `${index + 1} / ${itemCount}`;
   const renderedItems = looping
     ? [
-        { item: items[itemCount - 1]!, itemIndex: itemCount - 1, clone: 'before' },
-        ...items.map((item, itemIndex) => ({ item, itemIndex, clone: null })),
-        { item: items[0]!, itemIndex: 0, clone: 'after' },
-      ]
+      { item: items[itemCount - 1]!, itemIndex: itemCount - 1, clone: 'before' },
+      ...items.map((item, itemIndex) => ({ item, itemIndex, clone: null })),
+      { item: items[0]!, itemIndex: 0, clone: 'after' },
+    ]
     : items.map((item, itemIndex) => ({ item, itemIndex, clone: null }));
 
   return (
@@ -361,26 +361,26 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
         >
           {renderedItems.map(({ item, itemIndex, clone }) => {
             const active = !clone && itemIndex === activeIndex;
-          return (
-            <div
-              key={clone ? `${item.id}-${clone}` : item.id}
-              role="group"
-              aria-roledescription="slide"
-              aria-label={item.ariaLabel ?? slideLabel(itemIndex)}
-              aria-hidden={Boolean(clone) || !active ? true : undefined}
-              inert={Boolean(clone) || !active}
-              data-carousel-item
-              data-active={active || undefined}
-              data-clone={clone ?? undefined}
-              className={cn(
-                'relative h-full w-full shrink-0',
-                itemClassName,
-                item.className,
-              )}
-            >
-              {item.content}
-            </div>
-          );
+            return (
+              <div
+                key={clone ? `${item.id}-${clone}` : item.id}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={item.ariaLabel ?? slideLabel(itemIndex)}
+                aria-hidden={Boolean(clone) || !active ? true : undefined}
+                inert={Boolean(clone) || !active}
+                data-carousel-item
+                data-active={active || undefined}
+                data-clone={clone ?? undefined}
+                className={cn(
+                  'relative h-full w-full shrink-0',
+                  itemClassName,
+                  item.className,
+                )}
+              >
+                {item.content}
+              </div>
+            );
           })}
         </div>
       </div>

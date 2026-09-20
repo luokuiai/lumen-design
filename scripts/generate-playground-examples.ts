@@ -32,7 +32,8 @@ const normalizeJsx = (source: string) => {
 const visit = (node: ts.Node) => {
   if (ts.isJsxElement(node) && node.openingElement.tagName.getText(sourceFile) === 'DemoCard') {
     const titleAttribute = node.openingElement.attributes.properties.find(
-      (attribute) => ts.isJsxAttribute(attribute) && attribute.name.getText(sourceFile) === 'title',
+      (attribute): attribute is ts.JsxAttribute =>
+        ts.isJsxAttribute(attribute) && attribute.name.getText(sourceFile) === 'title',
     );
     const title = titleAttribute?.initializer && ts.isStringLiteral(titleAttribute.initializer)
       ? titleAttribute.initializer.text
@@ -117,8 +118,8 @@ const propertyDescriptions: Record<string, string> = {
   invalid: '标记组件当前处于校验错误状态。',
   initialFocusRef: '浮层打开后优先聚焦的元素引用。',
   items: '定义组件渲染的数据项。',
-    label: '设置可见标签或标题。',
-    locale: '设置组件树使用的语言包。',
+  label: '设置可见标签或标题。',
+  locale: '设置组件树使用的语言包。',
   loading: '显示加载状态并阻止重复操作。',
   loadingText: '覆盖加载状态的提示内容。',
   lockScroll: '浮层显示期间锁定页面滚动。',
