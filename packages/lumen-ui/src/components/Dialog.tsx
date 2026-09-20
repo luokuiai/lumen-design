@@ -147,12 +147,12 @@ export const Dialog: React.FC<DialogProps> = ({
         onClick={
           closeOnOverlayClick
             ? (event) => {
-                const startedInside = pointerStartedInsideRef.current;
-                pointerStartedInsideRef.current = false;
-                if (!startedInside && event.target === event.currentTarget) {
-                  requestCloseIfTopmost();
-                }
+              const startedInside = pointerStartedInsideRef.current;
+              pointerStartedInsideRef.current = false;
+              if (!startedInside && event.target === event.currentTarget) {
+                requestCloseIfTopmost();
               }
+            }
             : undefined
         }
         onAnimationEnd={handleAnimationEnd}

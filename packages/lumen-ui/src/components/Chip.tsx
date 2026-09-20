@@ -22,13 +22,13 @@ interface ChipBaseProps {
 
 export type ChipProps = ChipBaseProps & (
   | {
-      onSelect: (selected: boolean) => void;
-      onClose?: () => void;
-    }
+    onSelect: (selected: boolean) => void;
+    onClose?: () => void;
+  }
   | {
-      onSelect?: (selected: boolean) => void;
-      onClose: () => void;
-    }
+    onSelect?: (selected: boolean) => void;
+    onClose: () => void;
+  }
 );
 
 const chipSizeClassNames: Record<ChipSize, string> = {

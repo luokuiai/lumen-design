@@ -246,101 +246,101 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 
       {open
         ? createPortal(
-            <MobilePickerDialog
-              mobile={isMobile}
-              open={open}
-              onRequestClose={close}
-              label={placeholder}
-              dialogId="time-picker-panel"
-              maxWidth="max-w-[344px]"
+          <MobilePickerDialog
+            mobile={isMobile}
+            open={open}
+            onRequestClose={close}
+            label={placeholder}
+            dialogId="time-picker-panel"
+            maxWidth="max-w-[344px]"
+          >
+            <div
+              ref={panelRef}
+              tabIndex={-1}
+              data-ui="time-picker-panel"
+              data-time-picker-panel
+              data-lumen-overlay-scope={overlayScopeId ?? undefined}
+              className={cn(
+                isMobile
+                  ? 'contents'
+                  : 'overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]',
+              )}
+              style={isMobile ? undefined : {
+                ...panelStyle,
+                animation: isAnimatingOut
+                  ? dropDirection === 'up'
+                    ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
+                    : 'lumen-dropdown-out 0.12s ease-in forwards'
+                  : dropDirection === 'up'
+                    ? 'lumen-dropdown-in-up 0.12s ease-out'
+                    : 'lumen-dropdown-in 0.12s ease-out',
+                transformOrigin: dropDirection === 'up' ? 'bottom' : 'top',
+              }}
             >
-              <div
-                ref={panelRef}
-                tabIndex={-1}
-                data-ui="time-picker-panel"
-                data-time-picker-panel
-                data-lumen-overlay-scope={overlayScopeId ?? undefined}
-                className={cn(
-                  isMobile
-                    ? 'contents'
-                    : 'overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]',
-                )}
-                style={isMobile ? undefined : {
-                  ...panelStyle,
-                  animation: isAnimatingOut
-                      ? dropDirection === 'up'
-                        ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
-                        : 'lumen-dropdown-out 0.12s ease-in forwards'
-                      : dropDirection === 'up'
-                        ? 'lumen-dropdown-in-up 0.12s ease-out'
-                        : 'lumen-dropdown-in 0.12s ease-out',
-                  transformOrigin: dropDirection === 'up' ? 'bottom' : 'top',
-                }}
-              >
-                {isMobile ? (
-                  <MobileTimeWheel
-                    hour={draftHour}
-                    minute={draftMinute}
-                    second={draftSecond}
-                    onHourChange={setDraftHour}
-                    onMinuteChange={setDraftMinute}
-                    onSecondChange={setDraftSecond}
-                    precision={precision}
-                    minuteStep={minuteStep}
-                    labels={{
-                      hour: locale.timePicker.hour,
-                      minute: locale.timePicker.minute,
-                      second: locale.timePicker.second,
-                    }}
-                  />
-                ) : (
-                  <TimeSelector
-                    hour={draftHour}
-                    minute={draftMinute}
-                    second={draftSecond}
-                    onHourChange={setDraftHour}
-                    onMinuteChange={setDraftMinute}
-                    onSecondChange={setDraftSecond}
-                    precision={precision}
-                    minuteStep={minuteStep}
-                  />
-                )}
-                <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-3 py-2.5">
+              {isMobile ? (
+                <MobileTimeWheel
+                  hour={draftHour}
+                  minute={draftMinute}
+                  second={draftSecond}
+                  onHourChange={setDraftHour}
+                  onMinuteChange={setDraftMinute}
+                  onSecondChange={setDraftSecond}
+                  precision={precision}
+                  minuteStep={minuteStep}
+                  labels={{
+                    hour: locale.timePicker.hour,
+                    minute: locale.timePicker.minute,
+                    second: locale.timePicker.second,
+                  }}
+                />
+              ) : (
+                <TimeSelector
+                  hour={draftHour}
+                  minute={draftMinute}
+                  second={draftSecond}
+                  onHourChange={setDraftHour}
+                  onMinuteChange={setDraftMinute}
+                  onSecondChange={setDraftSecond}
+                  precision={precision}
+                  minuteStep={minuteStep}
+                />
+              )}
+              <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-3 py-2.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChange('');
+                    closeImmediate();
+                  }}
+                  className="text-[12px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"
+                >
+                  {locale.common.clear}
+                </button>
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
+                    onClick={selectNow}
+                    className="text-[12px] font-medium text-[var(--lumen-color-primary)]"
+                  >
+                    {locale.common.now}
+                  </button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    disabled={draftDisabled}
                     onClick={() => {
-                      onChange('');
+                      onChange(draftTime);
                       closeImmediate();
                     }}
-                    className="text-[12px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"
                   >
-                    {locale.common.clear}
-                  </button>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={selectNow}
-                      className="text-[12px] font-medium text-[var(--lumen-color-primary)]"
-                    >
-                      {locale.common.now}
-                    </button>
-                    <Button
-                      type="button"
-                      size="sm"
-                      disabled={draftDisabled}
-                      onClick={() => {
-                        onChange(draftTime);
-                        closeImmediate();
-                      }}
-                    >
-                      {locale.common.confirm}
-                    </Button>
-                  </div>
+                    {locale.common.confirm}
+                  </Button>
                 </div>
               </div>
-            </MobilePickerDialog>,
-            document.body,
-          )
+            </div>
+          </MobilePickerDialog>,
+          document.body,
+        )
         : null}
     </div>
   );

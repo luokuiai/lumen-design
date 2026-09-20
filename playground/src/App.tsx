@@ -344,7 +344,7 @@ const galleryCategories: GalleryCategory[] = [
         codeByCardTitle: {
           'Icon only': usageExample('Fab', '    <div className="flex items-center gap-4">\n      <Fab position="static" size="sm" icon={<Plus size={18} />} aria-label="新建任务" />\n      <Fab position="static" size="md" variant="secondary" icon={<Search size={18} />} aria-label="搜索" />\n      <Fab position="static" size="lg" variant="outline" icon={<Settings size={20} />} aria-label="设置" />\n    </div>', 'Plus, Search, Settings'),
           Extended: usageExample('Fab', '    <div className="flex items-center gap-4">\n      <Fab position="static" icon={<Plus size={18} />} label="新建任务" />\n      <Fab position="static" variant="secondary" icon={<Filter size={18} />} label="筛选条件" />\n    </div>', 'Filter, Plus'),
-          Expandable: usageExample('Fab, Switch', '    <div className="flex items-center gap-5">\n      <Switch checked={extended} onChange={setExtended} label="显示文字" />\n      <Fab\n        position="static"\n        icon={<Plus size={18} />}\n        label="新建任务"\n        extended={extended}\n      />\n    </div>', 'Plus', "const [extended, setExtended] = useState(false);"),
+          Expandable: usageExample('Fab, Switch', '    <div className="flex items-center gap-5">\n      <Switch checked={extended} onChange={setExtended} label="显示文字" />\n      <Fab\n        position="static"\n        icon={<Plus size={18} />}\n        label="新建任务"\n        extended={extended}\n      />\n    </div>', 'Plus', 'const [extended, setExtended] = useState(false);'),
           Submenu: usageExample('Fab', '    <div className="relative h-44">\n      <Fab\n        position="absolute"\n        placement="bottom-end"\n        size="md"\n        color="#7c3aed"\n        icon={<Plus size={20} />}\n        aria-label="快速新建"\n        actions={[\n          { icon: <Bell size={16} />, label: \'创建告警\', color: \'#dc2626\' },\n          { icon: <MapPin size={16} />, label: \'添加地点\', color: \'#2563eb\' },\n        ]}\n      />\n    </div>', 'Bell, MapPin, Plus'),
         },
       },
@@ -375,7 +375,7 @@ const galleryCategories: GalleryCategory[] = [
       demo('Slider', 'forms', 'Slider', '    <Slider value={60} onChange={() => undefined} />'),
       demo('Rating', 'forms', 'Rating', '    <Rating value={4} onChange={() => undefined} />'),
       demo('Select', 'pickers', 'Select', '    <Select\n      value="review"\n      options={[{ label: \'设计评审\', value: \'review\' }]}\n      onChange={() => undefined}\n    />'),
-      demo('Combobox', 'pickers', 'Combobox', '    <Combobox\n      value={value}\n      options={[\n        { label: \'设计评审\', value: \'review\' },\n        { label: \'需求同步\', value: \'sync\' },\n      ]}\n      onChange={(nextValue) => setValue(nextValue as string | null)}\n      placeholder="输入或选择事项"\n    />', undefined, "const [value, setValue] = useState<string | null>(null);"),
+      demo('Combobox', 'pickers', 'Combobox', '    <Combobox\n      value={value}\n      options={[\n        { label: \'设计评审\', value: \'review\' },\n        { label: \'需求同步\', value: \'sync\' },\n      ]}\n      onChange={(nextValue) => setValue(nextValue as string | null)}\n      placeholder="输入或选择事项"\n    />', undefined, 'const [value, setValue] = useState<string | null>(null);'),
       demo('Cascader', 'pickers', 'Cascader', '    <Cascader options={options} value={[]} onChange={() => undefined} />'),
       demo('TreeSelect', 'pickers', 'TreeSelect', '    <TreeSelect nodes={nodes} value="frontend" onChange={setValue} searchable />'),
       demo('Transfer', 'pickers', 'Transfer', '    <Transfer items={items} targetKeys={[]} onChange={() => undefined} />'),
@@ -416,7 +416,7 @@ const galleryCategories: GalleryCategory[] = [
       demo('Chip', 'buttons', 'Chip', '    <Chip tone="neutral">设计系统</Chip>'),
       demo('FileTypeIcon', 'data', 'FileTypeIcon', '    <FileTypeIcon fileName="proposal.pdf" />'),
       demo('List', 'data', 'List, ListItem', '    <List>\n      <ListItem title="设计评审" />\n    </List>'),
-      demo('VirtualList', 'data', 'VirtualList', '    <VirtualList\n      aria-label="运行记录"\n      items={items}\n      itemSize={60}\n      height={320}\n      overscan={4}\n      getItemKey={(item) => item.id}\n      renderItem={(item) => (\n        <div className="flex h-full items-center border-b px-4">{item.title}</div>\n      )}\n    />', undefined, "const items = Array.from({ length: 10000 }, (_, index) => ({\n    id: index + 1,\n    title: `运行记录 ${index + 1}`,\n  }));"),
+      demo('VirtualList', 'data', 'VirtualList', '    <VirtualList\n      aria-label="运行记录"\n      items={items}\n      itemSize={60}\n      height={320}\n      overscan={4}\n      getItemKey={(item) => item.id}\n      renderItem={(item) => (\n        <div className="flex h-full items-center border-b px-4">{item.title}</div>\n      )}\n    />', undefined, 'const items = Array.from({ length: 10000 }, (_, index) => ({\n    id: index + 1,\n    title: `运行记录 ${index + 1}`,\n  }));'),
       demo('Scrollbar', 'data', 'Scrollbar', '    <Scrollbar className="h-64">{content}</Scrollbar>'),
       demo('DataTable', 'data', 'DataTable', '    <>\n      <DataTable stickyHeader columns={columns} data={rows} getRowKey={(row) => row.id} />\n      <DataTable variant="embedded" columns={columns} data={rows} getRowKey={(row) => row.id} />\n    </>', undefined, undefined, ['DataTable · Sticky Header', 'DataTable · Embedded']),
       demo('Tree', 'data', 'Tree', '    <Tree\n      aria-label="项目文件"\n      nodes={[{ key: "src", label: "src", children: [{ key: "app", label: "App.tsx" }] }]}\n      defaultExpandedKeys={["src"]}\n      multiple\n    />'),
@@ -1295,7 +1295,7 @@ function GallerySection({ section, children }: { section: Section; children: Rea
   );
 }
 
-const tsxTokenPattern = /(\/\*.*?\*\/|\/\/.*|`(?:\\.|[^`\\])*`|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|<\/?[A-Za-z][\w.:-]*|\b(?:as|async|await|break|case|catch|class|const|continue|default|else|export|extends|false|finally|for|from|function|if|import|in|interface|let|new|null|of|return|switch|throw|true|try|type|undefined|while)\b|\b\d+(?:\.\d+)?\b|[A-Za-z_$][\w$-]*(?=\s*=)|[{}[\]()]|\/?>(?!\=))/g;
+const tsxTokenPattern = /(\/\*.*?\*\/|\/\/.*|`(?:\\.|[^`\\])*`|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|<\/?[A-Za-z][\w.:-]*|\b(?:as|async|await|break|case|catch|class|const|continue|default|else|export|extends|false|finally|for|from|function|if|import|in|interface|let|new|null|of|return|switch|throw|true|try|type|undefined|while)\b|\b\d+(?:\.\d+)?\b|[A-Za-z_$][\w$-]*(?=\s*=)|[{}[\]()]|\/?>(?!=))/g;
 
 function getTsxTokenClass(token: string) {
   if (token.startsWith('//') || token.startsWith('/*')) return 'syntax-comment';
@@ -1556,12 +1556,12 @@ export default function App() {
     const sourceSection = renderSections.find((section) => section.id === activeDemo.sourceSection);
     return sourceSection
       ? [{
-          ...sourceSection,
-          title: demoLabels[activeDemo.title] ?? activeDemo.title,
-          description: language === 'zh-CN'
-            ? (componentGuides[activeDemo.id]?.summary ?? `${activeCategory.title} · ${activeCategory.description}`)
-            : (enGuideSummaries[activeDemo.id] ?? `${activeCategory.title} · ${activeCategory.description}`),
-        }]
+        ...sourceSection,
+        title: demoLabels[activeDemo.title] ?? activeDemo.title,
+        description: language === 'zh-CN'
+          ? (componentGuides[activeDemo.id]?.summary ?? `${activeCategory.title} · ${activeCategory.description}`)
+          : (enGuideSummaries[activeDemo.id] ?? `${activeCategory.title} · ${activeCategory.description}`),
+      }]
       : [];
   }, [activeCategory.description, activeCategory.title, activeDemo, demoLabels, language]);
 
@@ -1674,2230 +1674,2230 @@ export default function App() {
 
   return (
     <LumenProvider locale={locale}>
-    <PlaygroundMessagesContext.Provider value={messages}>
-    <div
-      data-lumen-theme={theme}
-      data-color-scheme={colorScheme}
-      data-accent={theme === 'clarity' ? accent : undefined}
-      data-density="default"
-      className={`app-shell${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}
-    >
-      <aside className="sidebar">
-        <GalleryBrand subtitle={messages.brandSubtitle} />
-        <Scrollbar className="sidebar-navigation" size="sm" tabIndex={-1} aria-label={messages.navigationLabel}>
-          <SideNav
-            sections={navigationSections}
-            ariaLabel={messages.navigationLabel}
-            activeValue={activeDemo.id}
-            expandedValues={expandedCategoryIds}
-            onExpandedValuesChange={setExpandedCategoryIds}
-            collapsed={sidebarCollapsed}
-            onSelect={selectNavigationItem}
-          />
-        </Scrollbar>
-      </aside>
-
-      <Drawer
-        open={mobileNavOpen}
-        placement="left"
-        closeOnSwipe
-        drawerId="mobile-navigation"
-        aria-label={messages.navigationLabel}
-        panelClassName="mobile-nav-panel"
-        onRequestClose={() => setMobileNavOpen(false)}
-      >
-        <div className="mobile-nav-header">
-          <GalleryBrand className="mobile-nav-brand" subtitle={messages.brandSubtitle} />
-          <Button
-            iconOnly
-            variant="ghost"
-            aria-label={messages.closeNavigation}
-            icon={<X size={18} />}
-            onClick={() => setMobileNavOpen(false)}
-          />
-        </div>
-        <Scrollbar
-          ref={(element) => {
-            if (element) element.scrollTop = mobileNavigationScrollTopRef.current;
-          }}
-          className="mobile-navigation-content"
-          size="sm"
-          tabIndex={-1}
-          aria-label={messages.mobileNavigationLabel}
-          onScroll={(event) => {
-            mobileNavigationScrollTopRef.current = event.currentTarget.scrollTop;
-          }}
+      <PlaygroundMessagesContext.Provider value={messages}>
+        <div
+          data-lumen-theme={theme}
+          data-color-scheme={colorScheme}
+          data-accent={theme === 'clarity' ? accent : undefined}
+          data-density="default"
+          className={`app-shell${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}
         >
-          <SideNav
-            sections={navigationSections}
-            ariaLabel={messages.navigationLabel}
-            activeValue={activeDemo.id}
-            expandedValues={expandedCategoryIds}
-            onExpandedValuesChange={setExpandedCategoryIds}
-            onSelect={(demoId) => {
-              selectNavigationItem(demoId);
-              setMobileNavOpen(false);
-            }}
-          />
-        </Scrollbar>
-      </Drawer>
+          <aside className="sidebar">
+            <GalleryBrand subtitle={messages.brandSubtitle} />
+            <Scrollbar className="sidebar-navigation" size="sm" tabIndex={-1} aria-label={messages.navigationLabel}>
+              <SideNav
+                sections={navigationSections}
+                ariaLabel={messages.navigationLabel}
+                activeValue={activeDemo.id}
+                expandedValues={expandedCategoryIds}
+                onExpandedValuesChange={setExpandedCategoryIds}
+                collapsed={sidebarCollapsed}
+                onSelect={selectNavigationItem}
+              />
+            </Scrollbar>
+          </aside>
 
-      <main className="main">
-        <AppHeader
-          className="topbar"
-          title="Lumen UI Gallery"
-          description={messages.appDescription}
-          navigation={(
-            <>
-            <Button
-              iconOnly
-              variant="ghost"
-              className="mobile-menu-button"
-              aria-label={messages.openNavigation}
-              icon={<Menu size={18} />}
-              onClick={() => setMobileNavOpen(true)}
-            />
-            <Tooltip content={sidebarCollapsed ? messages.expandSidebar : messages.collapseSidebar} placement="bottom">
+          <Drawer
+            open={mobileNavOpen}
+            placement="left"
+            closeOnSwipe
+            drawerId="mobile-navigation"
+            aria-label={messages.navigationLabel}
+            panelClassName="mobile-nav-panel"
+            onRequestClose={() => setMobileNavOpen(false)}
+          >
+            <div className="mobile-nav-header">
+              <GalleryBrand className="mobile-nav-brand" subtitle={messages.brandSubtitle} />
               <Button
                 iconOnly
                 variant="ghost"
-                className="sidebar-toggle-button"
-                aria-label={sidebarCollapsed ? messages.expandSidebar : messages.collapseSidebar}
-                aria-expanded={!sidebarCollapsed}
-                icon={sidebarCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
-                onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
+                aria-label={messages.closeNavigation}
+                icon={<X size={18} />}
+                onClick={() => setMobileNavOpen(false)}
               />
-            </Tooltip>
-            </>
-          )}
-          search={(
-            <button
-              type="button"
-              className="topbar-search-trigger"
-              aria-label={messages.openSearch}
-              aria-haspopup="dialog"
-              aria-expanded={commandPaletteOpen}
-              onClick={() => setCommandPaletteOpen(true)}
-            >
-              <Search aria-hidden="true" size={16} />
-              <span>{messages.searchPlaceholder}</span>
-              <kbd>Ctrl / ⌘ K</kbd>
-            </button>
-          )}
-          actions={(
-            <>
-            <Button
-              iconOnly
-              size="sm"
-              variant="ghost"
-              className="mobile-search-button"
-              aria-label={messages.openSearch}
-              aria-expanded={commandPaletteOpen}
-              aria-haspopup="dialog"
-              icon={<Search size={18} />}
-              onClick={() => setCommandPaletteOpen(true)}
-            />
-            <DropdownMenu
-              menuMode
-              className="mobile-more-button"
-              menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden p-0"
-              align="right"
-              onOpenChange={(open) => {
-                if (!open) setMobileMoreView('root');
-              }}
-              trigger={({ open, menuId, toggle }) => (
-                <Button
-                  iconOnly
-                  size="sm"
-                  variant="ghost"
-                  aria-label={messages.moreActions}
-                  aria-controls={menuId}
-                  aria-expanded={open}
-                  aria-haspopup="dialog"
-                  icon={<MoreHorizontal size={19} />}
-                  onClick={toggle}
-                />
-              )}
-            >
-              {({ close }) => (
-                <div className="mobile-more-content">
-                  {mobileMoreView !== 'root' ? (
-                    <div className="flex min-h-12 items-center gap-2 border-b border-[var(--lumen-color-border)] px-2 py-1.5 text-[14px] font-medium text-[var(--lumen-color-text-strong)]">
-                      <button
-                        type="button"
-                        role="menuitem"
-                        className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-[var(--lumen-color-surface-muted)]"
-                        aria-label={language === 'zh-CN' ? '返回更多操作' : 'Back to more actions'}
-                        onClick={() => setMobileMoreView('root')}
-                      >
-                        <ArrowLeft size={17} />
-                      </button>
-                      <span>
-                      {mobileMoreView === 'language'
-                        ? (language === 'zh-CN' ? '语言' : 'Language')
-                        : (language === 'zh-CN' ? '主题' : 'Theme')}
-                      </span>
-                    </div>
-                  ) : null}
-                  {mobileMoreView === 'language' ? (
-                    <div className="p-2">
-                      {([
-                        [zhCN, '简体中文'],
-                        [enUS, 'English'],
-                      ] as const).map(([option, label]) => (
-                        <button
-                          key={option.locale}
-                          type="button"
-                          role="menuitemradio"
-                          aria-checked={locale === option}
-                          className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] hover:bg-[var(--lumen-color-surface-muted)]"
-                          onClick={() => {
-                            setLocale(option);
-                            close();
-                          }}
-                        >
-                          <span className="flex-1">{label}</span>
-                          {locale === option ? <Check size={16} /> : null}
-                        </button>
-                      ))}
-                    </div>
-                  ) : mobileMoreView === 'theme' ? (
-                    <div className="p-2">
-                      {([
-                        ['clarity', 'blue', 'Clarity Blue'],
-                        ['clarity', 'purple', 'Clarity Purple'],
-                        ['paper', null, 'Paper'],
-                        ['prism', null, 'Prism'],
-                      ] as const).map(([themeValue, accentValue, label]) => {
-                        const selected = theme === themeValue
-                          && (themeValue !== 'clarity' || accent === accentValue);
-                        return (
-                          <button
-                            key={`${themeValue}-${accentValue ?? 'default'}`}
-                            type="button"
-                            role="menuitemradio"
-                            aria-checked={selected}
-                            className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] hover:bg-[var(--lumen-color-surface-muted)]"
-                            onClick={() => {
-                              setTheme(themeValue);
-                              if (accentValue) setAccent(accentValue);
-                              close();
-                            }}
-                          >
-                            <span className="flex-1">{label}</span>
-                            {selected ? <Check size={16} /> : null}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                  <div className="p-2">
-                    <button
-                      type="button"
-                      role="menuitem"
-                      aria-haspopup="menu"
-                      className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
-                      onClick={() => setMobileMoreView('language')}
-                    >
-                      <Languages size={17} />
-                      <span className="flex-1">{language === 'zh-CN' ? '语言' : 'Language'}</span>
-                      <span className="text-[12px] text-[var(--lumen-color-text-muted)]">
-                        {locale === zhCN ? '简体中文' : 'English'}
-                      </span>
-                      <ChevronRight size={16} />
-                    </button>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      aria-haspopup="menu"
-                      className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
-                      onClick={() => setMobileMoreView('theme')}
-                    >
-                      <Palette size={17} />
-                      <span className="flex-1">{language === 'zh-CN' ? '主题' : 'Theme'}</span>
-                      <span className="text-[12px] text-[var(--lumen-color-text-muted)]">
-                        {theme === 'clarity' ? `Clarity ${accent === 'blue' ? 'Blue' : 'Purple'}` : theme === 'paper' ? 'Paper' : 'Prism'}
-                      </span>
-                      <ChevronRight size={16} />
-                    </button>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
-                      onClick={() => setColorScheme((scheme) => scheme === 'dark' ? 'light' : 'dark')}
-                    >
-                      {colorScheme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
-                      <span className="flex-1">
-                        {colorScheme === 'dark'
-                          ? (language === 'zh-CN' ? '切换浅色模式' : 'Use light mode')
-                          : (language === 'zh-CN' ? '切换深色模式' : 'Use dark mode')}
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
-                      onClick={() => {
-                        close();
-                        Toast.info(language === 'zh-CN' ? '2 条未读通知' : '2 unread notifications');
-                      }}
-                    >
-                      <Bell size={17} />
-                      <span className="flex-1">{language === 'zh-CN' ? '通知' : 'Notifications'}</span>
-                      <Badge size="sm" variant="danger">2</Badge>
-                    </button>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
-                      onClick={close}
-                    >
-                      <UserRound size={17} />
-                      <span>{language === 'zh-CN' ? '账户' : 'Account'}</span>
-                    </button>
-                  </div>
-                  )}
-                </div>
-              )}
-            </DropdownMenu>
-            <div className="desktop-header-actions">
-            <DropdownMenu
-              menuMode
-              menuClassName="locale-menu"
-              trigger={({ open, menuId, toggle }) => (
-                <Button
-                  iconOnly
-                  size="sm"
-                  variant="ghost"
-                  aria-label={locale === zhCN ? '选择语言' : 'Select language'}
-                  aria-controls={menuId}
-                  aria-expanded={open}
-                  aria-haspopup="menu"
-                  icon={<Languages size={18} />}
-                  onClick={toggle}
-                />
-              )}
-            >
-              {({ close }) => (
-                <div className="locale-options">
-                  {([
-                    [zhCN, '简体中文'],
-                    [enUS, 'English'],
-                  ] as const).map(([option, label]) => (
-                    <DropdownMenuItem
-                      key={option.locale}
-                      type="button"
-                      role="menuitemradio"
-                      aria-checked={locale === option}
-                      className="locale-option"
-                      onClick={() => {
-                        setLocale(option);
-                        close();
-                      }}
-                    >
-                      <span>{label}</span>
-                      {locale === option ? <Check aria-hidden="true" size={15} /> : null}
-                    </DropdownMenuItem>
-                  ))}
-                </div>
-              )}
-            </DropdownMenu>
-            <DropdownMenu
-              menuMode
-              className="topbar-accent"
-              menuClassName="accent-menu"
-              trigger={({ open, menuId, toggle }) => (
-                <Tooltip content="主题" placement="bottom">
-                  <Button
-                    iconOnly
-                    size="sm"
-                    variant="ghost"
-                    className="topbar-accent-button"
-                    aria-label={theme === 'paper'
-                      ? 'Paper 主题'
-                      : theme === 'prism'
-                        ? 'Prism 多彩主题'
-                        : `Clarity ${accent === 'purple' ? '紫色' : '蓝色'}主题`}
-                    aria-controls={menuId}
-                    aria-expanded={open}
-                    aria-haspopup="menu"
-                    icon={<Palette size={18} />}
-                    onClick={toggle}
-                  />
-                </Tooltip>
-              )}
-            >
-              {({ close }) => (
-                <div className="accent-options">
-                  {([
-                    ['clarity', 'blue', 'Clarity 蓝色'],
-                    ['clarity', 'purple', 'Clarity 紫色'],
-                    ['paper', null, 'Paper 黑白'],
-                    ['prism', null, 'Prism 多彩'],
-                  ] as const).map(([themeValue, accentValue, label]) => {
-                    const selected = theme === themeValue
-                      && (themeValue !== 'clarity' || accent === accentValue);
-                    return (
-                    <DropdownMenuItem
-                      key={`${themeValue}-${accentValue ?? 'default'}`}
-                      type="button"
-                      role="menuitemradio"
-                      aria-checked={selected}
-                      className="accent-option"
-                      onClick={() => {
-                        setTheme(themeValue);
-                        if (accentValue) setAccent(accentValue);
-                        close();
-                      }}
-                    >
-                      <span className={`accent-swatch accent-swatch-${accentValue ?? themeValue}`} />
-                      <span>{label}</span>
-                      {selected ? <Check aria-hidden="true" size={15} /> : null}
-                    </DropdownMenuItem>
-                    );
-                  })}
-                </div>
-              )}
-            </DropdownMenu>
-            <Tooltip
-              content={colorScheme === 'dark' ? '切换到浅色主题' : '切换到深色主题'}
-              placement="bottom"
-            >
-              <Button
-                iconOnly
-                size="sm"
-                variant="ghost"
-                className="topbar-theme-button"
-                aria-label={colorScheme === 'dark' ? '切换到浅色主题' : '切换到深色主题'}
-                icon={colorScheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-                onClick={() => setColorScheme((scheme) => scheme === 'dark' ? 'light' : 'dark')}
-              />
-            </Tooltip>
-            <DropdownMenu
-              className="topbar-notification"
-              menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden p-0"
-              trigger={({ open, toggle }) => (
-                <Tooltip content="通知" placement="bottom">
-                  <Button
-                    iconOnly
-                    size="sm"
-                    variant="ghost"
-                    className="topbar-notification-button"
-                    aria-label="通知"
-                    aria-expanded={open}
-                    icon={(
-                      <span className="relative inline-flex">
-                        <Bell size={18} />
-                        <span className="absolute -right-1 -top-1 h-2 w-2 rounded-full border border-[var(--lumen-color-surface)] bg-[var(--lumen-color-danger)]" />
-                      </span>
-                    )}
-                    onClick={toggle}
-                  />
-                </Tooltip>
-              )}
-            >
-              {({ close }) => (
-                <div className="-my-1" data-testid="playground-notifications">
-                  <div className="flex items-center justify-between border-b border-[var(--lumen-color-surface-muted)] px-4 py-3">
-                    <span className="text-[15px] font-medium text-[var(--lumen-color-text-strong)]">通知</span>
-                    <Badge size="sm" variant="danger">2</Badge>
-                  </div>
-                  <div className="py-1">
-                    {[
-                      ['组件检查已完成', '刚刚'],
-                      ['Dropdown 定位已更新', '5 分钟前'],
-                    ].map(([title, time]) => (
-                      <button
-                        key={title}
-                        type="button"
-                        className="flex w-full items-start gap-3 border-b border-[var(--lumen-color-surface-muted)] px-4 py-3 text-left last:border-b-0 hover:bg-[var(--lumen-color-surface-muted)] focus:outline-none focus-visible:bg-[var(--lumen-color-surface-muted)]"
-                        onClick={close}
-                      >
-                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[var(--lumen-color-primary)]" />
-                        <span className="min-w-0 flex-1">
-                          <span className="block truncate text-[14px] font-normal leading-5 text-[var(--lumen-color-text)]">{title}</span>
-                          <span className="mt-1 block text-[12px] leading-5 text-[var(--lumen-color-text-placeholder)]">{time}</span>
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                  <div className="border-t border-[var(--lumen-color-surface-muted)] p-2">
-                    <button
-                      type="button"
-                      className="w-full rounded-[6px] px-3 py-2 text-center text-[13px] font-normal text-[var(--lumen-color-primary)] hover:bg-[var(--lumen-color-surface-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20"
-                      onClick={close}
-                    >
-                      全部标记为已读
-                    </button>
-                  </div>
-                </div>
-              )}
-            </DropdownMenu>
-            <DropdownMenu
-              menuMode
-              className="topbar-avatar"
-              menuClassName="account-menu"
-              trigger={({ open, menuId, toggle }) => (
-                <Tooltip content="账户" placement="bottom">
-                  <button
-                    type="button"
-                    className="topbar-avatar-trigger"
-                    aria-label="打开账户菜单"
-                    aria-controls={menuId}
-                    aria-expanded={open}
-                    aria-haspopup="menu"
-                    onClick={toggle}
-                  >
-                    <Avatar
-                      size="sm"
-                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96&q=80"
-                      alt="Gallery user"
-                      name="Gallery User"
-                      imageProps={{
-                        loading: 'lazy',
-                        referrerPolicy: 'no-referrer',
-                      }}
-                    />
-                  </button>
-                </Tooltip>
-              )}
-            >
-              {({ close }) => (
-                <div>
-                  <div className="account-menu-profile">
-                    <Avatar
-                      size="md"
-                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96&q=80"
-                      alt="Gallery user"
-                      name="Gallery User"
-                      imageProps={{
-                        loading: 'lazy',
-                        referrerPolicy: 'no-referrer',
-                      }}
-                    />
-                    <span>
-                      <strong>Gallery User</strong>
-                      <small>gallery@lumen.dev</small>
-                    </span>
-                  </div>
-                  <div className="account-menu-actions">
-                    <DropdownMenuItem type="button" role="menuitem" onClick={close}>
-                      <UserRound size={16} />
-                      个人信息
-                    </DropdownMenuItem>
-                    <DropdownMenuItem type="button" role="menuitem" onClick={close}>
-                      <Settings size={16} />
-                      账户设置
-                    </DropdownMenuItem>
-                  </div>
-                  <div className="account-menu-actions account-menu-footer">
-                    <DropdownMenuItem type="button" role="menuitem" className="account-menu-logout" onClick={close}>
-                      <LogOut size={16} />
-                      退出登录
-                    </DropdownMenuItem>
-                  </div>
-                </div>
-              )}
-            </DropdownMenu>
             </div>
-            </>
-          )}
-        />
+            <Scrollbar
+              ref={(element) => {
+                if (element) element.scrollTop = mobileNavigationScrollTopRef.current;
+              }}
+              className="mobile-navigation-content"
+              size="sm"
+              tabIndex={-1}
+              aria-label={messages.mobileNavigationLabel}
+              onScroll={(event) => {
+                mobileNavigationScrollTopRef.current = event.currentTarget.scrollTop;
+              }}
+            >
+              <SideNav
+                sections={navigationSections}
+                ariaLabel={messages.navigationLabel}
+                activeValue={activeDemo.id}
+                expandedValues={expandedCategoryIds}
+                onExpandedValuesChange={setExpandedCategoryIds}
+                onSelect={(demoId) => {
+                  selectNavigationItem(demoId);
+                  setMobileNavOpen(false);
+                }}
+              />
+            </Scrollbar>
+          </Drawer>
 
-        <PullToRefresh
-          ref={mainScrollRef}
-          className="main-scrollbar lumen-scrollbar"
-          data-orientation="vertical"
-          data-size="sm"
-          disabled={activeSection !== 'feedback' || activeDemo.id !== 'pull-to-refresh'}
-          onRefresh={() => new Promise<void>((resolve) => {
-            window.setTimeout(() => {
-              Toast.success(language === 'zh-CN' ? '页面内容已刷新' : 'Page content refreshed');
-              resolve();
-            }, 800);
-          })}
-        >
-          <div className="main-content">
-            <ActiveDemoContext.Provider value={{
-              demo: activeDemo,
-              expandedCodeTitle,
-              copiedCodeTitle,
-              onToggleCode: (title) => setExpandedCodeTitle((current) => current === title ? undefined : title),
-                onCopyCode: (title, code) => void copyActiveDemoCode(
-                  title,
-                  language === 'en-US' ? translateDemoText(code) : code,
-                ),
-            }}>
-              <div className="gallery-workspace">
-                <div className="gallery-preview">
-                  {activeSections.map((section) => {
-          if (section.id === 'typography') {
-            return (
-              <GallerySection key={section.id} section={section}>
-                <DemoCard title="Headings">
-                  <div className="stack">
-                    <Typography variant="h1">H1 运营总览</Typography>
-                    <Typography variant="h2">组织架构与人员管理</Typography>
-                    <Typography variant="h3">H3 实时监测</Typography>
-                    <Typography variant="h4">H4 设备状态</Typography>
-                    <Typography variant="h5">H5 基础配置</Typography>
-                    <Typography variant="h6">H6 详细信息</Typography>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Body">
-                  <div className="stack">
-                    <Typography>正文用于承载主要说明和数据内容。</Typography>
-                    <Typography variant="body-sm" tone="secondary">
-                      小号正文用于紧凑列表和次要信息。
-                    </Typography>
-                    <Typography variant="caption" tone="muted">
-                      辅助文字用于时间、状态补充和简短提示。
-                    </Typography>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Locale" wide>
-                    <div className="max-w-[640px] space-y-4">
-                      <Select options={[]} value={null} onChange={() => undefined} />
-                      <Pagination currentPage={2} totalPages={8} totalItems={72} onPageChange={() => undefined} />
-                    </div>
-                </DemoCard>
-              </GallerySection>
-            );
-          }
-          if (section.id === 'buttons') {
-            return (
-              <GallerySection key={section.id} section={section}>
-                <DemoCard title="Button">
-                  <div className="button-row">
-                    <Button icon={<Plus size={15} />}>新建</Button>
-                    <Button variant="secondary" icon={<Filter size={15} />}>筛选</Button>
-                    <Button variant="outline">描边</Button>
-                    <Button variant="ghost">文字</Button>
-                    <Button variant="destructive">删除</Button>
-                    <Tooltip content="仅图标按钮">
-                      <Button iconOnly aria-label="设置" icon={<Settings size={15} />} />
-                    </Tooltip>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Tooltip">
-                  <Tooltip content="这是一段会被省略的完整文本" onlyWhenOverflow>
-                    <span className="block max-w-40 truncate">这是一段会被省略的完整文本</span>
+          <main className="main">
+            <AppHeader
+              className="topbar"
+              title="Lumen UI Gallery"
+              description={messages.appDescription}
+              navigation={(
+                <>
+                  <Button
+                    iconOnly
+                    variant="ghost"
+                    className="mobile-menu-button"
+                    aria-label={messages.openNavigation}
+                    icon={<Menu size={18} />}
+                    onClick={() => setMobileNavOpen(true)}
+                  />
+                  <Tooltip content={sidebarCollapsed ? messages.expandSidebar : messages.collapseSidebar} placement="bottom">
+                    <Button
+                      iconOnly
+                      variant="ghost"
+                      className="sidebar-toggle-button"
+                      aria-label={sidebarCollapsed ? messages.expandSidebar : messages.collapseSidebar}
+                      aria-expanded={!sidebarCollapsed}
+                      icon={sidebarCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+                      onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
+                    />
                   </Tooltip>
-                </DemoCard>
-                <DemoCard title="Long press" wide>
-                  <div className="flex flex-col items-start gap-3">
-                    <Button {...longPressHandlers} className="select-none touch-pan-y">
-                      移动端按住 500ms
-                    </Button>
-                    <Typography variant="caption" color="muted">
-                      {longPressMessage}
-                    </Typography>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Context menu" wide>
-                  <div className="flex flex-col gap-3">
-                    <ContextMenu
-                      ariaLabel="快捷操作"
-                      menuClassName="menu-list"
-                      content={(
-                        <>
-                          <button type="button" role="menuitem" onClick={() => setContextMenuAction('复制')}>
-                            <Copy size={15} />
-                            复制
-                          </button>
-                          <button type="button" role="menuitem" onClick={() => setContextMenuAction('收藏')}>
-                            <Star size={15} />
-                            收藏
-                          </button>
-                          <button type="button" role="menuitem" onClick={() => setContextMenuAction('删除')}>
-                            <Trash2 size={15} />
-                            删除
-                          </button>
-                        </>
-                      )}
-                    >
-                      <div className="select-none touch-pan-y rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center text-[14px] text-[var(--lumen-color-text)]">
-                        PC 端右键，移动端长按；菜单从触发位置展开，靠近窗口边缘时自动翻转
-                      </div>
-                    </ContextMenu>
-                    <Typography variant="caption" color="muted">
-                      最近操作：{contextMenuAction}
-                    </Typography>
-                  </div>
-                </DemoCard>
-                <DemoCard title="DragHandle" wide>
-                  <DragHandleExample />
-                </DemoCard>
-                <DemoCard title="Icon only" wide>
-                  <div className="fab-example-row">
-                    <Fab position="static" size="sm" icon={<Plus size={18} />} aria-label="新建任务" />
-                    <Fab position="static" size="md" variant="secondary" icon={<Search size={18} />} aria-label="搜索" />
-                    <Fab position="static" size="lg" variant="outline" icon={<Settings size={20} />} aria-label="设置" />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Extended" wide>
-                  <div className="fab-example-row">
-                    <Fab position="static" icon={<Plus size={18} />} label="新建任务" />
-                    <Fab position="static" variant="secondary" icon={<Filter size={18} />} label="筛选条件" />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Expandable" wide>
-                  <div className="fab-example-row">
-                    <Switch checked={fabExtended} onChange={setFabExtended} label="显示文字" />
-                    <Fab
-                      position="static"
-                      icon={<Plus size={18} />}
-                      label="新建任务"
-                      extended={fabExtended}
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Submenu" wide>
-                  <div className="relative h-44">
-                    <Fab
-                      position="absolute"
-                      placement="bottom-end"
-                      size="md"
-                      color="#7c3aed"
-                      icon={<Plus size={20} />}
-                      aria-label="快速新建"
-                      actions={[
-                        { icon: <Bell size={16} />, label: '创建告警', color: '#dc2626' },
-                        { icon: <MapPin size={16} />, label: '添加地点', color: '#2563eb' },
-                      ]}
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Badge">
-                  <div className="button-row">
-                    <Badge variant="info">Info</Badge>
-                    <Badge variant="success">Success</Badge>
-                    <Badge variant="warning">Warning</Badge>
-                    <Badge variant="danger">Danger</Badge>
-                    <Badge variant="neutral">Neutral</Badge>
-                    <Badge variant="success" shape="square">Success Square</Badge>
-                    <Badge variant="outline" shape="square">Outline</Badge>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Avatar">
-                  <div className="avatar-row">
-                      <Avatar name="Lumen Design" />
-                      <Avatar name="Qiao Ming" shape="rounded" />
-                      <Avatar
-                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96&q=80"
-                        alt="Unsplash portrait"
-                        name="Portrait User"
-                        imageProps={{
-                          loading: 'lazy',
-                          referrerPolicy: 'no-referrer',
-                        }}
+                </>
+              )}
+              search={(
+                <button
+                  type="button"
+                  className="topbar-search-trigger"
+                  aria-label={messages.openSearch}
+                  aria-haspopup="dialog"
+                  aria-expanded={commandPaletteOpen}
+                  onClick={() => setCommandPaletteOpen(true)}
+                >
+                  <Search aria-hidden="true" size={16} />
+                  <span>{messages.searchPlaceholder}</span>
+                  <kbd>Ctrl / ⌘ K</kbd>
+                </button>
+              )}
+              actions={(
+                <>
+                  <Button
+                    iconOnly
+                    size="sm"
+                    variant="ghost"
+                    className="mobile-search-button"
+                    aria-label={messages.openSearch}
+                    aria-expanded={commandPaletteOpen}
+                    aria-haspopup="dialog"
+                    icon={<Search size={18} />}
+                    onClick={() => setCommandPaletteOpen(true)}
+                  />
+                  <DropdownMenu
+                    menuMode
+                    className="mobile-more-button"
+                    menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden p-0"
+                    align="right"
+                    onOpenChange={(open) => {
+                      if (!open) setMobileMoreView('root');
+                    }}
+                    trigger={({ open, menuId, toggle }) => (
+                      <Button
+                        iconOnly
+                        size="sm"
+                        variant="ghost"
+                        aria-label={messages.moreActions}
+                        aria-controls={menuId}
+                        aria-expanded={open}
+                        aria-haspopup="dialog"
+                        icon={<MoreHorizontal size={19} />}
+                        onClick={toggle}
                       />
-                      <Avatar
-                        name="Color Avatar"
-                        style={{
-                          backgroundColor: 'var(--lumen-color-primary)',
-                          borderColor: 'transparent',
-                          color: 'var(--lumen-color-on-primary)',
-                        }}
-                      />
-                      <Avatar
-                        name="Success User"
-                        style={{
-                          backgroundColor: 'var(--lumen-color-success-soft)',
-                          borderColor: 'var(--lumen-color-success-border)',
-                          color: 'var(--lumen-color-success-text)',
-                        }}
-                      />
-                      <Avatar
-                        name="Warning User"
-                        shape="rounded"
-                        style={{
-                          backgroundColor: 'var(--lumen-color-warning-soft)',
-                          borderColor: 'var(--lumen-color-warning-border)',
-                          color: 'var(--lumen-color-warning-text)',
-                        }}
-                      />
-                      <Avatar
-                        name="Danger User"
-                        style={{
-                          backgroundColor: 'var(--lumen-color-danger-soft)',
-                          borderColor: 'var(--lumen-color-danger-border)',
-                          color: 'var(--lumen-color-danger-text)',
-                        }}
-                      />
-                    <Avatar fallback={<UserRound size={18} />} />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Chip" wide>
-                  <div className="button-row">
-                    <Chip
-                      tone="danger"
-                      shape="pill"
-                      selected={priorityChipSelected}
-                      onSelect={setPriorityChipSelected}
-                    >
-                      高风险
-                    </Chip>
-                    {temporaryChipVisible ? (
-                      <Chip tone="neutral" onClose={() => setTemporaryChipVisible(false)}>
-                        临时标签
-                      </Chip>
-                    ) : null}
-                  </div>
-                </DemoCard>
-              </GallerySection>
-            );
-          }
-
-          if (section.id === 'forms') {
-            return (
-              <GallerySection key={section.id} section={section}>
-                <DemoCard title="Form / FormField" wide>
-                  <div className="mx-auto max-w-[640px] space-y-4">
-                    <p className="text-[14px] text-[var(--lumen-color-text-secondary)]">
-                      {language === 'en-US'
-                        ? 'Create a user: submit the empty form to see all four errors at once. Errors clear as you correct the fields; submit again when ready.'
-                        : '创建用户：先直接点击“校验并提交”，一次查看四个字段的错误。修改后会即时更新错误提示，全部修正后再次提交。'}
-                    </p>
-                    <SegmentedControl<'inline' | 'toast'>
-                      aria-label={language === 'en-US' ? 'Error feedback' : '错误展示方式'}
-                      value={formErrorDisplay}
-                      onChange={setFormErrorDisplay}
-                      options={[
-                        { value: 'inline', label: language === 'en-US' ? 'Below fields' : '字段下方' },
-                        { value: 'toast', label: language === 'en-US' ? 'Toast feedback' : 'Toast 提示' },
-                      ]}
-                    />
-                    <Form
-                      aria-label={language === 'en-US' ? 'Create user' : '创建用户'}
-                      showErrors={formErrorDisplay === 'inline'}
-                      onValidationFailed={(errors) => {
-                        if (formErrorDisplay === 'toast') {
-                          Toast.error(Object.values(errors).filter(Boolean).join('；'), { duration: 6000 });
-                        }
-                      }}
-                      values={formValues}
-                      validate={(values) => ({
-                        name: values.name.trim() ? undefined : language === 'en-US' ? 'Enter a name.' : '请输入姓名',
-                        email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim()) ? undefined : language === 'en-US' ? 'Enter a valid email.' : '邮箱格式不正确',
-                        password: values.password.length >= 8 ? undefined : language === 'en-US' ? 'Use at least 8 characters.' : '密码至少需要 8 位',
-                        confirmPassword: values.confirmPassword && values.confirmPassword === values.password ? undefined : language === 'en-US' ? 'Passwords must match.' : '两次密码须一致',
-                      })}
-                      onFinish={async (values) => {
-                        await new Promise((resolve) => window.setTimeout(resolve, 600));
-                        setFormSubmitted(`${values.name} · ${values.email}`);
-                      }}
-                      onChange={() => setFormSubmitted('')}
-                      onReset={() => {
-                        setFormValues({ name: '', email: '', password: '', confirmPassword: '' });
-                        setFormSubmitted('');
-                      }}
-                    >
-                      {({ isSubmitting, submitError }) => (
-                        <>
-                          <fieldset disabled={isSubmitting} className="grid min-w-0 gap-x-4 gap-y-0 border-0 p-0 pad:grid-cols-2">
+                    )}
+                  >
+                    {({ close }) => (
+                      <div className="mobile-more-content">
+                        {mobileMoreView !== 'root' ? (
+                          <div className="flex min-h-12 items-center gap-2 border-b border-[var(--lumen-color-border)] px-2 py-1.5 text-[14px] font-medium text-[var(--lumen-color-text-strong)]">
+                            <button
+                              type="button"
+                              role="menuitem"
+                              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-[var(--lumen-color-surface-muted)]"
+                              aria-label={language === 'zh-CN' ? '返回更多操作' : 'Back to more actions'}
+                              onClick={() => setMobileMoreView('root')}
+                            >
+                              <ArrowLeft size={17} />
+                            </button>
+                            <span>
+                              {mobileMoreView === 'language'
+                                ? (language === 'zh-CN' ? '语言' : 'Language')
+                                : (language === 'zh-CN' ? '主题' : 'Theme')}
+                            </span>
+                          </div>
+                        ) : null}
+                        {mobileMoreView === 'language' ? (
+                          <div className="p-2">
                             {([
-                              { name: 'name', label: language === 'en-US' ? 'Name' : '姓名', type: 'text', autoComplete: 'name' },
-                              { name: 'email', label: language === 'en-US' ? 'Email' : '邮箱', type: 'email', autoComplete: 'email' },
-                              { name: 'password', label: language === 'en-US' ? 'Password' : '密码', type: 'password', autoComplete: 'new-password' },
-                              { name: 'confirmPassword', label: language === 'en-US' ? 'Confirm password' : '确认密码', type: 'password', autoComplete: 'new-password' },
-                            ] as const).map((field) => (
-                              <FormField key={field.name} name={field.name} label={field.label} required>
-                                {(props) => (
-                                  <Input
-                                    {...props}
-                                    type={field.type}
-                                    placeholder={field.name === 'password'
-                                      ? language === 'en-US' ? 'At least 8 characters' : '密码至少 8 位'
-                                      : field.name === 'confirmPassword'
-                                        ? language === 'en-US' ? 'Repeat your password' : '再次输入相同密码'
-                                        : undefined}
-                                    autoComplete={field.autoComplete}
-                                    value={formValues[field.name]}
-                                    onChange={(event) => setFormValues((current) => ({ ...current, [field.name]: event.target.value }))}
-                                  />
-                                )}
-                              </FormField>
+                              [zhCN, '简体中文'],
+                              [enUS, 'English'],
+                            ] as const).map(([option, label]) => (
+                              <button
+                                key={option.locale}
+                                type="button"
+                                role="menuitemradio"
+                                aria-checked={locale === option}
+                                className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] hover:bg-[var(--lumen-color-surface-muted)]"
+                                onClick={() => {
+                                  setLocale(option);
+                                  close();
+                                }}
+                              >
+                                <span className="flex-1">{label}</span>
+                                {locale === option ? <Check size={16} /> : null}
+                              </button>
                             ))}
-                          </fieldset>
-                          <div className="flex flex-wrap gap-2">
-                            <Button type="submit" disabled={isSubmitting}>
-                              {isSubmitting ? language === 'en-US' ? 'Submitting…' : '提交中…' : language === 'en-US' ? 'Validate and submit' : '校验并提交'}
-                            </Button>
-                            <Button type="button" variant="secondary" disabled={isSubmitting} onClick={() => {
-                              setFormValues({ name: 'Lumen', email: 'demo@example.com', password: 'lumen-demo-2026', confirmPassword: 'lumen-demo-2026' });
-                              setFormSubmitted('');
-                            }}>
-                              {language === 'en-US' ? 'Fill valid example' : '填入有效示例'}
-                            </Button>
-                            <Button type="reset" variant="secondary" disabled={isSubmitting}>
-                              {language === 'en-US' ? 'Reset' : '重置'}
-                            </Button>
                           </div>
-                          {Boolean(submitError) && <Alert variant="danger" title={language === 'en-US' ? 'Submission failed. Please try again.' : '提交失败，请重试。'} />}
-                          {formSubmitted && <Alert variant="success" title={language === 'en-US' ? 'All four fields passed. Demo submission completed.' : '四个字段全部校验通过，模拟提交成功。'}>{formSubmitted}</Alert>}
-                        </>
-                      )}
-                    </Form>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Input" wide>
-                  <div className="form-grid">
-                    <Input
-                      aria-label={language === 'en-US' ? 'Meeting name' : '会议名称'}
-                      value={meetingName}
-                      onChange={(event) => setMeetingName(event.target.value)}
-                      prefix={<CalendarDays size={15} />}
-                    />
-                    <Input
-                      aria-label={language === 'en-US' ? 'Owner' : '负责人'}
-                      placeholder={language === 'en-US' ? 'Owner name' : '负责人姓名'}
-                      suffix={<UserRound size={15} />}
-                    />
-                    <Input
-                      aria-label={language === 'en-US' ? 'Access password' : '访问密码'}
-                      type="password"
-                      passwordToggle
-                      autoComplete="current-password"
-                      defaultValue="lumen-demo"
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="NumberInput" wide>
-                  <div className="max-w-[420px]">
-                    <FormField label="处置时限">
-                      <NumberInput
-                        aria-label="处置时限"
-                        defaultValue={30}
-                        min={5}
-                        max={120}
-                        step={5}
-                        suffix="分钟"
-                      />
-                    </FormField>
-                  </div>
-                </DemoCard>
-                <DemoCard title="OtpInput" wide>
-                  <div className="max-w-[420px]">
-                    <FormField
-                      label="短信验证码"
-                    >
-                      <OtpInput
-                        value={otpValue}
-                        onChange={setOtpValue}
-                        aria-label="短信验证码"
-                      />
-                    </FormField>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Textarea" wide>
-                  <div className="max-w-[640px]">
-                    <FormField label="备注" className="form-span">
-                      <Textarea
-                        value={textareaText}
-                        onChange={(event) => setTextareaText(event.target.value)}
-                        maxLength={200}
-                        rows={4}
-                        showCount
-                      />
-                    </FormField>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Checkbox">
-                  <div className="stack">
-                    <div className="flex flex-wrap items-center gap-5">
-                      <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />
-                      <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />
-                      <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />
-                    </div>
-                    <div className="flex flex-wrap items-center gap-5">
-                      <Checkbox label="Mobile" />
-                      <Checkbox label="Pad" defaultChecked />
-                      <Checkbox label="Desktop" />
-                    </div>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Radio">
-                  <div className="stack">
-                    <div className="flex flex-wrap items-center gap-5">
-                      <Radio size="sm" checked label="Small" />
-                      <Radio size="md" checked label="Medium" />
-                      <Radio size="lg" checked label="Large" />
-                    </div>
-                    <RadioGroup
-                      size="md"
-                      value={radioValue}
-                      onChange={setRadioValue}
-                      direction="horizontal"
-                      options={[
-                        { value: 'mobile', label: 'Mobile' },
-                        { value: 'pad', label: 'Pad' },
-                        { value: 'desktop', label: 'Desktop' },
-                      ]}
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Switch">
-                  <div className="flex flex-wrap items-center gap-5">
-                    <Switch size="sm" checked={enabled} onChange={setEnabled} label="Small" />
-                    <Switch size="md" checked={enabled} onChange={setEnabled} label="Medium" />
-                    <Switch size="lg" checked={enabled} onChange={setEnabled} label="Large" />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Slider" wide>
-                  <div className="form-grid">
-                    <Slider
-                      aria-label="告警阈值"
-                      label="告警阈值"
-                      value={sliderValue}
-                      onChange={setSliderValue}
-                      showValue
-                      formatValue={(value) => `${value}%`}
-                      marks={[
-                        { value: 0, label: '0' },
-                        { value: 50, label: '50' },
-                        { value: 100, label: '100' },
-                      ]}
-                    />
-                    <Slider
-                      aria-label="风险等级"
-                      label="风险等级"
-                      defaultValue={40}
-                      min={0}
-                      max={80}
-                      step={10}
-                      status="warning"
-                      showValue
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Rating" wide>
-                  <div className="max-w-[320px]">
-                    <FormField label="服务评分">
-                      <Rating
-                        aria-label="服务评分"
-                        value={ratingValue}
-                        onChange={setRatingValue}
-                        allowHalf
-                      />
-                    </FormField>
-                  </div>
-                </DemoCard>
-              </GallerySection>
-            );
-          }
-
-          if (section.id === 'pickers') {
-            return (
-              <GallerySection key={section.id} section={section}>
-                <DemoCard title="Select" wide>
-                  <div className="form-grid">
-                    <Select
-                      options={basicSelectOptions}
-                      value={basicSelectValue}
-                      onChange={(value) => setBasicSelectValue(value as string | null)}
-                      placeholder="请选择"
-                    />
-                    <Select
-                      options={selectOptions}
-                      value={selectValue}
-                      onChange={(value) => setSelectValue(value as string | null)}
-                      searchable
-                      placeholder="选择类型"
-                    />
-                    <Select
-                      mode="multiple"
-                      options={selectOptions}
-                      value={multiSelectValue}
-                      onChange={(value) => setMultiSelectValue(Array.isArray(value) ? value : [])}
-                      searchable
-                      placeholder="选择多个事项"
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Combobox" wide>
-                  <div className="form-grid">
-                    <Combobox
-                      options={selectOptions}
-                      value={comboboxValue}
-                      onChange={(nextValue) => setComboboxValue(nextValue as string | null)}
-                      placeholder="输入或选择事项"
-                      aria-label="事项"
-                    />
-                    <Combobox
-                      options={selectOptions}
-                      value={customComboboxValue}
-                      onChange={(nextValue) => setCustomComboboxValue(nextValue as string | null)}
-                      allowCustomValue
-                      placeholder="输入事项，可创建新选项"
-                      aria-label="自定义事项"
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="TreeSelect" wide>
-                  <div className="flex flex-col items-start gap-4">
-                    <div className="form-grid w-full">
-                      <TreeSelect
-                        nodes={treeNodes}
-                        value={treeValue}
-                        onChange={(value) => setTreeValue(value)}
-                        searchable
-                        getValue={(node) => node.id}
-                        getLabel={(node) => node.label}
-                        isNodeSelectable={isTreeNodeSelectable}
-                        placeholder="选择组织"
-                      />
-                      <TreeSelect
-                        nodes={treeNodes}
-                        value={null}
-                        values={treeValues}
-                        multiple
-                        onChange={() => undefined}
-                        onMultiChange={(values) => setTreeValues(values)}
-                        searchable
-                        getValue={(node) => node.id}
-                        getLabel={(node) => node.label}
-                        isNodeSelectable={isTreeNodeSelectable}
-                        placeholder="选择多个组织"
-                      />
-                    </div>
-                    <Button variant="outline" onClick={() => setTreeSelectDialogOpen(true)}>
-                      弹窗内树形多选
-                    </Button>
-                  </div>
-                  <Dialog
-                    open={treeSelectDialogOpen}
-                    onRequestClose={() => setTreeSelectDialogOpen(false)}
-                    title="树形多选"
-                    description="展开分支后可连续选择，内容超出可用高度时在下拉框内滚动。"
-                  >
-                    <div>
-                      <TreeSelect
-                        nodes={treeNodes.map((node) => ({ ...node }))}
-                        value={null}
-                        values={treeValues}
-                        multiple
-                        defaultExpandedDepth={0}
-                        onChange={() => undefined}
-                        onMultiChange={setTreeValues}
-                        searchable
-                        getValue={(node) => node.id}
-                        getLabel={(node) => node.label}
-                        isNodeSelectable={isTreeNodeSelectable}
-                        placeholder="选择多个组织"
-                      />
-                    </div>
-                  </Dialog>
-                </DemoCard>
-                <DemoCard title="Cascader" wide>
-                  <div className="max-w-[420px]">
-                    <FormField label="所属区域">
-                      <Cascader
-                        options={cascaderOptions}
-                        value={cascaderValue}
-                        onChange={setCascaderValue}
-                        searchable
-                        aria-label="选择所属区域"
-                      />
-                    </FormField>
-                  </div>
-                </DemoCard>
-                <DemoCard title="DatePicker" wide>
-                  <div className="form-grid">
-                    <DatePicker value={dateValue} onChange={setDateValue} />
-                    <DatePicker value={monthValue} onChange={setMonthValue} mode="year-month" />
-                  </div>
-                </DemoCard>
-                <DemoCard title="TimePicker" wide>
-                  <TimePicker value={timeValue} onChange={setTimeValue} />
-                </DemoCard>
-                <DemoCard title="DateTimePicker" wide>
-                  <div className="max-w-[420px] space-y-3">
-                    <DateTimePicker label="开始时间" value={dateTimeValue} onChange={setDateTimeValue} />
-                    <DateTimePicker label="开始时间（精确到分）" precision="minute" value={dateTimeValue} onChange={setDateTimeValue} />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Calendar" wide>
-                  <div className="max-w-[320px]">
-                    <Calendar value={dateValue} onChange={setDateValue} />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Transfer" wide>
-                  <Transfer
-                    items={transferItems}
-                    targetKeys={transferTargetKeys}
-                    onChange={setTransferTargetKeys}
-                    sourceTitle="可分配设备"
-                    targetTitle="已分配设备"
-                  />
-                </DemoCard>
-              </GallerySection>
-            );
-          }
-
-          if (section.id === 'navigation') {
-            return (
-              <GallerySection key={section.id} section={section}>
-                <DemoCard title="SideNav" wide>
-                  <div className="w-full max-w-[320px]">
-                    <SideNav
-                      activeValue={sideNavValue}
-                      onSelect={setSideNavValue}
-                      defaultExpandedValues={['workspace']}
-                      sections={[{ items: [
-                        {
-                          value: 'workspace',
-                          label: '工作空间',
-                          icon: Star,
-                          children: [
-                            { value: 'overview', label: '运营总览' },
-                            { value: 'reports', label: '分析报表' },
-                            { value: 'archived', label: '已归档', disabled: true },
-                          ],
-                        },
-                        { value: 'settings', label: '系统设置', icon: Settings },
-                      ] }]}
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Breadcrumb" wide>
-                  <Breadcrumb
-                    items={[
-                      { label: '运营中心', href: '#navigation' },
-                      { label: '事件管理', href: '#navigation' },
-                      { label: '事件详情' },
-                    ]}
-                  />
-                </DemoCard>
-                <DemoCard title="AppBar" wide>
-                  <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">
-                    <AppBar
-                      position="absolute"
-                      title="订单详情"
-                      leading={(
-                        <Button
-                          iconOnly
-                          variant="ghost"
-                          aria-label="返回"
-                          icon={<ArrowLeft size={19} />}
-                        />
-                      )}
-                      actions={(
-                        <Button
-                          iconOnly
-                          variant="ghost"
-                          aria-label="更多操作"
-                          icon={<MoreHorizontal size={19} />}
-                        />
-                      )}
-                    />
-                    <div className="px-5 pt-20">
-                      <Typography variant="h3">#LM-20260904</Typography>
-                      <Typography variant="caption" color="muted">
-                        等待审核
-                      </Typography>
-                    </div>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Toolbar" wide>
-                  <Toolbar
-                    ariaLabel="列表操作"
-                    className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
-                  >
-                    <Button size="sm" variant="ghost" icon={<Search size={15} />}>
-                      搜索
-                    </Button>
-                    <Button size="sm" variant="ghost" icon={<Filter size={15} />}>
-                      筛选
-                    </Button>
-                    <div className="flex-1" />
-                    <Button size="sm" icon={<Plus size={15} />}>
-                      新建
-                    </Button>
-                  </Toolbar>
-                </DemoCard>
-                <DemoCard title="BottomNavigation" wide>
-                  <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">
-                    <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">
-                      <Typography variant="h3">{bottomNavigationValue}</Typography>
-                      <Typography variant="caption" color="muted">
-                        当前底部导航目标
-                      </Typography>
-                    </div>
-                    <BottomNavigation
-                      position="absolute"
-                      value={bottomNavigationValue}
-                      onChange={setBottomNavigationValue}
-                      items={[
-                        { value: 'home', label: '首页', icon: Star },
-                        { value: 'schedule', label: '日程', icon: CalendarDays },
-                        {
-                          value: 'messages',
-                          label: '消息',
-                          icon: Bell,
-                          badge: 3,
-                          badgeLabel: '3 条未读消息',
-                        },
-                        { value: 'profile', label: '我的', icon: UserRound },
-                      ]}
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Carousel" wide>
-                  <Carousel
-                    height={240}
-                    className="mx-auto w-full max-w-[640px]"
-                    items={[
-                      {
-                        id: 'mobile',
-                        ariaLabel: '移动体验升级',
-                        content: (
-                          <div className="flex h-full flex-col justify-end bg-gradient-to-br from-indigo-600 to-violet-500 p-7 pb-12 text-white pad:px-16 l:px-16">
-                            <strong className="text-[22px] font-semibold">移动体验升级</strong>
-                            <span className="mt-1 text-[14px] text-white/80">触摸滑动、键盘与按钮导航。</span>
+                        ) : mobileMoreView === 'theme' ? (
+                          <div className="p-2">
+                            {([
+                              ['clarity', 'blue', 'Clarity Blue'],
+                              ['clarity', 'purple', 'Clarity Purple'],
+                              ['paper', null, 'Paper'],
+                              ['prism', null, 'Prism'],
+                            ] as const).map(([themeValue, accentValue, label]) => {
+                              const selected = theme === themeValue
+                          && (themeValue !== 'clarity' || accent === accentValue);
+                              return (
+                                <button
+                                  key={`${themeValue}-${accentValue ?? 'default'}`}
+                                  type="button"
+                                  role="menuitemradio"
+                                  aria-checked={selected}
+                                  className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] hover:bg-[var(--lumen-color-surface-muted)]"
+                                  onClick={() => {
+                                    setTheme(themeValue);
+                                    if (accentValue) setAccent(accentValue);
+                                    close();
+                                  }}
+                                >
+                                  <span className="flex-1">{label}</span>
+                                  {selected ? <Check size={16} /> : null}
+                                </button>
+                              );
+                            })}
                           </div>
-                        ),
-                      },
-                      {
-                        id: 'motion',
-                        ariaLabel: '统一交互节奏',
-                        content: (
-                          <div className="flex h-full flex-col justify-end bg-gradient-to-br from-cyan-600 to-blue-500 p-7 pb-12 text-white pad:px-16 l:px-16">
-                            <strong className="text-[22px] font-semibold">统一交互节奏</strong>
-                            <span className="mt-1 text-[14px] text-white/80">循环、指示点和自动播放均可配置。</span>
+                        ) : (
+                          <div className="p-2">
+                            <button
+                              type="button"
+                              role="menuitem"
+                              aria-haspopup="menu"
+                              className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
+                              onClick={() => setMobileMoreView('language')}
+                            >
+                              <Languages size={17} />
+                              <span className="flex-1">{language === 'zh-CN' ? '语言' : 'Language'}</span>
+                              <span className="text-[12px] text-[var(--lumen-color-text-muted)]">
+                                {locale === zhCN ? '简体中文' : 'English'}
+                              </span>
+                              <ChevronRight size={16} />
+                            </button>
+                            <button
+                              type="button"
+                              role="menuitem"
+                              aria-haspopup="menu"
+                              className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
+                              onClick={() => setMobileMoreView('theme')}
+                            >
+                              <Palette size={17} />
+                              <span className="flex-1">{language === 'zh-CN' ? '主题' : 'Theme'}</span>
+                              <span className="text-[12px] text-[var(--lumen-color-text-muted)]">
+                                {theme === 'clarity' ? `Clarity ${accent === 'blue' ? 'Blue' : 'Purple'}` : theme === 'paper' ? 'Paper' : 'Prism'}
+                              </span>
+                              <ChevronRight size={16} />
+                            </button>
+                            <button
+                              type="button"
+                              role="menuitem"
+                              className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
+                              onClick={() => setColorScheme((scheme) => scheme === 'dark' ? 'light' : 'dark')}
+                            >
+                              {colorScheme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+                              <span className="flex-1">
+                                {colorScheme === 'dark'
+                                  ? (language === 'zh-CN' ? '切换浅色模式' : 'Use light mode')
+                                  : (language === 'zh-CN' ? '切换深色模式' : 'Use dark mode')}
+                              </span>
+                            </button>
+                            <button
+                              type="button"
+                              role="menuitem"
+                              className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
+                              onClick={() => {
+                                close();
+                                Toast.info(language === 'zh-CN' ? '2 条未读通知' : '2 unread notifications');
+                              }}
+                            >
+                              <Bell size={17} />
+                              <span className="flex-1">{language === 'zh-CN' ? '通知' : 'Notifications'}</span>
+                              <Badge size="sm" variant="danger">2</Badge>
+                            </button>
+                            <button
+                              type="button"
+                              role="menuitem"
+                              className="flex w-full items-center gap-3 rounded-[6px] px-3 py-2.5 text-left text-[13px] text-[var(--lumen-color-text)] hover:bg-[var(--lumen-color-surface-muted)]"
+                              onClick={close}
+                            >
+                              <UserRound size={17} />
+                              <span>{language === 'zh-CN' ? '账户' : 'Account'}</span>
+                            </button>
                           </div>
-                        ),
-                      },
-                      {
-                        id: 'content',
-                        ariaLabel: '承载任意内容',
-                        content: (
-                          <div className="flex h-full flex-col justify-end bg-gradient-to-br from-emerald-600 to-teal-500 p-7 pb-12 text-white pad:px-16 l:px-16">
-                            <strong className="text-[22px] font-semibold">承载任意内容</strong>
-                            <span className="mt-1 text-[14px] text-white/80">图片、卡片和操作都可以自由组合。</span>
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </DemoCard>
-                <DemoCard title="ScrollToEdge" wide>
-                  <div className="isolate relative mx-auto w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
-                    <div
-                      ref={scrollToEdgeDemoRef}
-                      className="relative z-0 h-[320px] overflow-y-auto p-4 pb-20"
-                    >
-                      <div className="space-y-3">
-                        {Array.from({ length: 16 }, (_, index) => (
-                          <div
-                            key={index}
-                            className="rounded-[8px] bg-[var(--lumen-color-surface-muted)] px-4 py-3 text-[13px] text-[var(--lumen-color-text-secondary)]"
-                          >
-                            滚动内容 {index + 1}
-                          </div>
-                        ))}
+                        )}
                       </div>
-                    </div>
-                    <div className="absolute bottom-3 right-3 z-20 flex flex-col gap-2">
-                      <ScrollToEdge
-                        containerRef={scrollToEdgeDemoRef}
-                        position="static"
-                        size="sm"
-                      />
-                      <ScrollToEdge
-                        containerRef={scrollToEdgeDemoRef}
-                        direction="bottom"
-                        position="static"
-                        size="sm"
-                      />
-                    </div>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Tabs" wide>
-                  <div className="w-full overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
-                    <Tabs
-                      value={tab}
-                      onChange={setTab}
-                      idPrefix="workspace-tabs"
-                      options={[
-                        { value: 'overview', label: '运营总览', count: 12, icon: Bell },
-                        { value: 'usage', label: '使用情况', count: 8, icon: Check },
-                        { value: 'tokens', label: '设计令牌', count: 32, icon: Settings },
-                      ]}
-                      className="px-4 pt-2 l:px-6"
-                      aside={<Button size="sm" variant="secondary">导出</Button>}
-                    />
-                    <TabView
-                      value={tab}
-                      onChange={setTab}
-                      idPrefix="workspace-tabs"
-                      swipeable
-                      className="border-t border-[var(--lumen-color-divider)]"
-                      panelClassName="min-h-52 p-5 l:min-h-72 l:p-6"
-                      items={[
-                        {
-                          value: 'overview',
-                          content: (
-                            <div>
-                              <Typography variant="h3">运营总览</Typography>
-                              <Typography variant="body" color="muted" className="mt-2">
-                                查看本月项目运行情况与团队使用概况。
-                              </Typography>
-                              <div className="mt-6 grid grid-cols-1 gap-4 l:grid-cols-3">
-                                {[
-                                  { label: '活跃项目', value: '12', detail: '本月新增 2 个项目' },
-                                  { label: '团队成员', value: '48', detail: '覆盖 6 个业务团队' },
-                                  { label: '任务完成率', value: '98.6%', detail: '较上月提升 1.2%' },
-                                ].map((metric) => (
-                                  <div key={metric.label} className="rounded-[8px] border border-[var(--lumen-color-border)] p-4">
-                                    <Typography variant="body" color="muted">{metric.label}</Typography>
-                                    <Typography variant="h2" className="mt-2">{metric.value}</Typography>
-                                    <Typography variant="body" color="muted" className="mt-2">{metric.detail}</Typography>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          ),
-                        },
-                        {
-                          value: 'usage',
-                          content: (
-                            <div>
-                              <Typography variant="h3">使用情况</Typography>
-                              <Typography variant="body" color="muted" className="mt-2">
-                                汇总各项目的访问量与资源使用情况，可通过右侧导出按钮生成报告。
-                              </Typography>
-                            </div>
-                          ),
-                        },
-                        {
-                          value: 'tokens',
-                          content: (
-                            <div>
-                              <Typography variant="h3">设计令牌</Typography>
-                              <Typography variant="body" color="muted" className="mt-2">
-                                管理工作空间共用的颜色、间距与排版设置。
-                              </Typography>
-                              <Button className="mt-5" size="sm" variant="secondary">
-                                查看令牌配置
-                              </Button>
-                            </div>
-                          ),
-                        },
-                      ]}
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="DropdownMenu">
-                  <div className="stack">
-                    <p>菜单默认最小宽度为 160px，文字使用强调色，悬停和聚焦时保持字色。</p>
+                    )}
+                  </DropdownMenu>
+                  <div className="desktop-header-actions">
                     <DropdownMenu
                       menuMode
-                      trigger={({ toggle, open, menuId }) => (
+                      menuClassName="locale-menu"
+                      trigger={({ open, menuId, toggle }) => (
                         <Button
-                          type="button"
-                          variant="secondary"
-                          icon={<MoreHorizontal size={15} />}
-                          aria-haspopup="menu"
-                          aria-expanded={open}
+                          iconOnly
+                          size="sm"
+                          variant="ghost"
+                          aria-label={locale === zhCN ? '选择语言' : 'Select language'}
                           aria-controls={menuId}
+                          aria-expanded={open}
+                          aria-haspopup="menu"
+                          icon={<Languages size={18} />}
                           onClick={toggle}
-                        >
-                          {open ? '收起菜单' : '打开菜单'}
-                        </Button>
+                        />
                       )}
                     >
                       {({ close }) => (
-                        <>
-                          <DropdownMenuItem onClick={close}>
-                            <Copy size={15} />
-                            复制组件名称
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={close}>
-                            <Code2 size={15} />
-                            查看源码路径
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={close}>
-                            <Star size={15} />
-                            标记为常用
-                          </DropdownMenuItem>
-                        </>
-                      )}
-                    </DropdownMenu>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Steps" wide>
-                  <div className="stack">
-                    <div className="flex">
-                      <SegmentedControl
-                        aria-label="步骤排列方向"
-                        size="md"
-                        value={stepsDirection}
-                        onChange={setStepsDirection}
-                        options={[
-                          { value: 'horizontal', label: '横向' },
-                          { value: 'vertical', label: '纵向' },
-                        ]}
-                      />
-                    </div>
-                    <Steps
-                      current={currentStep}
-                      direction={stepsDirection}
-                      onChange={setCurrentStep}
-                      items={[
-                        { title: '事件上报', description: '已采集现场信息' },
-                        { title: '研判确认', description: '核实风险等级' },
-                        { title: '现场处置', description: '调度处置人员' },
-                        { title: '完成归档', description: '生成处置记录' },
-                      ]}
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="Timeline" wide>
-                  <Timeline items={timelineItems} />
-                </DemoCard>
-              </GallerySection>
-            );
-          }
-
-          if (section.id === 'data') {
-            return (
-              <GallerySection key={section.id} section={section}>
-                <DemoCard title="Watermark" wide>
-                  <Watermark
-                    content={['Lumen Design', '内部资料 · 用户 1024']}
-                    gap={[72, 64]}
-                    markSize={[150, 56]}
-                  >
-                    <div className="grid min-h-64 content-center gap-4 bg-[var(--lumen-color-surface-subtle)] p-6 pad:grid-cols-3">
-                      {[
-                        ['今日访问', '12,480'],
-                        ['风险事件', '36'],
-                        ['待处理', '8'],
-                      ].map(([label, value]) => (
-                        <div
-                          key={label}
-                          className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4"
-                        >
-                          <div className="text-[12px] text-[var(--lumen-color-text-muted)]">
-                            {label}
-                          </div>
-                          <strong className="mt-2 block text-[24px] font-semibold text-[var(--lumen-color-text-strong)]">
-                            {value}
-                          </strong>
-                        </div>
-                      ))}
-                    </div>
-                  </Watermark>
-                </DemoCard>
-                <DemoCard title="FileTypeIcon" wide>
-                  <div className="space-y-5">
-                    {fileTypeIconExamples.map((group) => (
-                      <section key={group.title} aria-label={group.title}>
-                        <h3 className="mb-3 text-[12px] font-medium text-[var(--lumen-color-text-secondary)]">
-                          {group.title}
-                        </h3>
-                        <div className="grid grid-cols-[repeat(auto-fill,minmax(72px,1fr))] gap-x-3 gap-y-4">
-                          {group.files.map((fileName) => (
-                            <div key={fileName} className="flex min-w-0 flex-col items-center gap-2">
-                              <FileTypeIcon fileName={fileName} title={fileName} size="lg" />
-                              <span className="w-full truncate text-center text-[11px] text-[var(--lumen-color-text-muted)]">
-                                {fileName}
-                              </span>
-                            </div>
+                        <div className="locale-options">
+                          {([
+                            [zhCN, '简体中文'],
+                            [enUS, 'English'],
+                          ] as const).map(([option, label]) => (
+                            <DropdownMenuItem
+                              key={option.locale}
+                              type="button"
+                              role="menuitemradio"
+                              aria-checked={locale === option}
+                              className="locale-option"
+                              onClick={() => {
+                                setLocale(option);
+                                close();
+                              }}
+                            >
+                              <span>{label}</span>
+                              {locale === option ? <Check aria-hidden="true" size={15} /> : null}
+                            </DropdownMenuItem>
                           ))}
                         </div>
-                      </section>
-                    ))}
-                  </div>
-                </DemoCard>
-                <DemoCard title="DataTable · Sticky Header" wide>
-                  <DataTable
-                    caption="固定表头公路安全事件表格"
-                    stickyHeader
-                    maxHeight={280}
-                    columns={safetyEventColumns}
-                    data={safetyEvents}
-                    getRowKey={(event) => event.id}
-                  />
-                </DemoCard>
-                <DemoCard title="DataTable · Embedded" wide>
-                  <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
-                    <div className="border-b border-[var(--lumen-color-border)] px-4 py-3">
-                      <CardTitle>公路安全事件</CardTitle>
-                      <CardDescription>
-                        按更新时间排序 · {safetyEvents.length} 条
-                      </CardDescription>
-                    </div>
-                    <DataTable
-                      caption="公路安全事件"
-                      variant="embedded"
-                      columns={safetyEventColumns}
-                      data={visibleSafetyEvents}
-                      getRowKey={(event) => event.id}
-                      sort={eventSort}
-                      onSortChange={(nextSort) => {
-                        setEventSort(nextSort);
-                        setEventPage(1);
-                      }}
-                      selectedRowKeys={selectedEventKeys}
-                      onSelectedRowKeysChange={setSelectedEventKeys}
-                    />
-                  </div>
-                  <p className="mt-3 text-[12px] text-[var(--lumen-color-text-muted)]">
-                    已选择 {selectedEventKeys.length} 条事件
-                  </p>
-                </DemoCard>
-                <DemoCard title="Pagination" wide>
-                  <Pagination
-                    currentPage={eventPage}
-                    totalPages={eventTotalPages}
-                    totalItems={safetyEvents.length}
-                    pageSize={eventPageSize}
-                    onPageSizeChange={(nextPageSize) => {
-                      setEventPageSize(nextPageSize);
-                      setEventPage(1);
-                    }}
-                    onPageChange={setEventPage}
-                  />
-                </DemoCard>
-                <DemoCard title="Tree" wide>
-                  <div className="grid gap-6 l:grid-cols-2">
-                    <Tree
-                      aria-label="项目文件"
-                      defaultExpandedKeys={['src']}
-                      defaultSelectedKeys={['app']}
-                      nodes={[
-                        { key: 'src', label: 'src', icon: <Folder size={16} />, children: [
-                          { key: 'components', label: 'components', icon: <Folder size={16} />, children: [
-                            { key: 'button', label: 'Button.tsx' },
-                            { key: 'tabs', label: 'Tabs.tsx' },
-                            { key: 'tree', label: 'Tree.tsx' },
-                          ] },
-                          { key: 'app', label: 'App.tsx' },
-                        ] },
-                        { key: 'readme', label: 'README.md' },
-                        { key: 'lock', label: 'bun.lock', disabled: true },
-                      ]}
-                    />
-                    <Tree
-                      aria-label="团队多选"
-                      multiple
-                      defaultExpandedKeys={['team']}
-                      defaultSelectedKeys={['design']}
-                      nodes={[
-                        { key: 'team', label: '产品团队', selectable: false, children: [
-                          { key: 'design', label: '设计' },
-                          { key: 'frontend', label: '前端' },
-                          { key: 'backend', label: '后端' },
-                        ] },
-                      ]}
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="List" wide>
-                  <List aria-label="重点事件">
-                    <ListItem
-                      title="主线异常停车"
-                      description="G65 K18+900，车辆已持续停留 6 分钟。"
-                      leading={<AlertTriangle className="text-[var(--lumen-color-danger)]" size={18} />}
-                      meta={<Badge size="sm" variant="danger">高风险</Badge>}
-                      actions={(
-                        <Tooltip content="更多操作">
+                      )}
+                    </DropdownMenu>
+                    <DropdownMenu
+                      menuMode
+                      className="topbar-accent"
+                      menuClassName="accent-menu"
+                      trigger={({ open, menuId, toggle }) => (
+                        <Tooltip content="主题" placement="bottom">
                           <Button
                             iconOnly
                             size="sm"
                             variant="ghost"
-                            aria-label="主线异常停车更多操作"
-                            icon={<MoreHorizontal size={16} />}
+                            className="topbar-accent-button"
+                            aria-label={theme === 'paper'
+                              ? 'Paper 主题'
+                              : theme === 'prism'
+                                ? 'Prism 多彩主题'
+                                : `Clarity ${accent === 'purple' ? '紫色' : '蓝色'}主题`}
+                            aria-controls={menuId}
+                            aria-expanded={open}
+                            aria-haspopup="menu"
+                            icon={<Palette size={18} />}
+                            onClick={toggle}
                           />
                         </Tooltip>
                       )}
-                    />
-                    <ListItem
-                      title="边坡监测预警"
-                      description="K24 路段位移速率超过关注阈值。"
-                      leading={<MapPin className="text-[var(--lumen-color-warning)]" size={18} />}
-                      meta="8 分钟前"
-                    />
-                    <ListItem
-                      title="巡检任务已完成"
-                      description="今日重点路段巡检结果已提交。"
-                      leading={<Check className="text-[var(--lumen-color-success)]" size={18} />}
-                      meta={<Badge size="sm" variant="success">已完成</Badge>}
-                    />
-                  </List>
-                </DemoCard>
-                <DemoCard title="VirtualList" wide>
-                  <div className="space-y-3">
-                    <Typography variant="caption" color="muted">
-                      10,000 条记录，仅渲染可见区域
-                    </Typography>
-                    <VirtualList
-                      aria-label="运行记录"
-                      items={virtualListItems}
-                      itemSize={60}
-                      height={320}
-                      overscan={4}
-                      getItemKey={(item) => item.id}
-                      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
-                      itemClassName="border-b border-[var(--lumen-color-surface-muted)]"
-                      renderItem={(item) => (
-                        <div className="flex h-full min-w-0 items-center gap-3 px-4">
-                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-[var(--lumen-color-primary-soft)] text-[12px] font-medium text-[var(--lumen-color-primary)]">
-                            {item.id}
-                          </span>
-                          <span className="min-w-0">
-                            <strong className="block truncate text-[14px] font-medium text-[var(--lumen-color-text)]">
-                              {item.title}
-                            </strong>
-                            <span className="block truncate text-[12px] text-[var(--lumen-color-text-muted)]">
-                              {item.description}
-                            </span>
-                          </span>
+                    >
+                      {({ close }) => (
+                        <div className="accent-options">
+                          {([
+                            ['clarity', 'blue', 'Clarity 蓝色'],
+                            ['clarity', 'purple', 'Clarity 紫色'],
+                            ['paper', null, 'Paper 黑白'],
+                            ['prism', null, 'Prism 多彩'],
+                          ] as const).map(([themeValue, accentValue, label]) => {
+                            const selected = theme === themeValue
+                      && (themeValue !== 'clarity' || accent === accentValue);
+                            return (
+                              <DropdownMenuItem
+                                key={`${themeValue}-${accentValue ?? 'default'}`}
+                                type="button"
+                                role="menuitemradio"
+                                aria-checked={selected}
+                                className="accent-option"
+                                onClick={() => {
+                                  setTheme(themeValue);
+                                  if (accentValue) setAccent(accentValue);
+                                  close();
+                                }}
+                              >
+                                <span className={`accent-swatch accent-swatch-${accentValue ?? themeValue}`} />
+                                <span>{label}</span>
+                                {selected ? <Check aria-hidden="true" size={15} /> : null}
+                              </DropdownMenuItem>
+                            );
+                          })}
                         </div>
                       )}
-                    />
-                  </div>
-                </DemoCard>
-                <DemoCard title="SwipeActions" wide>
-                  <div className="mx-auto w-full max-w-[420px]">
-                    <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
-                      <SwipeActions
-                        startActions={[
-                          {
-                            key: 'archive',
-                            label: '归档',
-                            icon: <Archive size={18} />,
-                            tone: 'success',
-                            onClick: () => setSwipeActionMessage('事件已归档'),
-                          },
-                        ]}
-                        endActions={[
-                          {
-                            key: 'delete',
-                            label: '删除',
-                            icon: <Trash2 size={18} />,
-                            tone: 'danger',
-                            onClick: () => setSwipeActionMessage('事件已删除'),
-                          },
-                        ]}
-                        fullSwipe
-                      >
-                        <div className="flex min-h-18 items-center gap-3 px-4 py-3">
-                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger)]">
-                            <AlertTriangle size={18} />
-                          </span>
-                          <span className="min-w-0">
-                            <strong className="block text-[14px] font-medium text-[var(--lumen-color-text)]">
-                              主线异常停车
-                            </strong>
-                            <span className="mt-0.5 block text-[13px] text-[var(--lumen-color-text-muted)]">
-                              右滑归档，左滑删除
-                            </span>
-                          </span>
-                        </div>
-                      </SwipeActions>
-                    </div>
-                    <p className="mt-3 text-center text-[12px] text-[var(--lumen-color-text-muted)]">
-                      {swipeActionMessage}
-                    </p>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Scrollbar" wide>
-                  <div className="form-grid items-start">
-                    <Scrollbar
-                      aria-label="告警记录"
-                      tabIndex={0}
-                      placement="outer"
-                      className="h-48 rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
-                    >
-                      <div className="divide-y divide-[var(--lumen-color-surface-muted)] px-4">
-                        {Array.from({ length: 12 }, (_, index) => (
-                          <div key={index} className="py-3 text-[13px] text-[var(--lumen-color-text-secondary)]">
-                            K{18 + index} 路段监测记录 · {String(index + 8).padStart(2, '0')}:30
-                          </div>
-                        ))}
-                      </div>
-                    </Scrollbar>
-                    <Scrollbar
-                      aria-label="巡检看板"
-                      tabIndex={0}
-                      orientation="horizontal"
-                      size="sm"
-                      autoHide
-                      className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4"
-                    >
-                      <div className="flex w-max gap-3">
-                        {['桥梁巡检', '隧道照明', '边坡监测', '路面养护', '机电设备'].map((item) => (
-                          <div
-                            key={item}
-                            className="w-40 shrink-0 border-l-2 border-[var(--lumen-color-primary)] bg-[var(--lumen-color-surface-muted)] px-3 py-4"
-                          >
-                            <strong className="block text-[13px] font-medium text-[var(--lumen-color-text-strong)]">
-                              {item}
-                            </strong>
-                            <span className="mt-1 block text-[12px] text-[var(--lumen-color-text-muted)]">
-                              今日任务 8 项
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </Scrollbar>
-                  </div>
-                </DemoCard>
-                <DemoCard title="Collapse" wide>
-                    <Collapse defaultValue={['road', 'device']}>
-                      <CollapseItem value="road" title="路段信息" extra="G65 K18+900">
-                        南向双车道，当前平均车速 72 km/h。
-                      </CollapseItem>
-                      <CollapseItem value="device" title="监测设备" extra="12 台在线">
-                        摄像机、雷达和气象监测设备运行正常。
-                      </CollapseItem>
-                    </Collapse>
-                </DemoCard>
-                <DemoCard title="Accordion" wide>
-                    <Accordion defaultValue="event">
-                      <CollapseItem value="event" title="事件详情">
-                        异常停车事件已持续 6 分钟，等待现场确认。
-                      </CollapseItem>
-                      <CollapseItem value="history" title="处置记录">
-                        10:26 已通知附近巡检人员前往现场。
-                      </CollapseItem>
-                    </Accordion>
-                </DemoCard>
-                <DemoCard title="Divider" wide>
-                  <div>
-                    <p className="text-[13px] text-[var(--lumen-color-text-secondary)]">G65 K18+900 南向路段</p>
-                    <Divider />
-                    <p className="text-[13px] text-[var(--lumen-color-text-secondary)]">当前平均车速 72 km/h</p>
-                    <Divider label="设备状态" variant="dashed" />
-                    <div className="flex h-8 items-center text-[13px] text-[var(--lumen-color-text-secondary)]">
-                      <span>摄像机在线</span>
-                      <Divider orientation="vertical" />
-                      <span>雷达在线</span>
-                      <Divider orientation="vertical" />
-                      <span>气象站在线</span>
-                    </div>
-                  </div>
-                </DemoCard>
-              </GallerySection>
-            );
-          }
-
-          if (section.id === 'overlays') {
-            return (
-              <GallerySection key={section.id} section={section}>
-                <DemoCard title="CommandPalette" wide>
-                    <Button variant="secondary" icon={<Search size={15} />} onClick={() => setCommandPaletteOpen(true)}>
-                      打开 CommandPalette
-                    </Button>
-                </DemoCard>
-                <DemoCard title="Dialog" wide>
-                    <Button onClick={() => setDialogOpen(true)}>打开 Dialog</Button>
-                </DemoCard>
-                <DemoCard title="Drawer" wide>
-                    <Button variant="secondary" onClick={() => setDrawerOpen(true)}>打开 Drawer</Button>
-                </DemoCard>
-                <DemoCard title="BottomSheet" wide>
-                    <Button variant="secondary" onClick={() => setBottomSheetOpen(true)}>打开 BottomSheet</Button>
-                </DemoCard>
-                <DemoCard title="ConfirmDialog" wide>
-                    <Button variant="destructive" onClick={() => setConfirmOpen(true)}>打开 Confirm</Button>
-                </DemoCard>
-                <DemoCard title="Toast" wide>
-                    <Button variant="outline" icon={<Bell size={15} />} onClick={() => Toast.success('组件配置已成功保存，新的设置将在下次打开页面时自动生效。')}>
-                      Toast
-                    </Button>
-                </DemoCard>
-                <DemoCard title="Popover" wide>
-                  <div className="button-row">
-                    <Popover
+                    </DropdownMenu>
+                    <Tooltip
+                      content={colorScheme === 'dark' ? '切换到浅色主题' : '切换到深色主题'}
                       placement="bottom"
-                      align="start"
-                      ariaLabel="监测设备详情"
-                      contentClassName="w-[300px]"
-                      trigger={({ open, popoverId, toggle }) => (
-                        <Button
-                          variant="secondary"
-                          aria-expanded={open}
-                          aria-controls={popoverId}
-                          aria-haspopup="dialog"
-                          icon={<MapPin size={15} />}
-                          onClick={toggle}
-                        >
-                          设备详情
-                        </Button>
+                    >
+                      <Button
+                        iconOnly
+                        size="sm"
+                        variant="ghost"
+                        className="topbar-theme-button"
+                        aria-label={colorScheme === 'dark' ? '切换到浅色主题' : '切换到深色主题'}
+                        icon={colorScheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                        onClick={() => setColorScheme((scheme) => scheme === 'dark' ? 'light' : 'dark')}
+                      />
+                    </Tooltip>
+                    <DropdownMenu
+                      className="topbar-notification"
+                      menuClassName="w-[min(320px,calc(100vw-16px))] overflow-hidden p-0"
+                      trigger={({ open, toggle }) => (
+                        <Tooltip content="通知" placement="bottom">
+                          <Button
+                            iconOnly
+                            size="sm"
+                            variant="ghost"
+                            className="topbar-notification-button"
+                            aria-label="通知"
+                            aria-expanded={open}
+                            icon={(
+                              <span className="relative inline-flex">
+                                <Bell size={18} />
+                                <span className="absolute -right-1 -top-1 h-2 w-2 rounded-full border border-[var(--lumen-color-surface)] bg-[var(--lumen-color-danger)]" />
+                              </span>
+                            )}
+                            onClick={toggle}
+                          />
+                        </Tooltip>
+                      )}
+                    >
+                      {({ close }) => (
+                        <div className="-my-1" data-testid="playground-notifications">
+                          <div className="flex items-center justify-between border-b border-[var(--lumen-color-surface-muted)] px-4 py-3">
+                            <span className="text-[15px] font-medium text-[var(--lumen-color-text-strong)]">通知</span>
+                            <Badge size="sm" variant="danger">2</Badge>
+                          </div>
+                          <div className="py-1">
+                            {[
+                              ['组件检查已完成', '刚刚'],
+                              ['Dropdown 定位已更新', '5 分钟前'],
+                            ].map(([title, time]) => (
+                              <button
+                                key={title}
+                                type="button"
+                                className="flex w-full items-start gap-3 border-b border-[var(--lumen-color-surface-muted)] px-4 py-3 text-left last:border-b-0 hover:bg-[var(--lumen-color-surface-muted)] focus:outline-none focus-visible:bg-[var(--lumen-color-surface-muted)]"
+                                onClick={close}
+                              >
+                                <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[var(--lumen-color-primary)]" />
+                                <span className="min-w-0 flex-1">
+                                  <span className="block truncate text-[14px] font-normal leading-5 text-[var(--lumen-color-text)]">{title}</span>
+                                  <span className="mt-1 block text-[12px] leading-5 text-[var(--lumen-color-text-placeholder)]">{time}</span>
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                          <div className="border-t border-[var(--lumen-color-surface-muted)] p-2">
+                            <button
+                              type="button"
+                              className="w-full rounded-[6px] px-3 py-2 text-center text-[13px] font-normal text-[var(--lumen-color-primary)] hover:bg-[var(--lumen-color-surface-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20"
+                              onClick={close}
+                            >
+                              全部标记为已读
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </DropdownMenu>
+                    <DropdownMenu
+                      menuMode
+                      className="topbar-avatar"
+                      menuClassName="account-menu"
+                      trigger={({ open, menuId, toggle }) => (
+                        <Tooltip content="账户" placement="bottom">
+                          <button
+                            type="button"
+                            className="topbar-avatar-trigger"
+                            aria-label="打开账户菜单"
+                            aria-controls={menuId}
+                            aria-expanded={open}
+                            aria-haspopup="menu"
+                            onClick={toggle}
+                          >
+                            <Avatar
+                              size="sm"
+                              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96&q=80"
+                              alt="Gallery user"
+                              name="Gallery User"
+                              imageProps={{
+                                loading: 'lazy',
+                                referrerPolicy: 'no-referrer',
+                              }}
+                            />
+                          </button>
+                        </Tooltip>
                       )}
                     >
                       {({ close }) => (
                         <div>
-                          <div className="flex items-start justify-between gap-3">
-                            <div>
-                              <div className="text-[14px] font-semibold text-[var(--lumen-color-text)]">摄像机 K18-03</div>
-                              <div className="mt-1 text-[12px] text-[var(--lumen-color-text-muted)]">G65 K18+900 南向</div>
-                            </div>
-                            <Badge variant="success">在线</Badge>
+                          <div className="account-menu-profile">
+                            <Avatar
+                              size="md"
+                              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96&q=80"
+                              alt="Gallery user"
+                              name="Gallery User"
+                              imageProps={{
+                                loading: 'lazy',
+                                referrerPolicy: 'no-referrer',
+                              }}
+                            />
+                            <span>
+                              <strong>Gallery User</strong>
+                              <small>gallery@lumen.dev</small>
+                            </span>
                           </div>
-                          <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-[13px]">
-                            <span className="text-[var(--lumen-color-text-muted)]">最后同步</span>
-                            <span className="text-right text-[var(--lumen-color-text)]">2 分钟前</span>
-                            <span className="text-[var(--lumen-color-text-muted)]">今日事件</span>
-                            <span className="text-right text-[var(--lumen-color-text)]">3 条</span>
+                          <div className="account-menu-actions">
+                            <DropdownMenuItem type="button" role="menuitem" onClick={close}>
+                              <UserRound size={16} />
+                              个人信息
+                            </DropdownMenuItem>
+                            <DropdownMenuItem type="button" role="menuitem" onClick={close}>
+                              <Settings size={16} />
+                              账户设置
+                            </DropdownMenuItem>
                           </div>
-                          <div className="mt-4 flex justify-end">
-                            <Button size="sm" variant="outline" onClick={close}>关闭</Button>
+                          <div className="account-menu-actions account-menu-footer">
+                            <DropdownMenuItem type="button" role="menuitem" className="account-menu-logout" onClick={close}>
+                              <LogOut size={16} />
+                              退出登录
+                            </DropdownMenuItem>
                           </div>
                         </div>
                       )}
-                    </Popover>
+                    </DropdownMenu>
                   </div>
-                </DemoCard>
-              </GallerySection>
-            );
-          }
-
-          return (
-            <GallerySection key={section.id} section={section}>
-              <DemoCard title="Alert" wide>
-                <div className="stack">
-                  <Alert
-                    variant="info"
-                    title="路况数据已更新"
-                    action={<Button size="sm" variant="outline">查看变化</Button>}
-                  >
-                    最新一次同步完成于 10:32，当前路网数据正常。
-                  </Alert>
-                  <Alert variant="success" title="事件处置完成">
-                    SJ-0018 已关闭，处置记录已归档。
-                  </Alert>
-                  {warningAlertVisible ? (
-                    <Alert
-                      variant="warning"
-                      title="部分设备离线"
-                      onClose={() => setWarningAlertVisible(false)}
-                    >
-                      K28 路段有 3 台监测设备暂时无法连接。
-                    </Alert>
-                  ) : (
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      className="self-start"
-                      onClick={() => setWarningAlertVisible(true)}
-                    >
-                      恢复警告
-                    </Button>
-                  )}
-                  <Alert variant="danger" title="高风险事件待处置">
-                    行人闯入主线区域，请立即通知现场人员。
-                  </Alert>
-                </div>
-              </DemoCard>
-              <DemoCard title="Progress" wide>
-                <div className="stack">
-                  <Progress label="事件处置进度" value={68} showValue />
-                  <Progress label="今日巡检完成率" value={84} status="success" showValue />
-                  <Progress label="设备离线占比" value={27} status="warning" showValue />
-                  <div className="button-row">
-                    <Progress type="circle" label="设备在线率" value={92} status="success" showValue />
-                    <Progress type="circle" label="风险处置率" value={64} status="info" showValue />
-                    <Progress type="circle" label="同步中" indeterminate />
-                  </div>
-                </div>
-              </DemoCard>
-              <DemoCard title="Spinner" wide>
-                <div className="button-row">
-                  <Spinner size="sm" />
-                  <Spinner label="正在刷新路况" />
-                  <Spinner size="lg" tone="warning" label="正在同步设备" />
-                </div>
-              </DemoCard>
-              <DemoCard title="PullToRefresh" wide flush>
-                <PullToRefresh
-                  aria-label="移动端事件列表"
-                  className="h-72 w-full"
-                  onRefresh={() => new Promise<void>((resolve) => {
-                    window.setTimeout(() => {
-                      setPullRefreshCount((count) => count + 1);
-                      resolve();
-                    }, 800);
-                  })}
-                >
-                  <div className="mx-5 pad:mx-6">
-                    <div className="border-b border-[var(--lumen-color-surface-muted)] px-4 py-3 text-[12px] text-[var(--lumen-color-text-muted)]">
-                      移动端向下拖动 · 已刷新 {pullRefreshCount} 次
-                    </div>
-                    <List aria-label="最新事件">
-                      {['主线异常停车', '边坡监测预警', '巡检任务已完成', '机电设备状态正常', '隧道照明巡检'].map((title, index) => (
-                        <ListItem
-                          key={`${title}-${pullRefreshCount}`}
-                          title={title}
-                          description={`第 ${index + 1} 条更新记录`}
-                          meta={`${index + 1 + pullRefreshCount} 分钟前`}
-                        />
-                      ))}
-                    </List>
-                  </div>
-                </PullToRefresh>
-              </DemoCard>
-              <DemoCard title="Empty" wide>
-                <Empty
-                  bordered
-                  icon={<SearchX size={22} />}
-                  title="没有匹配的事件"
-                  description="当前筛选条件下没有安全事件记录。"
-                  action={(
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={() => Toast.info('已清除筛选条件')}
-                    >
-                      清除筛选
-                    </Button>
-                  )}
-                />
-              </DemoCard>
-              <DemoCard title="FileList">
-                <div className="w-full max-w-2xl">
-                  <FileList
-                    items={[
-                      { id: 'pdf', name: '应用于低压配电物联网的断路器管理方法及系统_20231024032440.pdf', size: 1258291, badge: { label: '已上传', variant: 'success' } },
-                      { id: 'sheet', name: 'budget.xlsx', size: 4096, progress: 58, badge: { label: '等待财务部门与项目负责人共同审核后归档', variant: 'warning' } },
-                      { id: 'image', name: 'photo.png', size: 0 },
-                    ]}
-                    renderActions={(file) => (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        iconOnly
-                        icon={<Eye size={16} aria-hidden="true" />}
-                        aria-label={`查看附件：${file.name}`}
-                        title="查看"
-                        onClick={() => Toast.info(`查看附件：${file.name}`)}
-                      />
-                    )}
-                    onRemove={(file) => Toast.info(`移除附件：${file.name}`)}
-                  />
-                </div>
-              </DemoCard>
-              <DemoCard title="FileList Wrapped">
-                <div className="w-full max-w-2xl">
-                  <FileList
-                    wrapName
-                    showSize={false}
-                    badgeMaxWidth={72}
-                    items={[
-                      { id: 'doc', name: '这是一份完整显示名称并支持自动换行的项目设计说明文档.docx', size: 8192, badge: { label: '已归档至项目文档资料库', variant: 'neutral' } },
-                    ]}
-                  />
-                </div>
-              </DemoCard>
-              <DemoCard title="FileUpload">
-                <div className="w-full">
-                  <FileUpload
-                    value={files}
-                    onChange={setFiles}
-                    getFileBadge={(file) => ({
-                      label: file.type === 'text/markdown' ? '等待项目负责人及相关部门共同审核后归档' : '待上传',
-                      variant: file.type === 'text/markdown' ? 'warning' : 'neutral',
-                    })}
-                    renderFileActions={(file) => (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        iconOnly
-                        icon={<Eye size={16} aria-hidden="true" />}
-                        aria-label={`查看附件：${file.name}`}
-                        title="查看"
-                        onClick={() => Toast.info(`查看附件：${file.name}`)}
-                      />
-                    )}
-                    multiple
-                    maxFiles={3}
-                    accept=".png,.jpg,.pdf,.md,.svg"
-                    hint="内置 FileList：移动端将右侧操作收进更多菜单。最多 3 个文件。"
-                    onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
-                  />
-                </div>
-              </DemoCard>
-              <DemoCard title="FileUpload Progress">
-                <div className="w-full">
-                  <FileUpload
-                    value={files}
-                    onChange={setFiles}
-                    uploading
-                    getFileProgress={(file) => file.type === 'text/markdown' ? 35 : 80}
-                    getFileBadge={() => ({ label: '上传中', variant: 'info' })}
-                    multiple
-                    hint="每个文件在名称下方显示独立上传进度。"
-                  />
-                </div>
-              </DemoCard>
-              <DemoCard title="FileUpload Compact">
-                <div className="w-full">
-                  <FileUpload
-                    density="compact"
-                    value={compactFiles}
-                    onChange={setCompactFiles}
-                    wrapFileName
-                    uploading
-                    progress={58}
-                    getFileBadge={() => ({ label: '上传中', variant: 'info' })}
-                    renderFileActions={(file) => (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        iconOnly
-                        icon={<Eye size={16} aria-hidden="true" />}
-                        aria-label={`查看附件：${file.name}`}
-                        title="查看"
-                        onClick={() => Toast.info(`查看附件：${file.name}`)}
-                      />
-                    )}
-                    multiple
-                    maxFiles={3}
-                    accept=".png,.jpg,.pdf,.md,.svg"
-                    hint="紧凑模式：进度位于名称下方，文件大小位于状态徽标之前。"
-                    onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
-                  />
-                </div>
-              </DemoCard>
-              <DemoCard title="SegmentedControl">
-                  <SegmentedControl
-                    size="md"
-                    value={segment}
-                    onChange={setSegment}
-                    fullWidth
-                    options={[
-                      { label: '全部', value: 'all' },
-                      { label: '启用', value: 'active' },
-                      { label: '归档', value: 'archived' },
-                    ]}
-                  />
-              </DemoCard>
-              <DemoCard title="Skeleton">
-                <div className="stack">
-                  <div className="skeleton-row">
-                    <Skeleton variant="circular" />
-                    <div className="skeleton-lines">
-                      <Skeleton width="85%" />
-                      <Skeleton width="62%" />
-                    </div>
-                  </div>
-                  <Skeleton variant="rectangular" height={96} />
-                </div>
-              </DemoCard>
-            </GallerySection>
-          );
-                  })}
-                </div>
-              </div>
-            </ActiveDemoContext.Provider>
-          </div>
-        </PullToRefresh>
-      </main>
-
-      <Dialog
-        open={dialogOpen}
-        onRequestClose={() => setDialogOpen(false)}
-        title="Dialog 预览"
-        description="用于确认、编辑和短流程任务。当前画廊直接使用组件库 Dialog。"
-        footer={
-          <>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>关闭</Button>
-            <Button onClick={() => setDialogOpen(false)}>保存</Button>
-          </>
-        }
-      >
-        <div>
-          <FormField label="负责人">
-            <Select
-              options={basicSelectOptions}
-              value={dialogSelectValue}
-              onChange={(value) => setDialogSelectValue(value as string | null)}
-              placeholder="选择负责人"
+                </>
+              )}
             />
-          </FormField>
-        </div>
-      </Dialog>
 
-      <BottomSheet
-        open={bottomSheetOpen}
-        onRequestClose={() => setBottomSheetOpen(false)}
-        title="快捷操作"
-        description="选择要执行的操作。向下拖动顶部手柄也可关闭。"
-      >
-        <div className="space-y-1 px-4 pb-4">
-          <Button variant="ghost" className="w-full justify-start" icon={<Bell size={16} />}>
-            创建告警
-          </Button>
-          <Button variant="ghost" className="w-full justify-start" icon={<MapPin size={16} />}>
-            添加地点
-          </Button>
-        </div>
-      </BottomSheet>
+            <PullToRefresh
+              ref={mainScrollRef}
+              className="main-scrollbar lumen-scrollbar"
+              data-orientation="vertical"
+              data-size="sm"
+              disabled={activeSection !== 'feedback' || activeDemo.id !== 'pull-to-refresh'}
+              onRefresh={() => new Promise<void>((resolve) => {
+                window.setTimeout(() => {
+                  Toast.success(language === 'zh-CN' ? '页面内容已刷新' : 'Page content refreshed');
+                  resolve();
+                }, 800);
+              })}
+            >
+              <div className="main-content">
+                <ActiveDemoContext.Provider value={{
+                  demo: activeDemo,
+                  expandedCodeTitle,
+                  copiedCodeTitle,
+                  onToggleCode: (title) => setExpandedCodeTitle((current) => current === title ? undefined : title),
+                  onCopyCode: (title, code) => void copyActiveDemoCode(
+                    title,
+                    language === 'en-US' ? translateDemoText(code) : code,
+                  ),
+                }}>
+                  <div className="gallery-workspace">
+                    <div className="gallery-preview">
+                      {activeSections.map((section) => {
+                        if (section.id === 'typography') {
+                          return (
+                            <GallerySection key={section.id} section={section}>
+                              <DemoCard title="Headings">
+                                <div className="stack">
+                                  <Typography variant="h1">H1 运营总览</Typography>
+                                  <Typography variant="h2">组织架构与人员管理</Typography>
+                                  <Typography variant="h3">H3 实时监测</Typography>
+                                  <Typography variant="h4">H4 设备状态</Typography>
+                                  <Typography variant="h5">H5 基础配置</Typography>
+                                  <Typography variant="h6">H6 详细信息</Typography>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Body">
+                                <div className="stack">
+                                  <Typography>正文用于承载主要说明和数据内容。</Typography>
+                                  <Typography variant="body-sm" tone="secondary">
+                                    小号正文用于紧凑列表和次要信息。
+                                  </Typography>
+                                  <Typography variant="caption" tone="muted">
+                                    辅助文字用于时间、状态补充和简短提示。
+                                  </Typography>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Locale" wide>
+                                <div className="max-w-[640px] space-y-4">
+                                  <Select options={[]} value={null} onChange={() => undefined} />
+                                  <Pagination currentPage={2} totalPages={8} totalItems={72} onPageChange={() => undefined} />
+                                </div>
+                              </DemoCard>
+                            </GallerySection>
+                          );
+                        }
+                        if (section.id === 'buttons') {
+                          return (
+                            <GallerySection key={section.id} section={section}>
+                              <DemoCard title="Button">
+                                <div className="button-row">
+                                  <Button icon={<Plus size={15} />}>新建</Button>
+                                  <Button variant="secondary" icon={<Filter size={15} />}>筛选</Button>
+                                  <Button variant="outline">描边</Button>
+                                  <Button variant="ghost">文字</Button>
+                                  <Button variant="destructive">删除</Button>
+                                  <Tooltip content="仅图标按钮">
+                                    <Button iconOnly aria-label="设置" icon={<Settings size={15} />} />
+                                  </Tooltip>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Tooltip">
+                                <Tooltip content="这是一段会被省略的完整文本" onlyWhenOverflow>
+                                  <span className="block max-w-40 truncate">这是一段会被省略的完整文本</span>
+                                </Tooltip>
+                              </DemoCard>
+                              <DemoCard title="Long press" wide>
+                                <div className="flex flex-col items-start gap-3">
+                                  <Button {...longPressHandlers} className="select-none touch-pan-y">
+                                    移动端按住 500ms
+                                  </Button>
+                                  <Typography variant="caption" color="muted">
+                                    {longPressMessage}
+                                  </Typography>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Context menu" wide>
+                                <div className="flex flex-col gap-3">
+                                  <ContextMenu
+                                    ariaLabel="快捷操作"
+                                    menuClassName="menu-list"
+                                    content={(
+                                      <>
+                                        <button type="button" role="menuitem" onClick={() => setContextMenuAction('复制')}>
+                                          <Copy size={15} />
+                                          复制
+                                        </button>
+                                        <button type="button" role="menuitem" onClick={() => setContextMenuAction('收藏')}>
+                                          <Star size={15} />
+                                          收藏
+                                        </button>
+                                        <button type="button" role="menuitem" onClick={() => setContextMenuAction('删除')}>
+                                          <Trash2 size={15} />
+                                          删除
+                                        </button>
+                                      </>
+                                    )}
+                                  >
+                                    <div className="select-none touch-pan-y rounded-lg bg-[var(--lumen-color-surface-muted)] p-5 text-center text-[14px] text-[var(--lumen-color-text)]">
+                                      PC 端右键，移动端长按；菜单从触发位置展开，靠近窗口边缘时自动翻转
+                                    </div>
+                                  </ContextMenu>
+                                  <Typography variant="caption" color="muted">
+                                    最近操作：{contextMenuAction}
+                                  </Typography>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="DragHandle" wide>
+                                <DragHandleExample />
+                              </DemoCard>
+                              <DemoCard title="Icon only" wide>
+                                <div className="fab-example-row">
+                                  <Fab position="static" size="sm" icon={<Plus size={18} />} aria-label="新建任务" />
+                                  <Fab position="static" size="md" variant="secondary" icon={<Search size={18} />} aria-label="搜索" />
+                                  <Fab position="static" size="lg" variant="outline" icon={<Settings size={20} />} aria-label="设置" />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Extended" wide>
+                                <div className="fab-example-row">
+                                  <Fab position="static" icon={<Plus size={18} />} label="新建任务" />
+                                  <Fab position="static" variant="secondary" icon={<Filter size={18} />} label="筛选条件" />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Expandable" wide>
+                                <div className="fab-example-row">
+                                  <Switch checked={fabExtended} onChange={setFabExtended} label="显示文字" />
+                                  <Fab
+                                    position="static"
+                                    icon={<Plus size={18} />}
+                                    label="新建任务"
+                                    extended={fabExtended}
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Submenu" wide>
+                                <div className="relative h-44">
+                                  <Fab
+                                    position="absolute"
+                                    placement="bottom-end"
+                                    size="md"
+                                    color="#7c3aed"
+                                    icon={<Plus size={20} />}
+                                    aria-label="快速新建"
+                                    actions={[
+                                      { icon: <Bell size={16} />, label: '创建告警', color: '#dc2626' },
+                                      { icon: <MapPin size={16} />, label: '添加地点', color: '#2563eb' },
+                                    ]}
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Badge">
+                                <div className="button-row">
+                                  <Badge variant="info">Info</Badge>
+                                  <Badge variant="success">Success</Badge>
+                                  <Badge variant="warning">Warning</Badge>
+                                  <Badge variant="danger">Danger</Badge>
+                                  <Badge variant="neutral">Neutral</Badge>
+                                  <Badge variant="success" shape="square">Success Square</Badge>
+                                  <Badge variant="outline" shape="square">Outline</Badge>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Avatar">
+                                <div className="avatar-row">
+                                  <Avatar name="Lumen Design" />
+                                  <Avatar name="Qiao Ming" shape="rounded" />
+                                  <Avatar
+                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96&q=80"
+                                    alt="Unsplash portrait"
+                                    name="Portrait User"
+                                    imageProps={{
+                                      loading: 'lazy',
+                                      referrerPolicy: 'no-referrer',
+                                    }}
+                                  />
+                                  <Avatar
+                                    name="Color Avatar"
+                                    style={{
+                                      backgroundColor: 'var(--lumen-color-primary)',
+                                      borderColor: 'transparent',
+                                      color: 'var(--lumen-color-on-primary)',
+                                    }}
+                                  />
+                                  <Avatar
+                                    name="Success User"
+                                    style={{
+                                      backgroundColor: 'var(--lumen-color-success-soft)',
+                                      borderColor: 'var(--lumen-color-success-border)',
+                                      color: 'var(--lumen-color-success-text)',
+                                    }}
+                                  />
+                                  <Avatar
+                                    name="Warning User"
+                                    shape="rounded"
+                                    style={{
+                                      backgroundColor: 'var(--lumen-color-warning-soft)',
+                                      borderColor: 'var(--lumen-color-warning-border)',
+                                      color: 'var(--lumen-color-warning-text)',
+                                    }}
+                                  />
+                                  <Avatar
+                                    name="Danger User"
+                                    style={{
+                                      backgroundColor: 'var(--lumen-color-danger-soft)',
+                                      borderColor: 'var(--lumen-color-danger-border)',
+                                      color: 'var(--lumen-color-danger-text)',
+                                    }}
+                                  />
+                                  <Avatar fallback={<UserRound size={18} />} />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Chip" wide>
+                                <div className="button-row">
+                                  <Chip
+                                    tone="danger"
+                                    shape="pill"
+                                    selected={priorityChipSelected}
+                                    onSelect={setPriorityChipSelected}
+                                  >
+                                    高风险
+                                  </Chip>
+                                  {temporaryChipVisible ? (
+                                    <Chip tone="neutral" onClose={() => setTemporaryChipVisible(false)}>
+                                      临时标签
+                                    </Chip>
+                                  ) : null}
+                                </div>
+                              </DemoCard>
+                            </GallerySection>
+                          );
+                        }
 
-      <CommandPalette
-        open={commandPaletteOpen}
-        onOpenChange={(open) => {
-          setCommandPaletteOpen(open);
-          if (!open) setGallerySearch('');
-        }}
-        enableShortcut
-        label={messages.openSearch}
-        placeholder={messages.searchPlaceholder}
-        emptyText={messages.noSearchResults}
-        searchValue={gallerySearch}
-        onSearchValueChange={setGallerySearch}
-        groups={localizedCategories.map((category) => ({
-          heading: category.title,
-          items: category.demos.map((item) => ({
-            id: item.id,
-            label: demoLabels[item.title] ?? item.title,
-            description: category.title,
-            keywords: [item.title, category.title],
-            icon: <category.icon size={16} />,
-            onSelect: () => navigateToDemo(category.id, item.id),
-          })),
-        }))}
-      />
+                        if (section.id === 'forms') {
+                          return (
+                            <GallerySection key={section.id} section={section}>
+                              <DemoCard title="Form / FormField" wide>
+                                <div className="mx-auto max-w-[640px] space-y-4">
+                                  <p className="text-[14px] text-[var(--lumen-color-text-secondary)]">
+                                    {language === 'en-US'
+                                      ? 'Create a user: submit the empty form to see all four errors at once. Errors clear as you correct the fields; submit again when ready.'
+                                      : '创建用户：先直接点击“校验并提交”，一次查看四个字段的错误。修改后会即时更新错误提示，全部修正后再次提交。'}
+                                  </p>
+                                  <SegmentedControl<'inline' | 'toast'>
+                                    aria-label={language === 'en-US' ? 'Error feedback' : '错误展示方式'}
+                                    value={formErrorDisplay}
+                                    onChange={setFormErrorDisplay}
+                                    options={[
+                                      { value: 'inline', label: language === 'en-US' ? 'Below fields' : '字段下方' },
+                                      { value: 'toast', label: language === 'en-US' ? 'Toast feedback' : 'Toast 提示' },
+                                    ]}
+                                  />
+                                  <Form
+                                    aria-label={language === 'en-US' ? 'Create user' : '创建用户'}
+                                    showErrors={formErrorDisplay === 'inline'}
+                                    onValidationFailed={(errors) => {
+                                      if (formErrorDisplay === 'toast') {
+                                        Toast.error(Object.values(errors).filter(Boolean).join('；'), { duration: 6000 });
+                                      }
+                                    }}
+                                    values={formValues}
+                                    validate={(values) => ({
+                                      name: values.name.trim() ? undefined : language === 'en-US' ? 'Enter a name.' : '请输入姓名',
+                                      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim()) ? undefined : language === 'en-US' ? 'Enter a valid email.' : '邮箱格式不正确',
+                                      password: values.password.length >= 8 ? undefined : language === 'en-US' ? 'Use at least 8 characters.' : '密码至少需要 8 位',
+                                      confirmPassword: values.confirmPassword && values.confirmPassword === values.password ? undefined : language === 'en-US' ? 'Passwords must match.' : '两次密码须一致',
+                                    })}
+                                    onFinish={async (values) => {
+                                      await new Promise((resolve) => window.setTimeout(resolve, 600));
+                                      setFormSubmitted(`${values.name} · ${values.email}`);
+                                    }}
+                                    onChange={() => setFormSubmitted('')}
+                                    onReset={() => {
+                                      setFormValues({ name: '', email: '', password: '', confirmPassword: '' });
+                                      setFormSubmitted('');
+                                    }}
+                                  >
+                                    {({ isSubmitting, submitError }) => (
+                                      <>
+                                        <fieldset disabled={isSubmitting} className="grid min-w-0 gap-x-4 gap-y-0 border-0 p-0 pad:grid-cols-2">
+                                          {([
+                                            { name: 'name', label: language === 'en-US' ? 'Name' : '姓名', type: 'text', autoComplete: 'name' },
+                                            { name: 'email', label: language === 'en-US' ? 'Email' : '邮箱', type: 'email', autoComplete: 'email' },
+                                            { name: 'password', label: language === 'en-US' ? 'Password' : '密码', type: 'password', autoComplete: 'new-password' },
+                                            { name: 'confirmPassword', label: language === 'en-US' ? 'Confirm password' : '确认密码', type: 'password', autoComplete: 'new-password' },
+                                          ] as const).map((field) => (
+                                            <FormField key={field.name} name={field.name} label={field.label} required>
+                                              {(props) => (
+                                                <Input
+                                                  {...props}
+                                                  type={field.type}
+                                                  placeholder={field.name === 'password'
+                                                    ? language === 'en-US' ? 'At least 8 characters' : '密码至少 8 位'
+                                                    : field.name === 'confirmPassword'
+                                                      ? language === 'en-US' ? 'Repeat your password' : '再次输入相同密码'
+                                                      : undefined}
+                                                  autoComplete={field.autoComplete}
+                                                  value={formValues[field.name]}
+                                                  onChange={(event) => setFormValues((current) => ({ ...current, [field.name]: event.target.value }))}
+                                                />
+                                              )}
+                                            </FormField>
+                                          ))}
+                                        </fieldset>
+                                        <div className="flex flex-wrap gap-2">
+                                          <Button type="submit" disabled={isSubmitting}>
+                                            {isSubmitting ? language === 'en-US' ? 'Submitting…' : '提交中…' : language === 'en-US' ? 'Validate and submit' : '校验并提交'}
+                                          </Button>
+                                          <Button type="button" variant="secondary" disabled={isSubmitting} onClick={() => {
+                                            setFormValues({ name: 'Lumen', email: 'demo@example.com', password: 'lumen-demo-2026', confirmPassword: 'lumen-demo-2026' });
+                                            setFormSubmitted('');
+                                          }}>
+                                            {language === 'en-US' ? 'Fill valid example' : '填入有效示例'}
+                                          </Button>
+                                          <Button type="reset" variant="secondary" disabled={isSubmitting}>
+                                            {language === 'en-US' ? 'Reset' : '重置'}
+                                          </Button>
+                                        </div>
+                                        {Boolean(submitError) && <Alert variant="danger" title={language === 'en-US' ? 'Submission failed. Please try again.' : '提交失败，请重试。'} />}
+                                        {formSubmitted && <Alert variant="success" title={language === 'en-US' ? 'All four fields passed. Demo submission completed.' : '四个字段全部校验通过，模拟提交成功。'}>{formSubmitted}</Alert>}
+                                      </>
+                                    )}
+                                  </Form>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Input" wide>
+                                <div className="form-grid">
+                                  <Input
+                                    aria-label={language === 'en-US' ? 'Meeting name' : '会议名称'}
+                                    value={meetingName}
+                                    onChange={(event) => setMeetingName(event.target.value)}
+                                    prefix={<CalendarDays size={15} />}
+                                  />
+                                  <Input
+                                    aria-label={language === 'en-US' ? 'Owner' : '负责人'}
+                                    placeholder={language === 'en-US' ? 'Owner name' : '负责人姓名'}
+                                    suffix={<UserRound size={15} />}
+                                  />
+                                  <Input
+                                    aria-label={language === 'en-US' ? 'Access password' : '访问密码'}
+                                    type="password"
+                                    passwordToggle
+                                    autoComplete="current-password"
+                                    defaultValue="lumen-demo"
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="NumberInput" wide>
+                                <div className="max-w-[420px]">
+                                  <FormField label="处置时限">
+                                    <NumberInput
+                                      aria-label="处置时限"
+                                      defaultValue={30}
+                                      min={5}
+                                      max={120}
+                                      step={5}
+                                      suffix="分钟"
+                                    />
+                                  </FormField>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="OtpInput" wide>
+                                <div className="max-w-[420px]">
+                                  <FormField
+                                    label="短信验证码"
+                                  >
+                                    <OtpInput
+                                      value={otpValue}
+                                      onChange={setOtpValue}
+                                      aria-label="短信验证码"
+                                    />
+                                  </FormField>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Textarea" wide>
+                                <div className="max-w-[640px]">
+                                  <FormField label="备注" className="form-span">
+                                    <Textarea
+                                      value={textareaText}
+                                      onChange={(event) => setTextareaText(event.target.value)}
+                                      maxLength={200}
+                                      rows={4}
+                                      showCount
+                                    />
+                                  </FormField>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Checkbox">
+                                <div className="stack">
+                                  <div className="flex flex-wrap items-center gap-5">
+                                    <Checkbox size="sm" checked={checked} onChange={setChecked} label="Small" />
+                                    <Checkbox size="md" checked={checked} onChange={setChecked} label="Medium" />
+                                    <Checkbox size="lg" checked={checked} onChange={setChecked} label="Large" />
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-5">
+                                    <Checkbox label="Mobile" />
+                                    <Checkbox label="Pad" defaultChecked />
+                                    <Checkbox label="Desktop" />
+                                  </div>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Radio">
+                                <div className="stack">
+                                  <div className="flex flex-wrap items-center gap-5">
+                                    <Radio size="sm" checked label="Small" />
+                                    <Radio size="md" checked label="Medium" />
+                                    <Radio size="lg" checked label="Large" />
+                                  </div>
+                                  <RadioGroup
+                                    size="md"
+                                    value={radioValue}
+                                    onChange={setRadioValue}
+                                    direction="horizontal"
+                                    options={[
+                                      { value: 'mobile', label: 'Mobile' },
+                                      { value: 'pad', label: 'Pad' },
+                                      { value: 'desktop', label: 'Desktop' },
+                                    ]}
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Switch">
+                                <div className="flex flex-wrap items-center gap-5">
+                                  <Switch size="sm" checked={enabled} onChange={setEnabled} label="Small" />
+                                  <Switch size="md" checked={enabled} onChange={setEnabled} label="Medium" />
+                                  <Switch size="lg" checked={enabled} onChange={setEnabled} label="Large" />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Slider" wide>
+                                <div className="form-grid">
+                                  <Slider
+                                    aria-label="告警阈值"
+                                    label="告警阈值"
+                                    value={sliderValue}
+                                    onChange={setSliderValue}
+                                    showValue
+                                    formatValue={(value) => `${value}%`}
+                                    marks={[
+                                      { value: 0, label: '0' },
+                                      { value: 50, label: '50' },
+                                      { value: 100, label: '100' },
+                                    ]}
+                                  />
+                                  <Slider
+                                    aria-label="风险等级"
+                                    label="风险等级"
+                                    defaultValue={40}
+                                    min={0}
+                                    max={80}
+                                    step={10}
+                                    status="warning"
+                                    showValue
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Rating" wide>
+                                <div className="max-w-[320px]">
+                                  <FormField label="服务评分">
+                                    <Rating
+                                      aria-label="服务评分"
+                                      value={ratingValue}
+                                      onChange={setRatingValue}
+                                      allowHalf
+                                    />
+                                  </FormField>
+                                </div>
+                              </DemoCard>
+                            </GallerySection>
+                          );
+                        }
 
-      <Drawer
-        open={drawerOpen}
-        closeOnSwipe
-        onRequestClose={() => setDrawerOpen(false)}
-        aria-label="Drawer 预览"
-        panelClassName="drawer-panel"
-      >
-        <div className="drawer-head">
-          <h2>Drawer 预览</h2>
-          <Button iconOnly variant="ghost" aria-label="关闭抽屉" icon={<ChevronDown size={16} />} onClick={() => setDrawerOpen(false)} />
-        </div>
-        <div className="stack">
-          <FormField label="配置名称">
-            <Input defaultValue="Gallery Preview" />
-          </FormField>
-          <FormField label="说明">
-            <Textarea defaultValue="右侧抽屉适合承载较长配置表单。" rows={5} />
-          </FormField>
-        </div>
-      </Drawer>
+                        if (section.id === 'pickers') {
+                          return (
+                            <GallerySection key={section.id} section={section}>
+                              <DemoCard title="Select" wide>
+                                <div className="form-grid">
+                                  <Select
+                                    options={basicSelectOptions}
+                                    value={basicSelectValue}
+                                    onChange={(value) => setBasicSelectValue(value as string | null)}
+                                    placeholder="请选择"
+                                  />
+                                  <Select
+                                    options={selectOptions}
+                                    value={selectValue}
+                                    onChange={(value) => setSelectValue(value as string | null)}
+                                    searchable
+                                    placeholder="选择类型"
+                                  />
+                                  <Select
+                                    mode="multiple"
+                                    options={selectOptions}
+                                    value={multiSelectValue}
+                                    onChange={(value) => setMultiSelectValue(Array.isArray(value) ? value : [])}
+                                    searchable
+                                    placeholder="选择多个事项"
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Combobox" wide>
+                                <div className="form-grid">
+                                  <Combobox
+                                    options={selectOptions}
+                                    value={comboboxValue}
+                                    onChange={(nextValue) => setComboboxValue(nextValue as string | null)}
+                                    placeholder="输入或选择事项"
+                                    aria-label="事项"
+                                  />
+                                  <Combobox
+                                    options={selectOptions}
+                                    value={customComboboxValue}
+                                    onChange={(nextValue) => setCustomComboboxValue(nextValue as string | null)}
+                                    allowCustomValue
+                                    placeholder="输入事项，可创建新选项"
+                                    aria-label="自定义事项"
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="TreeSelect" wide>
+                                <div className="flex flex-col items-start gap-4">
+                                  <div className="form-grid w-full">
+                                    <TreeSelect
+                                      nodes={treeNodes}
+                                      value={treeValue}
+                                      onChange={(value) => setTreeValue(value)}
+                                      searchable
+                                      getValue={(node) => node.id}
+                                      getLabel={(node) => node.label}
+                                      isNodeSelectable={isTreeNodeSelectable}
+                                      placeholder="选择组织"
+                                    />
+                                    <TreeSelect
+                                      nodes={treeNodes}
+                                      value={null}
+                                      values={treeValues}
+                                      multiple
+                                      onChange={() => undefined}
+                                      onMultiChange={(values) => setTreeValues(values)}
+                                      searchable
+                                      getValue={(node) => node.id}
+                                      getLabel={(node) => node.label}
+                                      isNodeSelectable={isTreeNodeSelectable}
+                                      placeholder="选择多个组织"
+                                    />
+                                  </div>
+                                  <Button variant="outline" onClick={() => setTreeSelectDialogOpen(true)}>
+                                    弹窗内树形多选
+                                  </Button>
+                                </div>
+                                <Dialog
+                                  open={treeSelectDialogOpen}
+                                  onRequestClose={() => setTreeSelectDialogOpen(false)}
+                                  title="树形多选"
+                                  description="展开分支后可连续选择，内容超出可用高度时在下拉框内滚动。"
+                                >
+                                  <div>
+                                    <TreeSelect
+                                      nodes={treeNodes.map((node) => ({ ...node }))}
+                                      value={null}
+                                      values={treeValues}
+                                      multiple
+                                      defaultExpandedDepth={0}
+                                      onChange={() => undefined}
+                                      onMultiChange={setTreeValues}
+                                      searchable
+                                      getValue={(node) => node.id}
+                                      getLabel={(node) => node.label}
+                                      isNodeSelectable={isTreeNodeSelectable}
+                                      placeholder="选择多个组织"
+                                    />
+                                  </div>
+                                </Dialog>
+                              </DemoCard>
+                              <DemoCard title="Cascader" wide>
+                                <div className="max-w-[420px]">
+                                  <FormField label="所属区域">
+                                    <Cascader
+                                      options={cascaderOptions}
+                                      value={cascaderValue}
+                                      onChange={setCascaderValue}
+                                      searchable
+                                      aria-label="选择所属区域"
+                                    />
+                                  </FormField>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="DatePicker" wide>
+                                <div className="form-grid">
+                                  <DatePicker value={dateValue} onChange={setDateValue} />
+                                  <DatePicker value={monthValue} onChange={setMonthValue} mode="year-month" />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="TimePicker" wide>
+                                <TimePicker value={timeValue} onChange={setTimeValue} />
+                              </DemoCard>
+                              <DemoCard title="DateTimePicker" wide>
+                                <div className="max-w-[420px] space-y-3">
+                                  <DateTimePicker label="开始时间" value={dateTimeValue} onChange={setDateTimeValue} />
+                                  <DateTimePicker label="开始时间（精确到分）" precision="minute" value={dateTimeValue} onChange={setDateTimeValue} />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Calendar" wide>
+                                <div className="max-w-[320px]">
+                                  <Calendar value={dateValue} onChange={setDateValue} />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Transfer" wide>
+                                <Transfer
+                                  items={transferItems}
+                                  targetKeys={transferTargetKeys}
+                                  onChange={setTransferTargetKeys}
+                                  sourceTitle="可分配设备"
+                                  targetTitle="已分配设备"
+                                />
+                              </DemoCard>
+                            </GallerySection>
+                          );
+                        }
 
-      <ConfirmDialog
-        open={confirmOpen}
-        title="确认删除预览项"
-        message="此操作仅用于查看 ConfirmDialog 的危险操作样式。"
-        confirmText="删除"
-        confirmVariant="destructive"
-        onCancel={() => setConfirmOpen(false)}
-        onConfirm={() => {
-          setConfirmOpen(false);
-          Toast.info('已执行确认动作');
-        }}
-      />
-    </div>
-    </PlaygroundMessagesContext.Provider>
+                        if (section.id === 'navigation') {
+                          return (
+                            <GallerySection key={section.id} section={section}>
+                              <DemoCard title="SideNav" wide>
+                                <div className="w-full max-w-[320px]">
+                                  <SideNav
+                                    activeValue={sideNavValue}
+                                    onSelect={setSideNavValue}
+                                    defaultExpandedValues={['workspace']}
+                                    sections={[{ items: [
+                                      {
+                                        value: 'workspace',
+                                        label: '工作空间',
+                                        icon: Star,
+                                        children: [
+                                          { value: 'overview', label: '运营总览' },
+                                          { value: 'reports', label: '分析报表' },
+                                          { value: 'archived', label: '已归档', disabled: true },
+                                        ],
+                                      },
+                                      { value: 'settings', label: '系统设置', icon: Settings },
+                                    ] }]}
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Breadcrumb" wide>
+                                <Breadcrumb
+                                  items={[
+                                    { label: '运营中心', href: '#navigation' },
+                                    { label: '事件管理', href: '#navigation' },
+                                    { label: '事件详情' },
+                                  ]}
+                                />
+                              </DemoCard>
+                              <DemoCard title="AppBar" wide>
+                                <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">
+                                  <AppBar
+                                    position="absolute"
+                                    title="订单详情"
+                                    leading={(
+                                      <Button
+                                        iconOnly
+                                        variant="ghost"
+                                        aria-label="返回"
+                                        icon={<ArrowLeft size={19} />}
+                                      />
+                                    )}
+                                    actions={(
+                                      <Button
+                                        iconOnly
+                                        variant="ghost"
+                                        aria-label="更多操作"
+                                        icon={<MoreHorizontal size={19} />}
+                                      />
+                                    )}
+                                  />
+                                  <div className="px-5 pt-20">
+                                    <Typography variant="h3">#LM-20260904</Typography>
+                                    <Typography variant="caption" color="muted">
+                                      等待审核
+                                    </Typography>
+                                  </div>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Toolbar" wide>
+                                <Toolbar
+                                  ariaLabel="列表操作"
+                                  className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
+                                >
+                                  <Button size="sm" variant="ghost" icon={<Search size={15} />}>
+                                    搜索
+                                  </Button>
+                                  <Button size="sm" variant="ghost" icon={<Filter size={15} />}>
+                                    筛选
+                                  </Button>
+                                  <div className="flex-1" />
+                                  <Button size="sm" icon={<Plus size={15} />}>
+                                    新建
+                                  </Button>
+                                </Toolbar>
+                              </DemoCard>
+                              <DemoCard title="BottomNavigation" wide>
+                                <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">
+                                  <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">
+                                    <Typography variant="h3">{bottomNavigationValue}</Typography>
+                                    <Typography variant="caption" color="muted">
+                                      当前底部导航目标
+                                    </Typography>
+                                  </div>
+                                  <BottomNavigation
+                                    position="absolute"
+                                    value={bottomNavigationValue}
+                                    onChange={setBottomNavigationValue}
+                                    items={[
+                                      { value: 'home', label: '首页', icon: Star },
+                                      { value: 'schedule', label: '日程', icon: CalendarDays },
+                                      {
+                                        value: 'messages',
+                                        label: '消息',
+                                        icon: Bell,
+                                        badge: 3,
+                                        badgeLabel: '3 条未读消息',
+                                      },
+                                      { value: 'profile', label: '我的', icon: UserRound },
+                                    ]}
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Carousel" wide>
+                                <Carousel
+                                  height={240}
+                                  className="mx-auto w-full max-w-[640px]"
+                                  items={[
+                                    {
+                                      id: 'mobile',
+                                      ariaLabel: '移动体验升级',
+                                      content: (
+                                        <div className="flex h-full flex-col justify-end bg-gradient-to-br from-indigo-600 to-violet-500 p-7 pb-12 text-white pad:px-16 l:px-16">
+                                          <strong className="text-[22px] font-semibold">移动体验升级</strong>
+                                          <span className="mt-1 text-[14px] text-white/80">触摸滑动、键盘与按钮导航。</span>
+                                        </div>
+                                      ),
+                                    },
+                                    {
+                                      id: 'motion',
+                                      ariaLabel: '统一交互节奏',
+                                      content: (
+                                        <div className="flex h-full flex-col justify-end bg-gradient-to-br from-cyan-600 to-blue-500 p-7 pb-12 text-white pad:px-16 l:px-16">
+                                          <strong className="text-[22px] font-semibold">统一交互节奏</strong>
+                                          <span className="mt-1 text-[14px] text-white/80">循环、指示点和自动播放均可配置。</span>
+                                        </div>
+                                      ),
+                                    },
+                                    {
+                                      id: 'content',
+                                      ariaLabel: '承载任意内容',
+                                      content: (
+                                        <div className="flex h-full flex-col justify-end bg-gradient-to-br from-emerald-600 to-teal-500 p-7 pb-12 text-white pad:px-16 l:px-16">
+                                          <strong className="text-[22px] font-semibold">承载任意内容</strong>
+                                          <span className="mt-1 text-[14px] text-white/80">图片、卡片和操作都可以自由组合。</span>
+                                        </div>
+                                      ),
+                                    },
+                                  ]}
+                                />
+                              </DemoCard>
+                              <DemoCard title="ScrollToEdge" wide>
+                                <div className="isolate relative mx-auto w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
+                                  <div
+                                    ref={scrollToEdgeDemoRef}
+                                    className="relative z-0 h-[320px] overflow-y-auto p-4 pb-20"
+                                  >
+                                    <div className="space-y-3">
+                                      {Array.from({ length: 16 }, (_, index) => (
+                                        <div
+                                          key={index}
+                                          className="rounded-[8px] bg-[var(--lumen-color-surface-muted)] px-4 py-3 text-[13px] text-[var(--lumen-color-text-secondary)]"
+                                        >
+                                          滚动内容 {index + 1}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  <div className="absolute bottom-3 right-3 z-20 flex flex-col gap-2">
+                                    <ScrollToEdge
+                                      containerRef={scrollToEdgeDemoRef}
+                                      position="static"
+                                      size="sm"
+                                    />
+                                    <ScrollToEdge
+                                      containerRef={scrollToEdgeDemoRef}
+                                      direction="bottom"
+                                      position="static"
+                                      size="sm"
+                                    />
+                                  </div>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Tabs" wide>
+                                <div className="w-full overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
+                                  <Tabs
+                                    value={tab}
+                                    onChange={setTab}
+                                    idPrefix="workspace-tabs"
+                                    options={[
+                                      { value: 'overview', label: '运营总览', count: 12, icon: Bell },
+                                      { value: 'usage', label: '使用情况', count: 8, icon: Check },
+                                      { value: 'tokens', label: '设计令牌', count: 32, icon: Settings },
+                                    ]}
+                                    className="px-4 pt-2 l:px-6"
+                                    aside={<Button size="sm" variant="secondary">导出</Button>}
+                                  />
+                                  <TabView
+                                    value={tab}
+                                    onChange={setTab}
+                                    idPrefix="workspace-tabs"
+                                    swipeable
+                                    className="border-t border-[var(--lumen-color-divider)]"
+                                    panelClassName="min-h-52 p-5 l:min-h-72 l:p-6"
+                                    items={[
+                                      {
+                                        value: 'overview',
+                                        content: (
+                                          <div>
+                                            <Typography variant="h3">运营总览</Typography>
+                                            <Typography variant="body" color="muted" className="mt-2">
+                                              查看本月项目运行情况与团队使用概况。
+                                            </Typography>
+                                            <div className="mt-6 grid grid-cols-1 gap-4 l:grid-cols-3">
+                                              {[
+                                                { label: '活跃项目', value: '12', detail: '本月新增 2 个项目' },
+                                                { label: '团队成员', value: '48', detail: '覆盖 6 个业务团队' },
+                                                { label: '任务完成率', value: '98.6%', detail: '较上月提升 1.2%' },
+                                              ].map((metric) => (
+                                                <div key={metric.label} className="rounded-[8px] border border-[var(--lumen-color-border)] p-4">
+                                                  <Typography variant="body" color="muted">{metric.label}</Typography>
+                                                  <Typography variant="h2" className="mt-2">{metric.value}</Typography>
+                                                  <Typography variant="body" color="muted" className="mt-2">{metric.detail}</Typography>
+                                                </div>
+                                              ))}
+                                            </div>
+                                          </div>
+                                        ),
+                                      },
+                                      {
+                                        value: 'usage',
+                                        content: (
+                                          <div>
+                                            <Typography variant="h3">使用情况</Typography>
+                                            <Typography variant="body" color="muted" className="mt-2">
+                                              汇总各项目的访问量与资源使用情况，可通过右侧导出按钮生成报告。
+                                            </Typography>
+                                          </div>
+                                        ),
+                                      },
+                                      {
+                                        value: 'tokens',
+                                        content: (
+                                          <div>
+                                            <Typography variant="h3">设计令牌</Typography>
+                                            <Typography variant="body" color="muted" className="mt-2">
+                                              管理工作空间共用的颜色、间距与排版设置。
+                                            </Typography>
+                                            <Button className="mt-5" size="sm" variant="secondary">
+                                              查看令牌配置
+                                            </Button>
+                                          </div>
+                                        ),
+                                      },
+                                    ]}
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="DropdownMenu">
+                                <div className="stack">
+                                  <p>菜单默认最小宽度为 160px，文字使用强调色，悬停和聚焦时保持字色。</p>
+                                  <DropdownMenu
+                                    menuMode
+                                    trigger={({ toggle, open, menuId }) => (
+                                      <Button
+                                        type="button"
+                                        variant="secondary"
+                                        icon={<MoreHorizontal size={15} />}
+                                        aria-haspopup="menu"
+                                        aria-expanded={open}
+                                        aria-controls={menuId}
+                                        onClick={toggle}
+                                      >
+                                        {open ? '收起菜单' : '打开菜单'}
+                                      </Button>
+                                    )}
+                                  >
+                                    {({ close }) => (
+                                      <>
+                                        <DropdownMenuItem onClick={close}>
+                                          <Copy size={15} />
+                                          复制组件名称
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={close}>
+                                          <Code2 size={15} />
+                                          查看源码路径
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={close}>
+                                          <Star size={15} />
+                                          标记为常用
+                                        </DropdownMenuItem>
+                                      </>
+                                    )}
+                                  </DropdownMenu>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Steps" wide>
+                                <div className="stack">
+                                  <div className="flex">
+                                    <SegmentedControl
+                                      aria-label="步骤排列方向"
+                                      size="md"
+                                      value={stepsDirection}
+                                      onChange={setStepsDirection}
+                                      options={[
+                                        { value: 'horizontal', label: '横向' },
+                                        { value: 'vertical', label: '纵向' },
+                                      ]}
+                                    />
+                                  </div>
+                                  <Steps
+                                    current={currentStep}
+                                    direction={stepsDirection}
+                                    onChange={setCurrentStep}
+                                    items={[
+                                      { title: '事件上报', description: '已采集现场信息' },
+                                      { title: '研判确认', description: '核实风险等级' },
+                                      { title: '现场处置', description: '调度处置人员' },
+                                      { title: '完成归档', description: '生成处置记录' },
+                                    ]}
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Timeline" wide>
+                                <Timeline items={timelineItems} />
+                              </DemoCard>
+                            </GallerySection>
+                          );
+                        }
+
+                        if (section.id === 'data') {
+                          return (
+                            <GallerySection key={section.id} section={section}>
+                              <DemoCard title="Watermark" wide>
+                                <Watermark
+                                  content={['Lumen Design', '内部资料 · 用户 1024']}
+                                  gap={[72, 64]}
+                                  markSize={[150, 56]}
+                                >
+                                  <div className="grid min-h-64 content-center gap-4 bg-[var(--lumen-color-surface-subtle)] p-6 pad:grid-cols-3">
+                                    {[
+                                      ['今日访问', '12,480'],
+                                      ['风险事件', '36'],
+                                      ['待处理', '8'],
+                                    ].map(([label, value]) => (
+                                      <div
+                                        key={label}
+                                        className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4"
+                                      >
+                                        <div className="text-[12px] text-[var(--lumen-color-text-muted)]">
+                                          {label}
+                                        </div>
+                                        <strong className="mt-2 block text-[24px] font-semibold text-[var(--lumen-color-text-strong)]">
+                                          {value}
+                                        </strong>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </Watermark>
+                              </DemoCard>
+                              <DemoCard title="FileTypeIcon" wide>
+                                <div className="space-y-5">
+                                  {fileTypeIconExamples.map((group) => (
+                                    <section key={group.title} aria-label={group.title}>
+                                      <h3 className="mb-3 text-[12px] font-medium text-[var(--lumen-color-text-secondary)]">
+                                        {group.title}
+                                      </h3>
+                                      <div className="grid grid-cols-[repeat(auto-fill,minmax(72px,1fr))] gap-x-3 gap-y-4">
+                                        {group.files.map((fileName) => (
+                                          <div key={fileName} className="flex min-w-0 flex-col items-center gap-2">
+                                            <FileTypeIcon fileName={fileName} title={fileName} size="lg" />
+                                            <span className="w-full truncate text-center text-[11px] text-[var(--lumen-color-text-muted)]">
+                                              {fileName}
+                                            </span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </section>
+                                  ))}
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="DataTable · Sticky Header" wide>
+                                <DataTable
+                                  caption="固定表头公路安全事件表格"
+                                  stickyHeader
+                                  maxHeight={280}
+                                  columns={safetyEventColumns}
+                                  data={safetyEvents}
+                                  getRowKey={(event) => event.id}
+                                />
+                              </DemoCard>
+                              <DemoCard title="DataTable · Embedded" wide>
+                                <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
+                                  <div className="border-b border-[var(--lumen-color-border)] px-4 py-3">
+                                    <CardTitle>公路安全事件</CardTitle>
+                                    <CardDescription>
+                                      按更新时间排序 · {safetyEvents.length} 条
+                                    </CardDescription>
+                                  </div>
+                                  <DataTable
+                                    caption="公路安全事件"
+                                    variant="embedded"
+                                    columns={safetyEventColumns}
+                                    data={visibleSafetyEvents}
+                                    getRowKey={(event) => event.id}
+                                    sort={eventSort}
+                                    onSortChange={(nextSort) => {
+                                      setEventSort(nextSort);
+                                      setEventPage(1);
+                                    }}
+                                    selectedRowKeys={selectedEventKeys}
+                                    onSelectedRowKeysChange={setSelectedEventKeys}
+                                  />
+                                </div>
+                                <p className="mt-3 text-[12px] text-[var(--lumen-color-text-muted)]">
+                                  已选择 {selectedEventKeys.length} 条事件
+                                </p>
+                              </DemoCard>
+                              <DemoCard title="Pagination" wide>
+                                <Pagination
+                                  currentPage={eventPage}
+                                  totalPages={eventTotalPages}
+                                  totalItems={safetyEvents.length}
+                                  pageSize={eventPageSize}
+                                  onPageSizeChange={(nextPageSize) => {
+                                    setEventPageSize(nextPageSize);
+                                    setEventPage(1);
+                                  }}
+                                  onPageChange={setEventPage}
+                                />
+                              </DemoCard>
+                              <DemoCard title="Tree" wide>
+                                <div className="grid gap-6 l:grid-cols-2">
+                                  <Tree
+                                    aria-label="项目文件"
+                                    defaultExpandedKeys={['src']}
+                                    defaultSelectedKeys={['app']}
+                                    nodes={[
+                                      { key: 'src', label: 'src', icon: <Folder size={16} />, children: [
+                                        { key: 'components', label: 'components', icon: <Folder size={16} />, children: [
+                                          { key: 'button', label: 'Button.tsx' },
+                                          { key: 'tabs', label: 'Tabs.tsx' },
+                                          { key: 'tree', label: 'Tree.tsx' },
+                                        ] },
+                                        { key: 'app', label: 'App.tsx' },
+                                      ] },
+                                      { key: 'readme', label: 'README.md' },
+                                      { key: 'lock', label: 'bun.lock', disabled: true },
+                                    ]}
+                                  />
+                                  <Tree
+                                    aria-label="团队多选"
+                                    multiple
+                                    defaultExpandedKeys={['team']}
+                                    defaultSelectedKeys={['design']}
+                                    nodes={[
+                                      { key: 'team', label: '产品团队', selectable: false, children: [
+                                        { key: 'design', label: '设计' },
+                                        { key: 'frontend', label: '前端' },
+                                        { key: 'backend', label: '后端' },
+                                      ] },
+                                    ]}
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="List" wide>
+                                <List aria-label="重点事件">
+                                  <ListItem
+                                    title="主线异常停车"
+                                    description="G65 K18+900，车辆已持续停留 6 分钟。"
+                                    leading={<AlertTriangle className="text-[var(--lumen-color-danger)]" size={18} />}
+                                    meta={<Badge size="sm" variant="danger">高风险</Badge>}
+                                    actions={(
+                                      <Tooltip content="更多操作">
+                                        <Button
+                                          iconOnly
+                                          size="sm"
+                                          variant="ghost"
+                                          aria-label="主线异常停车更多操作"
+                                          icon={<MoreHorizontal size={16} />}
+                                        />
+                                      </Tooltip>
+                                    )}
+                                  />
+                                  <ListItem
+                                    title="边坡监测预警"
+                                    description="K24 路段位移速率超过关注阈值。"
+                                    leading={<MapPin className="text-[var(--lumen-color-warning)]" size={18} />}
+                                    meta="8 分钟前"
+                                  />
+                                  <ListItem
+                                    title="巡检任务已完成"
+                                    description="今日重点路段巡检结果已提交。"
+                                    leading={<Check className="text-[var(--lumen-color-success)]" size={18} />}
+                                    meta={<Badge size="sm" variant="success">已完成</Badge>}
+                                  />
+                                </List>
+                              </DemoCard>
+                              <DemoCard title="VirtualList" wide>
+                                <div className="space-y-3">
+                                  <Typography variant="caption" color="muted">
+                                    10,000 条记录，仅渲染可见区域
+                                  </Typography>
+                                  <VirtualList
+                                    aria-label="运行记录"
+                                    items={virtualListItems}
+                                    itemSize={60}
+                                    height={320}
+                                    overscan={4}
+                                    getItemKey={(item) => item.id}
+                                    className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
+                                    itemClassName="border-b border-[var(--lumen-color-surface-muted)]"
+                                    renderItem={(item) => (
+                                      <div className="flex h-full min-w-0 items-center gap-3 px-4">
+                                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-[var(--lumen-color-primary-soft)] text-[12px] font-medium text-[var(--lumen-color-primary)]">
+                                          {item.id}
+                                        </span>
+                                        <span className="min-w-0">
+                                          <strong className="block truncate text-[14px] font-medium text-[var(--lumen-color-text)]">
+                                            {item.title}
+                                          </strong>
+                                          <span className="block truncate text-[12px] text-[var(--lumen-color-text-muted)]">
+                                            {item.description}
+                                          </span>
+                                        </span>
+                                      </div>
+                                    )}
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="SwipeActions" wide>
+                                <div className="mx-auto w-full max-w-[420px]">
+                                  <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
+                                    <SwipeActions
+                                      startActions={[
+                                        {
+                                          key: 'archive',
+                                          label: '归档',
+                                          icon: <Archive size={18} />,
+                                          tone: 'success',
+                                          onClick: () => setSwipeActionMessage('事件已归档'),
+                                        },
+                                      ]}
+                                      endActions={[
+                                        {
+                                          key: 'delete',
+                                          label: '删除',
+                                          icon: <Trash2 size={18} />,
+                                          tone: 'danger',
+                                          onClick: () => setSwipeActionMessage('事件已删除'),
+                                        },
+                                      ]}
+                                      fullSwipe
+                                    >
+                                      <div className="flex min-h-18 items-center gap-3 px-4 py-3">
+                                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger)]">
+                                          <AlertTriangle size={18} />
+                                        </span>
+                                        <span className="min-w-0">
+                                          <strong className="block text-[14px] font-medium text-[var(--lumen-color-text)]">
+                                            主线异常停车
+                                          </strong>
+                                          <span className="mt-0.5 block text-[13px] text-[var(--lumen-color-text-muted)]">
+                                            右滑归档，左滑删除
+                                          </span>
+                                        </span>
+                                      </div>
+                                    </SwipeActions>
+                                  </div>
+                                  <p className="mt-3 text-center text-[12px] text-[var(--lumen-color-text-muted)]">
+                                    {swipeActionMessage}
+                                  </p>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Scrollbar" wide>
+                                <div className="form-grid items-start">
+                                  <Scrollbar
+                                    aria-label="告警记录"
+                                    tabIndex={0}
+                                    placement="outer"
+                                    className="h-48 rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]"
+                                  >
+                                    <div className="divide-y divide-[var(--lumen-color-surface-muted)] px-4">
+                                      {Array.from({ length: 12 }, (_, index) => (
+                                        <div key={index} className="py-3 text-[13px] text-[var(--lumen-color-text-secondary)]">
+                                          K{18 + index} 路段监测记录 · {String(index + 8).padStart(2, '0')}:30
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </Scrollbar>
+                                  <Scrollbar
+                                    aria-label="巡检看板"
+                                    tabIndex={0}
+                                    orientation="horizontal"
+                                    size="sm"
+                                    autoHide
+                                    className="rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4"
+                                  >
+                                    <div className="flex w-max gap-3">
+                                      {['桥梁巡检', '隧道照明', '边坡监测', '路面养护', '机电设备'].map((item) => (
+                                        <div
+                                          key={item}
+                                          className="w-40 shrink-0 border-l-2 border-[var(--lumen-color-primary)] bg-[var(--lumen-color-surface-muted)] px-3 py-4"
+                                        >
+                                          <strong className="block text-[13px] font-medium text-[var(--lumen-color-text-strong)]">
+                                            {item}
+                                          </strong>
+                                          <span className="mt-1 block text-[12px] text-[var(--lumen-color-text-muted)]">
+                                            今日任务 8 项
+                                          </span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </Scrollbar>
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Collapse" wide>
+                                <Collapse defaultValue={['road', 'device']}>
+                                  <CollapseItem value="road" title="路段信息" extra="G65 K18+900">
+                                    南向双车道，当前平均车速 72 km/h。
+                                  </CollapseItem>
+                                  <CollapseItem value="device" title="监测设备" extra="12 台在线">
+                                    摄像机、雷达和气象监测设备运行正常。
+                                  </CollapseItem>
+                                </Collapse>
+                              </DemoCard>
+                              <DemoCard title="Accordion" wide>
+                                <Accordion defaultValue="event">
+                                  <CollapseItem value="event" title="事件详情">
+                                    异常停车事件已持续 6 分钟，等待现场确认。
+                                  </CollapseItem>
+                                  <CollapseItem value="history" title="处置记录">
+                                    10:26 已通知附近巡检人员前往现场。
+                                  </CollapseItem>
+                                </Accordion>
+                              </DemoCard>
+                              <DemoCard title="Divider" wide>
+                                <div>
+                                  <p className="text-[13px] text-[var(--lumen-color-text-secondary)]">G65 K18+900 南向路段</p>
+                                  <Divider />
+                                  <p className="text-[13px] text-[var(--lumen-color-text-secondary)]">当前平均车速 72 km/h</p>
+                                  <Divider label="设备状态" variant="dashed" />
+                                  <div className="flex h-8 items-center text-[13px] text-[var(--lumen-color-text-secondary)]">
+                                    <span>摄像机在线</span>
+                                    <Divider orientation="vertical" />
+                                    <span>雷达在线</span>
+                                    <Divider orientation="vertical" />
+                                    <span>气象站在线</span>
+                                  </div>
+                                </div>
+                              </DemoCard>
+                            </GallerySection>
+                          );
+                        }
+
+                        if (section.id === 'overlays') {
+                          return (
+                            <GallerySection key={section.id} section={section}>
+                              <DemoCard title="CommandPalette" wide>
+                                <Button variant="secondary" icon={<Search size={15} />} onClick={() => setCommandPaletteOpen(true)}>
+                                  打开 CommandPalette
+                                </Button>
+                              </DemoCard>
+                              <DemoCard title="Dialog" wide>
+                                <Button onClick={() => setDialogOpen(true)}>打开 Dialog</Button>
+                              </DemoCard>
+                              <DemoCard title="Drawer" wide>
+                                <Button variant="secondary" onClick={() => setDrawerOpen(true)}>打开 Drawer</Button>
+                              </DemoCard>
+                              <DemoCard title="BottomSheet" wide>
+                                <Button variant="secondary" onClick={() => setBottomSheetOpen(true)}>打开 BottomSheet</Button>
+                              </DemoCard>
+                              <DemoCard title="ConfirmDialog" wide>
+                                <Button variant="destructive" onClick={() => setConfirmOpen(true)}>打开 Confirm</Button>
+                              </DemoCard>
+                              <DemoCard title="Toast" wide>
+                                <Button variant="outline" icon={<Bell size={15} />} onClick={() => Toast.success('组件配置已成功保存，新的设置将在下次打开页面时自动生效。')}>
+                                  Toast
+                                </Button>
+                              </DemoCard>
+                              <DemoCard title="Popover" wide>
+                                <div className="button-row">
+                                  <Popover
+                                    placement="bottom"
+                                    align="start"
+                                    ariaLabel="监测设备详情"
+                                    contentClassName="w-[300px]"
+                                    trigger={({ open, popoverId, toggle }) => (
+                                      <Button
+                                        variant="secondary"
+                                        aria-expanded={open}
+                                        aria-controls={popoverId}
+                                        aria-haspopup="dialog"
+                                        icon={<MapPin size={15} />}
+                                        onClick={toggle}
+                                      >
+                                        设备详情
+                                      </Button>
+                                    )}
+                                  >
+                                    {({ close }) => (
+                                      <div>
+                                        <div className="flex items-start justify-between gap-3">
+                                          <div>
+                                            <div className="text-[14px] font-semibold text-[var(--lumen-color-text)]">摄像机 K18-03</div>
+                                            <div className="mt-1 text-[12px] text-[var(--lumen-color-text-muted)]">G65 K18+900 南向</div>
+                                          </div>
+                                          <Badge variant="success">在线</Badge>
+                                        </div>
+                                        <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-[13px]">
+                                          <span className="text-[var(--lumen-color-text-muted)]">最后同步</span>
+                                          <span className="text-right text-[var(--lumen-color-text)]">2 分钟前</span>
+                                          <span className="text-[var(--lumen-color-text-muted)]">今日事件</span>
+                                          <span className="text-right text-[var(--lumen-color-text)]">3 条</span>
+                                        </div>
+                                        <div className="mt-4 flex justify-end">
+                                          <Button size="sm" variant="outline" onClick={close}>关闭</Button>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </Popover>
+                                </div>
+                              </DemoCard>
+                            </GallerySection>
+                          );
+                        }
+
+                        return (
+                          <GallerySection key={section.id} section={section}>
+                            <DemoCard title="Alert" wide>
+                              <div className="stack">
+                                <Alert
+                                  variant="info"
+                                  title="路况数据已更新"
+                                  action={<Button size="sm" variant="outline">查看变化</Button>}
+                                >
+                                  最新一次同步完成于 10:32，当前路网数据正常。
+                                </Alert>
+                                <Alert variant="success" title="事件处置完成">
+                                  SJ-0018 已关闭，处置记录已归档。
+                                </Alert>
+                                {warningAlertVisible ? (
+                                  <Alert
+                                    variant="warning"
+                                    title="部分设备离线"
+                                    onClose={() => setWarningAlertVisible(false)}
+                                  >
+                                    K28 路段有 3 台监测设备暂时无法连接。
+                                  </Alert>
+                                ) : (
+                                  <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    className="self-start"
+                                    onClick={() => setWarningAlertVisible(true)}
+                                  >
+                                    恢复警告
+                                  </Button>
+                                )}
+                                <Alert variant="danger" title="高风险事件待处置">
+                                  行人闯入主线区域，请立即通知现场人员。
+                                </Alert>
+                              </div>
+                            </DemoCard>
+                            <DemoCard title="Progress" wide>
+                              <div className="stack">
+                                <Progress label="事件处置进度" value={68} showValue />
+                                <Progress label="今日巡检完成率" value={84} status="success" showValue />
+                                <Progress label="设备离线占比" value={27} status="warning" showValue />
+                                <div className="button-row">
+                                  <Progress type="circle" label="设备在线率" value={92} status="success" showValue />
+                                  <Progress type="circle" label="风险处置率" value={64} status="info" showValue />
+                                  <Progress type="circle" label="同步中" indeterminate />
+                                </div>
+                              </div>
+                            </DemoCard>
+                            <DemoCard title="Spinner" wide>
+                              <div className="button-row">
+                                <Spinner size="sm" />
+                                <Spinner label="正在刷新路况" />
+                                <Spinner size="lg" tone="warning" label="正在同步设备" />
+                              </div>
+                            </DemoCard>
+                            <DemoCard title="PullToRefresh" wide flush>
+                              <PullToRefresh
+                                aria-label="移动端事件列表"
+                                className="h-72 w-full"
+                                onRefresh={() => new Promise<void>((resolve) => {
+                                  window.setTimeout(() => {
+                                    setPullRefreshCount((count) => count + 1);
+                                    resolve();
+                                  }, 800);
+                                })}
+                              >
+                                <div className="mx-5 pad:mx-6">
+                                  <div className="border-b border-[var(--lumen-color-surface-muted)] px-4 py-3 text-[12px] text-[var(--lumen-color-text-muted)]">
+                                    移动端向下拖动 · 已刷新 {pullRefreshCount} 次
+                                  </div>
+                                  <List aria-label="最新事件">
+                                    {['主线异常停车', '边坡监测预警', '巡检任务已完成', '机电设备状态正常', '隧道照明巡检'].map((title, index) => (
+                                      <ListItem
+                                        key={`${title}-${pullRefreshCount}`}
+                                        title={title}
+                                        description={`第 ${index + 1} 条更新记录`}
+                                        meta={`${index + 1 + pullRefreshCount} 分钟前`}
+                                      />
+                                    ))}
+                                  </List>
+                                </div>
+                              </PullToRefresh>
+                            </DemoCard>
+                            <DemoCard title="Empty" wide>
+                              <Empty
+                                bordered
+                                icon={<SearchX size={22} />}
+                                title="没有匹配的事件"
+                                description="当前筛选条件下没有安全事件记录。"
+                                action={(
+                                  <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    onClick={() => Toast.info('已清除筛选条件')}
+                                  >
+                                    清除筛选
+                                  </Button>
+                                )}
+                              />
+                            </DemoCard>
+                            <DemoCard title="FileList">
+                              <div className="w-full max-w-2xl">
+                                <FileList
+                                  items={[
+                                    { id: 'pdf', name: '应用于低压配电物联网的断路器管理方法及系统_20231024032440.pdf', size: 1258291, badge: { label: '已上传', variant: 'success' } },
+                                    { id: 'sheet', name: 'budget.xlsx', size: 4096, progress: 58, badge: { label: '等待财务部门与项目负责人共同审核后归档', variant: 'warning' } },
+                                    { id: 'image', name: 'photo.png', size: 0 },
+                                  ]}
+                                  renderActions={(file) => (
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      iconOnly
+                                      icon={<Eye size={16} aria-hidden="true" />}
+                                      aria-label={`查看附件：${file.name}`}
+                                      title="查看"
+                                      onClick={() => Toast.info(`查看附件：${file.name}`)}
+                                    />
+                                  )}
+                                  onRemove={(file) => Toast.info(`移除附件：${file.name}`)}
+                                />
+                              </div>
+                            </DemoCard>
+                            <DemoCard title="FileList Wrapped">
+                              <div className="w-full max-w-2xl">
+                                <FileList
+                                  wrapName
+                                  showSize={false}
+                                  badgeMaxWidth={72}
+                                  items={[
+                                    { id: 'doc', name: '这是一份完整显示名称并支持自动换行的项目设计说明文档.docx', size: 8192, badge: { label: '已归档至项目文档资料库', variant: 'neutral' } },
+                                  ]}
+                                />
+                              </div>
+                            </DemoCard>
+                            <DemoCard title="FileUpload">
+                              <div className="w-full">
+                                <FileUpload
+                                  value={files}
+                                  onChange={setFiles}
+                                  getFileBadge={(file) => ({
+                                    label: file.type === 'text/markdown' ? '等待项目负责人及相关部门共同审核后归档' : '待上传',
+                                    variant: file.type === 'text/markdown' ? 'warning' : 'neutral',
+                                  })}
+                                  renderFileActions={(file) => (
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      iconOnly
+                                      icon={<Eye size={16} aria-hidden="true" />}
+                                      aria-label={`查看附件：${file.name}`}
+                                      title="查看"
+                                      onClick={() => Toast.info(`查看附件：${file.name}`)}
+                                    />
+                                  )}
+                                  multiple
+                                  maxFiles={3}
+                                  accept=".png,.jpg,.pdf,.md,.svg"
+                                  hint="内置 FileList：移动端将右侧操作收进更多菜单。最多 3 个文件。"
+                                  onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
+                                />
+                              </div>
+                            </DemoCard>
+                            <DemoCard title="FileUpload Progress">
+                              <div className="w-full">
+                                <FileUpload
+                                  value={files}
+                                  onChange={setFiles}
+                                  uploading
+                                  getFileProgress={(file) => file.type === 'text/markdown' ? 35 : 80}
+                                  getFileBadge={() => ({ label: '上传中', variant: 'info' })}
+                                  multiple
+                                  hint="每个文件在名称下方显示独立上传进度。"
+                                />
+                              </div>
+                            </DemoCard>
+                            <DemoCard title="FileUpload Compact">
+                              <div className="w-full">
+                                <FileUpload
+                                  density="compact"
+                                  value={compactFiles}
+                                  onChange={setCompactFiles}
+                                  wrapFileName
+                                  uploading
+                                  progress={58}
+                                  getFileBadge={() => ({ label: '上传中', variant: 'info' })}
+                                  renderFileActions={(file) => (
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      iconOnly
+                                      icon={<Eye size={16} aria-hidden="true" />}
+                                      aria-label={`查看附件：${file.name}`}
+                                      title="查看"
+                                      onClick={() => Toast.info(`查看附件：${file.name}`)}
+                                    />
+                                  )}
+                                  multiple
+                                  maxFiles={3}
+                                  accept=".png,.jpg,.pdf,.md,.svg"
+                                  hint="紧凑模式：进度位于名称下方，文件大小位于状态徽标之前。"
+                                  onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
+                                />
+                              </div>
+                            </DemoCard>
+                            <DemoCard title="SegmentedControl">
+                              <SegmentedControl
+                                size="md"
+                                value={segment}
+                                onChange={setSegment}
+                                fullWidth
+                                options={[
+                                  { label: '全部', value: 'all' },
+                                  { label: '启用', value: 'active' },
+                                  { label: '归档', value: 'archived' },
+                                ]}
+                              />
+                            </DemoCard>
+                            <DemoCard title="Skeleton">
+                              <div className="stack">
+                                <div className="skeleton-row">
+                                  <Skeleton variant="circular" />
+                                  <div className="skeleton-lines">
+                                    <Skeleton width="85%" />
+                                    <Skeleton width="62%" />
+                                  </div>
+                                </div>
+                                <Skeleton variant="rectangular" height={96} />
+                              </div>
+                            </DemoCard>
+                          </GallerySection>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </ActiveDemoContext.Provider>
+              </div>
+            </PullToRefresh>
+          </main>
+
+          <Dialog
+            open={dialogOpen}
+            onRequestClose={() => setDialogOpen(false)}
+            title="Dialog 预览"
+            description="用于确认、编辑和短流程任务。当前画廊直接使用组件库 Dialog。"
+            footer={
+              <>
+                <Button variant="outline" onClick={() => setDialogOpen(false)}>关闭</Button>
+                <Button onClick={() => setDialogOpen(false)}>保存</Button>
+              </>
+            }
+          >
+            <div>
+              <FormField label="负责人">
+                <Select
+                  options={basicSelectOptions}
+                  value={dialogSelectValue}
+                  onChange={(value) => setDialogSelectValue(value as string | null)}
+                  placeholder="选择负责人"
+                />
+              </FormField>
+            </div>
+          </Dialog>
+
+          <BottomSheet
+            open={bottomSheetOpen}
+            onRequestClose={() => setBottomSheetOpen(false)}
+            title="快捷操作"
+            description="选择要执行的操作。向下拖动顶部手柄也可关闭。"
+          >
+            <div className="space-y-1 px-4 pb-4">
+              <Button variant="ghost" className="w-full justify-start" icon={<Bell size={16} />}>
+                创建告警
+              </Button>
+              <Button variant="ghost" className="w-full justify-start" icon={<MapPin size={16} />}>
+                添加地点
+              </Button>
+            </div>
+          </BottomSheet>
+
+          <CommandPalette
+            open={commandPaletteOpen}
+            onOpenChange={(open) => {
+              setCommandPaletteOpen(open);
+              if (!open) setGallerySearch('');
+            }}
+            enableShortcut
+            label={messages.openSearch}
+            placeholder={messages.searchPlaceholder}
+            emptyText={messages.noSearchResults}
+            searchValue={gallerySearch}
+            onSearchValueChange={setGallerySearch}
+            groups={localizedCategories.map((category) => ({
+              heading: category.title,
+              items: category.demos.map((item) => ({
+                id: item.id,
+                label: demoLabels[item.title] ?? item.title,
+                description: category.title,
+                keywords: [item.title, category.title],
+                icon: <category.icon size={16} />,
+                onSelect: () => navigateToDemo(category.id, item.id),
+              })),
+            }))}
+          />
+
+          <Drawer
+            open={drawerOpen}
+            closeOnSwipe
+            onRequestClose={() => setDrawerOpen(false)}
+            aria-label="Drawer 预览"
+            panelClassName="drawer-panel"
+          >
+            <div className="drawer-head">
+              <h2>Drawer 预览</h2>
+              <Button iconOnly variant="ghost" aria-label="关闭抽屉" icon={<ChevronDown size={16} />} onClick={() => setDrawerOpen(false)} />
+            </div>
+            <div className="stack">
+              <FormField label="配置名称">
+                <Input defaultValue="Gallery Preview" />
+              </FormField>
+              <FormField label="说明">
+                <Textarea defaultValue="右侧抽屉适合承载较长配置表单。" rows={5} />
+              </FormField>
+            </div>
+          </Drawer>
+
+          <ConfirmDialog
+            open={confirmOpen}
+            title="确认删除预览项"
+            message="此操作仅用于查看 ConfirmDialog 的危险操作样式。"
+            confirmText="删除"
+            confirmVariant="destructive"
+            onCancel={() => setConfirmOpen(false)}
+            onConfirm={() => {
+              setConfirmOpen(false);
+              Toast.info('已执行确认动作');
+            }}
+          />
+        </div>
+      </PlaygroundMessagesContext.Provider>
     </LumenProvider>
   );
 }

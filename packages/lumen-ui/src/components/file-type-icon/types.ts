@@ -29,7 +29,7 @@ export interface ResolvedFileType {
 
 export interface FileTypeIconProps
   extends Omit<SVGAttributes<SVGSVGElement>, 'children'>,
-    FileTypeIconSource {
+  FileTypeIconSource {
   category?: FileTypeIconCategory;
   label?: string;
   size?: FileTypeIconSize;

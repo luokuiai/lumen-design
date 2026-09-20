@@ -144,18 +144,18 @@ export const Pagination = ({
         </span>
         {shouldShowPageSizeSelector ? (
           <div className="w-[104px]">
-              <Select<number>
-                options={normalizedPageSizeOptions.map((option) => ({
-                  label: locale.pagination.pageSize(option),
-                  value: option,
-                }))}
-                value={pageSize}
-                onChange={(value) => onPageSizeChange(Number(value))}
-                disabled={loading}
-                size="sm"
-                className="w-full"
-                radius="rounded-[8px]"
-              />
+            <Select<number>
+              options={normalizedPageSizeOptions.map((option) => ({
+                label: locale.pagination.pageSize(option),
+                value: option,
+              }))}
+              value={pageSize}
+              onChange={(value) => onPageSizeChange(Number(value))}
+              disabled={loading}
+              size="sm"
+              className="w-full"
+              radius="rounded-[8px]"
+            />
           </div>
         ) : null}
       </div>

@@ -795,7 +795,7 @@ export const Select = <T extends string | number = string>({
                     return (
                       <React.Fragment key={String(option.value)}>
                         {shouldRenderGroup && (
-                  <div className="px-3 pb-1 pt-2 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]">
+                          <div className="px-3 pb-1 pt-2 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]">
                             {option.group}
                           </div>
                         )}
