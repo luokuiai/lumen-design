@@ -1,12 +1,12 @@
-import React, { useRef, useState } from 'react';
-import { LoaderCircle, UploadCloud } from 'lucide-react';
-import { cn } from './classNames';
-import { FileList, type FileListBadge } from './file-list/FileList';
-import { formatBytes } from './file-list/formatBytes';
-import { useLumenLocale } from '../i18n';
+import React, { useRef, useState } from "react";
+import { LoaderCircle, UploadCloud } from "lucide-react";
+import { cn } from "./classNames";
+import { FileList, type FileListBadge } from "./file-list/FileList";
+import { formatBytes } from "./file-list/formatBytes";
+import { useLumenLocale } from "../i18n";
 
-export type FileUploadDensity = 'default' | 'compact';
-export type FileRejectionReason = 'type' | 'size' | 'limit' | 'custom';
+export type FileUploadDensity = "default" | "compact";
+export type FileRejectionReason = "type" | "size" | "limit" | "custom";
 
 export interface FileRejection {
   file: File;
@@ -15,7 +15,7 @@ export interface FileRejection {
 }
 
 export interface FileUploadProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   value: File[];
   onChange: (files: File[]) => void;
   accept?: string;
@@ -49,12 +49,12 @@ const acceptsFile = (file: File, accept?: string) => {
   const fileName = file.name.toLowerCase();
   const fileType = file.type.toLowerCase();
   return accept
-    .split(',')
+    .split(",")
     .map((item) => item.trim().toLowerCase())
     .filter(Boolean)
     .some((rule) => {
-      if (rule.startsWith('.')) return fileName.endsWith(rule);
-      if (rule.endsWith('/*')) return fileType.startsWith(rule.slice(0, -1));
+      if (rule.startsWith(".")) return fileName.endsWith(rule);
+      if (rule.endsWith("/*")) return fileType.startsWith(rule.slice(0, -1));
       return fileType === rule;
     });
 };
@@ -71,7 +71,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       validateFile,
       onReject,
       disabled = false,
-      density = 'default',
+      density = "default",
       hint,
       showFileList = true,
       showFileSize = true,
@@ -88,11 +88,14 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
     ref,
   ) => {
     const locale = useLumenLocale();
-    const resolvedInputAriaLabel = inputAriaLabel ?? locale.fileUpload.inputLabel;
+    const resolvedInputAriaLabel =
+      inputAriaLabel ?? locale.fileUpload.inputLabel;
     const [isDragOver, setIsDragOver] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
-    const compact = density === 'compact';
-    const effectiveMaxFiles = multiple ? (maxFiles ?? Number.POSITIVE_INFINITY) : 1;
+    const compact = density === "compact";
+    const effectiveMaxFiles = multiple
+      ? (maxFiles ?? Number.POSITIVE_INFINITY)
+      : 1;
 
     const addFiles = (incoming: File[]) => {
       if (disabled || uploading || incoming.length === 0) return;
@@ -103,28 +106,35 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
 
       for (const file of incoming) {
         if (!acceptsFile(file, accept)) {
-          rejections.push({ file, reason: 'type', message: locale.fileUpload.unsupportedType });
+          rejections.push({
+            file,
+            reason: "type",
+            message: locale.fileUpload.unsupportedType,
+          });
           continue;
         }
         if (maxSize !== undefined && file.size > maxSize) {
           rejections.push({
             file,
-            reason: 'size',
+            reason: "size",
             message: locale.fileUpload.maxSize(formatBytes(maxSize)),
           });
           continue;
         }
         const customMessage = validateFile?.(file);
         if (customMessage) {
-          rejections.push({ file, reason: 'custom', message: customMessage });
+          rejections.push({ file, reason: "custom", message: customMessage });
           continue;
         }
         const key = getFileKey(file);
         if (existingKeys.has(key)) continue;
-        if ((multiple ? value.length : 0) + accepted.length >= effectiveMaxFiles) {
+        if (
+          (multiple ? value.length : 0) + accepted.length >=
+          effectiveMaxFiles
+        ) {
           rejections.push({
             file,
-            reason: 'limit',
+            reason: "limit",
             message: locale.fileUpload.maxFiles(effectiveMaxFiles),
           });
           continue;
@@ -147,7 +157,11 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
     return (
       <div
         ref={ref}
-        className={cn('flex w-full min-w-0 flex-col', compact ? 'gap-2' : 'gap-4', className)}
+        className={cn(
+          "flex w-full min-w-0 flex-col",
+          compact ? "gap-2" : "gap-4",
+          className,
+        )}
         {...props}
       >
         <button
@@ -161,7 +175,9 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           }}
           onDragOver={(event) => event.preventDefault()}
           onDragLeave={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            if (
+              !event.currentTarget.contains(event.relatedTarget as Node | null)
+            ) {
               setIsDragOver(false);
             }
           }}
@@ -171,13 +187,13 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             addFiles(Array.from(event.dataTransfer.files));
           }}
           className={cn(
-            'relative w-full min-w-0 border-dashed text-[var(--lumen-color-text-muted)] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-60',
+            "relative w-full min-w-0 border-dashed text-[var(--lumen-color-text-muted)] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-60",
             compact
-              ? 'min-h-11 rounded-[7px] border px-3 py-2'
-              : 'rounded-[var(--lumen-radius-card)] border-2 px-5 py-3',
+              ? "min-h-11 rounded-[7px] border px-3 py-2"
+              : "rounded-[var(--lumen-radius-card)] border-2 px-5 py-3",
             isDragOver
-              ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]'
-              : 'border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary)]',
+              ? "border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]"
+              : "border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-primary)]",
           )}
         >
           {compact ? (
@@ -206,8 +222,9 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             <span className="flex flex-col items-center">
               <span
                 className={cn(
-                  'flex h-9 w-9 items-center justify-center rounded-full bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-placeholder)] transition-all duration-200',
-                  isDragOver && 'scale-110 bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]',
+                  "flex h-9 w-9 items-center justify-center rounded-full bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-placeholder)] transition-all duration-200",
+                  isDragOver &&
+                    "scale-110 bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]",
                 )}
               >
                 {uploading ? (
@@ -242,23 +259,34 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           tabIndex={-1}
           onChange={(event) => {
             addFiles(Array.from(event.target.files ?? []));
-            event.target.value = '';
+            event.target.value = "";
           }}
         />
 
         {showFileList && value.length > 0 ? (
           <FileList
             items={value.map((file) => ({
-              id: getFileKey(file), name: file.name, size: file.size,
-              type: file.type, badge: getFileBadge?.(file),
+              id: getFileKey(file),
+              name: file.name,
+              size: file.size,
+              type: file.type,
+              badge: getFileBadge?.(file),
               progress: uploading
-                ? (getFileProgress ? getFileProgress(file) : progress)
+                ? getFileProgress
+                  ? getFileProgress(file)
+                  : progress
                 : undefined,
             }))}
-            renderActions={renderFileActions ? (item) => {
-              const file = value.find((file) => getFileKey(file) === item.id);
-              return file ? renderFileActions(file) : null;
-            } : undefined}
+            renderActions={
+              renderFileActions
+                ? (item) => {
+                    const file = value.find(
+                      (file) => getFileKey(file) === item.id,
+                    );
+                    return file ? renderFileActions(file) : null;
+                  }
+                : undefined
+            }
             showSize={showFileSize}
             density={density}
             wrapName={wrapFileName}
@@ -274,4 +302,4 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
   },
 );
 
-FileUpload.displayName = 'FileUpload';
+FileUpload.displayName = "FileUpload";
