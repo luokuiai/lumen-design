@@ -50,6 +50,45 @@ describe('FileList', () => {
     expect(screen.getByText('report.pdf')).not.toHaveClass('truncate');
   });
 
+  it('renders clamped progress below each matching file name', () => {
+    render(<FileList items={[
+      { id: 'uploading', name: 'uploading.pdf', progress: 42 },
+      { id: 'complete', name: 'complete.pdf', progress: 120 },
+      { id: 'idle', name: 'idle.pdf' },
+    ]} />);
+
+    const progressBars = screen.getAllByRole('progressbar');
+    expect(progressBars).toHaveLength(2);
+    expect(progressBars[0]).toHaveAttribute('aria-valuenow', '42');
+    expect(progressBars[0]).toHaveAttribute('data-ui', 'progress');
+    expect(progressBars[0]).toHaveClass('mt-1');
+    expect(progressBars[0]?.firstElementChild).toHaveClass('h-[5px]');
+    expect(progressBars[0]?.firstElementChild?.firstElementChild).toHaveStyle({ width: '42%' });
+    expect(progressBars[0]).toBe(screen.getByText('uploading.pdf').parentElement?.querySelector('[role="progressbar"]'));
+    expect(progressBars[1]).toHaveAttribute('aria-valuenow', '100');
+    expect(screen.queryByText('42%')).not.toBeInTheDocument();
+    expect(screen.queryByText('100%')).not.toBeInTheDocument();
+  });
+
+  it('places compact size before the badge while keeping progress below the name', () => {
+    render(<FileList density="compact" items={[{
+      id: 'uploading', name: 'uploading.pdf', size: 4096, progress: 58,
+      badge: { label: 'Uploading', variant: 'info' },
+    }]} />);
+
+    const item = screen.getByRole('listitem');
+    const nameContainer = screen.getByText('uploading.pdf').parentElement;
+    const progressBar = screen.getByRole('progressbar');
+    const size = screen.getByText('4.0 KB');
+    const badge = screen.getByText('Uploading');
+
+    expect(item).toHaveClass('min-h-12', 'py-2');
+    expect(nameContainer).toContainElement(progressBar);
+    expect(screen.queryByText('58%')).not.toBeInTheDocument();
+    expect(size.parentElement).toBe(item);
+    expect(size.compareDocumentPosition(badge) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it('removes the selected item and respects disabled state', () => {
     const onRemove = vi.fn();
     const { rerender } = render(<FileList items={items} onRemove={onRemove} />);
@@ -120,6 +159,31 @@ describe('FileList', () => {
 });
 
 describe('FileUpload file list integration', () => {
+  it('renders per-file upload progress inside each file row', () => {
+    const files = [new File(['hello'], 'report.pdf'), new File(['hi'], 'photo.png')];
+    const { rerender } = render(
+      <FileUpload value={files} onChange={() => undefined} density="compact" uploading progress={10} />,
+    );
+
+    expect(screen.getAllByRole('progressbar').map((bar) => bar.getAttribute('aria-valuenow'))).toEqual(['10', '10']);
+    expect(screen.getByText('5 B').parentElement).toBe(screen.getByText('report.pdf').closest('li'));
+
+    rerender(
+      <FileUpload
+        value={files}
+        onChange={() => undefined}
+        density="compact"
+        uploading
+        progress={10}
+        getFileProgress={(file) => file.name === 'report.pdf' ? 35 : 80}
+      />,
+    );
+    const progressBars = screen.getAllByRole('progressbar');
+    expect(progressBars.map((bar) => bar.getAttribute('aria-valuenow'))).toEqual(['35', '80']);
+    expect(progressBars[0]?.closest('li')).toHaveTextContent('report.pdf');
+    expect(progressBars[1]?.closest('li')).toHaveTextContent('photo.png');
+  });
+
   it('forwards display options and keeps removal tied to the original File', () => {
     const files = [new File(['hello'], 'report.pdf'), new File(['hi'], 'photo.png')];
     const onChange = vi.fn();
