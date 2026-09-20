@@ -14,6 +14,12 @@ describe('Progress', () => {
     expect(progress.querySelector('[style*="width: 70%"]')).toBeInTheDocument();
   });
 
+  it('uses a 5px default line height', () => {
+    render(<Progress value={50} />);
+
+    expect(screen.getByRole('progressbar').firstElementChild).toHaveClass('h-[5px]');
+  });
+
   it('clamps values and supports circular progress', () => {
     render(<Progress type="circle" value={140} showValue status="success" />);
 

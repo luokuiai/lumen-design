@@ -383,8 +383,8 @@ const galleryCategories: GalleryCategory[] = [
       demo('DatePicker', 'pickers', 'DatePicker', '    <DatePicker value="2026-09-04" onChange={setValue} />'),
       demo('TimePicker', 'pickers', 'TimePicker', '    <TimePicker value="09:30" onChange={setValue} />'),
       demo('DateTimePicker', 'pickers', 'DateTimePicker', '    <DateTimePicker label="开始时间" value="2026-09-04 09:30:00" onChange={setValue} />'),
-      demo('FileList', 'feedback', 'FileList', '<FileList items={[]} />', undefined, undefined, ['FileList', 'FileList Wrapped']),
-      demo('FileUpload', 'feedback', 'FileUpload', '    <>\n      <FileUpload value={files} onChange={setFiles} multiple />\n      <FileUpload density="compact" value={files} onChange={setFiles} multiple />\n    </>', undefined, undefined, ['FileUpload', 'FileUpload Compact']),
+      demo('FileList', 'feedback', 'FileList', '<FileList items={[{ id: \'report\', name: \'report.pdf\', progress: 58 }]} />', undefined, undefined, ['FileList', 'FileList Wrapped']),
+      demo('FileUpload', 'feedback', 'FileUpload', '    <>\n      <FileUpload value={files} onChange={setFiles} multiple />\n      <FileUpload value={files} onChange={setFiles} uploading getFileProgress={(file) => file.name.endsWith(\'.md\') ? 35 : 80} />\n      <FileUpload density="compact" value={files} onChange={setFiles} uploading progress={58} />\n    </>', undefined, undefined, ['FileUpload', 'FileUpload Progress', 'FileUpload Compact']),
     ],
   },
   {
@@ -628,6 +628,7 @@ const zhExampleNames: Record<string, string> = {
   Submenu: '子菜单',
   'DataTable · Sticky Header': '数据表格 · 固定表头',
   'DataTable · Embedded': '数据表格 · 嵌入式',
+  'FileUpload Progress': '文件上传 · 上传进度',
   'FileUpload Compact': '文件上传 · 紧凑模式',
 };
 
@@ -3662,7 +3663,7 @@ export default function App() {
                   <FileList
                     items={[
                       { id: 'pdf', name: '应用于低压配电物联网的断路器管理方法及系统_20231024032440.pdf', size: 1258291, badge: { label: '已上传', variant: 'success' } },
-                      { id: 'sheet', name: 'budget.xlsx', size: 4096, badge: { label: '等待财务部门与项目负责人共同审核后归档', variant: 'warning' } },
+                      { id: 'sheet', name: 'budget.xlsx', size: 4096, progress: 58, badge: { label: '等待财务部门与项目负责人共同审核后归档', variant: 'warning' } },
                       { id: 'image', name: 'photo.png', size: 0 },
                     ]}
                     renderActions={(file) => (
@@ -3720,6 +3721,19 @@ export default function App() {
                   />
                 </div>
               </DemoCard>
+              <DemoCard title="FileUpload Progress">
+                <div className="w-full">
+                  <FileUpload
+                    value={files}
+                    onChange={setFiles}
+                    uploading
+                    getFileProgress={(file) => file.type === 'text/markdown' ? 35 : 80}
+                    getFileBadge={() => ({ label: '上传中', variant: 'info' })}
+                    multiple
+                    hint="每个文件在名称下方显示独立上传进度。"
+                  />
+                </div>
+              </DemoCard>
               <DemoCard title="FileUpload Compact">
                 <div className="w-full">
                   <FileUpload
@@ -3727,8 +3741,9 @@ export default function App() {
                     value={compactFiles}
                     onChange={setCompactFiles}
                     wrapFileName
-                    showFileSize={false}
-                    getFileBadge={() => ({ label: '待上传', variant: 'neutral' })}
+                    uploading
+                    progress={58}
+                    getFileBadge={() => ({ label: '上传中', variant: 'info' })}
                     renderFileActions={(file) => (
                       <Button
                         size="sm"
@@ -3743,7 +3758,7 @@ export default function App() {
                     multiple
                     maxFiles={3}
                     accept=".png,.jpg,.pdf,.md,.svg"
-                    hint="名称完整换行，隐藏文件大小；移动端操作收进更多菜单。最多 3 个文件。"
+                    hint="紧凑模式：进度位于名称下方，文件大小位于状态徽标之前。"
                     onReject={(items) => Toast.warning(items[0]?.message ?? '文件不可用')}
                   />
                 </div>

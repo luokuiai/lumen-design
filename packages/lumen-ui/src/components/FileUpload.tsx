@@ -31,9 +31,12 @@ export interface FileUploadProps
   showFileSize?: boolean;
   wrapFileName?: boolean;
   getFileBadge?: (file: File) => FileListBadge | undefined;
+  /** Per-file upload percentage. When provided, it takes precedence over progress. */
+  getFileProgress?: (file: File) => number | undefined;
   /** Custom trailing actions; callers control their disabled state. */
   renderFileActions?: (file: File) => React.ReactNode;
   uploading?: boolean;
+  /** Shared upload percentage applied to every file when getFileProgress is omitted. */
   progress?: number;
   inputAriaLabel?: string;
 }
@@ -74,6 +77,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       showFileSize = true,
       wrapFileName = false,
       getFileBadge,
+      getFileProgress,
       renderFileActions,
       uploading = false,
       progress,
@@ -139,9 +143,6 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       const key = getFileKey(file);
       onChange(value.filter((item) => getFileKey(item) !== key));
     };
-
-    const normalizedProgress =
-      progress === undefined ? undefined : Math.min(100, Math.max(0, progress));
 
     return (
       <div
@@ -245,33 +246,21 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           }}
         />
 
-        {uploading && normalizedProgress !== undefined ? (
-          <div
-            className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--lumen-color-border)]"
-            role="progressbar"
-            aria-label={locale.fileUpload.progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={Math.round(normalizedProgress)}
-          >
-            <div
-              className="h-full rounded-full bg-[var(--lumen-color-primary)] transition-[width] duration-200"
-              style={{ width: `${normalizedProgress}%` }}
-            />
-          </div>
-        ) : null}
-
         {showFileList && value.length > 0 ? (
           <FileList
             items={value.map((file) => ({
               id: getFileKey(file), name: file.name, size: file.size,
               type: file.type, badge: getFileBadge?.(file),
+              progress: uploading
+                ? (getFileProgress ? getFileProgress(file) : progress)
+                : undefined,
             }))}
             renderActions={renderFileActions ? (item) => {
               const file = value.find((file) => getFileKey(file) === item.id);
               return file ? renderFileActions(file) : null;
             } : undefined}
             showSize={showFileSize}
+            density={density}
             wrapName={wrapFileName}
             disabled={disabled || uploading}
             onRemove={(item) => {

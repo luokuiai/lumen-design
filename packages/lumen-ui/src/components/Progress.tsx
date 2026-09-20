@@ -28,7 +28,7 @@ const progressColorVariables: Record<ProgressStatus, string> = {
 
 const lineHeightClassNames: Record<ProgressSize, string> = {
   sm: 'h-1',
-  md: 'h-1.5',
+  md: 'h-[5px]',
   lg: 'h-2',
 };
 
