@@ -112,7 +112,7 @@ export const tabVariantClassNames = {
   default: {
     container: "bg-[var(--lumen-color-surface)] px-1",
     base:
-      "group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 l:py-3.5 text-[14px] font-normal transition-colors duration-200 after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out",
+      "group relative inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap px-3 py-3 l:py-3.5 text-[14px] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:origin-center after:scale-x-0 after:rounded-full after:bg-[var(--lumen-color-primary)] after:opacity-0 after:transition-all after:duration-150 after:ease-out",
     active:
       "text-[var(--lumen-color-primary)] after:scale-x-100 after:opacity-100",
     inactive:
@@ -121,7 +121,7 @@ export const tabVariantClassNames = {
     iconActive: "text-[var(--lumen-color-primary)]",
     iconInactive: "text-[var(--lumen-color-text-placeholder)] group-hover:text-[var(--lumen-color-primary)]",
     badgeBase:
-      "inline-flex min-w-[24px] items-center justify-center rounded-full px-1.5 py-0.5 text-[11px] font-semibold transition-all",
+      "inline-flex min-w-[24px] items-center justify-center rounded-full px-1.5 py-0.5 text-[11px] font-medium transition-all",
     badgeActive: "bg-[var(--lumen-color-primary-soft-hover)] text-[var(--lumen-color-primary)]",
     badgeInactive: "bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-muted)]",
   },
@@ -129,7 +129,7 @@ export const tabVariantClassNames = {
     container:
       "rounded-[16px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-subtle)] px-5 py-4 shadow-[0_6px_18px_var(--lumen-color-shadow)]",
     base:
-      "group inline-flex items-center gap-2 rounded-full border px-4 py-2 l:py-2.5 text-[14px] transition-all",
+      "group inline-flex items-center gap-2 rounded-full border px-4 py-2 l:py-2.5 text-[14px] font-medium transition-all",
     active:
       "border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]",
     inactive:
@@ -138,7 +138,7 @@ export const tabVariantClassNames = {
     iconActive: "",
     iconInactive: "",
     badgeBase:
-      "inline-flex min-w-[28px] items-center justify-center rounded-full px-2 py-0.5 text-[11px] font-semibold transition-all",
+      "inline-flex min-w-[28px] items-center justify-center rounded-full px-2 py-0.5 text-[11px] font-medium transition-all",
     badgeActive: "bg-[var(--lumen-color-surface)] text-[var(--lumen-color-primary)]",
     badgeInactive: "bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-muted)]",
   },
@@ -146,7 +146,7 @@ export const tabVariantClassNames = {
     container:
       "rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-4 py-4 shadow-sm",
     base:
-      "group inline-flex min-h-[46px] items-center gap-2.5 rounded-[8px] border px-4 py-2 l:py-2.5 text-[14px] font-normal tracking-[0.01em] transition-all duration-200",
+      "group inline-flex min-h-[46px] items-center gap-2.5 rounded-[8px] border px-4 py-2 l:py-2.5 text-[14px] font-medium tracking-[0.01em] transition-all duration-200",
     active:
       "border-[var(--lumen-color-info-border)] bg-[linear-gradient(180deg,var(--lumen-color-info-soft)_0%,var(--lumen-color-surface)_100%)] text-[var(--lumen-color-primary-active)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]",
     inactive:
@@ -158,7 +158,7 @@ export const tabVariantClassNames = {
     iconInactive:
       "border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-placeholder)] group-hover:border-[var(--lumen-color-info-border)] group-hover:text-[var(--lumen-color-primary)]",
     badgeBase:
-      "inline-flex min-w-[30px] items-center justify-center rounded-[6px] px-2 py-0.5 text-[12px] font-semibold transition-all duration-200",
+      "inline-flex min-w-[30px] items-center justify-center rounded-[6px] px-2 py-0.5 text-[12px] font-medium transition-all duration-200",
     badgeActive:
       "bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)] shadow-[0_6px_12px_var(--lumen-color-focus-ring)]",
     badgeInactive:
