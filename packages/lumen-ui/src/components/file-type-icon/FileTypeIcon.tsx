@@ -1,11 +1,11 @@
-import { useId } from 'react';
-import { cn } from '../classNames';
-import { fileTypeCategoryLabels, resolveFileTypeIcon } from './fileTypeRegistry';
+import { useId } from "react";
+import { cn } from "../classNames";
+import { fileTypeCategoryLabels, resolveFileTypeIcon } from "./fileTypeRegistry";
 import type {
   FileTypeIconCategory,
   FileTypeIconProps,
   FileTypeIconSize,
-} from './types';
+} from "./types";
 
 const sizeValues: Record<FileTypeIconSize, number> = {
   sm: 24,
@@ -14,17 +14,17 @@ const sizeValues: Record<FileTypeIconSize, number> = {
 };
 
 const categoryColors: Record<FileTypeIconCategory, string> = {
-  pdf: 'var(--lumen-color-file-pdf)',
-  document: 'var(--lumen-color-file-document)',
-  spreadsheet: 'var(--lumen-color-file-spreadsheet)',
-  presentation: 'var(--lumen-color-file-presentation)',
-  image: 'var(--lumen-color-file-image)',
-  video: 'var(--lumen-color-file-video)',
-  audio: 'var(--lumen-color-file-audio)',
-  archive: 'var(--lumen-color-file-archive)',
-  text: 'var(--lumen-color-file-text)',
-  app: 'var(--lumen-color-file-app)',
-  bin: 'var(--lumen-color-file-bin)',
+  pdf: "var(--lumen-color-file-pdf)",
+  document: "var(--lumen-color-file-document)",
+  spreadsheet: "var(--lumen-color-file-spreadsheet)",
+  presentation: "var(--lumen-color-file-presentation)",
+  image: "var(--lumen-color-file-image)",
+  video: "var(--lumen-color-file-video)",
+  audio: "var(--lumen-color-file-audio)",
+  archive: "var(--lumen-color-file-archive)",
+  text: "var(--lumen-color-file-text)",
+  app: "var(--lumen-color-file-app)",
+  bin: "var(--lumen-color-file-bin)",
 };
 
 const normalizeLabel = (label: string, category: FileTypeIconCategory) => {
@@ -40,10 +40,10 @@ export function FileTypeIcon({
   mimeType,
   category: explicitCategory,
   label: explicitLabel,
-  size = 'md',
+  size = "md",
   title,
   className,
-  'aria-label': ariaLabel,
+  "aria-label": ariaLabel,
   ...props
 }: FileTypeIconProps) {
   const titleId = useId();
@@ -64,13 +64,13 @@ export function FileTypeIcon({
       width={pixelSize}
       height={pixelSize}
       fill="none"
-      role={accessible ? 'img' : undefined}
+      role={accessible ? "img" : undefined}
       aria-hidden={accessible ? undefined : true}
       aria-label={ariaLabel}
       aria-labelledby={title && !ariaLabel ? titleId : undefined}
       data-file-type-category={category}
       data-file-type-label={label}
-      className={cn('inline-block shrink-0', className)}
+      className={cn("inline-block shrink-0", className)}
     >
       {title && !ariaLabel ? <title id={titleId}>{title}</title> : null}
       <path
@@ -91,7 +91,7 @@ export function FileTypeIcon({
         y="29"
         fill="var(--lumen-color-file-icon-on-accent)"
         textAnchor="middle"
-        fontSize={label.length > 3 ? '7.2' : '9.5'}
+        fontSize={label.length > 3 ? "7.2" : "9.5"}
         fontWeight="700"
         letterSpacing="0"
         fontFamily="Inter, ui-sans-serif, system-ui, sans-serif"

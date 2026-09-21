@@ -1,9 +1,9 @@
-import React from 'react';
-import { cn } from './classNames';
-import { radiusTokens } from './designTokens';
+import React from "react";
+import { cn } from "./classNames";
+import { radiusTokens } from "./designTokens";
 
-export type TextareaSize = 'sm' | 'md' | 'lg';
-export type TextareaResize = 'none' | 'vertical';
+export type TextareaSize = "sm" | "md" | "lg";
+export type TextareaResize = "none" | "vertical";
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   size?: TextareaSize;
@@ -13,26 +13,26 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
 }
 
 const textareaSizeTokens: Record<TextareaSize, string> = {
-  sm: 'px-2.5 py-2 text-[13px] leading-5 mobile:text-[16px]',
-  md: 'px-3 py-2.5 text-[14px] leading-5 mobile:text-[16px]',
-  lg: 'px-3.5 py-3 text-[14px] leading-6 mobile:text-[16px]',
+  sm: "px-2.5 py-2 text-[13px] leading-5 mobile:text-[16px]",
+  md: "px-3 py-2.5 text-[14px] leading-5 mobile:text-[16px]",
+  lg: "px-3.5 py-3 text-[14px] leading-6 mobile:text-[16px]",
 };
 
 const resizeTokens: Record<TextareaResize, string> = {
-  none: 'resize-none',
-  vertical: 'resize-y',
+  none: "resize-none",
+  vertical: "resize-y",
 };
 
 const getStateClassName = (invalid?: boolean) =>
   invalid
-    ? 'border-[var(--lumen-color-danger)] focus:border-[var(--lumen-color-danger)] focus:ring-2 focus:ring-[var(--lumen-color-danger)]/10'
-    : 'border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/10';
+    ? "border-[var(--lumen-color-danger)] focus:border-[var(--lumen-color-danger)] focus:ring-2 focus:ring-[var(--lumen-color-danger)]/10"
+    : "border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/10";
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
     {
-      size = 'lg',
-      resize = 'vertical',
+      size = "lg",
+      resize = "vertical",
       invalid = false,
       showCount = false,
       className,
@@ -46,11 +46,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     ref,
   ) => {
     const [uncontrolledCount, setUncontrolledCount] = React.useState(
-      () => String(defaultValue ?? '').length,
+      () => String(defaultValue ?? "").length,
     );
     const currentCount = value === undefined
       ? uncontrolledCount
-      : String(value ?? '').length;
+      : String(value ?? "").length;
     const textarea = (
       <textarea
         ref={ref}
@@ -66,11 +66,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         data-ui="textarea"
         data-invalid={invalid || undefined}
         className={cn(
-          'w-full border bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] outline-none transition-all placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed disabled:bg-[var(--lumen-color-surface-muted)] disabled:text-[var(--lumen-color-text-placeholder)] disabled:opacity-100',
+          "w-full border bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] outline-none transition-all placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed disabled:bg-[var(--lumen-color-surface-muted)] disabled:text-[var(--lumen-color-text-placeholder)] disabled:opacity-100",
           radiusTokens.control,
           textareaSizeTokens[size],
           resizeTokens[resize],
-          showCount && 'pb-7',
+          showCount && "pb-7",
           getStateClassName(invalid),
           className,
         )}
@@ -94,4 +94,4 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   },
 );
 
-Textarea.displayName = 'Textarea';
+Textarea.displayName = "Textarea";

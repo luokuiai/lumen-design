@@ -1,11 +1,11 @@
-import React, { useId, useState } from 'react';
-import { Circle } from 'lucide-react';
-import { cn } from './classNames';
+import React, { useId, useState } from "react";
+import { Circle } from "lucide-react";
+import { cn } from "./classNames";
 
-export type RadioSize = 'sm' | 'md' | 'lg';
+export type RadioSize = "sm" | "md" | "lg";
 
 export interface RadioProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type' | 'onChange'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "type" | "onChange"> {
   size?: RadioSize;
   checked?: boolean;
   defaultChecked?: boolean;
@@ -16,7 +16,7 @@ export interface RadioProps
 }
 
 export const Radio: React.FC<RadioProps> = ({
-  size = 'md',
+  size = "md",
   checked,
   defaultChecked = false,
   disabled = false,
@@ -31,12 +31,12 @@ export const Radio: React.FC<RadioProps> = ({
   const inputId = id ?? generatedId;
   const labelId = `${inputId}-label`;
   const descriptionId = `${inputId}-description`;
-  const isControlled = typeof checked === 'boolean';
+  const isControlled = typeof checked === "boolean";
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const currentChecked = isControlled ? checked : internalChecked;
-  const isSmall = size === 'sm';
-  const controlSize = size === 'sm' ? 'h-3.5 w-3.5' : size === 'lg' ? 'h-[18px] w-[18px]' : 'h-4 w-4';
-  const dotSize = size === 'sm' ? 6 : size === 'lg' ? 10 : 8;
+  const isSmall = size === "sm";
+  const controlSize = size === "sm" ? "h-3.5 w-3.5" : size === "lg" ? "h-[18px] w-[18px]" : "h-4 w-4";
+  const dotSize = size === "sm" ? 6 : size === "lg" ? 10 : 8;
   const hasDescription = Boolean(description);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,17 +52,17 @@ export const Radio: React.FC<RadioProps> = ({
     <label
       htmlFor={inputId}
       className={cn(
-        'inline-flex gap-2.5 py-1.5',
-        hasDescription ? 'items-start' : 'items-center',
-        isSmall && 'gap-2',
-        disabled ? 'cursor-not-allowed opacity-55' : 'cursor-pointer',
+        "inline-flex gap-2.5 py-1.5",
+        hasDescription ? "items-start" : "items-center",
+        isSmall && "gap-2",
+        disabled ? "cursor-not-allowed opacity-55" : "cursor-pointer",
         className,
       )}
     >
       <span
         className={cn(
-          'relative inline-flex shrink-0 items-center justify-center',
-          hasDescription && 'mt-0.5',
+          "relative inline-flex shrink-0 items-center justify-center",
+          hasDescription && "mt-0.5",
           controlSize,
         )}
       >
@@ -74,25 +74,25 @@ export const Radio: React.FC<RadioProps> = ({
           disabled={disabled}
           aria-labelledby={label ? labelId : undefined}
           aria-describedby={description ? descriptionId : undefined}
-          aria-label={typeof label === 'string' ? label : props['aria-label']}
+          aria-label={typeof label === "string" ? label : props["aria-label"]}
           className="peer sr-only"
           onChange={handleChange}
         />
         <span
           aria-hidden="true"
           className={cn(
-            'flex items-center justify-center rounded-full border transition-all',
+            "flex items-center justify-center rounded-full border transition-all",
             controlSize,
             currentChecked
-              ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]'
-              : 'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_60%,var(--lumen-color-surface))] bg-[var(--lumen-color-surface)] text-transparent',
-            !disabled && 'peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--lumen-color-info-border)]/70 peer-focus-visible:ring-offset-2',
-            !disabled && !currentChecked && 'hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)]',
+              ? "border-[var(--lumen-color-primary)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]"
+              : "border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_60%,var(--lumen-color-surface))] bg-[var(--lumen-color-surface)] text-transparent",
+            !disabled && "peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--lumen-color-info-border)]/70 peer-focus-visible:ring-offset-2",
+            !disabled && !currentChecked && "hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)]",
           )}
         >
           <Circle
             size={dotSize}
-            className={currentChecked ? 'fill-current text-current' : 'text-transparent'}
+            className={currentChecked ? "fill-current text-current" : "text-transparent"}
           />
         </span>
       </span>
@@ -102,9 +102,9 @@ export const Radio: React.FC<RadioProps> = ({
             <span
               id={labelId}
               className={cn(
-                'block font-normal',
-                'text-[var(--lumen-color-text)]',
-                'text-[14px] leading-5',
+                "block font-normal",
+                "text-[var(--lumen-color-text)]",
+                "text-[14px] leading-5",
               )}
             >
               {label}
@@ -114,8 +114,8 @@ export const Radio: React.FC<RadioProps> = ({
             <span
               id={descriptionId}
               className={cn(
-                'mt-0.5 block text-[var(--lumen-color-text-muted)]',
-                isSmall ? 'text-[12px] leading-4.5' : 'text-[12px] leading-5',
+                "mt-0.5 block text-[var(--lumen-color-text-muted)]",
+                isSmall ? "text-[12px] leading-4.5" : "text-[12px] leading-5",
               )}
             >
               {description}

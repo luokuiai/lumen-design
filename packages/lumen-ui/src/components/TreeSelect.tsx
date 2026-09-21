@@ -5,25 +5,25 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from 'react';
-import { createPortal } from 'react-dom';
+} from "react";
+import { createPortal } from "react-dom";
 import {
   ChevronDown,
   ChevronRight,
   Search,
   X,
-} from 'lucide-react';
-import { cn } from './classNames';
-import { Scrollbar } from './Scrollbar';
-import { radiusTokens } from './designTokens';
-import { dropdownTransformOrigin } from './dropdownMotion';
-import { useOverlayPortalScope } from './useOverlayBehavior';
-import { useLumenLocale } from '../i18n';
+} from "lucide-react";
+import { cn } from "./classNames";
+import { Scrollbar } from "./Scrollbar";
+import { radiusTokens } from "./designTokens";
+import { dropdownTransformOrigin } from "./dropdownMotion";
+import { useOverlayPortalScope } from "./useOverlayBehavior";
+import { useLumenLocale } from "../i18n";
 
 const DROPDOWN_CLOSE_ANIMATION_MS = 120;
-const SHOULD_SKIP_CLOSE_ANIMATION_IN_TEST = import.meta.env.MODE === 'test';
+const SHOULD_SKIP_CLOSE_ANIMATION_IN_TEST = import.meta.env.MODE === "test";
 
-type TreeSelectSize = 'sm' | 'md' | 'lg';
+type TreeSelectSize = "sm" | "md" | "lg";
 
 export interface TreeSelectProps<TNode> {
   nodes: TNode[];
@@ -52,7 +52,7 @@ export interface TreeSelectProps<TNode> {
 }
 
 function withChildren<TNode>(node: TNode, children: TNode[]): TNode {
-  if (typeof node === 'object' && node !== null) {
+  if (typeof node === "object" && node !== null) {
     return {
       ...(node as Record<string, unknown>),
       children,
@@ -94,15 +94,15 @@ function filterTreeNodes<TNode>(
 }
 
 const sizeTokens: Record<TreeSelectSize, string> = {
-  sm: 'min-h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]',
-  md: 'min-h-[var(--lumen-control-height-md)] px-3 text-[14px]',
-  lg: 'min-h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]',
+  sm: "min-h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]",
+  md: "min-h-[var(--lumen-control-height-md)] px-3 text-[14px]",
+  lg: "min-h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]",
 };
 
 const optionSizeTokens: Record<TreeSelectSize, string> = {
-  sm: 'text-[13px]',
-  md: 'text-[14px]',
-  lg: 'text-[15px]',
+  sm: "text-[13px]",
+  md: "text-[14px]",
+  lg: "text-[15px]",
 };
 
 function getNodeChildren<TNode>(
@@ -113,9 +113,9 @@ function getNodeChildren<TNode>(
     return getChildren(node) ?? [];
   }
   if (
-    typeof node === 'object' &&
+    typeof node === "object" &&
     node !== null &&
-    'children' in (node as Record<string, unknown>) &&
+    "children" in (node as Record<string, unknown>) &&
     Array.isArray((node as { children?: unknown[] }).children)
   ) {
     return ((node as { children?: TNode[] }).children ?? []) as TNode[];
@@ -235,7 +235,7 @@ export const TreeSelect = <TNode,>({
   loading = false,
   emptyText: emptyTextProp,
   className,
-  size = 'md',
+  size = "md",
 }: TreeSelectProps<TNode>) => {
   const locale = useLumenLocale();
   const searchPlaceholder = searchPlaceholderProp ?? locale.treeSelect.searchPlaceholder;
@@ -250,9 +250,9 @@ export const TreeSelect = <TNode,>({
   const [expandedKeys, setExpandedKeys] = useState<string[]>(
     getDefaultExpandedKeys(nodes, getValue, getChildren, defaultExpandedDepth),
   );
-  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({
-    position: 'fixed',
+    position: "fixed",
     top: 0,
     left: 0,
     zIndex: 9999,
@@ -261,9 +261,15 @@ export const TreeSelect = <TNode,>({
   const portalRef = useRef<HTMLDivElement>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
   const openingDirectionRef = useRef<boolean | null>(null);
-  const defaultExpansionKey = JSON.stringify(
-    getDefaultExpandedKeys(nodes, getValue, getChildren, defaultExpandedDepth),
+  const defaultExpandedKeys = getDefaultExpandedKeys(
+    nodes,
+    getValue,
+    getChildren,
+    defaultExpandedDepth,
   );
+  const defaultExpandedKeysRef = useRef(defaultExpandedKeys);
+  defaultExpandedKeysRef.current = defaultExpandedKeys;
+  const defaultExpansionKey = JSON.stringify(defaultExpandedKeys);
 
   const updateDropdownPosition = useCallback(() => {
     if (!containerRef.current) {
@@ -301,10 +307,10 @@ export const TreeSelect = <TNode,>({
 
     setShouldDropUp(shouldOpenUp);
     setDropdownStyle({
-      position: 'fixed',
+      position: "fixed",
       top,
       left,
-      width: 'max-content',
+      width: "max-content",
       minWidth: triggerWidth,
       maxWidth,
       maxHeight,
@@ -328,7 +334,7 @@ export const TreeSelect = <TNode,>({
 
   const visibleNodes = filterTreeNodes(
     nodes,
-    searchable ? searchKeyword : '',
+    searchable ? searchKeyword : "",
     getLabel,
     getChildren,
   );
@@ -337,7 +343,7 @@ export const TreeSelect = <TNode,>({
 
   useEffect(() => {
     // Compare expansion defaults by value: controlled selection may recreate nodes.
-    setExpandedKeys(JSON.parse(defaultExpansionKey) as string[]);
+    setExpandedKeys(defaultExpandedKeysRef.current);
   }, [defaultExpansionKey]);
 
   useEffect(() => {
@@ -370,8 +376,8 @@ export const TreeSelect = <TNode,>({
         setIsAnimatingOut(false);
       }, 120);
     };
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => document.removeEventListener('mousedown', handleOutsideClick);
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [isOpen]);
 
   useLayoutEffect(() => {
@@ -381,24 +387,24 @@ export const TreeSelect = <TNode,>({
 
     updateDropdownPosition();
     const frameId = window.requestAnimationFrame(updateDropdownPosition);
-    const resizeObserver = typeof ResizeObserver === 'undefined'
+    const resizeObserver = typeof ResizeObserver === "undefined"
       ? null : new ResizeObserver(updateDropdownPosition);
     if (containerRef.current) resizeObserver?.observe(containerRef.current);
     if (portalRef.current) resizeObserver?.observe(portalRef.current);
-    window.addEventListener('scroll', updateDropdownPosition, true);
-    window.addEventListener('resize', updateDropdownPosition);
+    window.addEventListener("scroll", updateDropdownPosition, true);
+    window.addEventListener("resize", updateDropdownPosition);
 
     return () => {
       window.cancelAnimationFrame(frameId);
       resizeObserver?.disconnect();
-      window.removeEventListener('scroll', updateDropdownPosition, true);
-      window.removeEventListener('resize', updateDropdownPosition);
+      window.removeEventListener("scroll", updateDropdownPosition, true);
+      window.removeEventListener("resize", updateDropdownPosition);
     };
   }, [isOpen, nodes, loading, updateDropdownPosition]);
 
   useEffect(() => {
     if (!isOpen) {
-      setSearchKeyword('');
+      setSearchKeyword("");
     }
   }, [isOpen]);
 
@@ -460,14 +466,14 @@ export const TreeSelect = <TNode,>({
         <div
           data-ui="tree-select-row"
           className={cn(
-            'flex items-center rounded-[8px] px-2 py-1.5 transition-colors',
+            "flex items-center rounded-[8px] px-2 py-1.5 transition-colors",
             optionSizeTokens[size],
-            !selectable && 'cursor-default',
+            !selectable && "cursor-default",
             isSelected
-              ? 'bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary)]'
+              ? "bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary)]"
               : selectable
-                ? 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]'
-                : 'text-[var(--lumen-color-text-secondary)]',
+                ? "text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]"
+                : "text-[var(--lumen-color-text-secondary)]",
           )}
           style={{ paddingLeft: `${depth * 16 + 8}px` }}
         >
@@ -485,8 +491,8 @@ export const TreeSelect = <TNode,>({
               <ChevronRight
                 size={14}
                 className={cn(
-                  'transition-transform duration-200 ease-out',
-                  isExpanded && 'rotate-90',
+                  "transition-transform duration-200 ease-out",
+                  isExpanded && "rotate-90",
                 )}
               />
             </button>
@@ -500,8 +506,8 @@ export const TreeSelect = <TNode,>({
             aria-disabled={!selectable}
             disabled={!selectable}
             className={cn(
-              'flex min-w-0 flex-1 items-center gap-2 rounded-[inherit] bg-transparent text-left text-inherit outline-none',
-              selectable ? 'cursor-pointer' : '!cursor-default',
+              "flex min-w-0 flex-1 items-center gap-2 rounded-[inherit] bg-transparent text-left text-inherit outline-none",
+              selectable ? "cursor-pointer" : "!cursor-default",
             )}
             onClick={() => {
               if (!selectable) {
@@ -559,10 +565,10 @@ export const TreeSelect = <TNode,>({
             aria-hidden={!isExpanded}
             inert={!isExpanded}
             className={cn(
-              'grid transition-[grid-template-rows,opacity] duration-200 ease-out',
+              "grid transition-[grid-template-rows,opacity] duration-200 ease-out",
               isExpanded
-                ? 'grid-rows-[1fr] opacity-100'
-                : 'grid-rows-[0fr] opacity-0',
+                ? "grid-rows-[1fr] opacity-100"
+                : "grid-rows-[0fr] opacity-0",
             )}
           >
             <div className="min-h-0 overflow-hidden">
@@ -579,17 +585,17 @@ export const TreeSelect = <TNode,>({
   return (
     <div
       ref={containerRef}
-      className={cn('relative', className)}
+      className={cn("relative", className)}
       onKeyDown={(event) => {
         if (disabled) {
           return;
         }
-        if (!isOpen && (event.key === 'Enter' || event.key === ' ')) {
+        if (!isOpen && (event.key === "Enter" || event.key === " ")) {
           event.preventDefault();
           openDropdown();
           return;
         }
-        if (isOpen && event.key === 'Escape') {
+        if (isOpen && event.key === "Escape") {
           event.preventDefault();
           event.stopPropagation();
           closeDropdownImmediate();
@@ -611,14 +617,14 @@ export const TreeSelect = <TNode,>({
           openDropdown();
         }}
         className={cn(
-          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left font-normal outline-none transition-all focus-visible:border-[var(--lumen-color-primary)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
+          "flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left font-normal outline-none transition-all focus-visible:border-[var(--lumen-color-primary)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20",
           radiusTokens.control,
           sizeTokens[size],
           disabled
-            ? 'cursor-not-allowed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] opacity-50'
+            ? "cursor-not-allowed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] opacity-50"
             : isOpen
-              ? 'border-[var(--lumen-color-primary)] ring-1 ring-[var(--lumen-color-primary)]/10'
-              : 'border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)]',
+              ? "border-[var(--lumen-color-primary)] ring-1 ring-[var(--lumen-color-primary)]/10"
+              : "border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)]",
         )}
       >
         {multiple ? (
@@ -673,8 +679,8 @@ export const TreeSelect = <TNode,>({
         <ChevronDown
           size={16}
           className={cn(
-            'shrink-0 text-[var(--lumen-color-text-placeholder)] transition-transform duration-200',
-            isOpen && 'rotate-180',
+            "shrink-0 text-[var(--lumen-color-text-placeholder)] transition-transform duration-200",
+            isOpen && "rotate-180",
           )}
         />
       </button>
@@ -685,23 +691,23 @@ export const TreeSelect = <TNode,>({
             ref={portalRef}
             data-ui="tree-select-dropdown"
             data-testid="tree-select-dropdown"
-            data-placement={shouldDropUp ? 'top' : 'bottom'}
+            data-placement={shouldDropUp ? "top" : "bottom"}
             data-lumen-overlay-scope={overlayScopeId ?? undefined}
             className={cn(
               radiusTokens.card,
-              'flex flex-col overflow-hidden border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]',
+              "flex flex-col overflow-hidden border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]",
             )}
             style={{
               ...dropdownStyle,
               animation: isAnimatingOut
                 ? shouldDropUp
-                  ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
-                  : 'lumen-dropdown-out 0.12s ease-in forwards'
+                  ? "lumen-dropdown-out-up 0.12s ease-in forwards"
+                  : "lumen-dropdown-out 0.12s ease-in forwards"
                 : shouldDropUp
-                  ? 'lumen-dropdown-in-up 0.12s ease-out'
-                  : 'lumen-dropdown-in 0.12s ease-out',
+                  ? "lumen-dropdown-in-up 0.12s ease-out"
+                  : "lumen-dropdown-in 0.12s ease-out",
               transformOrigin: dropdownTransformOrigin(shouldDropUp),
-              visibility: isPositioned ? undefined : 'hidden',
+              visibility: isPositioned ? undefined : "hidden",
             }}
           >
             {searchable ? (
@@ -710,7 +716,7 @@ export const TreeSelect = <TNode,>({
                   <Search size={14} className="shrink-0 text-[var(--lumen-color-text-placeholder)]" />
                   <input
                     className={cn(
-                      'w-full bg-transparent text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]',
+                      "w-full bg-transparent text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]",
                       optionSizeTokens[size],
                     )}
                     placeholder={searchPlaceholder}

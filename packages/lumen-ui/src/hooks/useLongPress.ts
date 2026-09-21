@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from "react";
 
 export type LongPressCancelReason =
-  | 'disabled'
-  | 'leave'
-  | 'move'
-  | 'pointer-cancel'
-  | 'released'
-  | 'scroll';
+  | "disabled"
+  | "leave"
+  | "move"
+  | "pointer-cancel"
+  | "released"
+  | "scroll";
 
-export type LongPressPointerType = 'touch' | 'pen' | 'mouse';
+export type LongPressPointerType = "touch" | "pen" | "mouse";
 
-const defaultPointerTypes: readonly LongPressPointerType[] = ['touch', 'pen'];
+const defaultPointerTypes: readonly LongPressPointerType[] = ["touch", "pen"];
 
 export interface UseLongPressOptions<T extends HTMLElement> {
   /** 长按达到触发时间后调用。 */
@@ -86,11 +86,11 @@ export const useLongPress = <T extends HTMLElement = HTMLElement>({
   }, []);
 
   const handleScroll = useCallback(() => {
-    cancelRef.current('scroll');
+    cancelRef.current("scroll");
   }, []);
 
   const removeScrollListener = useCallback(() => {
-    window.removeEventListener('scroll', handleScroll, true);
+    window.removeEventListener("scroll", handleScroll, true);
   }, [handleScroll]);
 
   const cancel = useCallback((reason: LongPressCancelReason) => {
@@ -110,7 +110,7 @@ export const useLongPress = <T extends HTMLElement = HTMLElement>({
   }, [clearTimer, removeScrollListener]);
 
   useEffect(() => {
-    if (disabled) cancel('disabled');
+    if (disabled) cancel("disabled");
   }, [cancel, disabled]);
 
   const onPointerDownHandler: React.PointerEventHandler<T> = (event) => {
@@ -133,7 +133,7 @@ export const useLongPress = <T extends HTMLElement = HTMLElement>({
     suppressClickRef.current = false;
     suppressContextMenuRef.current = false;
     optionsRef.current.onStart?.(event);
-    window.addEventListener('scroll', handleScroll, true);
+    window.addEventListener("scroll", handleScroll, true);
     timerRef.current = window.setTimeout(() => {
       const gesture = gestureRef.current;
       if (!gesture) return;
@@ -149,7 +149,7 @@ export const useLongPress = <T extends HTMLElement = HTMLElement>({
     const gesture = gestureRef.current;
     if (!gesture || gesture.pointerId !== event.pointerId || triggeredRef.current) return;
     if (Math.hypot(event.clientX - gesture.startX, event.clientY - gesture.startY) > Math.max(0, moveThreshold)) {
-      cancel('move');
+      cancel("move");
     }
   };
 
@@ -162,18 +162,18 @@ export const useLongPress = <T extends HTMLElement = HTMLElement>({
     clearTimer();
     removeScrollListener();
     if (triggered) optionsRef.current.onFinish?.(event);
-    else optionsRef.current.onCancel?.('released');
+    else optionsRef.current.onCancel?.("released");
   };
 
   return {
     onPointerDown: onPointerDownHandler,
     onPointerMove: onPointerMoveHandler,
     onPointerUp: onPointerUpHandler,
-    onPointerCancel: () => cancel('pointer-cancel'),
+    onPointerCancel: () => cancel("pointer-cancel"),
     onPointerLeave: (event) => {
-      if (event.pointerType === 'mouse') cancel('leave');
+      if (event.pointerType === "mouse") cancel("leave");
     },
-    onLostPointerCapture: () => cancel('pointer-cancel'),
+    onLostPointerCapture: () => cancel("pointer-cancel"),
     onClick: (event) => {
       if (suppressClickRef.current) {
         suppressClickRef.current = false;

@@ -1,13 +1,13 @@
-import { Minus, Plus } from 'lucide-react';
-import React, { useCallback, useRef, useState } from 'react';
-import { cn } from '../classNames';
-import { Input, type InputProps } from '../Input';
-import { useLumenLocale } from '../../i18n';
+import { Minus, Plus } from "lucide-react";
+import React, { useCallback, useRef, useState } from "react";
+import { cn } from "../classNames";
+import { Input, type InputProps } from "../Input";
+import { useLumenLocale } from "../../i18n";
 
 export interface NumberInputProps
   extends Omit<
     InputProps,
-    'defaultValue' | 'onChange' | 'passwordToggle' | 'passwordToggleLabels' | 'type' | 'value'
+    "defaultValue" | "onChange" | "passwordToggle" | "passwordToggleLabels" | "type" | "value"
   > {
   value?: number | null;
   defaultValue?: number;
@@ -19,7 +19,7 @@ export interface NumberInputProps
 }
 
 const readInputValue = (input: HTMLInputElement): number | null =>
-  input.value === '' || Number.isNaN(input.valueAsNumber) ? null : input.valueAsNumber;
+  input.value === "" || Number.isNaN(input.valueAsNumber) ? null : input.valueAsNumber;
 
 export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
   (
@@ -35,7 +35,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       suffix,
       disabled,
       readOnly,
-      inputMode = 'decimal',
+      inputMode = "decimal",
       ...props
     },
     forwardedRef,
@@ -58,7 +58,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 
     const setInputRef = useCallback((node: HTMLInputElement | null) => {
       inputRef.current = node;
-      if (typeof forwardedRef === 'function') forwardedRef(node);
+      if (typeof forwardedRef === "function") forwardedRef(node);
       else if (forwardedRef) forwardedRef.current = node;
     }, [forwardedRef]);
 
@@ -72,11 +72,11 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       commitValue(readInputValue(event.currentTarget));
     };
 
-    const stepValue = (direction: 'up' | 'down') => {
+    const stepValue = (direction: "up" | "down") => {
       const input = inputRef.current;
       if (!input) return;
       try {
-        if (direction === 'up') input.stepUp();
+        if (direction === "up") input.stepUp();
         else input.stepDown();
       } catch {
         return;
@@ -96,7 +96,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               disabled={decrementDisabled}
               className="flex h-6 w-6 items-center justify-center rounded-[var(--lumen-radius-icon)] text-[var(--lumen-color-text-muted)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-40"
               onPointerDown={(event) => event.preventDefault()}
-              onClick={() => stepValue('down')}
+              onClick={() => stepValue("down")}
             >
               <Minus aria-hidden="true" size={14} />
             </button>
@@ -106,7 +106,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               disabled={incrementDisabled}
               className="flex h-6 w-6 items-center justify-center rounded-[var(--lumen-radius-icon)] text-[var(--lumen-color-text-muted)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-40"
               onPointerDown={(event) => event.preventDefault()}
-              onClick={() => stepValue('up')}
+              onClick={() => stepValue("up")}
             >
               <Plus aria-hidden="true" size={14} />
             </button>
@@ -125,14 +125,14 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         suffix={composedSuffix}
         disabled={disabled}
         readOnly={readOnly}
-        value={controlled ? value ?? '' : undefined}
+        value={controlled ? value ?? "" : undefined}
         defaultValue={controlled ? undefined : defaultValue}
         onChange={handleChange}
         data-number-input=""
-        inputClassName={cn('[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none', props.inputClassName)}
+        inputClassName={cn("[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none", props.inputClassName)}
       />
     );
   },
 );
 
-NumberInput.displayName = 'NumberInput';
+NumberInput.displayName = "NumberInput";

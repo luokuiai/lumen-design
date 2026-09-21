@@ -1,9 +1,9 @@
-import { ChevronRight } from 'lucide-react';
-import React from 'react';
-import { cn } from '../classNames';
-import { useLumenLocale } from '../../i18n';
+import { ChevronRight } from "lucide-react";
+import React from "react";
+import { cn } from "../classNames";
+import { useLumenLocale } from "../../i18n";
 
-export type BreadcrumbSize = 'sm' | 'md' | 'lg';
+export type BreadcrumbSize = "sm" | "md" | "lg";
 
 export interface BreadcrumbItem {
   key?: React.Key;
@@ -15,16 +15,16 @@ export interface BreadcrumbItem {
 }
 
 export interface BreadcrumbProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, 'children'> {
+  extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   items: BreadcrumbItem[];
   separator?: React.ReactNode;
   size?: BreadcrumbSize;
 }
 
 const sizeClassNames: Record<BreadcrumbSize, string> = {
-  sm: 'text-[13px]',
-  md: 'text-[14px]',
-  lg: 'text-[15px]',
+  sm: "text-[13px]",
+  md: "text-[14px]",
+  lg: "text-[15px]",
 };
 
 export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
@@ -32,9 +32,9 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
     {
       items,
       separator = <ChevronRight aria-hidden="true" size={14} strokeWidth={1.75} />,
-      size = 'md',
+      size = "md",
       className,
-      'aria-label': ariaLabel,
+      "aria-label": ariaLabel,
       ...props
     },
     ref,
@@ -48,7 +48,7 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
         aria-label={ariaLabel ?? locale.navigation.breadcrumb}
         data-ui="breadcrumb"
         data-size={size}
-        className={cn('max-w-full overflow-x-auto', sizeClassNames[size], className)}
+        className={cn("max-w-full overflow-x-auto", sizeClassNames[size], className)}
       >
         <ol className="flex min-w-max items-center gap-1.5 whitespace-nowrap">
           {items.map((item, index) => {
@@ -60,12 +60,12 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
               </>
             );
             const itemClassName = cn(
-              'inline-flex items-center gap-1 rounded-[var(--lumen-radius-tag)] outline-none transition-colors focus-visible:text-[var(--lumen-color-primary)]',
+              "inline-flex items-center gap-1 rounded-[var(--lumen-radius-tag)] outline-none transition-colors focus-visible:text-[var(--lumen-color-primary)]",
               current
-                ? 'text-[var(--lumen-color-text)]'
-                : 'text-[var(--lumen-color-text-placeholder)]',
-              !current && !item.disabled && 'hover:text-[var(--lumen-color-primary)]',
-              item.disabled && 'cursor-not-allowed opacity-50',
+                ? "text-[var(--lumen-color-text)]"
+                : "text-[var(--lumen-color-text-placeholder)]",
+              !current && !item.disabled && "hover:text-[var(--lumen-color-primary)]",
+              item.disabled && "cursor-not-allowed opacity-50",
             );
 
             let itemContent: React.ReactNode;
@@ -79,7 +79,7 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
               itemContent = (
                 <a
                   href={item.href}
-                  aria-current={current ? 'page' : undefined}
+                  aria-current={current ? "page" : undefined}
                   className={itemClassName}
                   onClick={item.onClick}
                 >
@@ -94,7 +94,7 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
               );
             } else {
               itemContent = (
-                <span aria-current={current ? 'page' : undefined} className={itemClassName}>
+                <span aria-current={current ? "page" : undefined} className={itemClassName}>
                   {content}
                 </span>
               );
@@ -117,4 +117,4 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
   },
 );
 
-Breadcrumb.displayName = 'Breadcrumb';
+Breadcrumb.displayName = "Breadcrumb";

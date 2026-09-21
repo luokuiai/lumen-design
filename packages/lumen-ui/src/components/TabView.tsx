@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { cn } from './classNames';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { cn } from "./classNames";
 
 export interface TabViewItem<T extends string> {
   value: T;
@@ -11,7 +11,7 @@ export interface TabViewItem<T extends string> {
 }
 
 export interface TabViewProps<T extends string>
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "onChange"> {
   value: T;
   items: readonly TabViewItem<T>[];
   onChange: (value: T) => void;
@@ -25,7 +25,7 @@ export interface TabViewProps<T extends string>
   swipeIgnoreSelector?: string;
 }
 
-type DragAxis = 'horizontal' | 'vertical';
+type DragAxis = "horizontal" | "vertical";
 
 type DragState = {
   pointerId: number;
@@ -53,7 +53,7 @@ const hasHorizontalScroll = (target: HTMLElement, root: HTMLElement) => {
     const overflowX = window.getComputedStyle(current).overflowX;
     if (
       current.scrollWidth > current.clientWidth
-      && (overflowX === 'auto' || overflowX === 'scroll')
+      && (overflowX === "auto" || overflowX === "scroll")
     ) {
       return true;
     }
@@ -104,7 +104,7 @@ export const TabView = <T extends string>({
     if (
       event.defaultPrevented
       || !swipeable
-      || event.pointerType !== 'touch'
+      || event.pointerType !== "touch"
       || items.length < 2
       || event.clientX <= Math.max(0, edgeSwipeWidth)
       || event.clientX >= window.innerWidth - Math.max(0, edgeSwipeWidth)
@@ -135,9 +135,9 @@ export const TabView = <T extends string>({
 
     if (!drag.axis) {
       if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 8) return;
-      drag.axis = Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical';
+      drag.axis = Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
     }
-    if (drag.axis === 'vertical') return;
+    if (drag.axis === "vertical") return;
 
     event.preventDefault();
     const step = deltaX < 0 ? 1 : -1;
@@ -155,7 +155,7 @@ export const TabView = <T extends string>({
     const distanceThreshold = width > 0
       ? Math.min(Math.max(0, swipeThreshold), width * 0.25)
       : Math.max(0, swipeThreshold);
-    const shouldChange = drag.axis === 'horizontal'
+    const shouldChange = drag.axis === "horizontal"
       && (Math.abs(drag.offset) >= distanceThreshold
         || Math.abs(drag.offset) / elapsed >= Math.max(0, velocityThreshold));
     const step = drag.offset < 0 ? 1 : -1;
@@ -171,8 +171,8 @@ export const TabView = <T extends string>({
       data-ui="tab-view"
       data-swipeable={swipeable || undefined}
       data-dragging={dragging || undefined}
-      className={cn('min-w-0 overflow-hidden', className)}
-      style={{ touchAction: swipeable ? 'pan-y' : undefined, ...style }}
+      className={cn("min-w-0 overflow-hidden", className)}
+      style={{ touchAction: swipeable ? "pan-y" : undefined, ...style }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={(event) => {
@@ -188,8 +188,8 @@ export const TabView = <T extends string>({
         data-tab-view-track
         data-lumen-motion
         className={cn(
-          'flex w-full will-change-transform',
-          dragging ? 'transition-none' : 'transition-transform duration-300 ease-out',
+          "flex w-full will-change-transform",
+          dragging ? "transition-none" : "transition-transform duration-300 ease-out",
           trackClassName,
         )}
         style={{
@@ -209,7 +209,7 @@ export const TabView = <T extends string>({
               data-active={active || undefined}
               data-value={item.value}
               tabIndex={-1}
-              className={cn('w-full shrink-0', panelClassName, item.className)}
+              className={cn("w-full shrink-0", panelClassName, item.className)}
             >
               {item.content}
             </div>

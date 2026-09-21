@@ -1,6 +1,6 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { cn } from '../classNames';
-import { FormContext } from './formContext';
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { cn } from "../classNames";
+import { FormContext } from "./formContext";
 
 export type FormErrors<TValues extends object> = Partial<Record<Extract<keyof TValues, string>, string>>;
 
@@ -12,7 +12,7 @@ export interface FormRenderProps<TValues extends object> {
 }
 
 export interface FormProps<TValues extends object>
-  extends Omit<React.FormHTMLAttributes<HTMLFormElement>, 'children' | 'onSubmit' | 'noValidate'> {
+  extends Omit<React.FormHTMLAttributes<HTMLFormElement>, "children" | "onSubmit" | "noValidate"> {
   /** Current field values, owned by the caller. */
   values: TValues;
   /** Check every field in one synchronous pass. Return an empty object when valid. */
@@ -49,7 +49,7 @@ export function Form<TValues extends object>({
     if (!hasSubmitted.current || submitting.current) return;
     try {
       setErrors(Object.fromEntries(
-        Object.entries(validate(values)).filter(([, message]) => typeof message === 'string' && message.length > 0),
+        Object.entries(validate(values)).filter(([, message]) => typeof message === "string" && message.length > 0),
       ) as FormErrors<TValues>);
       setSubmitError(null);
     } catch (error) {
@@ -59,15 +59,15 @@ export function Form<TValues extends object>({
 
   useLayoutEffect(() => {
     if (!validationAttempt || !focusFirstError) return;
-    const fields = formRef.current?.querySelectorAll<HTMLElement>('[data-lumen-form-field-invalid]');
+    const fields = formRef.current?.querySelectorAll<HTMLElement>("[data-lumen-form-field-invalid]");
     for (const field of fields ?? []) {
-      if (field.closest('[hidden], [inert]')) continue;
+      if (field.closest("[hidden], [inert]")) continue;
       const control = field.querySelector<HTMLElement>(
         'input:not([type="hidden"]):not(:disabled), select:not(:disabled), textarea:not(:disabled), button:not(:disabled), [tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
       );
       if (!control) continue;
       control.focus();
-      control.scrollIntoView?.({ block: 'nearest' });
+      control.scrollIntoView?.({ block: "nearest" });
       break;
     }
   }, [validationAttempt, focusFirstError]);
@@ -80,7 +80,7 @@ export function Form<TValues extends object>({
     setSubmitError(null);
     try {
       const nextErrors = Object.fromEntries(
-        Object.entries(validate(values)).filter(([, message]) => typeof message === 'string' && message.length > 0),
+        Object.entries(validate(values)).filter(([, message]) => typeof message === "string" && message.length > 0),
       ) as FormErrors<TValues>;
       setErrors(nextErrors);
       if (Object.keys(nextErrors).length) {
@@ -105,7 +105,7 @@ export function Form<TValues extends object>({
         ref={formRef}
         noValidate
         aria-busy={isSubmitting || undefined}
-        className={cn('space-y-4', className)}
+        className={cn("space-y-4", className)}
         onSubmit={submit}
         onReset={(event) => {
           if (submitting.current) {
@@ -120,7 +120,7 @@ export function Form<TValues extends object>({
           setValidationAttempt(0);
         }}
       >
-        {typeof children === 'function' ? children({ errors, isSubmitting, submitError }) : children}
+        {typeof children === "function" ? children({ errors, isSubmitting, submitError }) : children}
       </form>
     </FormContext.Provider>
   );

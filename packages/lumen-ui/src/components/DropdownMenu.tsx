@@ -5,14 +5,14 @@ import React, {
   useLayoutEffect,
   useRef,
   useState,
-} from 'react';
-import { createPortal } from 'react-dom';
-import { cn } from './classNames';
+} from "react";
+import { createPortal } from "react-dom";
+import { cn } from "./classNames";
 import {
   announceFloatingLayerOpen,
   FLOATING_LAYER_OPEN_EVENT,
-} from './floatingEvents';
-import { useOverlayPortalScope } from './useOverlayBehavior';
+} from "./floatingEvents";
+import { useOverlayPortalScope } from "./useOverlayBehavior";
 
 interface DropdownMenuRenderState {
   open: boolean;
@@ -26,7 +26,7 @@ interface DropdownMenuContentState {
   close: () => void;
 }
 
-export type DropdownMenuAlign = 'auto' | 'left' | 'right';
+export type DropdownMenuAlign = "auto" | "left" | "right";
 
 export interface DropdownMenuProps {
   trigger: (state: DropdownMenuRenderState) => React.ReactNode;
@@ -42,9 +42,9 @@ export interface DropdownMenuProps {
 }
 
 export interface DropdownMenuItemProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'role' | 'children'> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "role" | "children"> {
   /** 菜单项的无障碍语义：普通项、单选项或复选项。 */
-  role?: 'menuitem' | 'menuitemradio' | 'menuitemcheckbox';
+  role?: "menuitem" | "menuitemradio" | "menuitemcheckbox";
   /** 菜单项内容。 */
   children: React.ReactNode;
 }
@@ -52,45 +52,45 @@ export interface DropdownMenuItemProps
 export const DropdownMenuItem = React.forwardRef<
   HTMLButtonElement,
   DropdownMenuItemProps
->(({ className, type = 'button', role = 'menuitem', ...props }, ref) => (
+>(({ className, type = "button", role = "menuitem", ...props }, ref) => (
   <button
     ref={ref}
     type={type}
     role={role}
     className={cn(
-      'flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-[6px] px-2.5 text-left text-[14px] font-normal text-[var(--lumen-color-text-strong)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] focus-visible:bg-[var(--lumen-color-surface-muted)] focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-border)] disabled:cursor-not-allowed disabled:opacity-45',
+      "flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-[6px] px-2.5 text-left text-[14px] font-normal text-[var(--lumen-color-text-strong)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] focus-visible:bg-[var(--lumen-color-surface-muted)] focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-border)] disabled:cursor-not-allowed disabled:opacity-45",
       className,
     )}
     {...props}
   />
 ));
 
-DropdownMenuItem.displayName = 'DropdownMenuItem';
+DropdownMenuItem.displayName = "DropdownMenuItem";
 
 const DEFAULT_CLOSE_DELAY_MS = 120;
 const OPEN_ANIMATION_DELAY_MS = 16;
-type DropdownMenuPhase = 'closed' | 'opening' | 'open' | 'closing';
+type DropdownMenuPhase = "closed" | "opening" | "open" | "closing";
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   trigger,
   children,
   className,
   menuClassName,
-  align = 'auto',
+  align = "auto",
   closeDelayMs = DEFAULT_CLOSE_DELAY_MS,
   menuMode = false,
   onOpenChange,
 }) => {
   const overlayScopeId = useOverlayPortalScope();
   const menuId = useId();
-  const [phase, setPhase] = useState<DropdownMenuPhase>('closed');
-  const [resolvedAlign, setResolvedAlign] = useState<'left' | 'right'>(
-    align === 'right' ? 'right' : 'left',
+  const [phase, setPhase] = useState<DropdownMenuPhase>("closed");
+  const [resolvedAlign, setResolvedAlign] = useState<"left" | "right">(
+    align === "right" ? "right" : "left",
   );
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({
     left: -9999,
-    position: 'fixed',
-    right: 'auto',
+    position: "fixed",
+    right: "auto",
     top: -9999,
   });
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
@@ -98,8 +98,8 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerElementRef = useRef<HTMLElement | null>(null);
-  const mounted = phase !== 'closed';
-  const triggerOpen = phase === 'opening' || phase === 'open';
+  const mounted = phase !== "closed";
+  const triggerOpen = phase === "opening" || phase === "open";
 
   const clearCloseTimer = useCallback(() => {
     if (closeTimerRef.current) {
@@ -128,7 +128,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
           ) ?? null);
     }
-    setPhase('opening');
+    setPhase("opening");
     onOpenChange?.(true);
     announceFloatingLayerOpen(menuId);
   }, [clearCloseTimer, clearOpenTimer, menuId, menuMode, onOpenChange]);
@@ -136,20 +136,20 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   const closeMenuImmediately = useCallback(() => {
     clearCloseTimer();
     clearOpenTimer();
-    setPhase('closed');
+    setPhase("closed");
     onOpenChange?.(false);
   }, [clearCloseTimer, clearOpenTimer, onOpenChange]);
 
   const closeMenu = useCallback(() => {
     clearCloseTimer();
     clearOpenTimer();
-    setPhase('closing');
+    setPhase("closing");
     onOpenChange?.(false);
     if (menuMode) {
       triggerElementRef.current?.focus();
     }
     closeTimerRef.current = setTimeout(() => {
-      setPhase('closed');
+      setPhase("closed");
       closeTimerRef.current = null;
     }, closeDelayMs);
   }, [
@@ -175,15 +175,15 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
           [],
       ).filter(
         (item) =>
-          !item.hasAttribute('disabled') &&
-          item.getAttribute('aria-disabled') !== 'true',
+          !item.hasAttribute("disabled") &&
+          item.getAttribute("aria-disabled") !== "true",
       ),
     [],
   );
 
   const handleMenuKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         event.preventDefault();
         event.stopPropagation();
         closeMenu();
@@ -199,19 +199,19 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
       );
       let nextIndex: number | null = null;
       switch (event.key) {
-        case 'ArrowDown':
+        case "ArrowDown":
           nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % menuItems.length;
           break;
-        case 'ArrowUp':
+        case "ArrowUp":
           nextIndex =
             currentIndex < 0
               ? menuItems.length - 1
               : (currentIndex - 1 + menuItems.length) % menuItems.length;
           break;
-        case 'Home':
+        case "Home":
           nextIndex = 0;
           break;
-        case 'End':
+        case "End":
           nextIndex = menuItems.length - 1;
           break;
         default:
@@ -245,13 +245,13 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
     const spaceToRight = viewportWidth - viewportPadding - triggerRect.left;
     const spaceToLeft = triggerRect.right - viewportPadding;
     const nextAlign =
-      align === 'auto'
+      align === "auto"
         ? spaceToRight >= menuWidth || spaceToRight >= spaceToLeft
-          ? 'left'
-          : 'right'
+          ? "left"
+          : "right"
         : align;
     const preferredLeft =
-      nextAlign === 'right' ? triggerRect.right - menuWidth : triggerRect.left;
+      nextAlign === "right" ? triggerRect.right - menuWidth : triggerRect.left;
     const maxLeft = Math.max(
       viewportPadding,
       viewportWidth - menuWidth - viewportPadding,
@@ -273,8 +273,8 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
     setMenuStyle({
       left,
-      position: 'fixed',
-      right: 'auto',
+      position: "fixed",
+      right: "auto",
       top,
       maxWidth: `calc(100vw - ${viewportPadding * 2}px)`,
     });
@@ -307,30 +307,30 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
       }
     };
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         closeMenu();
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('keydown', handleEscape);
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
     };
   }, [closeMenu, mounted]);
 
   useLayoutEffect(() => {
     if (!mounted) return;
     updateMenuPosition();
-    if (menuMode && phase === 'opening') {
+    if (menuMode && phase === "opening") {
       menuRef.current?.focus();
     }
   }, [getMenuItems, menuMode, mounted, phase, updateMenuPosition]);
 
   useEffect(() => {
-    if (!mounted || phase !== 'opening') return;
+    if (!mounted || phase !== "opening") return;
     openTimerRef.current = setTimeout(() => {
-      setPhase('open');
+      setPhase("open");
       openTimerRef.current = null;
     }, OPEN_ANIMATION_DELAY_MS);
     return () => {
@@ -340,12 +340,12 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
   useEffect(() => {
     if (!mounted) return;
-    window.addEventListener('scroll', updateMenuPosition, true);
-    window.addEventListener('resize', updateMenuPosition);
+    window.addEventListener("scroll", updateMenuPosition, true);
+    window.addEventListener("resize", updateMenuPosition);
 
     return () => {
-      window.removeEventListener('scroll', updateMenuPosition, true);
-      window.removeEventListener('resize', updateMenuPosition);
+      window.removeEventListener("scroll", updateMenuPosition, true);
+      window.removeEventListener("resize", updateMenuPosition);
     };
   }, [mounted, updateMenuPosition]);
 
@@ -357,7 +357,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   }, [clearCloseTimer, clearOpenTimer]);
 
   return (
-    <div ref={containerRef} className={cn('relative', className)}>
+    <div ref={containerRef} className={cn("relative", className)}>
       {trigger({
         open: triggerOpen,
         menuId,
@@ -369,8 +369,8 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         createPortal(
           <div
             id={menuId}
-            role={menuMode ? 'menu' : undefined}
-            aria-orientation={menuMode ? 'vertical' : undefined}
+            role={menuMode ? "menu" : undefined}
+            aria-orientation={menuMode ? "vertical" : undefined}
             tabIndex={menuMode ? -1 : undefined}
             data-testid="dropdown-menu"
             data-state={phase}
@@ -385,19 +385,19 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
               data-lumen-motion
               data-ui="dropdown-surface"
               className={cn(
-                'rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[var(--lumen-shadow-dropdown)]',
-                resolvedAlign === 'right' ? 'origin-top-right' : 'origin-top-left',
-                menuMode && 'min-w-40 max-w-[320px] whitespace-nowrap [&_svg]:shrink-0',
+                "rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[var(--lumen-shadow-dropdown)]",
+                resolvedAlign === "right" ? "origin-top-right" : "origin-top-left",
+                menuMode && "min-w-40 max-w-[320px] whitespace-nowrap [&_svg]:shrink-0",
                 menuClassName,
               )}
               style={{
                 animation:
-                phase === 'closing'
-                  ? 'lumen-dropdown-out 0.12s ease-in forwards'
-                  : 'lumen-dropdown-in 0.12s ease-out',
+                phase === "closing"
+                  ? "lumen-dropdown-out 0.12s ease-in forwards"
+                  : "lumen-dropdown-in 0.12s ease-out",
               }}
             >
-              {typeof children === 'function'
+              {typeof children === "function"
                 ? children({ open: triggerOpen, close: closeMenu })
                 : children}
             </div>

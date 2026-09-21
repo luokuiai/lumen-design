@@ -5,21 +5,21 @@ import React, {
   useLayoutEffect,
   useRef,
   useState,
-} from 'react';
-import { createPortal } from 'react-dom';
-import { cn } from './classNames';
+} from "react";
+import { createPortal } from "react-dom";
+import { cn } from "./classNames";
 import {
   announceFloatingLayerOpen,
   FLOATING_LAYER_OPEN_EVENT,
-} from './floatingEvents';
-import { useOverlayPortalScope } from './useOverlayBehavior';
+} from "./floatingEvents";
+import { useOverlayPortalScope } from "./useOverlayBehavior";
 import {
   computePosition,
   type TooltipPlacement,
-} from './tooltip-positions';
+} from "./tooltip-positions";
 
 export type PopoverPlacement = TooltipPlacement;
-export type PopoverAlign = 'start' | 'center' | 'end';
+export type PopoverAlign = "start" | "center" | "end";
 
 export interface PopoverRenderState {
   open: boolean;
@@ -51,7 +51,7 @@ export interface PopoverProps {
   ariaLabel?: string;
 }
 
-type PopoverPhase = 'closed' | 'opening' | 'open' | 'closing';
+type PopoverPhase = "closed" | "opening" | "open" | "closing";
 
 const OPEN_ANIMATION_DELAY_MS = 16;
 const DEFAULT_CLOSE_DELAY_MS = 120;
@@ -64,14 +64,14 @@ const getTransformOriginClassName = (
   placement: PopoverPlacement,
   align: PopoverAlign,
 ) => {
-  if (placement === 'top') {
-    return align === 'start' ? 'origin-bottom-left' : align === 'end' ? 'origin-bottom-right' : 'origin-bottom';
+  if (placement === "top") {
+    return align === "start" ? "origin-bottom-left" : align === "end" ? "origin-bottom-right" : "origin-bottom";
   }
-  if (placement === 'bottom') {
-    return align === 'start' ? 'origin-top-left' : align === 'end' ? 'origin-top-right' : 'origin-top';
+  if (placement === "bottom") {
+    return align === "start" ? "origin-top-left" : align === "end" ? "origin-top-right" : "origin-top";
   }
-  if (placement === 'left') return 'origin-right';
-  return 'origin-left';
+  if (placement === "left") return "origin-right";
+  return "origin-left";
 };
 
 export const Popover: React.FC<PopoverProps> = ({
@@ -80,27 +80,27 @@ export const Popover: React.FC<PopoverProps> = ({
   open,
   defaultOpen = false,
   onOpenChange,
-  placement = 'bottom',
-  align = 'center',
+  placement = "bottom",
+  align = "center",
   offset = 8,
   closeDelayMs = DEFAULT_CLOSE_DELAY_MS,
   closeOnOutsideClick = true,
   closeOnEscape = true,
   className,
   contentClassName,
-  contentRole = 'dialog',
+  contentRole = "dialog",
   ariaLabel,
 }) => {
   const overlayScopeId = useOverlayPortalScope();
   const popoverId = useId();
-  const controlled = typeof open === 'boolean';
+  const controlled = typeof open === "boolean";
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const desiredOpen = controlled ? open : internalOpen;
-  const [phase, setPhase] = useState<PopoverPhase>(defaultOpen || open ? 'open' : 'closed');
+  const [phase, setPhase] = useState<PopoverPhase>(defaultOpen || open ? "open" : "closed");
   const [actualPlacement, setActualPlacement] = useState(placement);
   const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({
     left: -9999,
-    position: 'fixed',
+    position: "fixed",
     top: -9999,
   });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -109,8 +109,8 @@ export const Popover: React.FC<PopoverProps> = ({
   const hasMountedContentRef = useRef(defaultOpen || Boolean(open));
   const openTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
-  const mounted = phase !== 'closed';
-  const triggerOpen = desiredOpen && phase !== 'closing';
+  const mounted = phase !== "closed";
+  const triggerOpen = desiredOpen && phase !== "closing";
 
   const clearTimers = useCallback(() => {
     if (openTimerRef.current) clearTimeout(openTimerRef.current);
@@ -135,7 +135,7 @@ export const Popover: React.FC<PopoverProps> = ({
     clearTimers();
     hasMountedContentRef.current = false;
     if (!controlled) setInternalOpen(false);
-    setPhase('closed');
+    setPhase("closed");
     onOpenChange?.(false);
   }, [clearTimers, controlled, onOpenChange]);
 
@@ -162,13 +162,13 @@ export const Popover: React.FC<PopoverProps> = ({
     let left = result.x;
     let top = result.y;
 
-    if (result.actualPlacement === 'top' || result.actualPlacement === 'bottom') {
-      if (align === 'start') left = triggerRect.left;
-      if (align === 'end') left = triggerRect.right - width;
+    if (result.actualPlacement === "top" || result.actualPlacement === "bottom") {
+      if (align === "start") left = triggerRect.left;
+      if (align === "end") left = triggerRect.right - width;
       left = clamp(left, VIEWPORT_PADDING, viewport.width - width - VIEWPORT_PADDING);
     } else {
-      if (align === 'start') top = triggerRect.top;
-      if (align === 'end') top = triggerRect.bottom - height;
+      if (align === "start") top = triggerRect.top;
+      if (align === "end") top = triggerRect.bottom - height;
       top = clamp(top, VIEWPORT_PADDING, viewport.height - height - VIEWPORT_PADDING);
     }
 
@@ -176,7 +176,7 @@ export const Popover: React.FC<PopoverProps> = ({
     setPopoverStyle({
       left,
       top,
-      position: 'fixed',
+      position: "fixed",
       maxHeight: `calc(100vh - ${VIEWPORT_PADDING * 2}px)`,
       maxWidth: `calc(100vw - ${VIEWPORT_PADDING * 2}px)`,
     });
@@ -189,17 +189,17 @@ export const Popover: React.FC<PopoverProps> = ({
       triggerElementRef.current = containerRef.current?.firstElementChild instanceof HTMLElement
         ? containerRef.current.firstElementChild
         : null;
-      setPhase('opening');
+      setPhase("opening");
       openTimerRef.current = setTimeout(() => {
-        setPhase('open');
+        setPhase("open");
         openTimerRef.current = null;
       }, OPEN_ANIMATION_DELAY_MS);
       return clearTimers;
     }
     if (hasMountedContentRef.current) {
-      setPhase('closing');
+      setPhase("closing");
       closeTimerRef.current = setTimeout(() => {
-        setPhase('closed');
+        setPhase("closed");
         hasMountedContentRef.current = false;
         closeTimerRef.current = null;
       }, closeDelayMs);
@@ -226,16 +226,16 @@ export const Popover: React.FC<PopoverProps> = ({
       if (closeOnOutsideClick) close();
     };
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape' || !closeOnEscape) return;
+      if (event.key !== "Escape" || !closeOnEscape) return;
       event.preventDefault();
       close();
       triggerElementRef.current?.focus();
     };
-    document.addEventListener('mousedown', handlePointerDown);
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener('mousedown', handlePointerDown);
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [close, closeOnEscape, closeOnOutsideClick, mounted]);
 
@@ -245,18 +245,18 @@ export const Popover: React.FC<PopoverProps> = ({
 
   useEffect(() => {
     if (!mounted) return;
-    window.addEventListener('scroll', updatePosition, true);
-    window.addEventListener('resize', updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
     return () => {
-      window.removeEventListener('scroll', updatePosition, true);
-      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
     };
   }, [mounted, updatePosition]);
 
   useEffect(() => clearTimers, [clearTimers]);
 
   return (
-    <div ref={containerRef} className={cn('relative inline-flex', className)}>
+    <div ref={containerRef} className={cn("relative inline-flex", className)}>
       {trigger({ open: triggerOpen, popoverId, close, toggle })}
       {mounted && createPortal(
         <div
@@ -270,7 +270,7 @@ export const Popover: React.FC<PopoverProps> = ({
           style={popoverStyle}
           className="z-50 outline-none"
           onKeyDown={(event) => {
-            if (event.key !== 'Escape' || !closeOnEscape) return;
+            if (event.key !== "Escape" || !closeOnEscape) return;
             event.preventDefault();
             event.stopPropagation();
             close();
@@ -282,17 +282,17 @@ export const Popover: React.FC<PopoverProps> = ({
             data-ui="popover"
             tabIndex={-1}
             className={cn(
-              'max-h-[inherit] max-w-[inherit] overflow-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4 shadow-[var(--lumen-shadow-dropdown)]',
+              "max-h-[inherit] max-w-[inherit] overflow-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-4 shadow-[var(--lumen-shadow-dropdown)]",
               getTransformOriginClassName(actualPlacement, align),
               contentClassName,
             )}
             style={{
-              animation: phase === 'closing'
-                ? 'lumen-dropdown-out 0.12s ease-in forwards'
-                : 'lumen-dropdown-in 0.12s ease-out',
+              animation: phase === "closing"
+                ? "lumen-dropdown-out 0.12s ease-in forwards"
+                : "lumen-dropdown-in 0.12s ease-out",
             }}
           >
-            {typeof children === 'function'
+            {typeof children === "function"
               ? children({ open: triggerOpen, close })
               : children}
           </div>

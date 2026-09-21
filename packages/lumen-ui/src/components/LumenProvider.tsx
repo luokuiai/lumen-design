@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   LumenLocaleContext,
   type LumenLocale,
   zhCN,
-} from '../i18n';
-import { getActiveLocale, setActiveLocale } from '../i18nStore';
+} from "../i18n";
+import { getActiveLocale, setActiveLocale } from "../i18nStore";
 
 export interface LumenProviderProps {
   children: React.ReactNode;

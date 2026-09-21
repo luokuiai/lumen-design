@@ -1,7 +1,7 @@
-import type React from 'react';
+import type React from "react";
 
 /** 提示框放置方向 */
-export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
+export type TooltipPlacement = "top" | "bottom" | "left" | "right";
 
 /** 位置计算结果 */
 export interface PositionResult {
@@ -22,14 +22,14 @@ export interface ViewportSize {
 }
 
 const ARROW_SIZE = 6;
-const TOOLTIP_BG = 'var(--lumen-color-tooltip)';
+const TOOLTIP_BG = "var(--lumen-color-tooltip)";
 
 /** 方向对应的反方向 */
 const OPPOSITE: Record<TooltipPlacement, TooltipPlacement> = {
-  top: 'bottom',
-  bottom: 'top',
-  left: 'right',
-  right: 'left',
+  top: "bottom",
+  bottom: "top",
+  left: "right",
+  right: "left",
 };
 
 /** 计算指定方向所需的空间 */
@@ -40,13 +40,13 @@ function getAvailableSpace(
   viewport: ViewportSize,
 ): number {
   switch (placement) {
-    case 'top':
+    case "top":
       return triggerRect.top - viewportPadding;
-    case 'bottom':
+    case "bottom":
       return viewport.height - triggerRect.bottom - viewportPadding;
-    case 'left':
+    case "left":
       return triggerRect.left - viewportPadding;
-    case 'right':
+    case "right":
       return viewport.width - triggerRect.right - viewportPadding;
   }
 }
@@ -61,7 +61,7 @@ function fitsInDirection(
   viewport: ViewportSize,
 ): boolean {
   const needed =
-    (placement === 'top' || placement === 'bottom')
+    (placement === "top" || placement === "bottom")
       ? tooltipSize.height + offset
       : tooltipSize.width + offset;
   return getAvailableSpace(triggerRect, placement, viewportPadding, viewport) >= needed;
@@ -76,48 +76,48 @@ function buildArrowStyle(
   const borderColored = `${ARROW_SIZE}px solid ${TOOLTIP_BG}`;
 
   switch (placement) {
-    case 'top':
+    case "top":
       return {
-        position: 'absolute',
+        position: "absolute",
         bottom: -ARROW_SIZE,
         left: arrowOffset,
-        transform: 'translateX(-50%)',
+        transform: "translateX(-50%)",
         width: 0,
         height: 0,
         borderLeft: border,
         borderRight: border,
         borderTop: borderColored,
       };
-    case 'bottom':
+    case "bottom":
       return {
-        position: 'absolute',
+        position: "absolute",
         top: -ARROW_SIZE,
         left: arrowOffset,
-        transform: 'translateX(-50%)',
+        transform: "translateX(-50%)",
         width: 0,
         height: 0,
         borderLeft: border,
         borderRight: border,
         borderBottom: borderColored,
       };
-    case 'left':
+    case "left":
       return {
-        position: 'absolute',
+        position: "absolute",
         right: -ARROW_SIZE,
         top: arrowOffset,
-        transform: 'translateY(-50%)',
+        transform: "translateY(-50%)",
         width: 0,
         height: 0,
         borderTop: border,
         borderBottom: border,
         borderLeft: borderColored,
       };
-    case 'right':
+    case "right":
       return {
-        position: 'absolute',
+        position: "absolute",
         left: -ARROW_SIZE,
         top: arrowOffset,
-        transform: 'translateY(-50%)',
+        transform: "translateY(-50%)",
         width: 0,
         height: 0,
         borderTop: border,
@@ -142,7 +142,7 @@ export function computePosition(
   placement: TooltipPlacement,
   offset: number,
   viewportPadding: number = 8,
-  viewport: ViewportSize = typeof window !== 'undefined'
+  viewport: ViewportSize = typeof window !== "undefined"
     ? { width: window.innerWidth, height: window.innerHeight }
     : { width: 1024, height: 768 },
 ): PositionResult {
@@ -165,22 +165,22 @@ export function computePosition(
   let arrowOffset: number;
 
   switch (actualPlacement) {
-    case 'top':
+    case "top":
       x = triggerCenterX - tw / 2;
       y = triggerRect.top - th - offset;
       arrowOffset = triggerCenterX - x;
       break;
-    case 'bottom':
+    case "bottom":
       x = triggerCenterX - tw / 2;
       y = triggerRect.bottom + offset;
       arrowOffset = triggerCenterX - x;
       break;
-    case 'left':
+    case "left":
       x = triggerRect.left - tw - offset;
       y = triggerCenterY - th / 2;
       arrowOffset = triggerCenterY - y;
       break;
-    case 'right':
+    case "right":
       x = triggerRect.right + offset;
       y = triggerCenterY - th / 2;
       arrowOffset = triggerCenterY - y;
@@ -188,7 +188,7 @@ export function computePosition(
   }
 
   // 水平 clamp（top/bottom 方向）
-  if (actualPlacement === 'top' || actualPlacement === 'bottom') {
+  if (actualPlacement === "top" || actualPlacement === "bottom") {
     if (x < viewportPadding) {
       arrowOffset += x - viewportPadding;
       x = viewportPadding;
@@ -200,7 +200,7 @@ export function computePosition(
   }
 
   // 垂直 clamp（left/right 方向）
-  if (actualPlacement === 'left' || actualPlacement === 'right') {
+  if (actualPlacement === "left" || actualPlacement === "right") {
     if (y < viewportPadding) {
       arrowOffset += y - viewportPadding;
       y = viewportPadding;

@@ -1,7 +1,7 @@
-import React from 'react';
-import { cn } from './classNames';
-import { radiusTokens } from './designTokens';
-import { Dialog } from './Dialog';
+import React from "react";
+import { cn } from "./classNames";
+import { radiusTokens } from "./designTokens";
+import { Dialog } from "./Dialog";
 
 interface MobilePickerDialogProps {
   mobile: boolean;
@@ -33,7 +33,7 @@ export const MobilePickerDialog: React.FC<MobilePickerDialogProps> = ({
       overlayClassName="backdrop-blur-none"
       bodyClassName="p-0"
       panelClassName={cn(
-        'w-full overflow-hidden border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-0 shadow-[0_18px_46px_var(--lumen-color-shadow)]',
+        "w-full overflow-hidden border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-0 shadow-[0_18px_46px_var(--lumen-color-shadow)]",
         radiusTokens.dialog,
         maxWidth,
       )}

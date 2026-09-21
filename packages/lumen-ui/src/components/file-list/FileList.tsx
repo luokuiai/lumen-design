@@ -1,21 +1,21 @@
-import React from 'react';
-import { EllipsisVertical, X } from 'lucide-react';
-import { Badge, type BadgeVariant } from '../Badge';
-import { DropdownMenu, DropdownMenuItem } from '../DropdownMenu';
-import { FileTypeIcon } from '../file-type-icon/FileTypeIcon';
-import { cn } from '../classNames';
-import { radiusTokens } from '../designTokens';
-import { useLumenLocale } from '../../i18n';
-import { Progress } from '../Progress';
-import { OverflowText } from './overflowText';
-import { formatBytes } from './formatBytes';
+import React from "react";
+import { EllipsisVertical, X } from "lucide-react";
+import { Badge, type BadgeVariant } from "../Badge";
+import { DropdownMenu, DropdownMenuItem } from "../DropdownMenu";
+import { FileTypeIcon } from "../file-type-icon/FileTypeIcon";
+import { cn } from "../classNames";
+import { radiusTokens } from "../designTokens";
+import { useLumenLocale } from "../../i18n";
+import { Progress } from "../Progress";
+import { OverflowText } from "./overflowText";
+import { formatBytes } from "./formatBytes";
 
 export interface FileListBadge {
   label: string;
   variant?: BadgeVariant;
 }
 
-export type FileListDensity = 'default' | 'compact';
+export type FileListDensity = "default" | "compact";
 
 /** File metadata; remote attachments do not need browser File objects. */
 export interface FileListFile {
@@ -46,7 +46,7 @@ export interface FileListItemProps extends React.HTMLAttributes<HTMLLIElement> {
 }
 
 interface FileActionElementProps {
-  'aria-label'?: string;
+  "aria-label"?: string;
   children?: React.ReactNode;
   disabled?: boolean;
   icon?: React.ReactNode;
@@ -66,7 +66,7 @@ const renderActionMenuItems = (
     return renderActionMenuItems(actionProps.children, close, parentDisabled);
   }
 
-  const label = actionProps.title ?? actionProps.children ?? actionProps['aria-label'];
+  const label = actionProps.title ?? actionProps.children ?? actionProps["aria-label"];
   if (label == null || !actionProps.onClick) return null;
 
   return (
@@ -85,11 +85,11 @@ const renderActionMenuItems = (
 });
 
 export function FileListItem({
-  file, showSize = true, density = 'default', wrapName = false, badgeMaxWidth = 96,
+  file, showSize = true, density = "default", wrapName = false, badgeMaxWidth = 96,
   disabled = false, onRemove, actions, className, style, ...props
 }: FileListItemProps) {
   const locale = useLumenLocale();
-  const compact = density === 'compact';
+  const compact = density === "compact";
   const formattedSize =
     showSize && file.size !== undefined && Number.isFinite(file.size) && file.size >= 0
       ? formatBytes(file.size)
@@ -114,10 +114,10 @@ export function FileListItem({
       {...props}
       style={{
         ...style,
-        '--lumen-file-badge-max-width': typeof badgeMaxWidth === 'number' ? `${badgeMaxWidth}px` : badgeMaxWidth,
+        "--lumen-file-badge-max-width": typeof badgeMaxWidth === "number" ? `${badgeMaxWidth}px` : badgeMaxWidth,
       } as React.CSSProperties}
       className={cn(
-        'flex min-w-0 items-center gap-3 border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-3',
+        "flex min-w-0 items-center gap-3 border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] px-3",
         `${radiusTokens.icon} min-h-12 py-2`,
         className,
       )}
@@ -150,7 +150,7 @@ export function FileListItem({
       ) : null}
       {actions != null || onRemove ? (
         <>
-          <div className={cn('shrink-0 items-center justify-end gap-1', actions != null ? 'flex mobile:hidden' : 'flex')}>
+          <div className={cn("shrink-0 items-center justify-end gap-1", actions != null ? "flex mobile:hidden" : "flex")}>
             {actions}
             {renderRemoveButton()}
           </div>
@@ -216,7 +216,7 @@ export function FileList({
   items, showSize, density, wrapName, badgeMaxWidth, disabled, onRemove, renderActions, className, ...props
 }: FileListProps) {
   return (
-    <ul {...props} className={cn('m-0 min-w-0 list-none space-y-2 p-0', className)}>
+    <ul {...props} className={cn("m-0 min-w-0 list-none space-y-2 p-0", className)}>
       {items.map((file) => (
         <FileListItem key={file.id} file={file} showSize={showSize} density={density} wrapName={wrapName} badgeMaxWidth={badgeMaxWidth} disabled={disabled} onRemove={onRemove} actions={renderActions?.(file)} />
       ))}

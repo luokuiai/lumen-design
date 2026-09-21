@@ -1,17 +1,17 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { ChevronDown, Clock } from 'lucide-react';
-import { Button } from './Button';
-import { cn } from './classNames';
-import { radiusTokens } from './designTokens';
-import { MobileTimeWheel } from './mobileTimeWheel';
-import { MobilePickerDialog } from './mobilePickerDialog';
-import { TimeSelector } from './TimeSelector';
-import { useMobilePicker } from './useMobilePicker';
-import { useOverlayPortalScope } from './useOverlayBehavior';
-import { useLumenLocale } from '../i18n';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { ChevronDown, Clock } from "lucide-react";
+import { Button } from "./Button";
+import { cn } from "./classNames";
+import { radiusTokens } from "./designTokens";
+import { MobileTimeWheel } from "./mobileTimeWheel";
+import { MobilePickerDialog } from "./mobilePickerDialog";
+import { TimeSelector } from "./TimeSelector";
+import { useMobilePicker } from "./useMobilePicker";
+import { useOverlayPortalScope } from "./useOverlayBehavior";
+import { useLumenLocale } from "../i18n";
 
-export type TimePickerSize = 'sm' | 'md' | 'lg';
+export type TimePickerSize = "sm" | "md" | "lg";
 
 export interface TimePickerProps {
   value: string;
@@ -19,7 +19,7 @@ export interface TimePickerProps {
   placeholder?: string;
   className?: string;
   size?: TimePickerSize;
-  precision?: 'minute' | 'second';
+  precision?: "minute" | "second";
   minuteStep?: number;
   minExclusiveTime?: string;
   disabled?: boolean;
@@ -32,22 +32,22 @@ const PANEL_GAP = 6;
 const CLOSE_ANIMATION_DURATION = 120;
 
 const timePickerSizeTokens: Record<TimePickerSize, string> = {
-  sm: 'h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]',
-  md: 'h-[var(--lumen-control-height-md)] px-3 text-[14px]',
-  lg: 'h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]',
+  sm: "h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]",
+  md: "h-[var(--lumen-control-height-md)] px-3 text-[14px]",
+  lg: "h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]",
 };
 
-const pad = (value: number) => String(value).padStart(2, '0');
+const pad = (value: number) => String(value).padStart(2, "0");
 
 const parseTime = (value: string) => {
   const matched = value.match(TIME_PATTERN);
   return matched
-    ? { hour: matched[1]!, minute: matched[2]!, second: matched[3] ?? '00' }
+    ? { hour: matched[1]!, minute: matched[2]!, second: matched[3] ?? "00" }
     : null;
 };
 
 const resolveInitialTime = (value: string) =>
-  parseTime(value) ?? { hour: '09', minute: '00', second: '00' };
+  parseTime(value) ?? { hour: "09", minute: "00", second: "00" };
 
 const getTimeInSeconds = (value?: string) => {
   const parsed = value ? parseTime(value) : null;
@@ -61,8 +61,8 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   onChange,
   placeholder: placeholderProp,
   className,
-  size = 'md',
-  precision = 'minute',
+  size = "md",
+  precision = "minute",
   minuteStep = 1,
   minExclusiveTime,
   disabled = false,
@@ -77,17 +77,17 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   const [draftSecond, setDraftSecond] = useState(initialTime.second);
   const [open, setOpen] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-  const [dropDirection, setDropDirection] = useState<'up' | 'down'>('down');
+  const [dropDirection, setDropDirection] = useState<"up" | "down">("down");
   const wrapperRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [panelStyle, setPanelStyle] = useState<React.CSSProperties>({
-    position: 'fixed',
+    position: "fixed",
     zIndex: 9999,
   });
   const draftTime =
-    precision === 'second'
+    precision === "second"
       ? `${draftHour}:${draftMinute}:${draftSecond}`
       : `${draftHour}:${draftMinute}`;
   const minimumTime = getTimeInSeconds(minExclusiveTime);
@@ -100,11 +100,11 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 
   const updatePosition = useCallback(() => {
     if (isMobile) {
-      setDropDirection('down');
+      setDropDirection("down");
       setPanelStyle({
-        position: 'relative',
-        width: 'min(100%, 344px)',
-        maxHeight: 'calc(100dvh - 24px)',
+        position: "relative",
+        width: "min(100%, 344px)",
+        maxHeight: "calc(100dvh - 24px)",
         zIndex: 9999,
       });
       return;
@@ -116,9 +116,9 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     const panelWidth = Math.min(PANEL_WIDTH, Math.max(0, window.innerWidth - 16));
     const shouldDropUp =
       window.innerHeight - rect.bottom < panelHeight + PANEL_GAP;
-    setDropDirection(shouldDropUp ? 'up' : 'down');
+    setDropDirection(shouldDropUp ? "up" : "down");
     setPanelStyle({
-      position: 'fixed',
+      position: "fixed",
       left: Math.min(
         Math.max(8, rect.left),
         Math.max(8, window.innerWidth - panelWidth - 8),
@@ -127,7 +127,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
         ? Math.max(8, rect.top - panelHeight - PANEL_GAP)
         : rect.bottom + PANEL_GAP,
       width: panelWidth,
-      maxHeight: 'calc(100dvh - 16px)',
+      maxHeight: "calc(100dvh - 16px)",
       zIndex: 9999,
     });
   }, [isMobile]);
@@ -170,13 +170,13 @@ export const TimePicker: React.FC<TimePickerProps> = ({
       }
       close();
     };
-    window.addEventListener('resize', updatePosition);
-    window.addEventListener('scroll', updatePosition, true);
-    document.addEventListener('mousedown', handleOutside);
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+    document.addEventListener("mousedown", handleOutside);
     return () => {
-      window.removeEventListener('resize', updatePosition);
-      window.removeEventListener('scroll', updatePosition, true);
-      document.removeEventListener('mousedown', handleOutside);
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
+      document.removeEventListener("mousedown", handleOutside);
     };
   }, [close, open, updatePosition]);
 
@@ -196,17 +196,17 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 
   const parsedValue = parseTime(value);
   const displayValue = parsedValue
-    ? precision === 'second'
+    ? precision === "second"
       ? `${parsedValue.hour}:${parsedValue.minute}:${parsedValue.second}`
       : `${parsedValue.hour}:${parsedValue.minute}`
-    : '';
+    : "";
 
   return (
     <div
       ref={wrapperRef}
-      className={cn('relative', className)}
+      className={cn("relative", className)}
       onKeyDown={(event) => {
-        if (!open || event.key !== 'Escape') return;
+        if (!open || event.key !== "Escape") return;
         event.preventDefault();
         event.stopPropagation();
         close();
@@ -220,17 +220,17 @@ export const TimePicker: React.FC<TimePickerProps> = ({
         aria-label={placeholder}
         onClick={() => (open ? close() : openPanel())}
         className={cn(
-          'flex w-full cursor-pointer items-center border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] outline-none transition-all hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/10',
+          "flex w-full cursor-pointer items-center border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] outline-none transition-all hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/10",
           radiusTokens.control,
           timePickerSizeTokens[size],
-          disabled && 'cursor-not-allowed bg-[var(--lumen-color-surface-muted)] opacity-60',
+          disabled && "cursor-not-allowed bg-[var(--lumen-color-surface-muted)] opacity-60",
         )}
       >
         <Clock size={15} className="mr-2 shrink-0 text-[var(--lumen-color-text-placeholder)]" />
         <span
           className={cn(
-            'min-w-0 flex-1 truncate whitespace-nowrap text-left',
-            displayValue ? 'text-[var(--lumen-color-text)]' : 'text-[var(--lumen-color-text-placeholder)]',
+            "min-w-0 flex-1 truncate whitespace-nowrap text-left",
+            displayValue ? "text-[var(--lumen-color-text)]" : "text-[var(--lumen-color-text-placeholder)]",
           )}
         >
           {displayValue || placeholder}
@@ -238,8 +238,8 @@ export const TimePicker: React.FC<TimePickerProps> = ({
         <ChevronDown
           size={15}
           className={cn(
-            'ml-auto shrink-0 text-[var(--lumen-color-text-placeholder)] transition-transform',
-            open && !isAnimatingOut && 'rotate-180',
+            "ml-auto shrink-0 text-[var(--lumen-color-text-placeholder)] transition-transform",
+            open && !isAnimatingOut && "rotate-180",
           )}
         />
       </button>
@@ -262,19 +262,19 @@ export const TimePicker: React.FC<TimePickerProps> = ({
               data-lumen-overlay-scope={overlayScopeId ?? undefined}
               className={cn(
                 isMobile
-                  ? 'contents'
-                  : 'overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]',
+                  ? "contents"
+                  : "overflow-x-hidden overflow-y-auto rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_18px_46px_var(--lumen-color-shadow)]",
               )}
               style={isMobile ? undefined : {
                 ...panelStyle,
                 animation: isAnimatingOut
-                  ? dropDirection === 'up'
-                    ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
-                    : 'lumen-dropdown-out 0.12s ease-in forwards'
-                  : dropDirection === 'up'
-                    ? 'lumen-dropdown-in-up 0.12s ease-out'
-                    : 'lumen-dropdown-in 0.12s ease-out',
-                transformOrigin: dropDirection === 'up' ? 'bottom' : 'top',
+                  ? dropDirection === "up"
+                    ? "lumen-dropdown-out-up 0.12s ease-in forwards"
+                    : "lumen-dropdown-out 0.12s ease-in forwards"
+                  : dropDirection === "up"
+                    ? "lumen-dropdown-in-up 0.12s ease-out"
+                    : "lumen-dropdown-in 0.12s ease-out",
+                transformOrigin: dropDirection === "up" ? "bottom" : "top",
               }}
             >
               {isMobile ? (
@@ -309,7 +309,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
                 <button
                   type="button"
                   onClick={() => {
-                    onChange('');
+                    onChange("");
                     closeImmediate();
                   }}
                   className="text-[12px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"

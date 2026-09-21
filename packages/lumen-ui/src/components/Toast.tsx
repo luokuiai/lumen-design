@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { createRoot, type Root } from 'react-dom/client';
-import { AlertCircle, CheckCircle2, Info, X } from 'lucide-react';
-import { zhCN, type LumenLocale } from '../i18n';
-import { getActiveLocale } from '../i18nStore';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { createRoot, type Root } from "react-dom/client";
+import { AlertCircle, CheckCircle2, Info, X } from "lucide-react";
+import { zhCN, type LumenLocale } from "../i18n";
+import { getActiveLocale } from "../i18nStore";
 
-export type ToastType = 'success' | 'info' | 'warning' | 'error';
+export type ToastType = "success" | "info" | "warning" | "error";
 
 export interface ToastOptions {
   duration?: number;
@@ -31,24 +31,24 @@ interface ToastTimer {
 type ToastListener = (item: ToastItem | null) => void;
 
 const DEFAULT_DURATION = 2600;
-const TOAST_ROOT_ID = 'global-toast-root';
+const TOAST_ROOT_ID = "global-toast-root";
 
 const TONE_MAP = {
   success: {
     icon: CheckCircle2,
-    iconWrap: 'bg-[var(--lumen-color-success-soft)] text-[var(--lumen-color-success)]',
+    iconWrap: "bg-[var(--lumen-color-success-soft)] text-[var(--lumen-color-success)]",
   },
   info: {
     icon: Info,
-    iconWrap: 'bg-[var(--lumen-color-info-soft)] text-[var(--lumen-color-primary)]',
+    iconWrap: "bg-[var(--lumen-color-info-soft)] text-[var(--lumen-color-primary)]",
   },
   warning: {
     icon: AlertCircle,
-    iconWrap: 'bg-[var(--lumen-color-warning-soft)] text-[var(--lumen-color-warning)]',
+    iconWrap: "bg-[var(--lumen-color-warning-soft)] text-[var(--lumen-color-warning)]",
   },
   error: {
     icon: AlertCircle,
-    iconWrap: 'bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger-hover)]',
+    iconWrap: "bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger-hover)]",
   },
 } as const;
 
@@ -59,7 +59,7 @@ const pendingItems: ToastItem[] = [];
 const activeToastKeys = new Set<string>();
 
 const createToastId = () => `toast-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-const getToastKey = (item: Pick<ToastItem, 'message' | 'type'>) =>
+const getToastKey = (item: Pick<ToastItem, "message" | "type">) =>
   `${item.type}:${item.message}`;
 
 const notify = (item: ToastItem | null) => {
@@ -72,7 +72,7 @@ const notify = (item: ToastItem | null) => {
 };
 
 const ensureToastHost = () => {
-  if (typeof document === 'undefined') return;
+  if (typeof document === "undefined") return;
   if (toastContainer && !document.body.contains(toastContainer)) {
     toastRoot?.unmount();
     toastRoot = null;
@@ -82,7 +82,7 @@ const ensureToastHost = () => {
   if (toastRoot && toastContainer) return;
 
   const existing = document.getElementById(TOAST_ROOT_ID) as HTMLDivElement | null;
-  toastContainer = existing || document.createElement('div');
+  toastContainer = existing || document.createElement("div");
   toastContainer.id = TOAST_ROOT_ID;
 
   if (!existing) {
@@ -107,14 +107,14 @@ const ToastViewport: React.FC = () => {
 
   const clearTimer = useCallback((id: string) => {
     const timer = timersRef.current.get(id);
-    if (timer?.timeoutId != null && typeof window !== 'undefined') {
+    if (timer?.timeoutId != null && typeof window !== "undefined") {
       window.clearTimeout(timer.timeoutId);
     }
     timersRef.current.delete(id);
   }, []);
 
   const startClose = useCallback((id: string) => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     clearTimer(id);
     setItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, closing: true } : item)),
@@ -122,7 +122,7 @@ const ToastViewport: React.FC = () => {
   }, [clearTimer]);
 
   const startTimer = useCallback((id: string, duration: number) => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     const timeoutId = window.setTimeout(() => startClose(id), duration);
     timersRef.current.set(id, {
       timeoutId,
@@ -133,7 +133,7 @@ const ToastViewport: React.FC = () => {
 
   const pauseTimer = useCallback((id: string) => {
     const timer = timersRef.current.get(id);
-    if (!timer || timer.timeoutId == null || typeof window === 'undefined') return;
+    if (!timer || timer.timeoutId == null || typeof window === "undefined") return;
     window.clearTimeout(timer.timeoutId);
     timer.remaining = Math.max(0, timer.remaining - (Date.now() - timer.startedAt));
     timer.timeoutId = null;
@@ -217,8 +217,8 @@ const ToastCard: React.FC<{
     <div
       className={`pointer-events-auto relative flex w-full min-w-0 max-w-full items-start gap-2.5 overflow-hidden rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-glass)] px-3 py-3 shadow-[var(--lumen-shadow-dropdown)] backdrop-blur-[3px] pad:gap-3 pad:px-4 ${
         item.closing
-          ? 'animate-[lumen-toast-out_160ms_ease-in_forwards]'
-          : 'animate-[lumen-toast-in_180ms_ease-out]'
+          ? "animate-[lumen-toast-out_160ms_ease-in_forwards]"
+          : "animate-[lumen-toast-in_180ms_ease-out]"
       }`}
       data-ui="toast"
       data-toast-id={item.id}
@@ -250,7 +250,7 @@ const ToastCard: React.FC<{
 };
 
 export class Toast {
-  static show(message: string, type: ToastType = 'info', options: ToastOptions = {}) {
+  static show(message: string, type: ToastType = "info", options: ToastOptions = {}) {
     const key = getToastKey({ message, type });
     if (activeToastKeys.has(key)) {
       return;
@@ -267,19 +267,19 @@ export class Toast {
   }
 
   static success(message: string, options?: ToastOptions) {
-    Toast.show(message, 'success', options);
+    Toast.show(message, "success", options);
   }
 
   static info(message: string, options?: ToastOptions) {
-    Toast.show(message, 'info', options);
+    Toast.show(message, "info", options);
   }
 
   static warning(message: string, options?: ToastOptions) {
-    Toast.show(message, 'warning', options);
+    Toast.show(message, "warning", options);
   }
 
   static error(message: string, options?: ToastOptions) {
-    Toast.show(message, 'error', options);
+    Toast.show(message, "error", options);
   }
 
   static clear() {

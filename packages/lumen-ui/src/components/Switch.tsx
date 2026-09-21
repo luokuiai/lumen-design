@@ -1,9 +1,9 @@
-import React, { useId, useState } from 'react';
-import { cn } from './classNames';
+import React, { useId, useState } from "react";
+import { cn } from "./classNames";
 
 export interface SwitchProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type' | 'onChange'> {
-  size?: 'sm' | 'md' | 'lg';
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "type" | "onChange"> {
+  size?: "sm" | "md" | "lg";
   checked?: boolean;
   defaultChecked?: boolean;
   disabled?: boolean;
@@ -13,7 +13,7 @@ export interface SwitchProps
 }
 
 export const Switch: React.FC<SwitchProps> = ({
-  size = 'md',
+  size = "md",
   checked,
   defaultChecked = false,
   disabled = false,
@@ -28,7 +28,7 @@ export const Switch: React.FC<SwitchProps> = ({
   const inputId = id ?? generatedId;
   const labelId = `${inputId}-label`;
   const descriptionId = `${inputId}-description`;
-  const isControlled = typeof checked === 'boolean';
+  const isControlled = typeof checked === "boolean";
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const currentChecked = isControlled ? checked : internalChecked;
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,8 +44,8 @@ export const Switch: React.FC<SwitchProps> = ({
     <label
       htmlFor={inputId}
       className={cn(
-        'inline-flex items-center gap-3',
-        disabled ? 'cursor-not-allowed opacity-55' : 'cursor-pointer',
+        "inline-flex items-center gap-3",
+        disabled ? "cursor-not-allowed opacity-55" : "cursor-pointer",
         className,
       )}
     >
@@ -65,11 +65,11 @@ export const Switch: React.FC<SwitchProps> = ({
       )}
       <span
         className={cn(
-          'relative inline-flex shrink-0 items-center',
-          size === 'sm' ? 'h-4 w-7' : size === 'lg' ? 'h-5 w-9' : 'h-[18px] w-8',
+          "relative inline-flex shrink-0 items-center",
+          size === "sm" ? "h-4 w-7" : size === "lg" ? "h-5 w-9" : "h-[18px] w-8",
         )}
         data-switch-track
-        data-checked={currentChecked ? 'true' : 'false'}
+        data-checked={currentChecked ? "true" : "false"}
       >
         <input
           {...props}
@@ -80,31 +80,31 @@ export const Switch: React.FC<SwitchProps> = ({
           disabled={disabled}
           aria-labelledby={label ? labelId : undefined}
           aria-describedby={description ? descriptionId : undefined}
-          aria-label={typeof label === 'string' ? label : props['aria-label']}
+          aria-label={typeof label === "string" ? label : props["aria-label"]}
           className="peer sr-only"
           onChange={handleChange}
         />
         <span
           aria-hidden="true"
           className={cn(
-            'absolute inset-0 rounded-full transition-colors duration-200 ease-out',
-            currentChecked ? 'bg-[var(--lumen-color-primary)] shadow-[0_10px_24px_var(--lumen-color-focus-ring)]' : 'bg-[var(--lumen-color-border-hover)]',
-            !disabled && 'peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--lumen-color-info-border)]/70 peer-focus-visible:ring-offset-2',
+            "absolute inset-0 rounded-full transition-colors duration-200 ease-out",
+            currentChecked ? "bg-[var(--lumen-color-primary)] shadow-[0_10px_24px_var(--lumen-color-focus-ring)]" : "bg-[var(--lumen-color-border-hover)]",
+            !disabled && "peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--lumen-color-info-border)]/70 peer-focus-visible:ring-offset-2",
           )}
         />
         <span
           aria-hidden="true"
           data-switch-knob
           className={cn(
-            'absolute top-1/2 -translate-y-1/2 rounded-full border border-[var(--lumen-color-surface)]/80 bg-[var(--lumen-color-surface)] shadow-[0_2px_8px_var(--lumen-color-shadow)] transition-transform duration-200 ease-out',
-            size === 'sm' ? 'left-[2px] h-3 w-3' : size === 'lg' ? 'left-[2px] h-4 w-4' : 'left-[2px] h-3.5 w-3.5',
+            "absolute top-1/2 -translate-y-1/2 rounded-full border border-[var(--lumen-color-surface)]/80 bg-[var(--lumen-color-surface)] shadow-[0_2px_8px_var(--lumen-color-shadow)] transition-transform duration-200 ease-out",
+            size === "sm" ? "left-[2px] h-3 w-3" : size === "lg" ? "left-[2px] h-4 w-4" : "left-[2px] h-3.5 w-3.5",
             currentChecked
-              ? size === 'sm'
-                ? 'translate-x-3'
-                : size === 'lg'
-                  ? 'translate-x-4'
-                  : 'translate-x-3.5'
-              : 'translate-x-0',
+              ? size === "sm"
+                ? "translate-x-3"
+                : size === "lg"
+                  ? "translate-x-4"
+                  : "translate-x-3.5"
+              : "translate-x-0",
           )}
         />
       </span>

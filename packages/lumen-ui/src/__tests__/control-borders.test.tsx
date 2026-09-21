@@ -1,18 +1,18 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import { Badge } from '../components/Badge';
-import { Checkbox } from '../components/Checkbox';
-import { FileUpload } from '../components/FileUpload';
-import { Input } from '../components/Input';
-import { Radio } from '../components/Radio';
-import { Textarea } from '../components/Textarea';
-import { TimePicker } from '../components/TimePicker';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { Badge } from "../components/Badge";
+import { Checkbox } from "../components/Checkbox";
+import { FileUpload } from "../components/FileUpload";
+import { Input } from "../components/Input";
+import { Radio } from "../components/Radio";
+import { Textarea } from "../components/Textarea";
+import { TimePicker } from "../components/TimePicker";
 
-const standardBorderClassName = 'border-[var(--lumen-color-border)]';
+const standardBorderClassName = "border-[var(--lumen-color-border)]";
 
-describe('control borders', () => {
-  it('uses muted choice borders and standard borders for other controls', () => {
+describe("control borders", () => {
+  it("uses muted choice borders and standard borders for other controls", () => {
     render(
       <>
         <Input aria-label="Name" />
@@ -26,26 +26,26 @@ describe('control borders', () => {
       </>,
     );
 
-    expect(screen.getByRole('textbox', { name: 'Name' })).toHaveClass(
+    expect(screen.getByRole("textbox", { name: "Name" })).toHaveClass(
       standardBorderClassName,
     );
-    expect(screen.getByRole('textbox', { name: 'Search' }).parentElement).toHaveClass(
+    expect(screen.getByRole("textbox", { name: "Search" }).parentElement).toHaveClass(
       standardBorderClassName,
     );
-    expect(screen.getByRole('textbox', { name: 'Notes' })).toHaveClass(
+    expect(screen.getByRole("textbox", { name: "Notes" })).toHaveClass(
       standardBorderClassName,
     );
-    expect(screen.getByRole('button', { name: '请选择时间' })).toHaveClass(
+    expect(screen.getByRole("button", { name: "请选择时间" })).toHaveClass(
       standardBorderClassName,
     );
-    expect(screen.getByRole('checkbox', { name: 'Enable' }).nextElementSibling).toHaveClass(
-      'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_60%,var(--lumen-color-surface))]',
+    expect(screen.getByRole("checkbox", { name: "Enable" }).nextElementSibling).toHaveClass(
+      "border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_60%,var(--lumen-color-surface))]",
     );
-    expect(screen.getByRole('radio', { name: 'Choose' }).nextElementSibling).toHaveClass(
-      'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_60%,var(--lumen-color-surface))]',
+    expect(screen.getByRole("radio", { name: "Choose" }).nextElementSibling).toHaveClass(
+      "border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_60%,var(--lumen-color-surface))]",
     );
-    expect(screen.getByText('Status')).toHaveClass(standardBorderClassName);
-    expect(screen.getByRole('button', { name: '文件上传' })).toHaveClass(
+    expect(screen.getByText("Status")).toHaveClass(standardBorderClassName);
+    expect(screen.getByRole("button", { name: "文件上传" })).toHaveClass(
       standardBorderClassName,
     );
   });

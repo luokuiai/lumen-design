@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { cn } from '../classNames';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { cn } from "../classNames";
 
-export type SwipeActionsSide = 'start' | 'end';
-export type SwipeActionTone = 'primary' | 'success' | 'danger' | 'neutral';
+export type SwipeActionsSide = "start" | "end";
+export type SwipeActionTone = "primary" | "success" | "danger" | "neutral";
 
 export interface SwipeAction {
   key: React.Key;
@@ -15,7 +15,7 @@ export interface SwipeAction {
 }
 
 export interface SwipeActionsProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   /** 可滑动的前景内容。 */
   children: React.ReactNode;
   /** 向右滑动时展示的起始侧动作。 */
@@ -46,7 +46,7 @@ export interface SwipeActionsProps
   contentClassName?: string;
 }
 
-type DragAxis = 'horizontal' | 'vertical';
+type DragAxis = "horizontal" | "vertical";
 
 type DragState = {
   pointerId: number;
@@ -59,10 +59,10 @@ type DragState = {
 };
 
 const toneClassNames: Record<SwipeActionTone, string> = {
-  primary: 'bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)]',
-  success: 'bg-[var(--lumen-color-success)] text-white',
-  danger: 'bg-[var(--lumen-color-danger)] text-white',
-  neutral: 'bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text)]',
+  primary: "bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)]",
+  success: "bg-[var(--lumen-color-success)] text-white",
+  danger: "bg-[var(--lumen-color-danger)] text-white",
+  neutral: "bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text)]",
 };
 
 const resolveThreshold = (threshold: number, width: number) => (
@@ -109,16 +109,16 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
     const resolvedActionWidth = Math.max(1, actionWidth);
     const startWidth = startActions.length * resolvedActionWidth;
     const endWidth = endActions.length * resolvedActionWidth;
-    const restingOffset = currentOpenSide === 'start'
+    const restingOffset = currentOpenSide === "start"
       ? startWidth
-      : currentOpenSide === 'end'
+      : currentOpenSide === "end"
         ? -endWidth
         : 0;
     const currentOffset = dragOffset ?? restingOffset;
 
     const setRootRef = useCallback((node: HTMLDivElement | null) => {
       rootRef.current = node;
-      if (typeof forwardedRef === 'function') forwardedRef(node);
+      if (typeof forwardedRef === "function") forwardedRef(node);
       else if (forwardedRef) forwardedRef.current = node;
     }, [forwardedRef]);
 
@@ -134,8 +134,8 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
 
     useEffect(() => {
       if (
-        (currentOpenSide === 'start' && startActions.length === 0)
-        || (currentOpenSide === 'end' && endActions.length === 0)
+        (currentOpenSide === "start" && startActions.length === 0)
+        || (currentOpenSide === "end" && endActions.length === 0)
       ) changeOpenSide(null);
     }, [changeOpenSide, currentOpenSide, endActions.length, startActions.length]);
 
@@ -144,11 +144,11 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
       if (
         event.defaultPrevented
         || disabled
-        || event.pointerType !== 'touch'
+        || event.pointerType !== "touch"
         || (startActions.length === 0 && endActions.length === 0)
       ) return;
       const target = event.target as HTMLElement;
-      if (target.closest('[data-swipe-actions-side]') || target.closest(swipeIgnoreSelector)) return;
+      if (target.closest("[data-swipe-actions-side]") || target.closest(swipeIgnoreSelector)) return;
 
       suppressClickRef.current = false;
       dragRef.current = {
@@ -170,9 +170,9 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
       const deltaY = event.clientY - drag.startY;
       if (!drag.axis) {
         if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 8) return;
-        drag.axis = Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical';
+        drag.axis = Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
       }
-      if (drag.axis === 'vertical') return;
+      if (drag.axis === "vertical") return;
 
       event.preventDefault();
       suppressClickRef.current = true;
@@ -206,8 +206,8 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
       const elapsed = Math.max(1, performance.now() - drag.startTime);
       const deltaX = event.clientX - drag.startX;
       const velocity = Math.abs(deltaX) / elapsed;
-      const side = drag.offset > 0 ? 'start' : drag.offset < 0 ? 'end' : null;
-      const actions = side === 'start' ? startActions : side === 'end' ? endActions : [];
+      const side = drag.offset > 0 ? "start" : drag.offset < 0 ? "end" : null;
+      const actions = side === "start" ? startActions : side === "end" ? endActions : [];
       const fullSwipeDistance = rootWidth * Math.max(0, Math.min(1, fullSwipeThreshold));
 
       resetDrag();
@@ -222,7 +222,7 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
         return;
       }
 
-      const sideWidth = side === 'start' ? startWidth : endWidth;
+      const sideWidth = side === "start" ? startWidth : endWidth;
       const passedDistance = side !== null
         && Math.abs(drag.offset) >= resolveThreshold(threshold, sideWidth);
       const flickedFromClosed = drag.startOffset === 0 && velocity >= 0.45;
@@ -233,18 +233,18 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
       <div
         data-swipe-actions-side={side}
         className={cn(
-          'pointer-events-none absolute inset-y-0 flex bg-[var(--lumen-color-surface-muted)]',
-          side === 'start' ? 'left-0 justify-start' : 'right-0 justify-end',
+          "pointer-events-none absolute inset-y-0 flex bg-[var(--lumen-color-surface-muted)]",
+          side === "start" ? "left-0 justify-start" : "right-0 justify-end",
           fullSwipe
             && currentOffset !== 0
-            && (currentOffset > 0) === (side === 'start')
-            && toneClassNames[actions[0]?.tone ?? 'neutral'],
+            && (currentOffset > 0) === (side === "start")
+            && toneClassNames[actions[0]?.tone ?? "neutral"],
         )}
         style={{
           width: fullSwipe
             && currentOffset !== 0
-            && (currentOffset > 0) === (side === 'start')
-            ? '100%'
+            && (currentOffset > 0) === (side === "start")
+            ? "100%"
             : `${actions.length * resolvedActionWidth}px`,
         }}
       >
@@ -255,8 +255,8 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
             disabled={action.disabled}
             aria-label={action.label}
             className={cn(
-              'pointer-events-auto flex h-full shrink-0 flex-col items-center justify-center gap-1 px-2 text-[12px] font-medium leading-tight outline-none transition-[filter,opacity] hover:brightness-95 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70 disabled:opacity-45',
-              toneClassNames[action.tone ?? 'neutral'],
+              "pointer-events-auto flex h-full shrink-0 flex-col items-center justify-center gap-1 px-2 text-[12px] font-medium leading-tight outline-none transition-[filter,opacity] hover:brightness-95 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70 disabled:opacity-45",
+              toneClassNames[action.tone ?? "neutral"],
               action.className,
             )}
             style={{ width: `${resolvedActionWidth}px` }}
@@ -277,8 +277,8 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
         data-ui="swipe-actions"
         data-open-side={currentOpenSide ?? undefined}
         data-dragging={dragOffset !== null || undefined}
-        className={cn('relative min-w-0 overflow-hidden', className)}
-        style={{ touchAction: disabled ? undefined : 'pan-y', ...style }}
+        className={cn("relative min-w-0 overflow-hidden", className)}
+        style={{ touchAction: disabled ? undefined : "pan-y", ...style }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={(event) => {
@@ -294,11 +294,11 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
           onClickCapture?.(event);
           if (event.defaultPrevented) return;
           const target = event.target as HTMLElement;
-          if (target.closest('[data-swipe-actions-side]')) {
+          if (target.closest("[data-swipe-actions-side]")) {
             suppressClickRef.current = false;
             return;
           }
-          const content = target.closest('[data-swipe-actions-content]');
+          const content = target.closest("[data-swipe-actions-content]");
           if (suppressClickRef.current || (content && currentOpenSide)) {
             event.preventDefault();
             event.stopPropagation();
@@ -307,14 +307,14 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
           }
         }}
       >
-        {startActions.length > 0 ? renderActions('start', startActions) : null}
-        {endActions.length > 0 ? renderActions('end', endActions) : null}
+        {startActions.length > 0 ? renderActions("start", startActions) : null}
+        {endActions.length > 0 ? renderActions("end", endActions) : null}
         <div
           data-swipe-actions-content
           data-lumen-motion
           className={cn(
-            'relative z-[1] bg-[var(--lumen-color-surface)] will-change-transform',
-            dragOffset === null ? 'transition-transform duration-200 ease-out' : 'transition-none',
+            "relative z-[1] bg-[var(--lumen-color-surface)] will-change-transform",
+            dragOffset === null ? "transition-transform duration-200 ease-out" : "transition-none",
             contentClassName,
           )}
           style={{ transform: `translate3d(${currentOffset}px, 0, 0)` }}
@@ -326,4 +326,4 @@ export const SwipeActions = React.forwardRef<HTMLDivElement, SwipeActionsProps>(
   },
 );
 
-SwipeActions.displayName = 'SwipeActions';
+SwipeActions.displayName = "SwipeActions";

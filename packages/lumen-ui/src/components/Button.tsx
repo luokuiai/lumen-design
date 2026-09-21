@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { getButtonClassNames, type ButtonSize, type ButtonVariant } from './designTokens';
+import React, { useRef, useState } from "react";
+import { getButtonClassNames, type ButtonSize, type ButtonVariant } from "./designTokens";
 
 type ButtonRipple = {
   id: number;
@@ -8,7 +8,7 @@ type ButtonRipple = {
   y: number;
 };
 
-interface ButtonBaseProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+interface ButtonBaseProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
   variant?: ButtonVariant;
   size?: ButtonSize;
 }
@@ -18,7 +18,7 @@ export type ButtonProps =
     iconOnly: true;
     icon: React.ReactNode;
     children?: never;
-    'aria-label': string;
+    "aria-label": string;
   })
   | (ButtonBaseProps & {
     iconOnly?: false;
@@ -28,11 +28,11 @@ export type ButtonProps =
 
 export const Button: React.FC<ButtonProps> = ({
   children,
-  variant = 'primary' as ButtonVariant,
-  size = 'md' as ButtonSize,
+  variant = "primary" as ButtonVariant,
+  size = "md" as ButtonSize,
   icon,
   iconOnly = false,
-  className = '',
+  className = "",
   disabled,
   onKeyDown,
   onPointerDown,
@@ -75,7 +75,7 @@ export const Button: React.FC<ButtonProps> = ({
       }}
       onKeyDown={(event) => {
         onKeyDown?.(event);
-        if (!disabled && !event.defaultPrevented && !event.repeat && ['Enter', ' '].includes(event.key)) {
+        if (!disabled && !event.defaultPrevented && !event.repeat && ["Enter", " "].includes(event.key)) {
           addRipple(event.currentTarget);
         }
       }}

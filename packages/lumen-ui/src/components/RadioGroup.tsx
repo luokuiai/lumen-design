@@ -1,9 +1,9 @@
-import React, { useId, useState } from 'react';
-import { cn } from './classNames';
-import { Radio, type RadioSize } from './Radio';
+import React, { useId, useState } from "react";
+import { cn } from "./classNames";
+import { Radio, type RadioSize } from "./Radio";
 
 export type RadioGroupValue = string | number;
-export type RadioGroupDirection = 'horizontal' | 'vertical';
+export type RadioGroupDirection = "horizontal" | "vertical";
 
 export interface RadioGroupOption<T extends RadioGroupValue = string> {
   value: T;
@@ -13,7 +13,7 @@ export interface RadioGroupOption<T extends RadioGroupValue = string> {
 }
 
 export interface RadioGroupProps<T extends RadioGroupValue = string>
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
   options: Array<RadioGroupOption<T>>;
   value?: T;
   defaultValue?: T;
@@ -30,13 +30,13 @@ export const RadioGroup = <T extends RadioGroupValue = string>({
   value,
   defaultValue,
   name,
-  size = 'md',
-  direction = 'vertical',
+  size = "md",
+  direction = "vertical",
   disabled = false,
   required = false,
   onChange,
   className,
-  role = 'radiogroup',
+  role = "radiogroup",
   ...props
 }: RadioGroupProps<T>) => {
   const generatedName = useId();
@@ -57,10 +57,10 @@ export const RadioGroup = <T extends RadioGroupValue = string>({
       role={role}
       aria-disabled={disabled || undefined}
       className={cn(
-        'flex',
-        direction === 'horizontal'
-          ? 'flex-row flex-wrap gap-x-5 gap-y-3'
-          : 'flex-col gap-3',
+        "flex",
+        direction === "horizontal"
+          ? "flex-row flex-wrap gap-x-5 gap-y-3"
+          : "flex-col gap-3",
         className,
       )}
       {...props}

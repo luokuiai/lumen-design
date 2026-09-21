@@ -1,7 +1,7 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useLumenLocale } from '../../i18n';
-import { cn } from '../classNames';
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useLumenLocale } from "../../i18n";
+import { cn } from "../classNames";
 
 export interface CarouselItem {
   /** 轮播项的唯一标识。 */
@@ -15,7 +15,7 @@ export interface CarouselItem {
 }
 
 export interface CarouselProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'defaultValue' | 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "defaultValue" | "onChange"> {
   /** 轮播项数据。 */
   items: readonly CarouselItem[];
   /** 受控模式下当前轮播项标识。 */
@@ -58,7 +58,7 @@ export interface CarouselProps
   indicatorsClassName?: string;
 }
 
-type DragAxis = 'horizontal' | 'vertical';
+type DragAxis = "horizontal" | "vertical";
 
 type DragState = {
   pointerId: number;
@@ -110,7 +110,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
   const rootRef = useRef<HTMLDivElement | null>(null);
   const dragRef = useRef<DragState | null>(null);
   const [internalValue, setInternalValue] = useState(
-    defaultValue ?? items[0]?.id ?? '',
+    defaultValue ?? items[0]?.id ?? "",
   );
   const [dragOffset, setDragOffset] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -129,7 +129,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
 
   const setRootRef = useCallback((node: HTMLDivElement | null) => {
     rootRef.current = node;
-    if (typeof forwardedRef === 'function') forwardedRef(node);
+    if (typeof forwardedRef === "function") forwardedRef(node);
     else if (forwardedRef) forwardedRef.current = node;
   }, [forwardedRef]);
 
@@ -219,7 +219,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
     const distanceThreshold = width
       ? Math.min(Math.max(0, swipeThreshold), width * 0.25)
       : Math.max(0, swipeThreshold);
-    const shouldChange = drag.axis === 'horizontal'
+    const shouldChange = drag.axis === "horizontal"
       && (Math.abs(drag.offset) >= distanceThreshold
         || Math.abs(drag.offset) / elapsed >= Math.max(0, velocityThreshold));
     const step = drag.offset < 0 ? 1 : -1;
@@ -227,15 +227,15 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
     if (shouldChange && canMove(step)) selectStep(step);
   };
 
-  const previousLabel = locale.accessibility.carouselPrevious ?? 'Previous slide';
-  const nextLabel = locale.accessibility.carouselNext ?? 'Next slide';
+  const previousLabel = locale.accessibility.carouselPrevious ?? "Previous slide";
+  const nextLabel = locale.accessibility.carouselNext ?? "Next slide";
   const slideLabel = (index: number) => locale.accessibility.carouselSlide?.(index + 1, itemCount)
     ?? `${index + 1} / ${itemCount}`;
   const renderedItems = looping
     ? [
-      { item: items[itemCount - 1]!, itemIndex: itemCount - 1, clone: 'before' },
+      { item: items[itemCount - 1]!, itemIndex: itemCount - 1, clone: "before" },
       ...items.map((item, itemIndex) => ({ item, itemIndex, clone: null })),
-      { item: items[0]!, itemIndex: 0, clone: 'after' },
+      { item: items[0]!, itemIndex: 0, clone: "after" },
     ]
     : items.map((item, itemIndex) => ({ item, itemIndex, clone: null }));
 
@@ -245,31 +245,31 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
       ref={setRootRef}
       role="region"
       aria-roledescription="carousel"
-      aria-label={ariaLabel ?? locale.accessibility.carousel ?? 'Carousel'}
+      aria-label={ariaLabel ?? locale.accessibility.carousel ?? "Carousel"}
       data-ui="carousel"
       data-dragging={dragging || undefined}
       data-value={items[activeIndex]?.id}
       tabIndex={tabIndex}
       className={cn(
-        'group relative min-w-0 overflow-hidden rounded-[var(--lumen-radius-card)] bg-[var(--lumen-color-surface-muted)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/30',
+        "group relative min-w-0 overflow-hidden rounded-[var(--lumen-radius-card)] bg-[var(--lumen-color-surface-muted)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/30",
         className,
       )}
-      style={{ height, touchAction: swipeable ? 'pan-y' : undefined, ...style }}
+      style={{ height, touchAction: swipeable ? "pan-y" : undefined, ...style }}
       onKeyDown={(event) => {
         onKeyDown?.(event);
         if (event.defaultPrevented || itemCount < 2) return;
         const target = event.target as HTMLElement;
         if (target !== event.currentTarget && target.closest(interactiveSelector)) return;
-        if (event.key === 'ArrowLeft' && canMove(-1)) {
+        if (event.key === "ArrowLeft" && canMove(-1)) {
           event.preventDefault();
           selectStep(-1);
-        } else if (event.key === 'ArrowRight' && canMove(1)) {
+        } else if (event.key === "ArrowRight" && canMove(1)) {
           event.preventDefault();
           selectStep(1);
-        } else if (event.key === 'Home') {
+        } else if (event.key === "Home") {
           event.preventDefault();
           selectIndex(0);
-        } else if (event.key === 'End') {
+        } else if (event.key === "End") {
           event.preventDefault();
           selectIndex(itemCount - 1);
         }
@@ -279,7 +279,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
         if (
           event.defaultPrevented
           || !swipeable
-          || (event.pointerType !== 'touch' && event.pointerType !== 'pen')
+          || (event.pointerType !== "touch" && event.pointerType !== "pen")
           || itemCount < 2
           || event.clientX <= Math.max(0, edgeSwipeWidth)
           || event.clientX >= window.innerWidth - Math.max(0, edgeSwipeWidth)
@@ -302,9 +302,9 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
         const deltaY = event.clientY - drag.startY;
         if (!drag.axis) {
           if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 8) return;
-          drag.axis = Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical';
+          drag.axis = Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
         }
-        if (drag.axis === 'vertical') return;
+        if (drag.axis === "vertical") return;
         event.preventDefault();
         const step = deltaX < 0 ? 1 : -1;
         drag.offset = canMove(step) ? deltaX : deltaX * 0.24;
@@ -339,13 +339,13 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
       <div
         data-carousel-viewport
         className="absolute inset-0 overflow-hidden"
-        aria-live={autoplay ? 'off' : 'polite'}
+        aria-live={autoplay ? "off" : "polite"}
       >
         <div
           data-carousel-track
           className={cn(
-            'flex h-full w-full will-change-transform',
-            dragging || !transitionEnabled ? 'transition-none' : 'transition-transform duration-300 ease-out',
+            "flex h-full w-full will-change-transform",
+            dragging || !transitionEnabled ? "transition-none" : "transition-transform duration-300 ease-out",
           )}
           style={{
             transform: `translate3d(calc(${-trackIndex * 100}% + ${dragOffset}px), 0, 0)`,
@@ -373,7 +373,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
                 data-active={active || undefined}
                 data-clone={clone ?? undefined}
                 className={cn(
-                  'relative h-full w-full shrink-0',
+                  "relative h-full w-full shrink-0",
                   itemClassName,
                   item.className,
                 )}
@@ -411,9 +411,9 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
       {showIndicators && itemCount > 1 ? (
         <div
           role="tablist"
-          aria-label={locale.accessibility.carouselPagination ?? 'Choose slide'}
+          aria-label={locale.accessibility.carouselPagination ?? "Choose slide"}
           className={cn(
-            'absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-black/20 px-2 py-1 mobile:gap-1 mobile:px-1.5 mobile:py-[3px]',
+            "absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-black/20 px-2 py-1 mobile:gap-1 mobile:px-1.5 mobile:py-[3px]",
             indicatorsClassName,
           )}
         >
@@ -426,10 +426,10 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
               aria-label={item.ariaLabel ?? slideLabel(index)}
               onClick={() => selectIndex(index)}
               className={cn(
-                'h-1.5 rounded-full bg-white shadow-sm transition-[width,opacity] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white mobile:h-[5px]',
+                "h-1.5 rounded-full bg-white shadow-sm transition-[width,opacity] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white mobile:h-[5px]",
                 index === activeIndex
-                  ? 'w-4 opacity-100 mobile:w-[14px]'
-                  : 'w-1.5 opacity-60 hover:opacity-90 mobile:w-[5px]',
+                  ? "w-4 opacity-100 mobile:w-[14px]"
+                  : "w-1.5 opacity-60 hover:opacity-90 mobile:w-[5px]",
               )}
             />
           ))}
@@ -439,4 +439,4 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(({
   );
 });
 
-Carousel.displayName = 'Carousel';
+Carousel.displayName = "Carousel";

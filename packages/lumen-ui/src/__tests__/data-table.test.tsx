@@ -1,22 +1,22 @@
-import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
-import { DataTable, type DataTableColumn } from '../components/DataTable';
+import React from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { DataTable, type DataTableColumn } from "../components/DataTable";
 
 type Row = { id: number; name: string; status: string };
 
 const rows: Row[] = [
-  { id: 1, name: 'K12+400', status: '待处置' },
-  { id: 2, name: 'K18+900', status: '已关闭' },
+  { id: 1, name: "K12+400", status: "待处置" },
+  { id: 2, name: "K18+900", status: "已关闭" },
 ];
 
 const columns: DataTableColumn<Row>[] = [
-  { key: 'name', header: '路段', sortable: true, render: (row) => row.name },
-  { key: 'status', header: '状态', render: (row) => row.status },
+  { key: "name", header: "路段", sortable: true, render: (row) => row.name },
+  { key: "status", header: "状态", render: (row) => row.status },
 ];
 
-describe('DataTable', () => {
-  it('renders rows and requests controlled sorting', () => {
+describe("DataTable", () => {
+  it("renders rows and requests controlled sorting", () => {
     const onSortChange = vi.fn();
     render(
       <DataTable
@@ -24,34 +24,34 @@ describe('DataTable', () => {
         columns={columns}
         data={rows}
         getRowKey={(row) => row.id}
-        sort={{ key: 'name', direction: 'asc' }}
+        sort={{ key: "name", direction: "asc" }}
         onSortChange={onSortChange}
       />,
     );
 
-    expect(screen.getByRole('table', { name: '事件列表' })).toBeVisible();
-    expect(screen.getByRole('table').parentElement?.parentElement).toHaveClass(
-      'rounded-[8px]',
-      'border-[var(--lumen-color-border)]',
+    expect(screen.getByRole("table", { name: "事件列表" })).toBeVisible();
+    expect(screen.getByRole("table").parentElement?.parentElement).toHaveClass(
+      "rounded-[8px]",
+      "border-[var(--lumen-color-border)]",
     );
-    expect(screen.getByText('K12+400').closest('td')).toHaveClass('text-[14px]', 'py-2.5');
-    expect(screen.getByText('K12+400').closest('td')).not.toHaveClass('py-3');
-    expect(screen.getByRole('columnheader', { name: /路段/ })).toHaveAttribute(
-      'aria-sort',
-      'ascending',
+    expect(screen.getByText("K12+400").closest("td")).toHaveClass("text-[14px]", "py-2.5");
+    expect(screen.getByText("K12+400").closest("td")).not.toHaveClass("py-3");
+    expect(screen.getByRole("columnheader", { name: /路段/ })).toHaveAttribute(
+      "aria-sort",
+      "ascending",
     );
-    expect(screen.getByRole('columnheader', { name: /路段/ })).toHaveClass(
-      'text-[14px]',
-      'font-medium',
+    expect(screen.getByRole("columnheader", { name: /路段/ })).toHaveClass(
+      "text-[14px]",
+      "font-medium",
     );
-    expect(screen.getByRole('columnheader', { name: /路段/ }).parentElement?.className).toContain(
-      '--lumen-color-divider',
+    expect(screen.getByRole("columnheader", { name: /路段/ }).parentElement?.className).toContain(
+      "--lumen-color-divider",
     );
-    fireEvent.click(screen.getByRole('button', { name: /路段/ }));
-    expect(onSortChange).toHaveBeenCalledWith({ key: 'name', direction: 'desc' });
+    fireEvent.click(screen.getByRole("button", { name: /路段/ }));
+    expect(onSortChange).toHaveBeenCalledWith({ key: "name", direction: "desc" });
   });
 
-  it('keeps compact tables at the dense text scale', () => {
+  it("keeps compact tables at the dense text scale", () => {
     render(
       <DataTable
         density="compact"
@@ -61,11 +61,11 @@ describe('DataTable', () => {
       />,
     );
 
-    expect(screen.getByRole('columnheader', { name: '路段' })).toHaveClass('text-[13px]');
-    expect(screen.getByText('K12+400').closest('td')).toHaveClass('text-[13px]', 'py-2');
+    expect(screen.getByRole("columnheader", { name: "路段" })).toHaveClass("text-[13px]");
+    expect(screen.getByText("K12+400").closest("td")).toHaveClass("text-[13px]", "py-2");
   });
 
-  it('keeps the header visible inside a bounded scroll area', () => {
+  it("keeps the header visible inside a bounded scroll area", () => {
     render(
       <DataTable
         stickyHeader
@@ -76,22 +76,22 @@ describe('DataTable', () => {
       />,
     );
 
-    const table = screen.getByRole('table');
-    expect(table.parentElement).toHaveAttribute('data-ui', 'data-table-scroll');
-    expect(table.parentElement).toHaveAttribute('data-sticky-header', 'true');
-    expect(table.parentElement).toHaveAttribute('data-density', 'default');
-    expect(table.parentElement).toHaveClass('overflow-x-auto');
-    expect(table.parentElement).not.toHaveStyle({ maxHeight: '240px' });
-    expect(table.querySelector('thead')).toHaveClass('block');
-    expect(table.querySelector('thead')).not.toHaveClass('sticky');
-    expect(table.querySelector('tbody')).toHaveAttribute('data-ui', 'data-table-body');
-    expect(table.querySelector('tbody')).toHaveClass('overflow-y-auto');
-    expect(table.querySelector('tbody')).toHaveStyle({
-      maxHeight: 'calc(240px - var(--lumen-data-table-header-height, 44px))',
+    const table = screen.getByRole("table");
+    expect(table.parentElement).toHaveAttribute("data-ui", "data-table-scroll");
+    expect(table.parentElement).toHaveAttribute("data-sticky-header", "true");
+    expect(table.parentElement).toHaveAttribute("data-density", "default");
+    expect(table.parentElement).toHaveClass("overflow-x-auto");
+    expect(table.parentElement).not.toHaveStyle({ maxHeight: "240px" });
+    expect(table.querySelector("thead")).toHaveClass("block");
+    expect(table.querySelector("thead")).not.toHaveClass("sticky");
+    expect(table.querySelector("tbody")).toHaveAttribute("data-ui", "data-table-body");
+    expect(table.querySelector("tbody")).toHaveClass("overflow-y-auto");
+    expect(table.querySelector("tbody")).toHaveStyle({
+      maxHeight: "calc(240px - var(--lumen-data-table-header-height, 44px))",
     });
   });
 
-  it('provides a default scroll height for sticky headers', () => {
+  it("provides a default scroll height for sticky headers", () => {
     render(
       <DataTable
         stickyHeader
@@ -101,12 +101,12 @@ describe('DataTable', () => {
       />,
     );
 
-    expect(screen.getByRole('table').querySelector('tbody')).toHaveStyle({
-      maxHeight: 'calc(400px - var(--lumen-data-table-header-height, 44px))',
+    expect(screen.getByRole("table").querySelector("tbody")).toHaveStyle({
+      maxHeight: "calc(400px - var(--lumen-data-table-header-height, 44px))",
     });
   });
 
-  it('removes the outer frame when embedded in another surface', () => {
+  it("removes the outer frame when embedded in another surface", () => {
     render(
       <DataTable
         variant="embedded"
@@ -116,14 +116,14 @@ describe('DataTable', () => {
       />,
     );
 
-    const root = screen.getByRole('table').parentElement?.parentElement;
-    expect(root).toHaveAttribute('data-variant', 'embedded');
-    expect(root).toHaveClass('rounded-none', 'border-0');
-    expect(root).not.toHaveClass('rounded-[8px]');
-    expect(root).not.toHaveClass('border-t');
+    const root = screen.getByRole("table").parentElement?.parentElement;
+    expect(root).toHaveAttribute("data-variant", "embedded");
+    expect(root).toHaveClass("rounded-none", "border-0");
+    expect(root).not.toHaveClass("rounded-[8px]");
+    expect(root).not.toHaveClass("border-t");
   });
 
-  it('selects visible rows while retaining selections from other pages', () => {
+  it("selects visible rows while retaining selections from other pages", () => {
     const onSelectedRowKeysChange = vi.fn();
     render(
       <DataTable
@@ -135,11 +135,11 @@ describe('DataTable', () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole('checkbox', { name: '选择当前页全部行' }));
+    fireEvent.click(screen.getByRole("checkbox", { name: "选择当前页全部行" }));
     expect(onSelectedRowKeysChange).toHaveBeenCalledWith([99, 1, 2]);
   });
 
-  it('renders empty and loading states', () => {
+  it("renders empty and loading states", () => {
     const { rerender } = render(
       <DataTable
         columns={columns}
@@ -149,7 +149,7 @@ describe('DataTable', () => {
       />,
     );
 
-    expect(screen.getByText('没有事件')).toBeVisible();
+    expect(screen.getByText("没有事件")).toBeVisible();
     rerender(
       <DataTable
         columns={columns}
@@ -159,6 +159,6 @@ describe('DataTable', () => {
         loadingRowCount={3}
       />,
     );
-    expect(screen.getAllByText('', { selector: 'span.animate-pulse' })).toHaveLength(6);
+    expect(screen.getAllByText("", { selector: "span.animate-pulse" })).toHaveLength(6);
   });
 });

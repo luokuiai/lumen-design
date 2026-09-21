@@ -1,13 +1,13 @@
-import React from 'react';
-import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
-import { Checkbox } from './Checkbox';
-import { cn } from './classNames';
-import { useLumenLocale } from '../i18n';
+import React from "react";
+import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
+import { Checkbox } from "./Checkbox";
+import { cn } from "./classNames";
+import { useLumenLocale } from "../i18n";
 
 export type DataTableKey = React.Key;
-export type DataTableSortDirection = 'asc' | 'desc';
-export type DataTableDensity = 'default' | 'compact';
-export type DataTableVariant = 'default' | 'embedded';
+export type DataTableSortDirection = "asc" | "desc";
+export type DataTableDensity = "default" | "compact";
+export type DataTableVariant = "default" | "embedded";
 
 export interface DataTableSort {
   key: string;
@@ -19,7 +19,7 @@ export interface DataTableColumn<T> {
   header: React.ReactNode;
   render: (row: T, rowIndex: number) => React.ReactNode;
   sortable?: boolean;
-  align?: 'left' | 'center' | 'right';
+  align?: "left" | "center" | "right";
   width?: string | number;
   minWidth?: string | number;
   className?: string;
@@ -49,13 +49,13 @@ export interface DataTableProps<T> {
 }
 
 const toCssSize = (value?: string | number) =>
-  typeof value === 'number' ? `${value}px` : value;
+  typeof value === "number" ? `${value}px` : value;
 
-const loadingCellWidths = ['72%', '48%', '64%', '40%', '58%'];
+const loadingCellWidths = ["72%", "48%", "64%", "40%", "58%"];
 
 const variantClassNames: Record<DataTableVariant, string> = {
-  default: 'rounded-[8px] border border-[var(--lumen-color-border)]',
-  embedded: 'rounded-none border-0',
+  default: "rounded-[8px] border border-[var(--lumen-color-border)]",
+  embedded: "rounded-none border-0",
 };
 
 export function DataTable<T>({
@@ -63,8 +63,8 @@ export function DataTable<T>({
   data,
   getRowKey,
   caption,
-  density = 'default',
-  variant = 'default',
+  density = "default",
+  variant = "default",
   stickyHeader = false,
   maxHeight,
   loading = false,
@@ -91,11 +91,11 @@ export function DataTable<T>({
   const allVisibleSelected = selectableKeys.length > 0
     && selectedVisibleCount === selectableKeys.length;
   const someVisibleSelected = selectedVisibleCount > 0 && !allVisibleSelected;
-  const cellPadding = density === 'compact'
-    ? 'px-3 py-2 mobile:px-2.5'
-    : 'px-4 py-2.5 mobile:px-3';
-  const cellTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
-  const headerTextSize = density === 'compact' ? 'text-[13px]' : 'text-[14px]';
+  const cellPadding = density === "compact"
+    ? "px-3 py-2 mobile:px-2.5"
+    : "px-4 py-2.5 mobile:px-3";
+  const cellTextSize = density === "compact" ? "text-[13px]" : "text-[14px]";
+  const headerTextSize = density === "compact" ? "text-[13px]" : "text-[14px]";
   const scrollMaxHeight = maxHeight ?? (stickyHeader ? 400 : undefined);
   const stickyBodyMaxHeight = stickyHeader && scrollMaxHeight !== undefined
     ? `calc(${toCssSize(scrollMaxHeight)} - var(--lumen-data-table-header-height, 44px))`
@@ -109,13 +109,13 @@ export function DataTable<T>({
     const updateHeaderHeight = () => {
       if (header.offsetHeight > 0) {
         scrollContainer.style.setProperty(
-          '--lumen-data-table-header-height',
+          "--lumen-data-table-header-height",
           `${header.offsetHeight}px`,
         );
       }
     };
     updateHeaderHeight();
-    if (typeof ResizeObserver === 'undefined') return;
+    if (typeof ResizeObserver === "undefined") return;
     const observer = new ResizeObserver(updateHeaderHeight);
     observer.observe(header);
     return () => observer.disconnect();
@@ -141,13 +141,13 @@ export function DataTable<T>({
     if (!column.sortable || !onSortChange) return;
     onSortChange({
       key: column.key,
-      direction: sort?.key === column.key && sort.direction === 'asc' ? 'desc' : 'asc',
+      direction: sort?.key === column.key && sort.direction === "asc" ? "desc" : "asc",
     });
   };
 
   const renderSortIcon = (column: DataTableColumn<T>) => {
     if (sort?.key !== column.key) return <ChevronsUpDown aria-hidden="true" size={14} />;
-    return sort.direction === 'asc'
+    return sort.direction === "asc"
       ? <ArrowUp aria-hidden="true" size={14} />
       : <ArrowDown aria-hidden="true" size={14} />;
   };
@@ -161,7 +161,7 @@ export function DataTable<T>({
       data-variant={variant}
       data-sticky-header={stickyHeader || undefined}
       className={cn(
-        'min-w-0 overflow-hidden bg-[var(--lumen-color-surface)]',
+        "min-w-0 overflow-hidden bg-[var(--lumen-color-surface)]",
         variantClassNames[variant],
         className,
       )}
@@ -173,35 +173,35 @@ export function DataTable<T>({
         data-density={density}
         data-sticky-header={stickyHeader || undefined}
         className={cn(
-          'lumen-scrollbar max-w-full overflow-x-auto',
-          !stickyHeader && scrollMaxHeight !== undefined && 'overflow-y-auto',
+          "lumen-scrollbar max-w-full overflow-x-auto",
+          !stickyHeader && scrollMaxHeight !== undefined && "overflow-y-auto",
         )}
         style={{ maxHeight: stickyHeader ? undefined : toCssSize(scrollMaxHeight) }}
       >
         <table className={cn(
-          'w-full border-collapse text-left',
-          stickyHeader && 'block min-w-full',
+          "w-full border-collapse text-left",
+          stickyHeader && "block min-w-full",
           tableClassName,
         )}>
           {caption ? <caption className="sr-only">{caption}</caption> : null}
           <thead
             ref={headerRef}
             className={cn(
-              'bg-[var(--lumen-color-surface-subtle)]',
-              stickyHeader && 'block',
+              "bg-[var(--lumen-color-surface-subtle)]",
+              stickyHeader && "block",
             )}
           >
             <tr
               className={cn(
-                'border-b border-[var(--lumen-color-divider)]',
-                stickyHeader && 'table table-fixed',
+                "border-b border-[var(--lumen-color-divider)]",
+                stickyHeader && "table table-fixed",
               )}
-              style={{ width: stickyHeader ? 'calc(100% - 6px)' : undefined }}
+              style={{ width: stickyHeader ? "calc(100% - 6px)" : undefined }}
             >
               {selectable ? (
                 <th
                   scope="col"
-                  className={cn('w-12', cellPadding)}
+                  className={cn("w-12", cellPadding)}
                   style={{ minWidth: 48, width: 48 }}
                 >
                   <Checkbox
@@ -220,18 +220,18 @@ export function DataTable<T>({
                     key={column.key}
                     scope="col"
                     aria-sort={
-                      activeSort === 'asc'
-                        ? 'ascending'
-                        : activeSort === 'desc'
-                          ? 'descending'
+                      activeSort === "asc"
+                        ? "ascending"
+                        : activeSort === "desc"
+                          ? "descending"
                           : undefined
                     }
                     className={cn(
                       cellPadding,
-                      'whitespace-nowrap font-medium leading-5 text-[var(--lumen-color-text-secondary)]',
+                      "whitespace-nowrap font-medium leading-5 text-[var(--lumen-color-text-secondary)]",
                       headerTextSize,
-                      column.align === 'center' && 'text-center',
-                      column.align === 'right' && 'text-right',
+                      column.align === "center" && "text-center",
+                      column.align === "right" && "text-right",
                       column.headerClassName,
                     )}
                     style={{
@@ -243,10 +243,10 @@ export function DataTable<T>({
                       <button
                         type="button"
                         className={cn(
-                          'inline-flex items-center gap-1 rounded-[4px] transition-colors hover:text-[var(--lumen-color-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
-                          column.align === 'right' && 'ml-auto',
-                          column.align === 'center' && 'mx-auto',
-                          activeSort && 'text-[var(--lumen-color-primary)]',
+                          "inline-flex items-center gap-1 rounded-[4px] transition-colors hover:text-[var(--lumen-color-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20",
+                          column.align === "right" && "ml-auto",
+                          column.align === "center" && "mx-auto",
+                          activeSort && "text-[var(--lumen-color-primary)]",
                         )}
                         onClick={() => requestSort(column)}
                       >
@@ -263,11 +263,11 @@ export function DataTable<T>({
             data-ui="data-table-body"
             data-size="sm"
             className={cn(
-              stickyHeader && 'lumen-scrollbar block overflow-x-hidden overflow-y-auto',
+              stickyHeader && "lumen-scrollbar block overflow-x-hidden overflow-y-auto",
             )}
             style={{
               maxHeight: stickyBodyMaxHeight,
-              scrollbarGutter: stickyHeader ? 'stable' : undefined,
+              scrollbarGutter: stickyHeader ? "stable" : undefined,
             }}
           >
             {loading
@@ -275,8 +275,8 @@ export function DataTable<T>({
                 <tr
                   key={`loading-${rowIndex}`}
                   className={cn(
-                    'border-b border-[var(--lumen-color-surface-muted)] last:border-b-0',
-                    stickyHeader && 'table w-full table-fixed',
+                    "border-b border-[var(--lumen-color-surface-muted)] last:border-b-0",
+                    stickyHeader && "table w-full table-fixed",
                   )}
                 >
                   {selectable ? (
@@ -301,11 +301,11 @@ export function DataTable<T>({
               ))
               : data.length === 0
                 ? (
-                  <tr className={cn(stickyHeader && 'table w-full table-fixed')}>
+                  <tr className={cn(stickyHeader && "table w-full table-fixed")}>
                     <td
                       colSpan={totalColumns}
                       className={cn(
-                        'px-4 py-14 text-center text-[var(--lumen-color-text-placeholder)]',
+                        "px-4 py-14 text-center text-[var(--lumen-color-text-placeholder)]",
                         cellTextSize,
                       )}
                     >
@@ -316,7 +316,7 @@ export function DataTable<T>({
                 : data.map((row, rowIndex) => {
                   const key = getRowKey(row);
                   const rowSelectable = isRowSelectable?.(row) ?? true;
-                  const resolvedRowClassName = typeof rowClassName === 'function'
+                  const resolvedRowClassName = typeof rowClassName === "function"
                     ? rowClassName(row, rowIndex)
                     : rowClassName;
                   return (
@@ -324,8 +324,8 @@ export function DataTable<T>({
                       key={key}
                       data-selected={selectedKeys.has(key) || undefined}
                       className={cn(
-                        'border-b border-[var(--lumen-color-surface-muted)] transition-colors last:border-b-0 hover:bg-[var(--lumen-color-surface-hover)] data-[selected=true]:bg-[var(--lumen-color-info-soft)]',
-                        stickyHeader && 'table w-full table-fixed',
+                        "border-b border-[var(--lumen-color-surface-muted)] transition-colors last:border-b-0 hover:bg-[var(--lumen-color-surface-hover)] data-[selected=true]:bg-[var(--lumen-color-info-soft)]",
+                        stickyHeader && "table w-full table-fixed",
                         resolvedRowClassName,
                       )}
                     >
@@ -347,10 +347,10 @@ export function DataTable<T>({
                           key={column.key}
                           className={cn(
                             cellPadding,
-                            'font-normal leading-5 text-[var(--lumen-color-text-secondary)]',
+                            "font-normal leading-5 text-[var(--lumen-color-text-secondary)]",
                             cellTextSize,
-                            column.align === 'center' && 'text-center',
-                            column.align === 'right' && 'text-right',
+                            column.align === "center" && "text-center",
+                            column.align === "right" && "text-right",
                             column.className,
                           )}
                           style={{

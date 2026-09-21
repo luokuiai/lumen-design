@@ -1,46 +1,46 @@
-import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
-import { Radio } from '../components/Radio';
-import { RadioGroup } from '../components/RadioGroup';
+import React from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { Radio } from "../components/Radio";
+import { RadioGroup } from "../components/RadioGroup";
 
 const options = [
-  { value: 'email', label: 'Email', description: 'Receive an email' },
-  { value: 'sms', label: 'SMS' },
-  { value: 'none', label: 'None', disabled: true },
+  { value: "email", label: "Email", description: "Receive an email" },
+  { value: "sms", label: "SMS" },
+  { value: "none", label: "None", disabled: true },
 ] as const;
 
-describe('RadioGroup', () => {
-  it('uses the compact medium size by default', () => {
+describe("RadioGroup", () => {
+  it("uses the compact medium size by default", () => {
     render(<Radio checked label="Medium" />);
 
-    const radio = screen.getByRole('radio', { name: 'Medium' });
-    expect(radio.closest('label')).toHaveClass('gap-2.5');
-    expect(radio.parentElement).toHaveClass('h-4', 'w-4');
-    expect(radio.nextElementSibling).toHaveClass('h-4', 'w-4');
-    expect(radio.nextElementSibling?.querySelector('svg')).toHaveAttribute('width', '8');
+    const radio = screen.getByRole("radio", { name: "Medium" });
+    expect(radio.closest("label")).toHaveClass("gap-2.5");
+    expect(radio.parentElement).toHaveClass("h-4", "w-4");
+    expect(radio.nextElementSibling).toHaveClass("h-4", "w-4");
+    expect(radio.nextElementSibling?.querySelector("svg")).toHaveAttribute("width", "8");
   });
 
-  it('keeps the small radio visibly denser than medium', () => {
+  it("keeps the small radio visibly denser than medium", () => {
     render(<Radio size="sm" checked label="Small" />);
 
-    const radio = screen.getByRole('radio', { name: 'Small' });
-    expect(radio.closest('label')).toHaveClass('gap-2');
-    expect(radio.parentElement).toHaveClass('h-3.5', 'w-3.5');
-    expect(radio.nextElementSibling).toHaveClass('h-3.5', 'w-3.5');
-    expect(radio.nextElementSibling?.querySelector('svg')).toHaveAttribute('width', '6');
+    const radio = screen.getByRole("radio", { name: "Small" });
+    expect(radio.closest("label")).toHaveClass("gap-2");
+    expect(radio.parentElement).toHaveClass("h-3.5", "w-3.5");
+    expect(radio.nextElementSibling).toHaveClass("h-3.5", "w-3.5");
+    expect(radio.nextElementSibling?.querySelector("svg")).toHaveAttribute("width", "6");
   });
 
-  it('provides a larger radio size', () => {
+  it("provides a larger radio size", () => {
     render(<Radio size="lg" checked label="Large" />);
 
-    const radio = screen.getByRole('radio', { name: 'Large' });
-    expect(radio.parentElement).toHaveClass('h-[18px]', 'w-[18px]');
-    expect(radio.nextElementSibling).toHaveClass('h-[18px]', 'w-[18px]');
-    expect(radio.nextElementSibling?.querySelector('svg')).toHaveAttribute('width', '10');
+    const radio = screen.getByRole("radio", { name: "Large" });
+    expect(radio.parentElement).toHaveClass("h-[18px]", "w-[18px]");
+    expect(radio.nextElementSibling).toHaveClass("h-[18px]", "w-[18px]");
+    expect(radio.nextElementSibling?.querySelector("svg")).toHaveAttribute("width", "10");
   });
 
-  it('manages an uncontrolled value and shares one input name', () => {
+  it("manages an uncontrolled value and shares one input name", () => {
     const onChange = vi.fn();
     render(
       <RadioGroup
@@ -51,26 +51,26 @@ describe('RadioGroup', () => {
       />,
     );
 
-    const email = screen.getByRole('radio', { name: 'Email' });
-    const sms = screen.getByRole('radio', { name: 'SMS' });
+    const email = screen.getByRole("radio", { name: "Email" });
+    const sms = screen.getByRole("radio", { name: "SMS" });
 
     expect(email).toBeChecked();
     expect(sms).not.toBeChecked();
-    expect(email).toHaveAttribute('name', sms.getAttribute('name'));
+    expect(email).toHaveAttribute("name", sms.getAttribute("name"));
 
     fireEvent.click(sms);
 
     expect(sms).toBeChecked();
     expect(email).not.toBeChecked();
-    expect(onChange).toHaveBeenCalledWith('sms');
-    expect(screen.getByRole('radio', { name: 'None' })).toBeDisabled();
+    expect(onChange).toHaveBeenCalledWith("sms");
+    expect(screen.getByRole("radio", { name: "None" })).toBeDisabled();
   });
 
-  it('supports controlled numeric values and group-level settings', () => {
+  it("supports controlled numeric values and group-level settings", () => {
     const onChange = vi.fn();
     const numericOptions = [
-      { value: 1, label: 'One' },
-      { value: 2, label: 'Two' },
+      { value: 1, label: "One" },
+      { value: 2, label: "Two" },
     ];
     const { rerender } = render(
       <RadioGroup
@@ -84,13 +84,13 @@ describe('RadioGroup', () => {
       />,
     );
 
-    const group = screen.getByRole('radiogroup', { name: 'Quantity' });
-    const one = screen.getByRole('radio', { name: 'One' });
-    const two = screen.getByRole('radio', { name: 'Two' });
+    const group = screen.getByRole("radiogroup", { name: "Quantity" });
+    const one = screen.getByRole("radio", { name: "One" });
+    const two = screen.getByRole("radio", { name: "Two" });
 
-    expect(group).toHaveClass('flex-row');
+    expect(group).toHaveClass("flex-row");
     expect(one).toBeChecked();
-    expect(one).toHaveAttribute('name', 'quantity');
+    expect(one).toHaveAttribute("name", "quantity");
     expect(one).toBeRequired();
 
     fireEvent.click(two);
@@ -111,13 +111,13 @@ describe('RadioGroup', () => {
     expect(two).toBeChecked();
   });
 
-  it('disables every option from the group', () => {
+  it("disables every option from the group", () => {
     render(
       <RadioGroup aria-label="Disabled group" options={[...options]} disabled />,
     );
 
-    expect(screen.getByRole('radiogroup')).toHaveAttribute('aria-disabled', 'true');
-    expect(screen.getAllByRole('radio')).toEqual(
+    expect(screen.getByRole("radiogroup")).toHaveAttribute("aria-disabled", "true");
+    expect(screen.getAllByRole("radio")).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ disabled: true }),
         expect.objectContaining({ disabled: true }),

@@ -1,10 +1,10 @@
-import React, { useId, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
-import { cn } from './classNames';
-import { sideNavClassNames } from './designTokens';
-import { Tooltip } from './Tooltip';
-import { useLumenLocale } from '../i18n';
+import React, { useId, useState } from "react";
+import { ChevronDown } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { cn } from "./classNames";
+import { sideNavClassNames } from "./designTokens";
+import { Tooltip } from "./Tooltip";
+import { useLumenLocale } from "../i18n";
 
 export interface SideNavItem<T extends string = string> {
   value: T;
@@ -107,12 +107,12 @@ export const SideNav = <T extends string>({
         {Icon ? <Icon aria-hidden="true" className="shrink-0" size={19} /> : collapsed ? (
           <span aria-hidden="true" className="text-[13px] font-normal">{item.label.slice(0, 1)}</span>
         ) : null}
-        <span className={collapsed ? 'sr-only' : 'min-w-0 flex-1 truncate'}>{item.label}</span>
+        <span className={collapsed ? "sr-only" : "min-w-0 flex-1 truncate"}>{item.label}</span>
         {group && !collapsed ? (
           <ChevronDown
             aria-hidden="true"
             size={16}
-            className={cn('shrink-0 transition-transform duration-[160ms] motion-reduce:transition-none', expanded && 'rotate-180')}
+            className={cn("shrink-0 transition-transform duration-[160ms] motion-reduce:transition-none", expanded && "rotate-180")}
           />
         ) : null}
       </>
@@ -123,14 +123,14 @@ export const SideNav = <T extends string>({
       else if (target) onSelect?.(target.value, target);
     };
     const itemProps = {
-      'aria-current': active && !group ? 'page' as const : undefined,
-      'aria-label': collapsed ? item.label : undefined,
-      'aria-expanded': group && !collapsed ? expanded : undefined,
-      'aria-controls': group && !collapsed ? childrenId : undefined,
-      'data-side-nav-item': '',
-      'data-side-nav-group': group || undefined,
-      'data-active': active || activeGroup || undefined,
-      'data-depth': depth,
+      "aria-current": active && !group ? "page" as const : undefined,
+      "aria-label": collapsed ? item.label : undefined,
+      "aria-expanded": group && !collapsed ? expanded : undefined,
+      "aria-controls": group && !collapsed ? childrenId : undefined,
+      "data-side-nav-item": "",
+      "data-side-nav-group": group || undefined,
+      "data-active": active || activeGroup || undefined,
+      "data-depth": depth,
       tabIndex: visible ? undefined : -1,
       className: itemClasses,
       onClick: handleSelect,
@@ -151,7 +151,7 @@ export const SideNav = <T extends string>({
             aria-hidden={!expanded || undefined}
             inert={!expanded}
             className="grid transition-[grid-template-rows,opacity] duration-[220ms] motion-reduce:transition-none"
-            style={{ gridTemplateRows: expanded ? '1fr' : '0fr', opacity: expanded ? 1 : 0 }}
+            style={{ gridTemplateRows: expanded ? "1fr" : "0fr", opacity: expanded ? 1 : 0 }}
           >
             <div className="min-h-0 overflow-hidden">
               <div className={sideNavClassNames.children}>
@@ -169,7 +169,7 @@ export const SideNav = <T extends string>({
       aria-label={ariaLabel ?? locale.navigation.sideNav}
       data-ui="side-nav"
       data-collapsed={collapsed || undefined}
-      className={cn(sideNavClassNames.root, collapsed && 'items-center', className)}
+      className={cn(sideNavClassNames.root, collapsed && "items-center", className)}
     >
       {sections.map((section, sectionIndex) => (
         <div

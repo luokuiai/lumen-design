@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { cn } from './classNames';
-import { useLumenLocale } from '../i18n';
+import React, { useEffect, useMemo, useRef } from "react";
+import { cn } from "./classNames";
+import { useLumenLocale } from "../i18n";
 
-export type TimePrecision = 'minute' | 'second';
+export type TimePrecision = "minute" | "second";
 
 export interface TimeSelectorProps {
   hour: string;
@@ -19,7 +19,7 @@ export interface TimeSelectorProps {
   className?: string;
 }
 
-const pad = (value: number) => String(value).padStart(2, '0');
+const pad = (value: number) => String(value).padStart(2, "0");
 
 const buildOptions = (count: number, step = 1) => {
   const values: string[] = [];
@@ -61,17 +61,17 @@ const TimeColumn: React.FC<TimeColumnProps> = ({
             key={item}
             type="button"
             aria-label={`${title}${item}`}
-            aria-current={selected === item ? 'time' : undefined}
-            data-selected={selected === item ? 'true' : undefined}
+            aria-current={selected === item ? "time" : undefined}
+            data-selected={selected === item ? "true" : undefined}
             disabled={disabled}
             onClick={() => onSelect(item)}
             className={cn(
-              'block w-full rounded-[6px] px-2 py-1.5 text-center text-[13px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
+              "block w-full rounded-[6px] px-2 py-1.5 text-center text-[13px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20",
               selected === item
-                ? 'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)]'
-                : 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
+                ? "bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)]"
+                : "text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]",
               disabled &&
-                'cursor-not-allowed text-[var(--lumen-color-border-hover)] hover:bg-transparent hover:text-[var(--lumen-color-border-hover)]',
+                "cursor-not-allowed text-[var(--lumen-color-border-hover)] hover:bg-transparent hover:text-[var(--lumen-color-border-hover)]",
             )}
           >
             {item}
@@ -85,11 +85,11 @@ const TimeColumn: React.FC<TimeColumnProps> = ({
 export const TimeSelector: React.FC<TimeSelectorProps> = ({
   hour,
   minute,
-  second = '00',
+  second = "00",
   onHourChange,
   onMinuteChange,
   onSecondChange,
-  precision = 'minute',
+  precision = "minute",
   minuteStep = 1,
   isHourDisabled,
   isMinuteDisabled,
@@ -105,7 +105,7 @@ export const TimeSelector: React.FC<TimeSelectorProps> = ({
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
       rootRef.current
-        ?.querySelectorAll<HTMLElement>('[data-time-selector-column]')
+        ?.querySelectorAll<HTMLElement>("[data-time-selector-column]")
         .forEach((column) => {
           const selected = column.querySelector<HTMLElement>(
             '[data-selected="true"]',
@@ -117,7 +117,7 @@ export const TimeSelector: React.FC<TimeSelectorProps> = ({
               column.clientHeight / 2 +
               selected.offsetHeight / 2,
           );
-          if (typeof column.scrollTo === 'function') {
+          if (typeof column.scrollTo === "function") {
             column.scrollTo({ top });
           } else {
             column.scrollTop = top;
@@ -148,8 +148,8 @@ export const TimeSelector: React.FC<TimeSelectorProps> = ({
       <div
         ref={rootRef}
         className={cn(
-          'grid',
-          precision === 'minute' ? 'grid-cols-2' : 'grid-cols-3',
+          "grid",
+          precision === "minute" ? "grid-cols-2" : "grid-cols-3",
           className,
         )}
       >
@@ -167,7 +167,7 @@ export const TimeSelector: React.FC<TimeSelectorProps> = ({
           onSelect={onMinuteChange}
           isDisabled={isMinuteDisabled}
         />
-        {precision === 'second' ? (
+        {precision === "second" ? (
           <TimeColumn
             title={locale.timePicker.second}
             values={seconds}
