@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "version": "1.0.0-beta.8",
-  "packageManager": "bun@1.3.4",
+  "packageManager": "bun@1.4.0",
   "workspaces": [
     "packages/*",
     "playground"
@@ -12,8 +12,8 @@
     "build": "bun run --cwd packages/lumen-ui build",
     "check": "bun run check:theme && bun run lint && bun run typecheck && bun run test && bun run build",
     "check:theme": "bun scripts/check-theme.ts",
-    "lint": "eslint eslint.config.js packages/lumen-ui/src playground/src scripts --max-warnings=0",
-    "lint:fix": "eslint eslint.config.js packages/lumen-ui/src playground/src scripts --max-warnings=0 --fix",
+    "lint": "eslint eslint.config.js packages/lumen-ui/src packages/lumen-ui/vite.config.ts playground/src playground/vite.config.ts scripts --max-warnings=0",
+    "lint:fix": "eslint eslint.config.js packages/lumen-ui/src packages/lumen-ui/vite.config.ts playground/src playground/vite.config.ts scripts --max-warnings=0 --fix",
     "release": "lerna version --no-private",
     "test": "bun run --cwd packages/lumen-ui test",
     "typecheck": "bun run --cwd packages/lumen-ui typecheck",
@@ -39,7 +39,7 @@
     "tailwindcss": "^4.1.4",
     "typescript": "~5.8.2",
     "typescript-eslint": "^8.29.0",
-    "vite": "^6.4.3",
+    "vite": "^7.3.6",
     "vitest": "^3.2.7"
   }
 }
