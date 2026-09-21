@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { cn } from '../classNames';
-import type { InputSize } from '../Input';
+import React, { useEffect, useRef, useState } from "react";
+import { cn } from "../classNames";
+import type { InputSize } from "../Input";
 
-export type OtpInputType = 'numeric' | 'text';
+export type OtpInputType = "numeric" | "text";
 
 export interface OtpInputProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
   /** 受控模式下的验证码值。 */
   value?: string;
   /** 非受控模式下的初始验证码。 */
@@ -41,37 +41,37 @@ export interface OtpInputProps
 }
 
 const sizeClassNames: Record<InputSize, string> = {
-  sm: 'h-9 w-9 text-[16px]',
-  md: 'h-11 w-11 text-[18px]',
-  lg: 'h-13 w-13 text-[20px]',
+  sm: "h-9 w-9 text-[16px]",
+  md: "h-11 w-11 text-[18px]",
+  lg: "h-13 w-13 text-[20px]",
 };
 
 const sanitizeValue = (value: string, type: OtpInputType, length: number) => {
-  const pattern = type === 'numeric' ? /\D/g : /[^a-zA-Z0-9]/g;
-  return value.replace(pattern, '').slice(0, length);
+  const pattern = type === "numeric" ? /\D/g : /[^a-zA-Z0-9]/g;
+  return value.replace(pattern, "").slice(0, length);
 };
 
 export const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
   (
     {
       value,
-      defaultValue = '',
+      defaultValue = "",
       onChange,
       onComplete,
       length = 6,
-      type = 'numeric',
+      type = "numeric",
       mask = false,
       disabled = false,
       readOnly = false,
       invalid = false,
-      size = 'md',
+      size = "md",
       autoFocus = false,
-      autoComplete = 'one-time-code',
+      autoComplete = "one-time-code",
       name,
       inputClassName,
       getInputLabel = (index, total) => `Digit ${index + 1} of ${total}`,
       className,
-      'aria-label': ariaLabel = 'One-time password',
+      "aria-label": ariaLabel = "One-time password",
       ...props
     },
     ref,
@@ -126,7 +126,7 @@ export const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
         aria-invalid={invalid || undefined}
         data-ui="otp-input"
         data-invalid={invalid || undefined}
-        className={cn('inline-flex max-w-full items-center gap-2', className)}
+        className={cn("inline-flex max-w-full items-center gap-2", className)}
       >
         {name ? <input type="hidden" name={name} value={currentValue} disabled={disabled} /> : null}
         {Array.from({ length: resolvedLength }, (_, index) => (
@@ -135,21 +135,21 @@ export const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
             ref={(node) => {
               inputRefs.current[index] = node;
             }}
-            type={mask ? 'password' : 'text'}
-            inputMode={type === 'numeric' ? 'numeric' : 'text'}
-            pattern={type === 'numeric' ? '[0-9]*' : undefined}
-            autoComplete={index === 0 ? autoComplete : 'off'}
+            type={mask ? "password" : "text"}
+            inputMode={type === "numeric" ? "numeric" : "text"}
+            pattern={type === "numeric" ? "[0-9]*" : undefined}
+            autoComplete={index === 0 ? autoComplete : "off"}
             maxLength={resolvedLength}
-            value={currentValue[index] ?? ''}
+            value={currentValue[index] ?? ""}
             disabled={disabled}
             readOnly={readOnly}
             aria-label={getInputLabel(index, resolvedLength)}
             aria-invalid={invalid || undefined}
             className={cn(
-              'shrink min-w-0 rounded-[var(--lumen-radius-control)] border bg-[var(--lumen-color-surface)] text-center font-medium text-[var(--lumen-color-text-strong)] caret-[var(--lumen-color-primary)] outline-none transition-[border-color,box-shadow,background-color] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/15 disabled:cursor-not-allowed disabled:bg-[var(--lumen-color-surface-muted)] disabled:text-[var(--lumen-color-text-placeholder)]',
+              "shrink min-w-0 rounded-[var(--lumen-radius-control)] border bg-[var(--lumen-color-surface)] text-center font-medium text-[var(--lumen-color-text-strong)] caret-[var(--lumen-color-primary)] outline-none transition-[border-color,box-shadow,background-color] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/15 disabled:cursor-not-allowed disabled:bg-[var(--lumen-color-surface-muted)] disabled:text-[var(--lumen-color-text-placeholder)]",
               invalid
-                ? 'border-[var(--lumen-color-danger)] focus:border-[var(--lumen-color-danger)] focus:ring-[var(--lumen-color-danger)]/15'
-                : 'border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-strong)]',
+                ? "border-[var(--lumen-color-danger)] focus:border-[var(--lumen-color-danger)] focus:ring-[var(--lumen-color-danger)]/15"
+                : "border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-strong)]",
               sizeClassNames[size],
               inputClassName,
             )}
@@ -163,21 +163,21 @@ export const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
               insertValue(index, nextInput);
             }}
             onKeyDown={(event) => {
-              if (event.key === 'Backspace' && !currentValue[index] && index > 0) {
+              if (event.key === "Backspace" && !currentValue[index] && index > 0) {
                 event.preventDefault();
                 commitValue(currentValue.slice(0, index - 1) + currentValue.slice(index));
                 focusInput(index - 1);
-              } else if (event.key === 'ArrowLeft') {
+              } else if (event.key === "ArrowLeft") {
                 event.preventDefault();
                 focusInput(index - 1);
-              } else if (event.key === 'ArrowRight') {
+              } else if (event.key === "ArrowRight") {
                 event.preventDefault();
                 focusInput(index + 1);
               }
             }}
             onPaste={(event) => {
               event.preventDefault();
-              insertValue(index, event.clipboardData.getData('text'));
+              insertValue(index, event.clipboardData.getData("text"));
             }}
           />
         ))}
@@ -186,4 +186,4 @@ export const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
   },
 );
 
-OtpInput.displayName = 'OtpInput';
+OtpInput.displayName = "OtpInput";

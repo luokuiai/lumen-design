@@ -1,9 +1,9 @@
-import React from 'react';
-import { cn } from './classNames';
-import { Typography } from './Typography';
+import React from "react";
+import { cn } from "./classNames";
+import { Typography } from "./Typography";
 
 export interface AppHeaderProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
+  extends Omit<React.HTMLAttributes<HTMLElement>, "title"> {
   title: React.ReactNode;
   description?: React.ReactNode;
   navigation?: React.ReactNode;
@@ -29,7 +29,7 @@ export const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>(
       ref={ref}
       data-ui="app-header"
       className={cn(
-        'flex min-w-0 items-center justify-between gap-5 border-b border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-glass)] px-6 py-4 mobile:flex-col mobile:items-stretch mobile:gap-3 mobile:px-3 mobile:py-3',
+        "flex min-w-0 items-center justify-between gap-5 border-b border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-glass)] px-6 py-4 mobile:flex-col mobile:items-stretch mobile:gap-3 mobile:px-3 mobile:py-3",
         className,
       )}
     >
@@ -91,4 +91,4 @@ export const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>(
   ),
 );
 
-AppHeader.displayName = 'AppHeader';
+AppHeader.displayName = "AppHeader";

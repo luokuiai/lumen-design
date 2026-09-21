@@ -1,13 +1,13 @@
-import React from 'react';
-import { cn } from './classNames';
-import { Toolbar, type ToolbarSize } from './Toolbar';
-import { useLumenLocale } from '../i18n';
+import React from "react";
+import { cn } from "./classNames";
+import { Toolbar, type ToolbarSize } from "./Toolbar";
+import { useLumenLocale } from "../i18n";
 
-export type AppBarPosition = 'fixed' | 'absolute' | 'sticky' | 'static';
-export type AppBarTitleAlign = 'start' | 'center';
+export type AppBarPosition = "fixed" | "absolute" | "sticky" | "static";
+export type AppBarTitleAlign = "start" | "center";
 
 export interface AppBarProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
+  extends Omit<React.HTMLAttributes<HTMLElement>, "title"> {
   title: React.ReactNode;
   leading?: React.ReactNode;
   actions?: React.ReactNode;
@@ -22,10 +22,10 @@ export interface AppBarProps
 }
 
 const appBarPositionClassNames: Record<AppBarPosition, string> = {
-  fixed: 'fixed inset-x-0 top-0 z-50',
-  absolute: 'absolute inset-x-0 top-0 z-10',
-  sticky: 'sticky top-0 z-40',
-  static: 'relative w-full',
+  fixed: "fixed inset-x-0 top-0 z-50",
+  absolute: "absolute inset-x-0 top-0 z-10",
+  sticky: "sticky top-0 z-40",
+  static: "relative w-full",
 };
 
 export const AppBar = React.forwardRef<HTMLElement, AppBarProps>(
@@ -35,9 +35,9 @@ export const AppBar = React.forwardRef<HTMLElement, AppBarProps>(
       leading,
       actions,
       active = true,
-      position = 'fixed',
-      titleAlign = 'center',
-      size = 'lg',
+      position = "fixed",
+      titleAlign = "center",
+      size = "lg",
       safeArea = true,
       ariaLabel,
       className,
@@ -58,9 +58,9 @@ export const AppBar = React.forwardRef<HTMLElement, AppBarProps>(
         data-ui="app-bar"
         hidden={!active}
         className={cn(
-          'border-b border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[var(--lumen-shadow-control)]',
+          "border-b border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[var(--lumen-shadow-control)]",
           appBarPositionClassNames[position],
-          safeArea && 'pt-[env(safe-area-inset-top)]',
+          safeArea && "pt-[env(safe-area-inset-top)]",
           className,
         )}
       >
@@ -68,10 +68,10 @@ export const AppBar = React.forwardRef<HTMLElement, AppBarProps>(
           size={size}
           ariaLabel={ariaLabel ?? locale.navigation.appBar}
           className={cn(
-            '!grid w-full overflow-visible [&_[data-icon-only]]:!rounded-full',
-            titleAlign === 'center'
-              ? 'grid-cols-[minmax(48px,1fr)_minmax(0,auto)_minmax(48px,1fr)]'
-              : 'grid-cols-[auto_minmax(0,1fr)_auto]',
+            "!grid w-full overflow-visible [&_[data-icon-only]]:!rounded-full",
+            titleAlign === "center"
+              ? "grid-cols-[minmax(48px,1fr)_minmax(0,auto)_minmax(48px,1fr)]"
+              : "grid-cols-[auto_minmax(0,1fr)_auto]",
             toolbarClassName,
           )}
         >
@@ -81,8 +81,8 @@ export const AppBar = React.forwardRef<HTMLElement, AppBarProps>(
           <h1
             data-ui="app-bar-title"
             className={cn(
-              'm-0 min-w-0 truncate text-[17px] font-medium leading-tight text-[var(--lumen-color-text-strong)]',
-              titleAlign === 'start' && 'text-left',
+              "m-0 min-w-0 truncate text-[17px] font-medium leading-tight text-[var(--lumen-color-text-strong)]",
+              titleAlign === "start" && "text-left",
               titleClassName,
             )}
           >
@@ -97,4 +97,4 @@ export const AppBar = React.forwardRef<HTMLElement, AppBarProps>(
   },
 );
 
-AppBar.displayName = 'AppBar';
+AppBar.displayName = "AppBar";

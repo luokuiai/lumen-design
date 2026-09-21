@@ -1,10 +1,10 @@
-import React from 'react';
-import { LoaderCircle } from 'lucide-react';
-import { cn } from './classNames';
-import { useLumenLocale } from '../i18n';
+import React from "react";
+import { LoaderCircle } from "lucide-react";
+import { cn } from "./classNames";
+import { useLumenLocale } from "../i18n";
 
-export type SpinnerSize = 'sm' | 'md' | 'lg';
-export type SpinnerTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
+export type SpinnerSize = "sm" | "md" | "lg";
+export type SpinnerTone = "neutral" | "info" | "success" | "warning" | "danger";
 
 export interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: SpinnerSize;
@@ -13,32 +13,32 @@ export interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const spinnerSizeTokens: Record<SpinnerSize, { icon: number; text: string }> = {
-  sm: { icon: 16, text: 'text-[12px]' },
-  md: { icon: 20, text: 'text-[13px]' },
-  lg: { icon: 28, text: 'text-[14px]' },
+  sm: { icon: 16, text: "text-[12px]" },
+  md: { icon: 20, text: "text-[13px]" },
+  lg: { icon: 28, text: "text-[14px]" },
 };
 
 const spinnerToneClassNames: Record<SpinnerTone, string> = {
-  neutral: 'text-[var(--lumen-color-text-muted)]',
-  info: 'text-[var(--lumen-color-primary)]',
-  success: 'text-[var(--lumen-color-success)]',
-  warning: 'text-[var(--lumen-color-warning)]',
-  danger: 'text-[var(--lumen-color-danger)]',
+  neutral: "text-[var(--lumen-color-text-muted)]",
+  info: "text-[var(--lumen-color-primary)]",
+  success: "text-[var(--lumen-color-success)]",
+  warning: "text-[var(--lumen-color-warning)]",
+  danger: "text-[var(--lumen-color-danger)]",
 };
 
 export const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
-  ({ size = 'md', tone = 'info', label, className, role, ...props }, ref) => {
+  ({ size = "md", tone = "info", label, className, role, ...props }, ref) => {
     const locale = useLumenLocale();
     const sizeToken = spinnerSizeTokens[size];
     return (
       <div
         {...props}
         ref={ref}
-        role={role ?? 'status'}
+        role={role ?? "status"}
         data-ui="spinner"
         data-size={size}
         className={cn(
-          'inline-flex items-center gap-2',
+          "inline-flex items-center gap-2",
           spinnerToneClassNames[tone],
           className,
         )}
@@ -49,7 +49,7 @@ export const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
           size={sizeToken.icon}
         />
         {label ? (
-          <span className={cn('text-[var(--lumen-color-text-secondary)]', sizeToken.text)}>
+          <span className={cn("text-[var(--lumen-color-text-secondary)]", sizeToken.text)}>
             {label}
           </span>
         ) : (
@@ -60,4 +60,4 @@ export const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
   },
 );
 
-Spinner.displayName = 'Spinner';
+Spinner.displayName = "Spinner";

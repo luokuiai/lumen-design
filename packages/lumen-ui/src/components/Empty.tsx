@@ -1,12 +1,12 @@
-import React from 'react';
-import { Inbox } from 'lucide-react';
-import { cn } from './classNames';
-import { useLumenLocale } from '../i18n';
+import React from "react";
+import { Inbox } from "lucide-react";
+import { cn } from "./classNames";
+import { useLumenLocale } from "../i18n";
 
-export type EmptySize = 'sm' | 'md' | 'lg';
+export type EmptySize = "sm" | "md" | "lg";
 
 export interface EmptyProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   title?: React.ReactNode;
   description?: React.ReactNode;
   icon?: React.ReactNode | false;
@@ -21,9 +21,9 @@ const emptySizeClassNames: Record<EmptySize, {
   iconSize: number;
   title: string;
 }> = {
-  sm: { root: 'px-4 py-4', icon: 'h-10 w-10', iconSize: 19, title: 'text-[13px]' },
-  md: { root: 'px-5 py-8', icon: 'h-12 w-12', iconSize: 22, title: 'text-[14px]' },
-  lg: { root: 'px-6 py-12', icon: 'h-14 w-14', iconSize: 25, title: 'text-[16px]' },
+  sm: { root: "px-4 py-4", icon: "h-10 w-10", iconSize: 19, title: "text-[13px]" },
+  md: { root: "px-5 py-8", icon: "h-12 w-12", iconSize: 22, title: "text-[14px]" },
+  lg: { root: "px-6 py-12", icon: "h-14 w-14", iconSize: 25, title: "text-[16px]" },
 };
 
 export const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
@@ -33,7 +33,7 @@ export const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
       description,
       icon,
       action,
-      size = 'md',
+      size = "md",
       bordered = false,
       className,
       ...props
@@ -54,16 +54,16 @@ export const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
         data-ui="empty"
         data-size={size}
         className={cn(
-          'flex min-w-0 flex-col items-center justify-center text-center',
+          "flex min-w-0 flex-col items-center justify-center text-center",
           sizeClasses.root,
-          bordered && 'rounded-[8px] border border-dashed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-subtle)]',
+          bordered && "rounded-[8px] border border-dashed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-subtle)]",
           className,
         )}
       >
         {iconNode ? (
           <span
             className={cn(
-              'mb-3 flex items-center justify-center rounded-[8px] text-[var(--lumen-color-text-placeholder)]',
+              "mb-3 flex items-center justify-center rounded-[8px] text-[var(--lumen-color-text-placeholder)]",
               sizeClasses.icon,
             )}
           >
@@ -71,7 +71,7 @@ export const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
           </span>
         ) : null}
         {resolvedTitle ? (
-          <div className={cn('font-normal leading-5 text-[var(--lumen-color-text)]', sizeClasses.title)}>
+          <div className={cn("font-normal leading-5 text-[var(--lumen-color-text)]", sizeClasses.title)}>
             {resolvedTitle}
           </div>
         ) : null}
@@ -86,4 +86,4 @@ export const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
   },
 );
 
-Empty.displayName = 'Empty';
+Empty.displayName = "Empty";

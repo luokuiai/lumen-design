@@ -1,16 +1,16 @@
-import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
-import { Popover } from '../components/Popover';
+import React from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { Popover } from "../components/Popover";
 
-describe('Popover', () => {
+describe("Popover", () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
-  it('opens and positions content from its trigger', () => {
-    vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(240);
-    vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(120);
+  it("opens and positions content from its trigger", () => {
+    vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockReturnValue(240);
+    vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockReturnValue(120);
 
     render(
       <Popover
@@ -32,8 +32,8 @@ describe('Popover', () => {
       </Popover>,
     );
 
-    const trigger = screen.getByRole('button', { name: '打开详情' });
-    vi.spyOn(trigger, 'getBoundingClientRect').mockReturnValue({
+    const trigger = screen.getByRole("button", { name: "打开详情" });
+    vi.spyOn(trigger, "getBoundingClientRect").mockReturnValue({
       bottom: 70,
       height: 30,
       left: 100,
@@ -47,18 +47,18 @@ describe('Popover', () => {
 
     fireEvent.click(trigger);
 
-    const popover = screen.getByRole('dialog', { name: '设备详情' });
+    const popover = screen.getByRole("dialog", { name: "设备详情" });
     expect(popover).toHaveStyle({
-      left: '100px',
-      top: '78px',
+      left: "100px",
+      top: "78px",
     });
-    expect(popover.firstElementChild).toHaveAttribute('data-ui', 'popover');
-    expect(popover).not.toHaveClass('overflow-auto');
-    expect(popover.firstElementChild).toHaveClass('overflow-auto');
-    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(popover.firstElementChild).toHaveAttribute("data-ui", "popover");
+    expect(popover).not.toHaveClass("overflow-auto");
+    expect(popover.firstElementChild).toHaveClass("overflow-auto");
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
   });
 
-  it('closes on outside click and Escape', () => {
+  it("closes on outside click and Escape", () => {
     const onOpenChange = vi.fn();
     render(
       <Popover
@@ -73,9 +73,9 @@ describe('Popover', () => {
     fireEvent.mouseDown(document.body);
     expect(onOpenChange).toHaveBeenCalledWith(false);
 
-    fireEvent.click(screen.getByRole('button', { name: '触发器' }));
-    fireEvent.keyDown(document, { key: 'Escape' });
+    fireEvent.click(screen.getByRole("button", { name: "触发器" }));
+    fireEvent.keyDown(document, { key: "Escape" });
     expect(onOpenChange).toHaveBeenLastCalledWith(false);
-    expect(screen.getByRole('button', { name: '触发器' })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "触发器" })).toHaveFocus();
   });
 });

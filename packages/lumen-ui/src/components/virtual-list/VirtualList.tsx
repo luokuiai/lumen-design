@@ -6,11 +6,11 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from 'react';
-import { cn } from '../classNames';
+} from "react";
+import { cn } from "../classNames";
 
 export type VirtualListItemSize<T> = number | ((item: T, index: number) => number);
-export type VirtualListScrollAlign = 'auto' | 'start' | 'center' | 'end';
+export type VirtualListScrollAlign = "auto" | "start" | "center" | "end";
 
 export interface VirtualListRange {
   /** 第一个可见项索引。 */
@@ -35,7 +35,7 @@ export interface VirtualListHandle {
 }
 
 export interface VirtualListProps<T>
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   /** 列表数据。 */
   items: readonly T[];
   /** 固定项高度，或根据数据返回每项高度的函数。 */
@@ -78,7 +78,7 @@ const createMeasurements = <T,>(
   offsets[0] = 0;
   items.forEach((item, index) => {
     const size = normalizeSize(
-      typeof itemSize === 'function' ? itemSize(item, index) : itemSize,
+      typeof itemSize === "function" ? itemSize(item, index) : itemSize,
     );
     sizes[index] = size;
     offsets[index + 1] = (offsets[index] ?? 0) + size;
@@ -131,30 +131,30 @@ export const VirtualList = React.forwardRef(function VirtualListInner<T>(
 ) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const initialScrollAppliedRef = useRef(false);
-  const lastReportedRangeRef = useRef('');
+  const lastReportedRangeRef = useRef("");
   const onRangeChangeRef = useRef(onRangeChange);
   const measurements = useMemo(
     () => createMeasurements(items, itemSize),
     [itemSize, items],
   );
-  const fallbackViewportHeight = typeof height === 'number' ? height : 0;
+  const fallbackViewportHeight = typeof height === "number" ? height : 0;
   const [viewportHeight, setViewportHeight] = useState(fallbackViewportHeight);
   const [scrollOffset, setScrollOffset] = useState(0);
   onRangeChangeRef.current = onRangeChange;
 
-  const scrollToOffset = useCallback((offset: number, behavior: ScrollBehavior = 'auto') => {
+  const scrollToOffset = useCallback((offset: number, behavior: ScrollBehavior = "auto") => {
     const element = scrollRef.current;
     if (!element) return;
     const nextOffset = Math.min(
       Math.max(0, offset),
       Math.max(0, measurements.totalSize - element.clientHeight),
     );
-    if (typeof element.scrollTo === 'function') {
+    if (typeof element.scrollTo === "function") {
       element.scrollTo({ top: nextOffset, behavior });
     } else {
       element.scrollTop = nextOffset;
     }
-    if (behavior === 'auto') setScrollOffset(nextOffset);
+    if (behavior === "auto") setScrollOffset(nextOffset);
   }, [measurements.totalSize]);
 
   const scrollToIndex = useCallback((index: number, options: VirtualListScrollOptions = {}) => {
@@ -164,13 +164,13 @@ export const VirtualList = React.forwardRef(function VirtualListInner<T>(
     const end = measurements.offsets[resolvedIndex + 1] ?? start;
     const currentOffset = scrollRef.current?.scrollTop ?? scrollOffset;
     const currentViewportHeight = scrollRef.current?.clientHeight || viewportHeight;
-    const align = options.align ?? 'auto';
+    const align = options.align ?? "auto";
     let nextOffset = currentOffset;
 
-    if (align === 'start') nextOffset = start;
-    if (align === 'center') nextOffset = start - (currentViewportHeight - (end - start)) / 2;
-    if (align === 'end') nextOffset = end - currentViewportHeight;
-    if (align === 'auto') {
+    if (align === "start") nextOffset = start;
+    if (align === "center") nextOffset = start - (currentViewportHeight - (end - start)) / 2;
+    if (align === "end") nextOffset = end - currentViewportHeight;
+    if (align === "auto") {
       if (start < currentOffset) nextOffset = start;
       else if (end > currentOffset + currentViewportHeight) {
         nextOffset = end - currentViewportHeight;
@@ -192,7 +192,7 @@ export const VirtualList = React.forwardRef(function VirtualListInner<T>(
       setViewportHeight(element.clientHeight || fallbackViewportHeight);
     };
     updateViewportHeight();
-    if (typeof ResizeObserver === 'undefined') return;
+    if (typeof ResizeObserver === "undefined") return;
     const observer = new ResizeObserver(updateViewportHeight);
     observer.observe(element);
     return () => observer.disconnect();
@@ -257,7 +257,7 @@ export const VirtualList = React.forwardRef(function VirtualListInner<T>(
   if (range.overscanStartIndex >= 0) {
     for (let index = range.overscanStartIndex; index <= range.overscanEndIndex; index += 1) {
       const item = items[index] as T;
-      const resolvedItemClassName = typeof itemClassName === 'function'
+      const resolvedItemClassName = typeof itemClassName === "function"
         ? itemClassName(item, index)
         : itemClassName;
       renderedItems.push(
@@ -267,7 +267,7 @@ export const VirtualList = React.forwardRef(function VirtualListInner<T>(
           aria-posinset={index + 1}
           aria-setsize={items.length}
           data-index={index}
-          className={cn('absolute left-0 top-0 w-full', resolvedItemClassName)}
+          className={cn("absolute left-0 top-0 w-full", resolvedItemClassName)}
           style={{
             height: measurements.sizes[index],
             transform: `translateY(${measurements.offsets[index]}px)`,
@@ -283,11 +283,11 @@ export const VirtualList = React.forwardRef(function VirtualListInner<T>(
     <div
       {...props}
       ref={scrollRef}
-      role={props.role ?? 'list'}
+      role={props.role ?? "list"}
       data-ui="virtual-list"
       data-size="sm"
       className={cn(
-        'lumen-scrollbar relative overflow-x-hidden overflow-y-auto overscroll-contain',
+        "lumen-scrollbar relative overflow-x-hidden overflow-y-auto overscroll-contain",
         className,
       )}
       style={{ ...style, height }}
@@ -302,7 +302,7 @@ export const VirtualList = React.forwardRef(function VirtualListInner<T>(
         </div>
       ) : (
         <div
-          className={cn('relative w-full', contentClassName)}
+          className={cn("relative w-full", contentClassName)}
           style={{ height: measurements.totalSize }}
         >
           {renderedItems}

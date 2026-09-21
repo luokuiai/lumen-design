@@ -1,10 +1,10 @@
-import { Eye, EyeOff } from 'lucide-react';
-import React, { useState } from 'react';
-import { cn } from './classNames';
-import { radiusTokens } from './designTokens';
-import { useLumenLocale } from '../i18n';
+import { Eye, EyeOff } from "lucide-react";
+import React, { useState } from "react";
+import { cn } from "./classNames";
+import { radiusTokens } from "./designTokens";
+import { useLumenLocale } from "../i18n";
 
-export type InputSize = 'sm' | 'md' | 'lg';
+export type InputSize = "sm" | "md" | "lg";
 
 export interface PasswordToggleLabels {
   show: string;
@@ -12,7 +12,7 @@ export interface PasswordToggleLabels {
 }
 
 export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'prefix' | 'size'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "prefix" | "size"> {
   size?: InputSize;
   invalid?: boolean;
   prefix?: React.ReactNode;
@@ -23,34 +23,34 @@ export interface InputProps
 }
 
 const inputSizeTokens: Record<InputSize, string> = {
-  sm: 'h-[var(--lumen-control-height-sm)] px-2.5 text-[13px] mobile:text-[16px]',
-  md: 'h-[var(--lumen-control-height-md)] px-3 text-[14px] mobile:text-[16px]',
-  lg: 'h-[var(--lumen-control-height-lg)] px-3.5 text-[15px] mobile:text-[16px]',
+  sm: "h-[var(--lumen-control-height-sm)] px-2.5 text-[13px] mobile:text-[16px]",
+  md: "h-[var(--lumen-control-height-md)] px-3 text-[14px] mobile:text-[16px]",
+  lg: "h-[var(--lumen-control-height-lg)] px-3.5 text-[15px] mobile:text-[16px]",
 };
 
 const affixSizeTokens: Record<InputSize, string> = {
-  sm: 'h-[var(--lumen-control-height-sm)] px-2.5 text-[13px] mobile:text-[16px]',
-  md: 'h-[var(--lumen-control-height-md)] px-3 text-[14px] mobile:text-[16px]',
-  lg: 'h-[var(--lumen-control-height-lg)] px-3.5 text-[15px] mobile:text-[16px]',
+  sm: "h-[var(--lumen-control-height-sm)] px-2.5 text-[13px] mobile:text-[16px]",
+  md: "h-[var(--lumen-control-height-md)] px-3 text-[14px] mobile:text-[16px]",
+  lg: "h-[var(--lumen-control-height-lg)] px-3.5 text-[15px] mobile:text-[16px]",
 };
 
 const baseControlClassName =
-  'w-full border bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] outline-none transition-all placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed disabled:bg-[var(--lumen-color-surface-muted)] disabled:text-[var(--lumen-color-text-placeholder)] disabled:opacity-100';
+  "w-full border bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] outline-none transition-all placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed disabled:bg-[var(--lumen-color-surface-muted)] disabled:text-[var(--lumen-color-text-placeholder)] disabled:opacity-100";
 
 const getStateClassName = (invalid?: boolean) =>
   invalid
-    ? 'border-[var(--lumen-color-danger)] focus:border-[var(--lumen-color-danger)] focus:ring-2 focus:ring-[var(--lumen-color-danger)]/10'
-    : 'border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/10';
+    ? "border-[var(--lumen-color-danger)] focus:border-[var(--lumen-color-danger)] focus:ring-2 focus:ring-[var(--lumen-color-danger)]/10"
+    : "border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)] focus:ring-2 focus:ring-[var(--lumen-color-primary)]/10";
 
 const getAffixStateClassName = (invalid?: boolean) =>
   invalid
-    ? 'border-[var(--lumen-color-danger)] focus-within:border-[var(--lumen-color-danger)] focus-within:ring-2 focus-within:ring-[var(--lumen-color-danger)]/10'
-    : 'border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)] focus-within:border-[var(--lumen-color-primary)] focus-within:ring-2 focus-within:ring-[var(--lumen-color-primary)]/10';
+    ? "border-[var(--lumen-color-danger)] focus-within:border-[var(--lumen-color-danger)] focus-within:ring-2 focus-within:ring-[var(--lumen-color-danger)]/10"
+    : "border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)] focus-within:border-[var(--lumen-color-primary)] focus-within:ring-2 focus-within:ring-[var(--lumen-color-primary)]/10";
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
-      size = 'md',
+      size = "md",
       invalid = false,
       prefix,
       suffix,
@@ -70,8 +70,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       hide: locale.accessibility.passwordHide,
     };
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const showPasswordToggle = passwordToggle && type === 'password';
-    const resolvedType = showPasswordToggle && passwordVisible ? 'text' : type;
+    const showPasswordToggle = passwordToggle && type === "password";
+    const resolvedType = showPasswordToggle && passwordVisible ? "text" : type;
 
     if (prefix || suffix || showPasswordToggle) {
       return (
@@ -80,11 +80,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           data-invalid={invalid || undefined}
           data-disabled={disabled || undefined}
           className={cn(
-            'flex w-full items-center gap-2 border bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] outline-none transition-all',
+            "flex w-full items-center gap-2 border bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] outline-none transition-all",
             radiusTokens.control,
             affixSizeTokens[size],
             disabled
-              ? 'cursor-not-allowed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-placeholder)]'
+              ? "cursor-not-allowed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-placeholder)]"
               : getAffixStateClassName(invalid),
             className,
           )}
@@ -99,7 +99,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             disabled={disabled}
             type={resolvedType}
             className={cn(
-              'min-w-0 flex-1 border-0 bg-transparent p-0 text-inherit outline-none placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed',
+              "min-w-0 flex-1 border-0 bg-transparent p-0 text-inherit outline-none placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed",
               inputClassName,
             )}
             {...props}
@@ -149,4 +149,4 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   },
 );
 
-Input.displayName = 'Input';
+Input.displayName = "Input";

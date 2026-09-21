@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useLumenLocale } from '../i18n';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import React, { useState } from "react";
+import { useLumenLocale } from "../i18n";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 export interface TimelineItem {
   id: string;
@@ -8,12 +8,12 @@ export interface TimelineItem {
   title: string;
   description?: string;
   meta?: { label: string; value: string }[];
-  type?: 'default' | 'success' | 'warning' | 'error';
+  type?: "default" | "success" | "warning" | "error";
   beforeValue?: string;
   afterValue?: string;
 }
 
-type TimelineType = NonNullable<TimelineItem['type']>;
+type TimelineType = NonNullable<TimelineItem["type"]>;
 
 interface TimelineProps {
   items: TimelineItem[];
@@ -24,24 +24,24 @@ interface TimelineProps {
 
 const typeStyles: Record<TimelineType, { dot: string; line: string; badge: string }> = {
   success: {
-    dot: 'border-[var(--lumen-color-success)] bg-[var(--lumen-color-surface)]',
-    line: 'bg-[var(--lumen-color-success)]',
-    badge: 'bg-[var(--lumen-color-success-soft)] text-[var(--lumen-color-success-text)]',
+    dot: "border-[var(--lumen-color-success)] bg-[var(--lumen-color-surface)]",
+    line: "bg-[var(--lumen-color-success)]",
+    badge: "bg-[var(--lumen-color-success-soft)] text-[var(--lumen-color-success-text)]",
   },
   warning: {
-    dot: 'border-[var(--lumen-color-warning)] bg-[var(--lumen-color-surface)]',
-    line: 'bg-[var(--lumen-color-warning)]',
-    badge: 'bg-[var(--lumen-color-warning-soft)] text-[var(--lumen-color-warning-text)]',
+    dot: "border-[var(--lumen-color-warning)] bg-[var(--lumen-color-surface)]",
+    line: "bg-[var(--lumen-color-warning)]",
+    badge: "bg-[var(--lumen-color-warning-soft)] text-[var(--lumen-color-warning-text)]",
   },
   error: {
-    dot: 'border-[var(--lumen-color-danger)] bg-[var(--lumen-color-surface)]',
-    line: 'bg-[var(--lumen-color-danger)]',
-    badge: 'bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger-text)]',
+    dot: "border-[var(--lumen-color-danger)] bg-[var(--lumen-color-surface)]",
+    line: "bg-[var(--lumen-color-danger)]",
+    badge: "bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger-text)]",
   },
   default: {
-    dot: 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-surface)]',
-    line: 'bg-[var(--lumen-color-primary)]',
-    badge: 'bg-[var(--lumen-color-info-soft)] text-[var(--lumen-color-info-text)]',
+    dot: "border-[var(--lumen-color-primary)] bg-[var(--lumen-color-surface)]",
+    line: "bg-[var(--lumen-color-primary)]",
+    badge: "bg-[var(--lumen-color-info-soft)] text-[var(--lumen-color-info-text)]",
   },
 };
 
@@ -82,7 +82,7 @@ export const Timeline: React.FC<TimelineProps> = ({
   return (
     <div className="relative">
       {displayItems.map((item, idx) => {
-        const style = typeStyles[item.type || 'default'];
+        const style = typeStyles[item.type || "default"];
         const isExpanded = expandedItems.has(item.id);
         const hasDetails = item.beforeValue || item.afterValue || item.description;
 
@@ -90,7 +90,7 @@ export const Timeline: React.FC<TimelineProps> = ({
           <div
             key={item.id}
             data-timeline-item
-            className={`relative flex gap-3 pb-4 pad:gap-4 ${idx === displayItems.length - 1 ? '' : ''}`}
+            className={`relative flex gap-3 pb-4 pad:gap-4 ${idx === displayItems.length - 1 ? "" : ""}`}
           >
             {idx < displayItems.length - 1 && (
               <div
@@ -104,7 +104,7 @@ export const Timeline: React.FC<TimelineProps> = ({
 
             <div
               className={`min-w-0 flex-1 rounded-[12px] border border-[var(--lumen-color-surface-muted)] bg-[var(--lumen-color-surface)] p-3 transition-shadow hover:shadow-sm pad:p-4 ${
-                onItemClick ? 'cursor-pointer' : ''
+                onItemClick ? "cursor-pointer" : ""
               }`}
               onClick={() => onItemClick?.(item.id)}
             >

@@ -1,19 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { useLumenLocale } from '../i18n';
-import { Button } from './Button';
-import { cn } from './classNames';
+import React, { useCallback, useEffect, useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useLumenLocale } from "../i18n";
+import { Button } from "./Button";
+import { cn } from "./classNames";
 import {
   floatingButtonIconSizeTokens,
   type ButtonSize,
   type ButtonVariant,
-} from './designTokens';
+} from "./designTokens";
 
-export type ScrollToEdgeDirection = 'top' | 'bottom';
-export type ScrollToEdgePosition = 'fixed' | 'absolute' | 'static';
+export type ScrollToEdgeDirection = "top" | "bottom";
+export type ScrollToEdgePosition = "fixed" | "absolute" | "static";
 
 export interface ScrollToEdgeProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
   direction?: ScrollToEdgeDirection;
   containerRef?: React.RefObject<HTMLElement | null>;
   threshold?: number;
@@ -29,7 +29,7 @@ export interface ScrollToEdgeProps
 }
 
 const toCssLength = (value: number | string) =>
-  typeof value === 'number' ? `${value}px` : value;
+  typeof value === "number" ? `${value}px` : value;
 
 const getScrollMetrics = (container?: HTMLElement | null) => {
   if (container) {
@@ -50,18 +50,18 @@ const getScrollMetrics = (container?: HTMLElement | null) => {
 
 export const ScrollToEdge: React.FC<ScrollToEdgeProps> = (
   {
-    direction = 'top',
+    direction = "top",
     containerRef,
     threshold = 200,
-    behavior = 'smooth',
-    position = 'fixed',
+    behavior = "smooth",
+    position = "fixed",
     offset = 16,
     safeArea = true,
     alwaysVisible = false,
     icon,
     label,
-    size = 'md',
-    variant = 'secondary',
+    size = "md",
+    variant = "secondary",
     className,
     style,
     onClick,
@@ -81,7 +81,7 @@ export const ScrollToEdge: React.FC<ScrollToEdgeProps> = (
     const { position: scrollPosition, viewport, extent } = getScrollMetrics(
       containerRef?.current,
     );
-    const distance = direction === 'top'
+    const distance = direction === "top"
       ? scrollPosition
       : Math.max(0, extent - viewport - scrollPosition);
     setVisible(distance > Math.max(0, threshold));
@@ -90,19 +90,19 @@ export const ScrollToEdge: React.FC<ScrollToEdgeProps> = (
   useEffect(() => {
     const target = containerRef?.current ?? window;
     updateVisibility();
-    target.addEventListener('scroll', updateVisibility, { passive: true });
-    window.addEventListener('resize', updateVisibility);
+    target.addEventListener("scroll", updateVisibility, { passive: true });
+    window.addEventListener("resize", updateVisibility);
     return () => {
-      target.removeEventListener('scroll', updateVisibility);
-      window.removeEventListener('resize', updateVisibility);
+      target.removeEventListener("scroll", updateVisibility);
+      window.removeEventListener("resize", updateVisibility);
     };
   }, [containerRef, updateVisibility]);
 
   const offsetValue = toCssLength(offset);
-  const resolvedLabel = label ?? (direction === 'top'
-    ? locale.accessibility.scrollToTop ?? 'Scroll to top'
-    : locale.accessibility.scrollToBottom ?? 'Scroll to bottom');
-  const resolvedIcon = icon ?? (direction === 'top'
+  const resolvedLabel = label ?? (direction === "top"
+    ? locale.accessibility.scrollToTop ?? "Scroll to top"
+    : locale.accessibility.scrollToBottom ?? "Scroll to bottom");
+  const resolvedIcon = icon ?? (direction === "top"
     ? <ChevronUp aria-hidden="true" size={19} />
     : <ChevronDown aria-hidden="true" size={19} />);
 
@@ -122,14 +122,14 @@ export const ScrollToEdge: React.FC<ScrollToEdgeProps> = (
       className={cn(
         position,
         floatingButtonIconSizeTokens[size],
-        'z-40 !rounded-full !border-0 shadow-[0_3px_10px_var(--lumen-color-shadow)] transition-[opacity,transform,box-shadow] duration-200',
+        "z-40 !rounded-full !border-0 shadow-[0_3px_10px_var(--lumen-color-shadow)] transition-[opacity,transform,box-shadow] duration-200",
         visible
-          ? 'translate-y-0 opacity-100 hover:-translate-y-0.5 hover:shadow-[0_5px_16px_var(--lumen-color-shadow)]'
-          : 'pointer-events-none translate-y-2 opacity-0',
+          ? "translate-y-0 opacity-100 hover:-translate-y-0.5 hover:shadow-[0_5px_16px_var(--lumen-color-shadow)]"
+          : "pointer-events-none translate-y-2 opacity-0",
         className,
       )}
       style={{
-        ...(position === 'static' ? {} : {
+        ...(position === "static" ? {} : {
           bottom: safeArea
             ? `calc(${offsetValue} + env(safe-area-inset-bottom))`
             : offsetValue,
@@ -141,10 +141,10 @@ export const ScrollToEdge: React.FC<ScrollToEdgeProps> = (
         onClick?.(event);
         if (event.defaultPrevented) return;
         const target = containerRef?.current;
-        const scrollBehavior = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-          ? 'auto'
+        const scrollBehavior = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
           : behavior;
-        const top = direction === 'top'
+        const top = direction === "top"
           ? 0
           : getScrollMetrics(target).extent;
         if (target) target.scrollTo({ top, behavior: scrollBehavior });

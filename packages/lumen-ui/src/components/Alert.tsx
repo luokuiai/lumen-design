@@ -1,19 +1,19 @@
-import React from 'react';
+import React from "react";
 import {
   AlertCircle,
   CheckCircle2,
   CircleAlert,
   Info,
   X,
-} from 'lucide-react';
-import { cn } from './classNames';
-import { semanticSurfaceToneClassNames } from './designTokens';
-import { useLumenLocale } from '../i18n';
+} from "lucide-react";
+import { cn } from "./classNames";
+import { semanticSurfaceToneClassNames } from "./designTokens";
+import { useLumenLocale } from "../i18n";
 
-export type AlertVariant = 'info' | 'success' | 'warning' | 'danger';
+export type AlertVariant = "info" | "success" | "warning" | "danger";
 
 export interface AlertProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   variant?: AlertVariant;
   title?: React.ReactNode;
   icon?: React.ReactNode | false;
@@ -30,16 +30,16 @@ const alertIcons = {
 } as const;
 
 const alertIconClassNames: Record<AlertVariant, string> = {
-  info: 'text-[var(--lumen-color-primary)]',
-  success: 'text-[var(--lumen-color-success)]',
-  warning: 'text-[var(--lumen-color-warning)]',
-  danger: 'text-[var(--lumen-color-danger)]',
+  info: "text-[var(--lumen-color-primary)]",
+  success: "text-[var(--lumen-color-success)]",
+  warning: "text-[var(--lumen-color-warning)]",
+  danger: "text-[var(--lumen-color-danger)]",
 };
 
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   (
     {
-      variant = 'info',
+      variant = "info",
       title,
       icon,
       action,
@@ -54,7 +54,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ) => {
     const locale = useLumenLocale();
     const Icon = alertIcons[variant];
-    const resolvedRole = role ?? (variant === 'warning' || variant === 'danger' ? 'alert' : 'status');
+    const resolvedRole = role ?? (variant === "warning" || variant === "danger" ? "alert" : "status");
     const iconNode = icon === false ? null : icon ?? <Icon aria-hidden="true" size={18} />;
 
     return (
@@ -65,7 +65,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         data-ui="alert"
         data-variant={variant}
         className={cn(
-          'flex min-w-0 items-start gap-3 rounded-[8px] border px-4 py-3',
+          "flex min-w-0 items-start gap-3 rounded-[8px] border px-4 py-3",
           semanticSurfaceToneClassNames[variant],
           className,
         )}
@@ -73,7 +73,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         {iconNode ? (
           <span
             className={cn(
-              'mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center',
+              "mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center",
               alertIconClassNames[variant],
             )}
           >
@@ -88,8 +88,8 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             {children ? (
               <div
                 className={cn(
-                  'text-[13px] font-normal leading-5 text-[var(--lumen-color-text-secondary)]',
-                  Boolean(title) && 'mt-0.5',
+                  "text-[13px] font-normal leading-5 text-[var(--lumen-color-text-secondary)]",
+                  Boolean(title) && "mt-0.5",
                 )}
               >
                 {children}
@@ -113,4 +113,4 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   },
 );
 
-Alert.displayName = 'Alert';
+Alert.displayName = "Alert";

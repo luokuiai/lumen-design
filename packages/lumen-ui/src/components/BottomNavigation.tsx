@@ -1,9 +1,9 @@
-import React from 'react';
-import type { LucideIcon } from 'lucide-react';
-import { cn } from './classNames';
-import { useLumenLocale } from '../i18n';
+import React from "react";
+import type { LucideIcon } from "lucide-react";
+import { cn } from "./classNames";
+import { useLumenLocale } from "../i18n";
 
-export type BottomNavigationPosition = 'fixed' | 'absolute' | 'static';
+export type BottomNavigationPosition = "fixed" | "absolute" | "static";
 
 export interface BottomNavigationItem<T extends string = string> {
   value: T;
@@ -16,7 +16,7 @@ export interface BottomNavigationItem<T extends string = string> {
 }
 
 export interface BottomNavigationProps<T extends string = string>
-  extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLElement>, "onChange"> {
   items: readonly BottomNavigationItem<T>[];
   value?: T;
   onChange?: (value: T, item: BottomNavigationItem<T>) => void;
@@ -28,9 +28,9 @@ export interface BottomNavigationProps<T extends string = string>
 }
 
 const positionClassNames: Record<BottomNavigationPosition, string> = {
-  fixed: 'fixed inset-x-0 bottom-0 z-50',
-  absolute: 'absolute inset-x-0 bottom-0 z-10',
-  static: 'relative w-full',
+  fixed: "fixed inset-x-0 bottom-0 z-50",
+  absolute: "absolute inset-x-0 bottom-0 z-10",
+  static: "relative w-full",
 };
 
 export const BottomNavigation = <T extends string = string>({
@@ -38,7 +38,7 @@ export const BottomNavigation = <T extends string = string>({
   value,
   onChange,
   active = true,
-  position = 'fixed',
+  position = "fixed",
   safeArea = true,
   ariaLabel,
   className,
@@ -55,9 +55,9 @@ export const BottomNavigation = <T extends string = string>({
       data-ui="bottom-navigation"
       hidden={!active}
       className={cn(
-        'border-t border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[var(--lumen-shadow-card)]',
+        "border-t border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[var(--lumen-shadow-card)]",
         positionClassNames[position],
-        safeArea && 'pb-[env(safe-area-inset-bottom)]',
+        safeArea && "pb-[env(safe-area-inset-bottom)]",
         className,
       )}
     >
@@ -66,13 +66,13 @@ export const BottomNavigation = <T extends string = string>({
           const selected = item.value === value;
           const Icon = item.icon;
           const itemClasses = cn(
-            'relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[8px] px-1 py-2 text-center text-[12px] font-normal leading-none transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/25',
+            "relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[8px] px-1 py-2 text-center text-[12px] font-normal leading-none transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/25",
             selected
-              ? 'text-[var(--lumen-color-primary)]'
-              : 'text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-text)]',
+              ? "text-[var(--lumen-color-primary)]"
+              : "text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-text)]",
             item.disabled
-              ? 'cursor-not-allowed opacity-45'
-              : 'cursor-pointer',
+              ? "cursor-not-allowed opacity-45"
+              : "cursor-pointer",
             itemClassName,
           );
           const content = (
@@ -103,7 +103,7 @@ export const BottomNavigation = <T extends string = string>({
             <a
               key={item.value}
               href={item.href}
-              aria-current={selected ? 'page' : undefined}
+              aria-current={selected ? "page" : undefined}
               className={itemClasses}
               onClick={handleSelect}
             >
@@ -113,7 +113,7 @@ export const BottomNavigation = <T extends string = string>({
             <button
               key={item.value}
               type="button"
-              aria-current={selected ? 'page' : undefined}
+              aria-current={selected ? "page" : undefined}
               disabled={item.disabled}
               className={itemClasses}
               onClick={handleSelect}

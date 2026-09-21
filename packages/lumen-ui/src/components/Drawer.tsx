@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { OverlayScopeContext, useOverlayBehavior } from './useOverlayBehavior';
+import React, { useCallback, useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { OverlayScopeContext, useOverlayBehavior } from "./useOverlayBehavior";
 
-export type DrawerPlacement = 'left' | 'right';
+export type DrawerPlacement = "left" | "right";
 
 export interface DrawerProps {
   open: boolean;
@@ -22,15 +22,15 @@ export interface DrawerProps {
   lockScroll?: boolean;
   initialFocusRef?: React.RefObject<HTMLElement | null>;
   finalFocusRef?: React.RefObject<HTMLElement | null>;
-  'aria-label'?: string;
-  'aria-labelledby'?: string;
-  'aria-describedby'?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
   overlayDataAttributes?: Record<string, string | boolean>;
   panelDataAttributes?: Record<string, string | boolean>;
 }
 
 const overlayBaseClassName =
-  'fixed inset-0 z-[100] flex items-stretch overflow-hidden bg-[var(--lumen-color-overlay)] backdrop-blur-[2px]';
+  "fixed inset-0 z-[100] flex items-stretch overflow-hidden bg-[var(--lumen-color-overlay)] backdrop-blur-[2px]";
 
 const buildDataAttributes = (attributes?: Record<string, string | boolean>) =>
   Object.fromEntries(
@@ -49,18 +49,18 @@ export const Drawer: React.FC<DrawerProps> = ({
   description,
   drawerId,
   overlayId,
-  overlayClassName = '',
-  panelClassName = '',
-  placement = 'right',
+  overlayClassName = "",
+  panelClassName = "",
+  placement = "right",
   closeOnOverlayClick = true,
   closeOnEscape = true,
   closeOnSwipe = false,
   lockScroll = true,
   initialFocusRef,
   finalFocusRef,
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledBy,
-  'aria-describedby': ariaDescribedBy,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-describedby": ariaDescribedBy,
   overlayDataAttributes,
   panelDataAttributes,
 }) => {
@@ -76,7 +76,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   const generatedTitleId = useId();
   const generatedDescriptionId = useId();
   const dragRef = useRef<{
-    axis: 'horizontal' | 'vertical' | null;
+    axis: "horizontal" | "vertical" | null;
     pointerId: number;
     startTime: number;
     startX: number;
@@ -138,7 +138,7 @@ export const Drawer: React.FC<DrawerProps> = ({
 
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLElement>) => {
-      if (!open || !closeOnSwipe || event.pointerType !== 'touch') return;
+      if (!open || !closeOnSwipe || event.pointerType !== "touch") return;
       dragRef.current = {
         axis: null,
         pointerId: event.pointerId,
@@ -161,16 +161,16 @@ export const Drawer: React.FC<DrawerProps> = ({
 
       if (!drag.axis && Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 8) {
         drag.axis =
-          Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical';
+          Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
       }
-      if (drag.axis !== 'horizontal') return;
+      if (drag.axis !== "horizontal") return;
 
       event.preventDefault();
       setDragging(true);
       const panelWidth = panelRef.current?.getBoundingClientRect().width || 320;
       const nextOffset = Math.min(
         panelWidth,
-        Math.max(0, placement === 'right' ? deltaX : -deltaX),
+        Math.max(0, placement === "right" ? deltaX : -deltaX),
       );
       drag.offset = nextOffset;
       setDragOffset(nextOffset);
@@ -185,7 +185,7 @@ export const Drawer: React.FC<DrawerProps> = ({
       const panelWidth = panelRef.current?.getBoundingClientRect().width || 320;
       const elapsed = Math.max(1, performance.now() - drag.startTime);
       const shouldClose =
-        drag.axis === 'horizontal' &&
+        drag.axis === "horizontal" &&
         (drag.offset >= Math.min(80, panelWidth * 0.25) ||
           drag.offset / elapsed >= 0.5);
       resetDrag();
@@ -194,7 +194,7 @@ export const Drawer: React.FC<DrawerProps> = ({
     [requestCloseIfTopmost, resetDrag],
   );
 
-  if (!mounted || typeof document === 'undefined') return null;
+  if (!mounted || typeof document === "undefined") return null;
 
   const isClosing = mounted && !open;
   const displayChildren = isClosing ? cachedChildren : children;
@@ -207,7 +207,7 @@ export const Drawer: React.FC<DrawerProps> = ({
     ariaLabelledBy ?? (hasTitle && !ariaLabel ? generatedTitleId : undefined);
   const resolvedAriaDescribedBy =
     ariaDescribedBy ?? (hasDescription ? generatedDescriptionId : undefined);
-  const drawerState = isClosing ? 'closing' : 'open';
+  const drawerState = isClosing ? "closing" : "open";
 
   return createPortal(
     <OverlayScopeContext.Provider value={scopeId}>
@@ -216,7 +216,7 @@ export const Drawer: React.FC<DrawerProps> = ({
         data-drawer-state={drawerState}
         data-lumen-motion
         className={`${overlayBaseClassName} lumen-drawer-overlay ${
-          placement === 'left' ? 'justify-start' : 'justify-end'
+          placement === "left" ? "justify-start" : "justify-end"
         } ${overlayClassName}`.trim()}
         style={{ ...viewportStyle, zIndex }}
         onPointerDown={(event) => {
@@ -254,11 +254,11 @@ export const Drawer: React.FC<DrawerProps> = ({
             dragOffset > 0
               ? {
                 transform: `translateX(${
-                  placement === 'right' ? dragOffset : -dragOffset
+                  placement === "right" ? dragOffset : -dragOffset
                 }px)`,
-                transition: dragging ? 'none' : 'transform 180ms ease-out',
+                transition: dragging ? "none" : "transform 180ms ease-out",
               }
-              : { touchAction: 'pan-y' }
+              : { touchAction: "pan-y" }
           }
           onClick={(event) => event.stopPropagation()}
           onAnimationEnd={handleAnimationEnd}

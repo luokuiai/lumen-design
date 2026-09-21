@@ -1,9 +1,9 @@
-import React from 'react';
-import { Loader2 } from 'lucide-react';
-import { Dialog } from './Dialog';
-import { Button } from './Button';
-import type { ButtonVariant } from './designTokens';
-import { useLumenLocale } from '../i18n';
+import React from "react";
+import { Loader2 } from "lucide-react";
+import { Dialog } from "./Dialog";
+import { Button } from "./Button";
+import type { ButtonVariant } from "./designTokens";
+import { useLumenLocale } from "../i18n";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -25,7 +25,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   title,
   message,
   confirmText,
-  confirmVariant = 'primary',
+  confirmVariant = "primary",
   cancelText,
   confirmDisabled = false,
   confirmLoading = false,

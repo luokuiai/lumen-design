@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowDown, LoaderCircle } from 'lucide-react';
-import { useLumenLocale } from '../../i18n';
-import { cn } from '../classNames';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ArrowDown, LoaderCircle } from "lucide-react";
+import { useLumenLocale } from "../../i18n";
+import { cn } from "../classNames";
 
-export type PullToRefreshState = 'idle' | 'pulling' | 'ready' | 'refreshing';
+export type PullToRefreshState = "idle" | "pulling" | "ready" | "refreshing";
 
 export interface PullToRefreshProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onRefresh'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onRefresh"> {
   /** 下拉距离达到阈值并松手后触发。返回 Promise 时，组件会保持刷新状态直至其结束。 */
   onRefresh: () => void | Promise<void>;
   /** 禁用下拉刷新手势。 */
@@ -24,7 +24,7 @@ export interface PullToRefreshProps
 }
 
 type Gesture = {
-  axis: 'horizontal' | 'vertical' | null;
+  axis: "horizontal" | "vertical" | null;
   startX: number;
   startY: number;
 };
@@ -60,7 +60,7 @@ export const PullToRefresh = React.forwardRef<
     const containerRef = useRef<HTMLDivElement | null>(null);
     const gestureRef = useRef<Gesture | null>(null);
     const mountedRef = useRef(true);
-    const [state, setState] = useState<PullToRefreshState>('idle');
+    const [state, setState] = useState<PullToRefreshState>("idle");
     const [pullDistance, setPullDistance] = useState(0);
     const safeThreshold = Math.max(1, threshold);
     const safeMaxPullDistance = Math.max(safeThreshold, maxPullDistance);
@@ -68,7 +68,7 @@ export const PullToRefresh = React.forwardRef<
     const setContainerRef = useCallback(
       (element: HTMLDivElement | null) => {
         containerRef.current = element;
-        if (typeof forwardedRef === 'function') {
+        if (typeof forwardedRef === "function") {
           forwardedRef(element);
         } else if (forwardedRef) {
           forwardedRef.current = element;
@@ -80,7 +80,7 @@ export const PullToRefresh = React.forwardRef<
     const reset = useCallback(() => {
       gestureRef.current = null;
       setPullDistance(0);
-      setState('idle');
+      setState("idle");
     }, []);
 
     useEffect(() => {
@@ -91,13 +91,13 @@ export const PullToRefresh = React.forwardRef<
     }, []);
 
     useEffect(() => {
-      if (disabled && state !== 'refreshing') reset();
+      if (disabled && state !== "refreshing") reset();
     }, [disabled, reset, state]);
 
     const startRefresh = useCallback(() => {
       gestureRef.current = null;
       setPullDistance(safeThreshold);
-      setState('refreshing');
+      setState("refreshing");
 
       let result: void | Promise<void>;
       try {
@@ -120,7 +120,7 @@ export const PullToRefresh = React.forwardRef<
         if (
           event.defaultPrevented
           || disabled
-          || state === 'refreshing'
+          || state === "refreshing"
           || event.touches.length !== 1
           || !touch
           || (containerRef.current?.scrollTop ?? 0) > 0
@@ -153,15 +153,15 @@ export const PullToRefresh = React.forwardRef<
           && Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= GESTURE_LOCK_DISTANCE
         ) {
           gesture.axis = Math.abs(deltaY) > Math.abs(deltaX)
-            ? 'vertical'
-            : 'horizontal';
+            ? "vertical"
+            : "horizontal";
         }
 
-        if (gesture.axis === 'horizontal') {
+        if (gesture.axis === "horizontal") {
           reset();
           return;
         }
-        if (gesture.axis !== 'vertical') return;
+        if (gesture.axis !== "vertical") return;
         if (deltaY <= 0 || (containerRef.current?.scrollTop ?? 0) > 0) {
           reset();
           return;
@@ -173,7 +173,7 @@ export const PullToRefresh = React.forwardRef<
           deltaY * PULL_RESISTANCE,
         );
         setPullDistance(nextDistance);
-        setState(nextDistance >= safeThreshold ? 'ready' : 'pulling');
+        setState(nextDistance >= safeThreshold ? "ready" : "pulling");
       },
       [onTouchMove, reset, safeMaxPullDistance, safeThreshold],
     );
@@ -181,9 +181,9 @@ export const PullToRefresh = React.forwardRef<
     const handleTouchEnd = useCallback(
       (event: React.TouchEvent<HTMLDivElement>) => {
         onTouchEnd?.(event);
-        if (state === 'ready') {
+        if (state === "ready") {
           startRefresh();
-        } else if (state !== 'refreshing') {
+        } else if (state !== "refreshing") {
           reset();
         }
       },
@@ -193,32 +193,32 @@ export const PullToRefresh = React.forwardRef<
     const handleTouchCancel = useCallback(
       (event: React.TouchEvent<HTMLDivElement>) => {
         onTouchCancel?.(event);
-        if (state !== 'refreshing') reset();
+        if (state !== "refreshing") reset();
       },
       [onTouchCancel, reset, state],
     );
 
-    const statusText = state === 'refreshing'
+    const statusText = state === "refreshing"
       ? (refreshingText ?? locale.pullToRefresh.refreshing)
-      : state === 'ready'
+      : state === "ready"
         ? (releaseText ?? locale.pullToRefresh.release)
         : (pullingText ?? locale.pullToRefresh.pulling);
     const transition = gestureRef.current
-      ? 'none'
-      : 'transform 200ms ease-out, opacity 160ms ease-out';
+      ? "none"
+      : "transform 200ms ease-out, opacity 160ms ease-out";
 
     return (
       <div
         {...props}
         ref={setContainerRef}
-        aria-busy={state === 'refreshing' || undefined}
+        aria-busy={state === "refreshing" || undefined}
         data-ui="pull-to-refresh"
         data-state={state}
         className={cn(
-          'relative overflow-y-auto overscroll-y-contain',
+          "relative overflow-y-auto overscroll-y-contain",
           className,
         )}
-        style={{ scrollbarGutter: 'stable', ...style }}
+        style={{ scrollbarGutter: "stable", ...style }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -230,17 +230,17 @@ export const PullToRefresh = React.forwardRef<
           data-pull-to-refresh-indicator
           className="pointer-events-none absolute left-1/2 top-0 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--lumen-color-surface)] text-[var(--lumen-color-primary)] shadow-[0_3px_8px_var(--lumen-color-shadow),0_10px_24px_var(--lumen-color-shadow)]"
           style={{
-            opacity: state === 'idle' ? 0 : 1,
-            transform: `translate3d(-50%, ${pullDistance - 48}px, 0) scale(${state === 'idle' ? 0.8 : 1})`,
+            opacity: state === "idle" ? 0 : 1,
+            transform: `translate3d(-50%, ${pullDistance - 48}px, 0) scale(${state === "idle" ? 0.8 : 1})`,
             transition,
           }}
         >
-          {state === 'refreshing' ? (
+          {state === "refreshing" ? (
             <LoaderCircle aria-hidden="true" className="animate-spin" size={19} />
           ) : (
             <ArrowDown
               aria-hidden="true"
-              className={cn('transition-transform', state === 'ready' && 'rotate-180')}
+              className={cn("transition-transform", state === "ready" && "rotate-180")}
               size={19}
             />
           )}
@@ -256,4 +256,4 @@ export const PullToRefresh = React.forwardRef<
   },
 );
 
-PullToRefresh.displayName = 'PullToRefresh';
+PullToRefresh.displayName = "PullToRefresh";

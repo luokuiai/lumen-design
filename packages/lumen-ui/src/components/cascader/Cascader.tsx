@@ -1,13 +1,13 @@
-import { Check, ChevronDown, ChevronRight, Search, X } from 'lucide-react';
-import React, { useMemo, useRef, useState } from 'react';
-import { Input } from '../Input';
-import { Popover } from '../Popover';
-import { Scrollbar } from '../Scrollbar';
-import { cn } from '../classNames';
-import { radiusTokens } from '../designTokens';
-import { useLumenLocale } from '../../i18n';
+import { Check, ChevronDown, ChevronRight, Search, X } from "lucide-react";
+import React, { useMemo, useRef, useState } from "react";
+import { Input } from "../Input";
+import { Popover } from "../Popover";
+import { Scrollbar } from "../Scrollbar";
+import { cn } from "../classNames";
+import { radiusTokens } from "../designTokens";
+import { useLumenLocale } from "../../i18n";
 
-export type CascaderSize = 'sm' | 'md' | 'lg';
+export type CascaderSize = "sm" | "md" | "lg";
 
 export interface CascaderOption<T extends string | number = string> {
   value: T;
@@ -39,19 +39,19 @@ export interface CascaderProps<T extends string | number = string> {
   onOpenChange?: (open: boolean) => void;
   className?: string;
   panelClassName?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
 }
 
 const triggerSizeClassNames: Record<CascaderSize, string> = {
-  sm: 'h-[var(--lumen-control-height-sm)] text-[13px]',
-  md: 'h-[var(--lumen-control-height-md)] text-[14px]',
-  lg: 'h-[var(--lumen-control-height-lg)] text-[15px]',
+  sm: "h-[var(--lumen-control-height-sm)] text-[13px]",
+  md: "h-[var(--lumen-control-height-md)] text-[14px]",
+  lg: "h-[var(--lumen-control-height-lg)] text-[15px]",
 };
 
 const optionSizeClassNames: Record<CascaderSize, string> = {
-  sm: 'min-h-8 text-[13px]',
-  md: 'min-h-9 text-[14px]',
-  lg: 'min-h-10 text-[15px]',
+  sm: "min-h-8 text-[13px]",
+  md: "min-h-9 text-[14px]",
+  lg: "min-h-10 text-[15px]",
 };
 
 function findPath<T extends string | number>(
@@ -94,15 +94,15 @@ export const Cascader = <T extends string | number = string>({
   emptyText: emptyTextProp,
   loading = false,
   loadingText: loadingTextProp,
-  size = 'md',
-  separator = '/',
+  size = "md",
+  separator = "/",
   displayRender,
   open,
   defaultOpen = false,
   onOpenChange,
   className,
   panelClassName,
-  'aria-label': ariaLabel,
+  "aria-label": ariaLabel,
 }: CascaderProps<T>) => {
   const locale = useLumenLocale();
   const placeholder = placeholderProp ?? locale.cascader.placeholder;
@@ -117,7 +117,7 @@ export const Cascader = <T extends string | number = string>({
     [options, selectedValues],
   );
   const [activePath, setActivePath] = useState<CascaderOption<T>[]>(selectedPath);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const panelRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -135,7 +135,7 @@ export const Cascader = <T extends string | number = string>({
     return flattenLeafPaths(options).filter((path) =>
       path.some((option) =>
         [option.label, ...(option.keywords ?? [])]
-          .join(' ')
+          .join(" ")
           .toLocaleLowerCase()
           .includes(query),
       ),
@@ -159,7 +159,7 @@ export const Cascader = <T extends string | number = string>({
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) {
       setActivePath(selectedPath);
-      setSearchValue('');
+      setSearchValue("");
       window.requestAnimationFrame(() => {
         window.requestAnimationFrame(() => {
           if (searchable) searchInputRef.current?.focus();
@@ -190,7 +190,7 @@ export const Cascader = <T extends string | number = string>({
         column?.querySelectorAll<HTMLButtonElement>('[role="option"]:not(:disabled)') ?? [],
       );
       (optionIndex === undefined
-        ? optionsInColumn.find((option) => option.getAttribute('aria-selected') === 'true') ?? optionsInColumn[0]
+        ? optionsInColumn.find((option) => option.getAttribute("aria-selected") === "true") ?? optionsInColumn[0]
         : optionsInColumn[optionIndex]
       )?.focus();
     });
@@ -202,23 +202,23 @@ export const Cascader = <T extends string | number = string>({
     columnIndex: number,
     close: () => void,
   ) => {
-    const column = event.currentTarget.closest('[data-cascader-column]');
+    const column = event.currentTarget.closest("[data-cascader-column]");
     const enabledOptions = Array.from(
       column?.querySelectorAll<HTMLButtonElement>('[role="option"]:not(:disabled)') ?? [],
     );
     const currentIndex = enabledOptions.indexOf(event.currentTarget);
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
-      const offset = event.key === 'ArrowDown' ? 1 : -1;
+      const offset = event.key === "ArrowDown" ? 1 : -1;
       enabledOptions[(currentIndex + offset + enabledOptions.length) % enabledOptions.length]?.focus();
-    } else if (event.key === 'Home' || event.key === 'End') {
+    } else if (event.key === "Home" || event.key === "End") {
       event.preventDefault();
-      enabledOptions[event.key === 'Home' ? 0 : enabledOptions.length - 1]?.focus();
-    } else if (event.key === 'ArrowRight' && option.children?.length) {
+      enabledOptions[event.key === "Home" ? 0 : enabledOptions.length - 1]?.focus();
+    } else if (event.key === "ArrowRight" && option.children?.length) {
       event.preventDefault();
       activateOption(option, columnIndex, close);
       focusColumnOption(columnIndex + 1, 0);
-    } else if (event.key === 'ArrowLeft' && columnIndex > 0) {
+    } else if (event.key === "ArrowLeft" && columnIndex > 0) {
       event.preventDefault();
       focusColumnOption(columnIndex - 1);
     }
@@ -236,9 +236,9 @@ export const Cascader = <T extends string | number = string>({
       onOpenChange={handleOpenChange}
       placement="bottom"
       align="start"
-      className={cn('w-full', className)}
+      className={cn("w-full", className)}
       contentClassName={cn(
-        '!max-w-[min(640px,calc(100vw-16px))] !overflow-hidden !p-0 min-w-[280px] w-max',
+        "!max-w-[min(640px,calc(100vw-16px))] !overflow-hidden !p-0 min-w-[280px] w-max",
         panelClassName,
       )}
       contentRole="dialog"
@@ -249,10 +249,10 @@ export const Cascader = <T extends string | number = string>({
           data-size={size}
           data-open={triggerOpen || undefined}
           className={cn(
-            'flex w-full items-center border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] transition-colors focus-within:border-[var(--lumen-color-primary)] focus-within:ring-1 focus-within:ring-[var(--lumen-color-primary)]/10',
+            "flex w-full items-center border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] transition-colors focus-within:border-[var(--lumen-color-primary)] focus-within:ring-1 focus-within:ring-[var(--lumen-color-primary)]/10",
             radiusTokens.control,
             triggerSizeClassNames[size],
-            disabled && 'cursor-not-allowed opacity-50',
+            disabled && "cursor-not-allowed opacity-50",
           )}
         >
           <button
@@ -265,16 +265,16 @@ export const Cascader = <T extends string | number = string>({
             className="flex h-full min-w-0 flex-1 cursor-pointer items-center gap-2 bg-transparent px-3 text-left outline-none disabled:cursor-not-allowed"
             onClick={toggle}
             onKeyDown={(event) => {
-              if (event.key === 'ArrowDown' && !triggerOpen) {
+              if (event.key === "ArrowDown" && !triggerOpen) {
                 event.preventDefault();
                 toggle();
               }
             }}
           >
-            <span className={cn('min-w-0 flex-1 truncate', renderedValue ? 'text-[var(--lumen-color-text)]' : 'text-[var(--lumen-color-text-placeholder)]')}>
+            <span className={cn("min-w-0 flex-1 truncate", renderedValue ? "text-[var(--lumen-color-text)]" : "text-[var(--lumen-color-text-placeholder)]")}>
               {renderedValue ?? placeholder}
             </span>
-            <ChevronDown aria-hidden="true" size={15} className={cn('shrink-0 text-[var(--lumen-color-text-muted)] transition-transform', triggerOpen && 'rotate-180')} />
+            <ChevronDown aria-hidden="true" size={15} className={cn("shrink-0 text-[var(--lumen-color-text-muted)] transition-transform", triggerOpen && "rotate-180")} />
           </button>
           {clearable && selectedPath.length > 0 && !disabled ? (
             <button type="button" aria-label={locale.cascader.clear} className="mr-2 flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-[6px] text-[var(--lumen-color-text-placeholder)] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-text-muted)]" onClick={clearValue}>
@@ -306,7 +306,7 @@ export const Cascader = <T extends string | number = string>({
             <Scrollbar size="sm" autoHide tabIndex={-1} className="max-h-64 p-2" role="listbox" aria-label={locale.cascader.searchResults}>
               {searchResults.length ? searchResults.map((path) => {
                 const pathDisabled = path.some((option) => option.disabled);
-                const pathKey = path.map((option) => String(option.value)).join('/');
+                const pathKey = path.map((option) => String(option.value)).join("/");
                 return (
                   <button
                     key={pathKey}
@@ -351,11 +351,11 @@ export const Cascader = <T extends string | number = string>({
                           aria-selected={active || selected}
                           disabled={option.disabled}
                           className={cn(
-                            'flex w-full cursor-pointer items-center gap-2 rounded-[6px] px-2.5 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/25 disabled:cursor-not-allowed disabled:opacity-45',
+                            "flex w-full cursor-pointer items-center gap-2 rounded-[6px] px-2.5 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/25 disabled:cursor-not-allowed disabled:opacity-45",
                             optionSizeClassNames[size],
                             active
-                              ? 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]'
-                              : 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-hover)]',
+                              ? "bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]"
+                              : "text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-hover)]",
                           )}
                           onClick={() => activateOption(option, columnIndex, close)}
                           onKeyDown={(event) => handleOptionKeyDown(event, option, columnIndex, close)}

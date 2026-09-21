@@ -1,9 +1,9 @@
-import React from 'react';
-import { cn } from './classNames';
+import React from "react";
+import { cn } from "./classNames";
 
-export type DividerOrientation = 'horizontal' | 'vertical';
-export type DividerAlign = 'start' | 'center' | 'end';
-export type DividerVariant = 'solid' | 'dashed';
+export type DividerOrientation = "horizontal" | "vertical";
+export type DividerAlign = "start" | "center" | "end";
+export type DividerVariant = "solid" | "dashed";
 
 export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
   orientation?: DividerOrientation;
@@ -15,9 +15,9 @@ export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
   (
     {
-      orientation = 'horizontal',
-      align = 'center',
-      variant = 'solid',
+      orientation = "horizontal",
+      align = "center",
+      variant = "solid",
       label,
       className,
       role,
@@ -25,20 +25,20 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
     },
     ref,
   ) => {
-    const lineClassName = variant === 'dashed'
-      ? 'border-dashed'
-      : 'border-solid';
+    const lineClassName = variant === "dashed"
+      ? "border-dashed"
+      : "border-solid";
 
-    if (orientation === 'vertical') {
+    if (orientation === "vertical") {
       return (
         <div
           {...props}
           ref={ref}
-          role={role ?? 'separator'}
+          role={role ?? "separator"}
           aria-orientation="vertical"
           data-ui="divider"
           className={cn(
-            'mx-2 inline-block min-h-4 self-stretch border-l border-[var(--lumen-color-divider)] align-middle',
+            "mx-2 inline-block min-h-4 self-stretch border-l border-[var(--lumen-color-divider)] align-middle",
             lineClassName,
             className,
           )}
@@ -51,11 +51,11 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
         <div
           {...props}
           ref={ref}
-          role={role ?? 'separator'}
+          role={role ?? "separator"}
           aria-orientation="horizontal"
           data-ui="divider"
           className={cn(
-            'my-4 w-full border-t border-[var(--lumen-color-divider)]',
+            "my-4 w-full border-t border-[var(--lumen-color-divider)]",
             lineClassName,
             className,
           )}
@@ -67,29 +67,29 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
       <div
         {...props}
         ref={ref}
-        role={role ?? 'separator'}
+        role={role ?? "separator"}
         aria-orientation="horizontal"
         data-ui="divider"
-        className={cn('my-4 flex w-full items-center gap-3', className)}
+        className={cn("my-4 flex w-full items-center gap-3", className)}
       >
-        {align !== 'start' ? (
+        {align !== "start" ? (
           <span
             className={cn(
-              'border-t border-[var(--lumen-color-divider)]',
+              "border-t border-[var(--lumen-color-divider)]",
               lineClassName,
-              'flex-1',
+              "flex-1",
             )}
           />
         ) : null}
         <span className="shrink-0 text-[12px] font-medium text-[var(--lumen-color-text-muted)]">
           {label}
         </span>
-        {align !== 'end' ? (
+        {align !== "end" ? (
           <span
             className={cn(
-              'border-t border-[var(--lumen-color-divider)]',
+              "border-t border-[var(--lumen-color-divider)]",
               lineClassName,
-              align === 'center' ? 'flex-1' : 'flex-1',
+              align === "center" ? "flex-1" : "flex-1",
             )}
           />
         ) : null}
@@ -98,4 +98,4 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
   },
 );
 
-Divider.displayName = 'Divider';
+Divider.displayName = "Divider";

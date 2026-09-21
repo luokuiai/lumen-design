@@ -1,12 +1,12 @@
-import { Star } from 'lucide-react';
-import React, { useState } from 'react';
-import { cn } from '../classNames';
-import { useLumenLocale } from '../../i18n';
+import { Star } from "lucide-react";
+import React, { useState } from "react";
+import { cn } from "../classNames";
+import { useLumenLocale } from "../../i18n";
 
-export type RatingSize = 'sm' | 'md' | 'lg';
+export type RatingSize = "sm" | "md" | "lg";
 
 export interface RatingProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
   value?: number;
   defaultValue?: number;
   onChange?: (value: number) => void;
@@ -21,9 +21,9 @@ export interface RatingProps
 }
 
 const sizeTokens: Record<RatingSize, { icon: number; gap: string }> = {
-  sm: { icon: 16, gap: 'gap-0.5' },
-  md: { icon: 20, gap: 'gap-1' },
-  lg: { icon: 24, gap: 'gap-1.5' },
+  sm: { icon: 16, gap: "gap-0.5" },
+  md: { icon: 20, gap: "gap-1" },
+  lg: { icon: 24, gap: "gap-1.5" },
 };
 
 const normalizeValue = (value: number, max: number, step: number) =>
@@ -40,12 +40,12 @@ export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
       allowClear = true,
       readOnly = false,
       disabled = false,
-      size = 'md',
+      size = "md",
       color,
       formatValue = (current, total) => `${current} / ${total}`,
       className,
       onKeyDown,
-      'aria-label': ariaLabel,
+      "aria-label": ariaLabel,
       ...props
     },
     ref,
@@ -81,13 +81,13 @@ export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
 
     const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
       let nextValue: number | undefined;
-      if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
+      if (event.key === "ArrowRight" || event.key === "ArrowUp") {
         nextValue = Math.min(resolvedMax, currentValue + step);
-      } else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
         nextValue = Math.max(0, currentValue - step);
-      } else if (event.key === 'Home') {
+      } else if (event.key === "Home") {
         nextValue = 0;
-      } else if (event.key === 'End') {
+      } else if (event.key === "End") {
         nextValue = resolvedMax;
       }
 
@@ -116,11 +116,11 @@ export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
         data-ui="rating"
         data-size={size}
         className={cn(
-          'inline-flex w-fit items-center rounded-[var(--lumen-radius-control)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
+          "inline-flex w-fit items-center rounded-[var(--lumen-radius-control)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20",
           sizeToken.gap,
-          disabled && 'cursor-not-allowed opacity-45',
-          readOnly && 'cursor-default',
-          !disabled && !readOnly && 'cursor-pointer',
+          disabled && "cursor-not-allowed opacity-45",
+          readOnly && "cursor-default",
+          !disabled && !readOnly && "cursor-pointer",
           className,
         )}
         onKeyDown={handleKeyDown}
@@ -150,7 +150,7 @@ export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
                 className="absolute inset-y-0 left-0 overflow-hidden"
                 style={{
                   width: `${fill}%`,
-                  color: color ?? 'var(--lumen-color-rating)',
+                  color: color ?? "var(--lumen-color-rating)",
                 }}
               >
                 <Star
@@ -167,4 +167,4 @@ export const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
   },
 );
 
-Rating.displayName = 'Rating';
+Rating.displayName = "Rating";

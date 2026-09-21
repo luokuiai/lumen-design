@@ -1,13 +1,13 @@
-import React, { useMemo } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from './Button';
-import { cn } from './classNames';
-import { Select } from './Select';
-import { useLumenLocale } from '../i18n';
+import React, { useMemo } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "./Button";
+import { cn } from "./classNames";
+import { Select } from "./Select";
+import { useLumenLocale } from "../i18n";
 
-type PaginationItem = number | 'ellipsis-left' | 'ellipsis-right';
+type PaginationItem = number | "ellipsis-left" | "ellipsis-right";
 
-export type PaginationVariant = 'default' | 'compact';
+export type PaginationVariant = "default" | "compact";
 
 export interface PaginationProps {
   currentPage: number;
@@ -37,7 +37,7 @@ const buildPaginationItems = (
   const end = Math.min(totalPages - 1, currentPage + 1);
 
   if (start > 2) {
-    items.push('ellipsis-left');
+    items.push("ellipsis-left");
   }
 
   for (let page = start; page <= end; page += 1) {
@@ -45,7 +45,7 @@ const buildPaginationItems = (
   }
 
   if (end < totalPages - 1) {
-    items.push('ellipsis-right');
+    items.push("ellipsis-right");
   }
 
   items.push(totalPages);
@@ -57,14 +57,14 @@ export const Pagination = ({
   totalPages,
   totalItems,
   onPageChange,
-  variant = 'default',
+  variant = "default",
   loading = false,
   itemLabel: itemLabelProp,
   hideOnSinglePage,
   pageSize,
   pageSizeOptions = [10, 20, 50],
   onPageSizeChange,
-  className = '',
+  className = "",
 }: PaginationProps) => {
   const locale = useLumenLocale();
   const itemLabel = itemLabelProp ?? locale.pagination.itemLabel;
@@ -78,8 +78,8 @@ export const Pagination = ({
     [pageSizeOptions],
   );
   const shouldShowPageSizeSelector =
-    typeof pageSize === 'number'
-    && typeof onPageSizeChange === 'function'
+    typeof pageSize === "number"
+    && typeof onPageSizeChange === "function"
     && normalizedPageSizeOptions.length > 0;
 
   const paginationItems = useMemo(
@@ -87,17 +87,17 @@ export const Pagination = ({
     [safeCurrentPage, safeTotalPages],
   );
   const shouldHideOnSinglePage =
-    hideOnSinglePage ?? variant === 'compact';
+    hideOnSinglePage ?? variant === "compact";
 
   if (shouldHideOnSinglePage && totalPages <= 1) return null;
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
       <div
         data-ui="pagination"
         data-variant="compact"
         className={cn(
-          'flex shrink-0 flex-row items-center justify-between gap-1.5 border-t border-[var(--lumen-color-border)] px-3 py-1.5 text-xs text-[var(--lumen-color-text-muted)]',
+          "flex shrink-0 flex-row items-center justify-between gap-1.5 border-t border-[var(--lumen-color-border)] px-3 py-1.5 text-xs text-[var(--lumen-color-text-muted)]",
           className,
         )}
       >
@@ -133,7 +133,7 @@ export const Pagination = ({
       data-ui="pagination"
       data-variant="default"
       className={cn(
-        'flex flex-col gap-2 border-t border-[var(--lumen-color-surface-muted)] bg-[var(--lumen-color-surface-subtle)] px-3 py-2.5 pad:px-4 l:flex-row l:items-center l:justify-between',
+        "flex flex-col gap-2 border-t border-[var(--lumen-color-surface-muted)] bg-[var(--lumen-color-surface-subtle)] px-3 py-2.5 pad:px-4 l:flex-row l:items-center l:justify-between",
         className,
       )}
     >
@@ -170,18 +170,18 @@ export const Pagination = ({
           <ChevronLeft size={14} />
         </button>
         {paginationItems.map((item) =>
-          typeof item === 'number' ? (
+          typeof item === "number" ? (
             <button
               key={item}
               type="button"
               onClick={() => onPageChange(item)}
               disabled={loading}
-              aria-current={item === safeCurrentPage ? 'page' : undefined}
+              aria-current={item === safeCurrentPage ? "page" : undefined}
               className={cn(
-                'h-[28px] w-[28px] rounded-[6px] text-[12px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset',
+                "h-[28px] w-[28px] rounded-[6px] text-[12px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset",
                 item === safeCurrentPage
-                  ? 'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] focus-visible:ring-[var(--lumen-color-on-primary)]/70'
-                  : 'text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-primary-soft)] focus-visible:ring-[var(--lumen-color-primary)]/20',
+                  ? "bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] focus-visible:ring-[var(--lumen-color-on-primary)]/70"
+                  : "text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-primary-soft)] focus-visible:ring-[var(--lumen-color-primary)]/20",
               )}
             >
               {item}
