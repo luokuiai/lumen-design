@@ -1,20 +1,20 @@
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { LoaderCircle } from 'lucide-react';
-import { Button } from './Button';
-import { cn } from './classNames';
+import React, { useCallback, useEffect, useId, useRef, useState } from "react";
+import { LoaderCircle } from "lucide-react";
+import { Button } from "./Button";
+import { cn } from "./classNames";
 import {
   floatingButtonIconSizeTokens,
   type ButtonSize,
   type ButtonVariant,
-} from './designTokens';
-import { useLumenLocale } from '../i18n';
+} from "./designTokens";
+import { useLumenLocale } from "../i18n";
 
-export type FabPosition = 'fixed' | 'absolute' | 'static';
-export type FabPlacement = 'bottom-end' | 'bottom-start' | 'top-end' | 'top-start';
-export type FabMenuDirection = 'up' | 'down' | 'start' | 'end';
+export type FabPosition = "fixed" | "absolute" | "static";
+export type FabPlacement = "bottom-end" | "bottom-start" | "top-end" | "top-start";
+export type FabMenuDirection = "up" | "down" | "start" | "end";
 
 interface FabActionBase
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children' | 'color'> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "aria-label" | "children" | "color"> {
   icon: React.ReactNode;
   color?: string;
   extended?: boolean;
@@ -27,7 +27,7 @@ interface FabActionBase
 export type FabAction = FabActionBase & FabAccessibleContent;
 
 interface FabBaseProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children' | 'color'> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "aria-label" | "children" | "color"> {
   icon: React.ReactNode;
   active?: boolean;
   color?: string;
@@ -49,48 +49,48 @@ interface FabBaseProps
 }
 
 type FabAccessibleContent =
-  | { label: React.ReactNode; 'aria-label'?: string }
-  | { label?: never; 'aria-label': string };
+  | { label: React.ReactNode; "aria-label"?: string }
+  | { label?: never; "aria-label": string };
 
 export type FabProps = FabBaseProps & FabAccessibleContent;
 
 const fabPositionClassNames: Record<FabPosition, string> = {
-  fixed: 'fixed z-50',
-  absolute: 'absolute z-10',
-  static: 'relative',
+  fixed: "fixed z-50",
+  absolute: "absolute z-10",
+  static: "relative",
 };
 
 const fabSizeClassNames: Record<ButtonSize, { icon: string; extended: string }> = {
   sm: {
     icon: floatingButtonIconSizeTokens.sm,
-    extended: '!h-9 !rounded-[var(--lumen-radius-pill)] px-3.5 text-[13px]',
+    extended: "!h-9 !rounded-[var(--lumen-radius-pill)] px-3.5 text-[13px]",
   },
   md: {
     icon: floatingButtonIconSizeTokens.md,
-    extended: '!h-11 !rounded-[var(--lumen-radius-pill)] px-[18px] text-[14px]',
+    extended: "!h-11 !rounded-[var(--lumen-radius-pill)] px-[18px] text-[14px]",
   },
   lg: {
     icon: floatingButtonIconSizeTokens.lg,
-    extended: '!h-[52px] !rounded-[var(--lumen-radius-pill)] px-[22px] text-[15px]',
+    extended: "!h-[52px] !rounded-[var(--lumen-radius-pill)] px-[22px] text-[15px]",
   },
 };
 
 const fabMenuDirectionClassNames: Record<FabMenuDirection, { root: string; menu: string }> = {
-  up: { root: 'flex-col-reverse', menu: 'flex-col-reverse' },
-  down: { root: 'flex-col', menu: 'flex-col' },
-  start: { root: 'flex-row-reverse', menu: 'flex-row-reverse' },
-  end: { root: 'flex-row', menu: 'flex-row' },
+  up: { root: "flex-col-reverse", menu: "flex-col-reverse" },
+  down: { root: "flex-col", menu: "flex-col" },
+  start: { root: "flex-row-reverse", menu: "flex-row-reverse" },
+  end: { root: "flex-row", menu: "flex-row" },
 };
 
 const fabMenuClosedClassNames: Record<FabMenuDirection, string> = {
-  up: 'translate-y-3',
-  down: '-translate-y-3',
-  start: 'translate-x-3',
-  end: '-translate-x-3',
+  up: "translate-y-3",
+  down: "-translate-y-3",
+  start: "translate-x-3",
+  end: "-translate-x-3",
 };
 
 const toCssLength = (value: number | string) =>
-  typeof value === 'number' ? `${value}px` : value;
+  typeof value === "number" ? `${value}px` : value;
 
 export const Fab: React.FC<FabProps> = ({
   icon,
@@ -106,17 +106,17 @@ export const Fab: React.FC<FabProps> = ({
   defaultOpen = false,
   onOpenChange,
   menuDirection,
-  position = 'fixed',
-  placement = 'bottom-end',
+  position = "fixed",
+  placement = "bottom-end",
   offset = 16,
   safeArea = true,
-  size = 'sm',
-  variant = 'primary',
+  size = "sm",
+  variant = "primary",
   className,
   disabled,
   onClick,
   style,
-  'aria-label': ariaLabel,
+  "aria-label": ariaLabel,
   ...props
 }) => {
   const locale = useLumenLocale();
@@ -127,22 +127,22 @@ export const Fab: React.FC<FabProps> = ({
   const extended = extendedProp ?? (label !== undefined && label !== null);
   const hasActions = actions.length > 0;
   const open = hasActions && (openProp ?? uncontrolledOpen);
-  const resolvedMenuDirection = menuDirection ?? (placement.startsWith('bottom') ? 'up' : 'down');
+  const resolvedMenuDirection = menuDirection ?? (placement.startsWith("bottom") ? "up" : "down");
   const offsetValue = toCssLength(offset);
-  const positioned = position !== 'static';
+  const positioned = position !== "static";
   const placementStyle: React.CSSProperties = {};
   const colorStyle: React.CSSProperties = color ? {
     backgroundColor: color,
-    color: foregroundColor ?? 'var(--lumen-color-on-primary)',
+    color: foregroundColor ?? "var(--lumen-color-on-primary)",
   } : foregroundColor ? { color: foregroundColor } : {};
 
   if (positioned) {
     const verticalOffset = safeArea
-      ? `calc(${offsetValue} + env(safe-area-inset-${placement.startsWith('bottom') ? 'bottom' : 'top'}))`
+      ? `calc(${offsetValue} + env(safe-area-inset-${placement.startsWith("bottom") ? "bottom" : "top"}))`
       : offsetValue;
-    if (placement.startsWith('bottom')) placementStyle.bottom = verticalOffset;
+    if (placement.startsWith("bottom")) placementStyle.bottom = verticalOffset;
     else placementStyle.top = verticalOffset;
-    if (placement.endsWith('end')) placementStyle.insetInlineEnd = offsetValue;
+    if (placement.endsWith("end")) placementStyle.insetInlineEnd = offsetValue;
     else placementStyle.insetInlineStart = offsetValue;
   }
 
@@ -158,16 +158,16 @@ export const Fab: React.FC<FabProps> = ({
       if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
     };
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
+      if (event.key !== "Escape") return;
       setOpen(false);
-      rootRef.current?.querySelector<HTMLButtonElement>('[data-fab-trigger]')?.focus();
+      rootRef.current?.querySelector<HTMLButtonElement>("[data-fab-trigger]")?.focus();
     };
 
-    document.addEventListener('pointerdown', handlePointerDown);
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener('pointerdown', handlePointerDown);
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [open, setOpen]);
 
@@ -179,25 +179,25 @@ export const Fab: React.FC<FabProps> = ({
     size,
     icon: loading ? <LoaderCircle aria-hidden="true" className="animate-spin" /> : icon,
     className: cn(
-      '!border-0 shadow-[0_3px_10px_var(--lumen-color-shadow)] hover:-translate-y-0.5 hover:shadow-[0_5px_16px_var(--lumen-color-shadow)]',
-      color && 'hover:brightness-95',
-      hasActions && '[&>span:first-child]:transition-transform [&>span:first-child]:duration-200 [&>span:first-child]:ease-out',
-      open && '[&>span:first-child]:rotate-45',
-      fabPositionClassNames[hasActions ? 'static' : position],
+      "!border-0 shadow-[0_3px_10px_var(--lumen-color-shadow)] hover:-translate-y-0.5 hover:shadow-[0_5px_16px_var(--lumen-color-shadow)]",
+      color && "hover:brightness-95",
+      hasActions && "[&>span:first-child]:transition-transform [&>span:first-child]:duration-200 [&>span:first-child]:ease-out",
+      open && "[&>span:first-child]:rotate-45",
+      fabPositionClassNames[hasActions ? "static" : position],
       extended ? fabSizeClassNames[size].extended : fabSizeClassNames[size].icon,
       className,
     ),
     style: hasActions
       ? { ...colorStyle, ...style }
       : { ...placementStyle, ...colorStyle, ...style },
-    'aria-busy': loading || undefined,
-    'data-active': active,
-    'data-fab': extended ? 'extended' : 'icon',
-    'data-placement': placement,
-    'data-position': position,
-    'data-fab-trigger': hasActions || undefined,
-    'aria-controls': hasActions ? menuId : undefined,
-    'aria-expanded': hasActions ? open : undefined,
+    "aria-busy": loading || undefined,
+    "data-active": active,
+    "data-fab": extended ? "extended" : "icon",
+    "data-placement": placement,
+    "data-position": position,
+    "data-fab-trigger": hasActions || undefined,
+    "aria-controls": hasActions ? menuId : undefined,
+    "aria-expanded": hasActions ? open : undefined,
     onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
       onClick?.(event);
       if (hasActions && !event.defaultPrevented) setOpen(!open);
@@ -212,7 +212,7 @@ export const Fab: React.FC<FabProps> = ({
     <Button
       {...sharedProps}
       iconOnly
-      aria-label={loading ? resolvedLoadingLabel : ariaLabel ?? (typeof label === 'string' ? label : locale.accessibility.fab)}
+      aria-label={loading ? resolvedLoadingLabel : ariaLabel ?? (typeof label === "string" ? label : locale.accessibility.fab)}
     />
   );
 
@@ -227,7 +227,7 @@ export const Fab: React.FC<FabProps> = ({
       data-open={open}
       data-direction={resolvedMenuDirection}
       className={cn(
-        'inline-flex items-center gap-3',
+        "inline-flex items-center gap-3",
         fabPositionClassNames[position],
         directionClassNames.root,
       )}
@@ -238,8 +238,8 @@ export const Fab: React.FC<FabProps> = ({
         id={menuId}
         role="group"
         aria-hidden={!open}
-        aria-label={typeof label === 'string' ? label : ariaLabel}
-        className={cn('flex items-center gap-2', directionClassNames.menu)}
+        aria-label={typeof label === "string" ? label : ariaLabel}
+        className={cn("flex items-center gap-2", directionClassNames.menu)}
       >
         {actions.map(({
           className: actionClassName,
@@ -255,17 +255,17 @@ export const Fab: React.FC<FabProps> = ({
               {...action}
               key={action.id ?? index}
               className={cn(
-                'transition-all duration-200 ease-out',
+                "transition-all duration-200 ease-out",
                 open
-                  ? 'scale-100 opacity-100'
-                  : cn('pointer-events-none scale-50 opacity-0', fabMenuClosedClassNames[resolvedMenuDirection]),
+                  ? "scale-100 opacity-100"
+                  : cn("pointer-events-none scale-50 opacity-0", fabMenuClosedClassNames[resolvedMenuDirection]),
                 actionClassName,
               )}
               extended={actionExtended ?? false}
               position="static"
               style={{ ...actionStyle, transitionDelay: `${transitionIndex * 40}ms` }}
               tabIndex={open ? action.tabIndex : -1}
-              title={action.title ?? (typeof action.label === 'string' ? action.label : undefined)}
+              title={action.title ?? (typeof action.label === "string" ? action.label : undefined)}
               onClick={(event) => {
                 onActionClick?.(event);
                 if (closeOnClick && !event.defaultPrevented) setOpen(false);

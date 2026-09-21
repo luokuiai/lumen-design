@@ -1,13 +1,13 @@
-import { Grip, GripHorizontal, GripVertical } from 'lucide-react';
-import React from 'react';
-import { useLumenLocale } from '../../i18n';
-import { cn } from '../classNames';
+import { Grip, GripHorizontal, GripVertical } from "lucide-react";
+import React from "react";
+import { useLumenLocale } from "../../i18n";
+import { cn } from "../classNames";
 
-export type DragHandleAxis = 'vertical' | 'horizontal' | 'both';
-export type DragHandleSize = 'sm' | 'md' | 'lg';
+export type DragHandleAxis = "vertical" | "horizontal" | "both";
+export type DragHandleSize = "sm" | "md" | "lg";
 
 export interface DragHandleProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
   /** 拖拽排序的主要方向。 */
   axis?: DragHandleAxis;
   /** 手柄尺寸。 */
@@ -21,9 +21,9 @@ export interface DragHandleProps
 }
 
 const sizeClassNames: Record<DragHandleSize, string> = {
-  sm: 'h-7 w-6',
-  md: 'h-8 w-7',
-  lg: 'h-9 w-8',
+  sm: "h-7 w-6",
+  md: "h-8 w-7",
+  lg: "h-9 w-8",
 };
 
 const iconSizes: Record<DragHandleSize, number> = {
@@ -35,23 +35,23 @@ const iconSizes: Record<DragHandleSize, number> = {
 export const DragHandle = React.forwardRef<HTMLButtonElement, DragHandleProps>(
   (
     {
-      axis = 'vertical',
-      size = 'md',
+      axis = "vertical",
+      size = "md",
       active = false,
       icon,
       label,
       className,
       disabled,
-      type = 'button',
-      'aria-label': ariaLabel,
+      type = "button",
+      "aria-label": ariaLabel,
       ...props
     },
     ref,
   ) => {
     const locale = useLumenLocale();
-    const Icon = axis === 'vertical'
+    const Icon = axis === "vertical"
       ? GripVertical
-      : axis === 'horizontal'
+      : axis === "horizontal"
         ? GripHorizontal
         : Grip;
 
@@ -61,16 +61,16 @@ export const DragHandle = React.forwardRef<HTMLButtonElement, DragHandleProps>(
         ref={ref}
         type={type}
         disabled={disabled}
-        aria-label={ariaLabel ?? label ?? locale.accessibility.dragHandle ?? 'Drag to reorder'}
+        aria-label={ariaLabel ?? label ?? locale.accessibility.dragHandle ?? "Drag to reorder"}
         data-ui="drag-handle"
         data-axis={axis}
         data-size={size}
         data-active={active || undefined}
         className={cn(
-          'inline-flex shrink-0 touch-none select-none items-center justify-center rounded-[var(--lumen-radius-icon)] border border-transparent text-[var(--lumen-color-text-muted)] outline-none transition-[color,background-color,border-color,box-shadow,transform] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-text)] focus-visible:border-[var(--lumen-color-primary)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/15 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40',
+          "inline-flex shrink-0 touch-none select-none items-center justify-center rounded-[var(--lumen-radius-icon)] border border-transparent text-[var(--lumen-color-text-muted)] outline-none transition-[color,background-color,border-color,box-shadow,transform] hover:bg-[var(--lumen-color-surface-hover)] hover:text-[var(--lumen-color-text)] focus-visible:border-[var(--lumen-color-primary)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/15 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40",
           active
-            ? 'cursor-grabbing bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-primary)] shadow-[var(--lumen-shadow-control)]'
-            : 'cursor-grab',
+            ? "cursor-grabbing bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-primary)] shadow-[var(--lumen-shadow-control)]"
+            : "cursor-grab",
           sizeClassNames[size],
           className,
         )}
@@ -81,4 +81,4 @@ export const DragHandle = React.forwardRef<HTMLButtonElement, DragHandleProps>(
   },
 );
 
-DragHandle.displayName = 'DragHandle';
+DragHandle.displayName = "DragHandle";

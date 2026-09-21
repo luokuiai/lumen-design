@@ -1,12 +1,12 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { cn } from '../classNames';
-import { useLumenLocale } from '../../i18n';
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { cn } from "../classNames";
+import { useLumenLocale } from "../../i18n";
 
-export type CalendarSize = 'sm' | 'md' | 'lg';
+export type CalendarSize = "sm" | "md" | "lg";
 
 export interface CalendarProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
   value?: string;
   defaultValue?: string;
   onChange?: (value: string) => void;
@@ -25,19 +25,19 @@ export interface CalendarProps
 const YEAR_PAGE_SIZE = 20;
 
 const sizeTokens = {
-  sm: { cell: 'h-8 w-8 text-[12px]', header: 'text-[13px]', footer: 'text-[12px]', padding: 'p-3' },
-  md: { cell: 'h-9 w-9 text-[13px]', header: 'text-[15px]', footer: 'text-[13px]', padding: 'p-4' },
-  lg: { cell: 'h-10 w-10 text-[14px]', header: 'text-[16px]', footer: 'text-[14px]', padding: 'p-5' },
+  sm: { cell: "h-8 w-8 text-[12px]", header: "text-[13px]", footer: "text-[12px]", padding: "p-3" },
+  md: { cell: "h-9 w-9 text-[13px]", header: "text-[15px]", footer: "text-[13px]", padding: "p-4" },
+  lg: { cell: "h-10 w-10 text-[14px]", header: "text-[16px]", footer: "text-[14px]", padding: "p-5" },
 } as const;
 
 const iconButtonClassName =
-  'flex h-8 w-8 cursor-pointer items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent';
+  "flex h-8 w-8 cursor-pointer items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent";
 const headerButtonClassName =
-  'cursor-pointer rounded-[6px] px-2 py-1 font-semibold text-[var(--lumen-color-text)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
+  "cursor-pointer rounded-[6px] px-2 py-1 font-semibold text-[var(--lumen-color-text)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20";
 const optionFocusClassName =
-  'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
+  "cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20";
 
-const pad = (value: number) => String(value).padStart(2, '0');
+const pad = (value: number) => String(value).padStart(2, "0");
 const toDateString = (year: number, month: number, day: number) =>
   `${year}-${pad(month + 1)}-${pad(day)}`;
 const parseDate = (value?: string) => {
@@ -58,11 +58,11 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
   (
     {
       value,
-      defaultValue = '',
+      defaultValue = "",
       onChange,
       minDate,
       maxDate,
-      size = 'md',
+      size = "md",
       showToday = true,
       clearable = true,
       showOutsideDays = true,
@@ -90,12 +90,12 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
     const selectedDate = useMemo(() => parseDate(selectedValue), [selectedValue]);
     const [viewYear, setViewYear] = useState(selectedDate?.year ?? today.year);
     const [viewMonth, setViewMonth] = useState(selectedDate?.month ?? today.month);
-    const [view, setView] = useState<'day' | 'month' | 'year'>('day');
+    const [view, setView] = useState<"day" | "month" | "year">("day");
     const [yearPageStart, setYearPageStart] = useState(
       getYearPageStart(selectedDate?.year ?? today.year),
     );
     const [focusedDate, setFocusedDate] = useState(selectedValue || todayValue);
-    const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
+    const [slideDirection, setSlideDirection] = useState<"left" | "right" | null>(null);
     const tokens = sizeTokens[size];
 
     useEffect(() => {
@@ -136,7 +136,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
       const date = new Date(viewYear, viewMonth + offset, 1);
       setViewYear(date.getFullYear());
       setViewMonth(date.getMonth());
-      setSlideDirection(offset > 0 ? 'left' : 'right');
+      setSlideDirection(offset > 0 ? "left" : "right");
     };
 
     const days = useMemo(() => {
@@ -168,12 +168,12 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
       );
       const currentIndex = buttons.indexOf(event.currentTarget);
       let nextIndex = currentIndex;
-      if (event.key === 'ArrowLeft') nextIndex -= 1;
-      else if (event.key === 'ArrowRight') nextIndex += 1;
-      else if (event.key === 'ArrowUp') nextIndex -= 7;
-      else if (event.key === 'ArrowDown') nextIndex += 7;
-      else if (event.key === 'Home') nextIndex -= currentIndex % 7;
-      else if (event.key === 'End') nextIndex += 6 - (currentIndex % 7);
+      if (event.key === "ArrowLeft") nextIndex -= 1;
+      else if (event.key === "ArrowRight") nextIndex += 1;
+      else if (event.key === "ArrowUp") nextIndex -= 7;
+      else if (event.key === "ArrowDown") nextIndex += 7;
+      else if (event.key === "Home") nextIndex -= currentIndex % 7;
+      else if (event.key === "End") nextIndex += 6 - (currentIndex % 7);
       else return;
 
       event.preventDefault();
@@ -181,7 +181,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
       while (
         nextIndex >= 0 &&
         nextIndex < buttons.length &&
-        (buttons[nextIndex]?.disabled || buttons[nextIndex]?.getAttribute('aria-hidden') === 'true')
+        (buttons[nextIndex]?.disabled || buttons[nextIndex]?.getAttribute("aria-hidden") === "true")
       ) {
         nextIndex += direction;
       }
@@ -194,16 +194,16 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
         ref={ref}
         data-ui="calendar"
         data-size={size}
-        className={cn('w-[320px] max-w-full bg-[var(--lumen-color-surface)]', className)}
+        className={cn("w-[320px] max-w-full bg-[var(--lumen-color-surface)]", className)}
       >
-        <div className={cn(tokens.padding, 'pb-0')}>
-          {view === 'year' ? (
+        <div className={cn(tokens.padding, "pb-0")}>
+          {view === "year" ? (
             <>
               <div className="mb-3 flex items-center justify-between">
                 <button type="button" aria-label={locale.calendar.previousYearPage} onClick={() => setYearPageStart((start) => start - YEAR_PAGE_SIZE)} className={iconButtonClassName}>
                   <ChevronLeft size={18} />
                 </button>
-                <span className={cn(tokens.header, 'font-semibold text-[var(--lumen-color-text)]')}>
+                <span className={cn(tokens.header, "font-semibold text-[var(--lumen-color-text)]")}>
                   {yearPageStart} - {yearPageStart + YEAR_PAGE_SIZE - 1}
                 </span>
                 <button type="button" aria-label={locale.calendar.nextYearPage} onClick={() => setYearPageStart((start) => start + YEAR_PAGE_SIZE)} className={iconButtonClassName}>
@@ -220,17 +220,17 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                       type="button"
                       disabled={disabled}
                       className={cn(
-                        'mx-auto flex h-10 w-12 items-center justify-center rounded-full text-[13px] transition-all',
+                        "mx-auto flex h-10 w-12 items-center justify-center rounded-full text-[13px] transition-all",
                         optionFocusClassName,
-                        selected && 'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
-                        !selected && year === today.year && 'font-semibold text-[var(--lumen-color-primary)]',
-                        !selected && year !== today.year && !disabled && 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)]',
-                        disabled && 'cursor-not-allowed text-[var(--lumen-color-border-hover)]',
+                        selected && "bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm",
+                        !selected && year === today.year && "font-semibold text-[var(--lumen-color-primary)]",
+                        !selected && year !== today.year && !disabled && "text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)]",
+                        disabled && "cursor-not-allowed text-[var(--lumen-color-border-hover)]",
                       )}
                       onClick={() => {
                         setViewYear(year);
                         setYearPageStart(getYearPageStart(year));
-                        setView('month');
+                        setView("month");
                       }}
                     >
                       {year}
@@ -239,13 +239,13 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 })}
               </div>
             </>
-          ) : view === 'month' ? (
+          ) : view === "month" ? (
             <>
               <div className="mb-3 flex items-center justify-between">
                 <button type="button" aria-label={locale.calendar.previousYear} onClick={() => setViewYear((year) => year - 1)} className={iconButtonClassName}>
                   <ChevronLeft size={18} />
                 </button>
-                <button type="button" onClick={() => { setYearPageStart(getYearPageStart(viewYear)); setView('year'); }} className={cn(tokens.header, headerButtonClassName)}>
+                <button type="button" onClick={() => { setYearPageStart(getYearPageStart(viewYear)); setView("year"); }} className={cn(tokens.header, headerButtonClassName)}>
                   {locale.calendar.year(viewYear)}
                 </button>
                 <button type="button" aria-label={locale.calendar.nextYear} onClick={() => setViewYear((year) => year + 1)} className={iconButtonClassName}>
@@ -263,14 +263,14 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                       type="button"
                       disabled={disabled}
                       className={cn(
-                        'relative mx-auto flex h-10 w-10 items-center justify-center rounded-full text-[13px] transition-all',
+                        "relative mx-auto flex h-10 w-10 items-center justify-center rounded-full text-[13px] transition-all",
                         optionFocusClassName,
-                        selected && 'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
-                        !selected && current && 'font-semibold text-[var(--lumen-color-primary)]',
-                        !selected && !current && !disabled && 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
-                        disabled && 'cursor-not-allowed text-[var(--lumen-color-border-hover)]',
+                        selected && "bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm",
+                        !selected && current && "font-semibold text-[var(--lumen-color-primary)]",
+                        !selected && !current && !disabled && "text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]",
+                        disabled && "cursor-not-allowed text-[var(--lumen-color-border-hover)]",
                       )}
-                      onClick={() => { setViewMonth(month); setView('day'); }}
+                      onClick={() => { setViewMonth(month); setView("day"); }}
                     >
                       {monthLabel}
                       {current && !selected ? <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[var(--lumen-color-primary)]" /> : null}
@@ -286,8 +286,8 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                   <ChevronLeft size={18} />
                 </button>
                 <div className="flex items-center gap-1">
-                  <button type="button" onClick={() => { setYearPageStart(getYearPageStart(viewYear)); setView('year'); }} className={cn(tokens.header, headerButtonClassName)}>{locale.calendar.year(viewYear)}</button>
-                  <button type="button" onClick={() => setView('month')} className={cn(tokens.header, headerButtonClassName)}>{months[viewMonth]}</button>
+                  <button type="button" onClick={() => { setYearPageStart(getYearPageStart(viewYear)); setView("year"); }} className={cn(tokens.header, headerButtonClassName)}>{locale.calendar.year(viewYear)}</button>
+                  <button type="button" onClick={() => setView("month")} className={cn(tokens.header, headerButtonClassName)}>{months[viewMonth]}</button>
                 </div>
                 <button type="button" aria-label={locale.calendar.nextMonth} disabled={!canGoNext} onClick={() => changeMonth(1)} className={iconButtonClassName}>
                   <ChevronRight size={18} />
@@ -296,10 +296,10 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
               <div className="overflow-hidden">
                 <div
                   onAnimationEnd={() => setSlideDirection(null)}
-                  style={slideDirection === 'left'
-                    ? { animation: 'calendarSlideLeft 0.2s ease-out' }
-                    : slideDirection === 'right'
-                      ? { animation: 'calendarSlideRight 0.2s ease-out' }
+                  style={slideDirection === "left"
+                    ? { animation: "calendarSlideLeft 0.2s ease-out" }
+                    : slideDirection === "right"
+                      ? { animation: "calendarSlideRight 0.2s ease-out" }
                       : undefined}
                 >
                   <div role="grid" aria-label={locale.calendar.month(viewYear, viewMonth + 1)} className="grid grid-cols-7 text-center">
@@ -320,22 +320,22 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                               key={cell.date}
                               type="button"
                               role="gridcell"
-                              aria-current={current ? 'date' : undefined}
+                              aria-current={current ? "date" : undefined}
                               aria-hidden={hidden || undefined}
                               aria-label={cell.date}
                               aria-selected={selected}
                               disabled={disabled}
                               tabIndex={cell.date === effectiveFocusedDate ? 0 : -1}
                               className={cn(
-                                'relative mx-auto flex items-center justify-center rounded-full transition-all',
+                                "relative mx-auto flex items-center justify-center rounded-full transition-all",
                                 optionFocusClassName,
                                 tokens.cell,
-                                !cell.current && 'text-[var(--lumen-color-border-hover)]',
-                                hidden && 'invisible',
-                                disabled && 'cursor-not-allowed text-[var(--lumen-color-border-hover)]',
-                                cell.current && !selected && !disabled && 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
-                                selected && 'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
-                                current && !selected && !disabled && 'font-semibold text-[var(--lumen-color-primary)]',
+                                !cell.current && "text-[var(--lumen-color-border-hover)]",
+                                hidden && "invisible",
+                                disabled && "cursor-not-allowed text-[var(--lumen-color-border-hover)]",
+                                cell.current && !selected && !disabled && "text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]",
+                                selected && "bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm",
+                                current && !selected && !disabled && "font-semibold text-[var(--lumen-color-primary)]",
                               )}
                               onFocus={() => setFocusedDate(cell.date)}
                               onKeyDown={handleDayKeyDown}
@@ -357,12 +357,12 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
         {(showToday || (clearable && selectedValue)) ? (
           <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-4 py-3">
             {showToday ? (
-              <button type="button" disabled={isDateDisabled(todayValue)} onClick={() => commitValue(todayValue)} className={cn(tokens.footer, 'font-medium text-[var(--lumen-color-primary)] transition-colors hover:text-[var(--lumen-color-primary-active)] disabled:cursor-not-allowed disabled:opacity-40')}>
+              <button type="button" disabled={isDateDisabled(todayValue)} onClick={() => commitValue(todayValue)} className={cn(tokens.footer, "font-medium text-[var(--lumen-color-primary)] transition-colors hover:text-[var(--lumen-color-primary-active)] disabled:cursor-not-allowed disabled:opacity-40")}>
                 {resolvedTodayText}
               </button>
             ) : null}
             {clearable && selectedValue ? (
-              <button type="button" onClick={() => commitValue('')} className={cn(tokens.footer, 'ml-auto text-[var(--lumen-color-text-placeholder)] transition-colors hover:text-[var(--lumen-color-text-muted)]')}>
+              <button type="button" onClick={() => commitValue("")} className={cn(tokens.footer, "ml-auto text-[var(--lumen-color-text-placeholder)] transition-colors hover:text-[var(--lumen-color-text-muted)]")}>
                 {resolvedClearText}
               </button>
             ) : null}
@@ -373,4 +373,4 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
   },
 );
 
-Calendar.displayName = 'Calendar';
+Calendar.displayName = "Calendar";

@@ -222,6 +222,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     },
     {
+      "name": "getFileProgress",
+      "type": "(file: File) => number | undefined",
+      "defaultValue": "undefined",
+      "description": "设置 getFileProgress。",
+      "descriptionEn": "Configures get file progress.",
+      "required": false
+    },
+    {
       "name": "renderFileActions",
       "type": "(file: File) => React.ReactNode",
       "defaultValue": "undefined",
@@ -6054,6 +6062,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "required": false
     },
     {
+      "name": "density",
+      "type": "\"default\" | \"compact\"",
+      "defaultValue": "'default'",
+      "description": "设置 density。",
+      "descriptionEn": "Configures density.",
+      "required": false
+    },
+    {
       "name": "wrapName",
       "type": "boolean",
       "defaultValue": "false",
@@ -6125,6 +6141,14 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
       "defaultValue": "undefined",
       "description": "控制是否显示 Size。",
       "descriptionEn": "Controls whether size is shown.",
+      "required": false
+    },
+    {
+      "name": "density",
+      "type": "\"default\" | \"compact\"",
+      "defaultValue": "undefined",
+      "description": "设置 density。",
+      "descriptionEn": "Configures density.",
       "required": false
     },
     {

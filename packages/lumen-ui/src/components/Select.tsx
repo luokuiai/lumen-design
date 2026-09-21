@@ -5,18 +5,18 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from 'react';
-import { createPortal } from 'react-dom';
-import { Check, ChevronDown, LoaderCircle, Search, X } from 'lucide-react';
-import { cn } from './classNames';
-import { Scrollbar } from './Scrollbar';
-import { radiusTokens } from './designTokens';
-import { dropdownTransformOrigin } from './dropdownMotion';
-import { useOverlayPortalScope } from './useOverlayBehavior';
-import { useLumenLocale } from '../i18n';
+} from "react";
+import { createPortal } from "react-dom";
+import { Check, ChevronDown, LoaderCircle, Search, X } from "lucide-react";
+import { cn } from "./classNames";
+import { Scrollbar } from "./Scrollbar";
+import { radiusTokens } from "./designTokens";
+import { dropdownTransformOrigin } from "./dropdownMotion";
+import { useOverlayPortalScope } from "./useOverlayBehavior";
+import { useLumenLocale } from "../i18n";
 
 const DROPDOWN_CLOSE_ANIMATION_MS = 120;
-const SHOULD_SKIP_CLOSE_ANIMATION_IN_TEST = import.meta.env.MODE === 'test';
+const SHOULD_SKIP_CLOSE_ANIMATION_IN_TEST = import.meta.env.MODE === "test";
 
 /** 选项定义 */
 export interface SelectOption<T extends string | number = string> {
@@ -35,10 +35,10 @@ export interface SelectOption<T extends string | number = string> {
 }
 
 /** 选择器模式 */
-export type SelectMode = 'single' | 'multiple';
+export type SelectMode = "single" | "multiple";
 
 /** 选择器尺寸 */
-export type SelectSize = 'sm' | 'md' | 'lg';
+export type SelectSize = "sm" | "md" | "lg";
 
 export interface SelectOptionRenderState {
   /** 是否已选中 */
@@ -66,7 +66,7 @@ export interface SelectProps<T extends string | number = string> {
   /** 当前选中值 (单选模式为 T | null, 多选模式为 T[]) */
   value: T | null | T[];
   /** 多选触发器展示方式 */
-  multipleTriggerDisplay?: 'chips' | 'count' | 'placeholder';
+  multipleTriggerDisplay?: "chips" | "count" | "placeholder";
   /** 多选计数文案 */
   multipleCountLabel?: (count: number) => string;
   /** 选中值变更回调 */
@@ -110,32 +110,32 @@ export interface SelectProps<T extends string | number = string> {
     state: SelectOptionRenderState,
   ) => string | undefined;
   /** 可访问名称 */
-  'aria-label'?: string;
+  "aria-label"?: string;
 }
 
 const selectSizeTokens: Record<SelectSize, string> = {
-  sm: 'min-h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]',
-  md: 'min-h-[var(--lumen-control-height-md)] px-3 text-[14px]',
-  lg: 'min-h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]',
+  sm: "min-h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]",
+  md: "min-h-[var(--lumen-control-height-md)] px-3 text-[14px]",
+  lg: "min-h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]",
 };
 
 const selectTextSizeTokens: Record<SelectSize, string> = {
-  sm: 'text-[13px]',
-  md: 'text-[14px]',
-  lg: 'text-[15px]',
+  sm: "text-[13px]",
+  md: "text-[14px]",
+  lg: "text-[15px]",
 };
 
 export const Select = <T extends string | number = string>({
   options,
-  mode = 'single',
+  mode = "single",
   searchable = false,
   placeholder: placeholderProp,
   disabled = false,
   value,
-  multipleTriggerDisplay = 'chips',
+  multipleTriggerDisplay = "chips",
   multipleCountLabel: multipleCountLabelProp,
   onChange,
-  size = 'md',
+  size = "md",
   className,
   triggerClassName,
   radius,
@@ -151,7 +151,7 @@ export const Select = <T extends string | number = string>({
   renderTrigger,
   renderOption,
   optionClassName,
-  'aria-label': ariaLabel,
+  "aria-label": ariaLabel,
 }: SelectProps<T>) => {
   const locale = useLumenLocale();
   const placeholder = placeholderProp ?? locale.select.placeholder;
@@ -165,10 +165,10 @@ export const Select = <T extends string | number = string>({
   const [isPreparingOpen, setIsPreparingOpen] = useState(false);
   const [isDropdownPositioned, setIsDropdownPositioned] = useState(false);
   const [shouldDropUp, setShouldDropUp] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({
-    position: 'fixed',
+    position: "fixed",
     top: 0,
     left: 0,
     zIndex: 9999,
@@ -181,7 +181,7 @@ export const Select = <T extends string | number = string>({
 
   // 将 value 标准化为数组
   const selectedValues = useMemo<T[]>(() => {
-    if (mode === 'multiple') return Array.isArray(value) ? value : [];
+    if (mode === "multiple") return Array.isArray(value) ? value : [];
     if (value == null) return [];
     return [value as T];
   }, [mode, value]);
@@ -210,7 +210,7 @@ export const Select = <T extends string | number = string>({
     const estimatedDropdownHeight =
       240 +
       (searchable ? 58 : 0) +
-      (mode === 'multiple' && selectedValues.length > 0 ? 46 : 0) +
+      (mode === "multiple" && selectedValues.length > 0 ? 46 : 0) +
       12;
     const dropdownHeight =
       portalRef.current?.offsetHeight || estimatedDropdownHeight;
@@ -238,10 +238,10 @@ export const Select = <T extends string | number = string>({
 
     setShouldDropUp(nextShouldDropUp);
     setDropdownStyle({
-      position: 'fixed',
+      position: "fixed",
       top,
       left,
-      width: 'max-content',
+      width: "max-content",
       minWidth: triggerWidth,
       maxWidth,
       zIndex: 9999,
@@ -255,7 +255,7 @@ export const Select = <T extends string | number = string>({
     if (SHOULD_SKIP_CLOSE_ANIMATION_IN_TEST) {
       setIsOpen(false);
       setIsAnimatingOut(false);
-      updateSearchQuery('');
+      updateSearchQuery("");
       setHighlightedIndex(-1);
       onOpenChange?.(false);
       return;
@@ -264,7 +264,7 @@ export const Select = <T extends string | number = string>({
     closeTimeoutRef.current = setTimeout(() => {
       setIsOpen(false);
       setIsAnimatingOut(false);
-      updateSearchQuery('');
+      updateSearchQuery("");
       setHighlightedIndex(-1);
       onOpenChange?.(false);
     }, DROPDOWN_CLOSE_ANIMATION_MS);
@@ -275,7 +275,7 @@ export const Select = <T extends string | number = string>({
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
     setIsOpen(false);
     setIsAnimatingOut(false);
-    updateSearchQuery('');
+    updateSearchQuery("");
     setHighlightedIndex(-1);
     onOpenChange?.(false);
   }, [onOpenChange, updateSearchQuery]);
@@ -294,7 +294,7 @@ export const Select = <T extends string | number = string>({
     setIsDropdownPositioned(false);
     setIsOpen(true);
     setIsAnimatingOut(false);
-    updateSearchQuery('');
+    updateSearchQuery("");
     setHighlightedIndex(-1);
     onOpenChange?.(true);
   }, [onBeforeOpen, onOpenChange, updateSearchQuery]);
@@ -302,7 +302,7 @@ export const Select = <T extends string | number = string>({
   // 选择处理
   const handleSelect = useCallback(
     (optionValue: T) => {
-      if (mode === 'single') {
+      if (mode === "single") {
         onChange(optionValue);
         closeDropdownImmediate();
       } else {
@@ -329,7 +329,7 @@ export const Select = <T extends string | number = string>({
   // 清空全部（多选）
   const handleClearAll = useCallback(() => {
     onChange([]);
-    setSearchQuery('');
+    setSearchQuery("");
   }, [onChange]);
 
   // 点击外部关闭
@@ -341,8 +341,8 @@ export const Select = <T extends string | number = string>({
       if (portalRef.current?.contains(target)) return;
       closeDropdown();
     };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, [isOpen, closeDropdown]);
 
   // 搜索框自动聚焦
@@ -356,12 +356,12 @@ export const Select = <T extends string | number = string>({
     if (!isOpen) return;
 
     updateDropdownPosition();
-    window.addEventListener('scroll', updateDropdownPosition, true);
-    window.addEventListener('resize', updateDropdownPosition);
+    window.addEventListener("scroll", updateDropdownPosition, true);
+    window.addEventListener("resize", updateDropdownPosition);
 
     return () => {
-      window.removeEventListener('scroll', updateDropdownPosition, true);
-      window.removeEventListener('resize', updateDropdownPosition);
+      window.removeEventListener("scroll", updateDropdownPosition, true);
+      window.removeEventListener("resize", updateDropdownPosition);
     };
   }, [isOpen, updateDropdownPosition]);
 
@@ -372,7 +372,7 @@ export const Select = <T extends string | number = string>({
       updateDropdownPosition();
     });
 
-    if (!portalRef.current || typeof ResizeObserver === 'undefined') {
+    if (!portalRef.current || typeof ResizeObserver === "undefined") {
       return () => {
         window.cancelAnimationFrame(frameId);
       };
@@ -411,7 +411,7 @@ export const Select = <T extends string | number = string>({
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (!isOpen) {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           openDropdown();
         }
@@ -419,12 +419,12 @@ export const Select = <T extends string | number = string>({
       }
 
       switch (e.key) {
-        case 'Escape':
+        case "Escape":
           e.preventDefault();
           e.stopPropagation();
           closeDropdownImmediate();
           break;
-        case 'Enter':
+        case "Enter":
           e.preventDefault();
           if (
             highlightedIndex >= 0 &&
@@ -434,7 +434,7 @@ export const Select = <T extends string | number = string>({
             if (opt && !opt.disabled) handleSelect(opt.value);
           }
           break;
-        case 'ArrowDown':
+        case "ArrowDown":
           e.preventDefault();
           setHighlightedIndex((prev) => {
             let next = prev + 1;
@@ -446,7 +446,7 @@ export const Select = <T extends string | number = string>({
             return next >= filteredOptions.length ? prev : next;
           });
           break;
-        case 'ArrowUp':
+        case "ArrowUp":
           e.preventDefault();
           setHighlightedIndex((prev) => {
             let next = prev - 1;
@@ -501,14 +501,14 @@ export const Select = <T extends string | number = string>({
 
   // 渲染多选触发器（chips）
   const renderMultiTrigger = () => {
-    if (multipleTriggerDisplay === 'placeholder') {
+    if (multipleTriggerDisplay === "placeholder") {
       return (
         <div className="flex min-w-0 flex-1 py-1">
           <span className="truncate text-[var(--lumen-color-text-placeholder)]">{placeholder}</span>
         </div>
       );
     }
-    if (multipleTriggerDisplay === 'count') {
+    if (multipleTriggerDisplay === "count") {
       return (
         <div className="flex min-w-0 flex-1 py-1">
           {selectedValues.length > 0 ? (
@@ -556,7 +556,7 @@ export const Select = <T extends string | number = string>({
         <input
           ref={searchInputRef}
           className={cn(
-            'w-full bg-transparent text-[var(--lumen-select-text,var(--lumen-color-text))] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]',
+            "w-full bg-transparent text-[var(--lumen-select-text,var(--lumen-color-text))] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] mobile:text-[16px]",
             selectTextSizeTokens[size],
           )}
           placeholder={searchPlaceholder}
@@ -578,7 +578,7 @@ export const Select = <T extends string | number = string>({
       index,
     };
 
-    if (mode === 'multiple') {
+    if (mode === "multiple") {
       return (
         <button
           key={String(option.value)}
@@ -589,20 +589,20 @@ export const Select = <T extends string | number = string>({
           onClick={() => !option.disabled && handleSelect(option.value)}
           onMouseEnter={() => !option.disabled && setHighlightedIndex(index)}
           className={cn(
-            'outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20',
+            "outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20",
             renderOption
-              ? 'block w-full text-left transition-all'
-              : 'flex w-full items-center gap-2.5 rounded-[8px] p-2 text-left text-[14px] transition-colors',
-            option.disabled && 'cursor-not-allowed opacity-40',
+              ? "block w-full text-left transition-all"
+              : "flex w-full items-center gap-2.5 rounded-[8px] p-2 text-left text-[14px] transition-colors",
+            option.disabled && "cursor-not-allowed opacity-40",
             !renderOption &&
               (isSelected
-                ? 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]'
-                : 'text-[var(--lumen-select-option-text,var(--lumen-color-text-secondary))] hover:bg-[var(--lumen-color-surface-muted)]'),
+                ? "bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]"
+                : "text-[var(--lumen-select-option-text,var(--lumen-color-text-secondary))] hover:bg-[var(--lumen-color-surface-muted)]"),
             !renderOption &&
               isHighlighted &&
               !option.disabled &&
               !isSelected &&
-              'bg-[var(--lumen-color-surface-muted)]',
+              "bg-[var(--lumen-color-surface-muted)]",
             optionClassName?.(option, state),
           )}
         >
@@ -612,10 +612,10 @@ export const Select = <T extends string | number = string>({
             <>
               <div
                 className={cn(
-                  'flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[4px] border transition-colors',
+                  "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[4px] border transition-colors",
                   isSelected
-                    ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary)]'
-                    : 'border-[var(--lumen-color-border)]',
+                    ? "border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary)]"
+                    : "border-[var(--lumen-color-border)]",
                 )}
               >
                 {isSelected && <Check size={12} className="text-[var(--lumen-color-on-primary)]" />}
@@ -645,20 +645,20 @@ export const Select = <T extends string | number = string>({
         onClick={() => !option.disabled && handleSelect(option.value)}
         onMouseEnter={() => !option.disabled && setHighlightedIndex(index)}
         className={cn(
-          'outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20',
+          "outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20",
           renderOption
-            ? 'block w-full text-left transition-all'
-            : 'flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] transition-colors',
-          option.disabled && 'cursor-not-allowed opacity-40',
+            ? "block w-full text-left transition-all"
+            : "flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] transition-colors",
+          option.disabled && "cursor-not-allowed opacity-40",
           !renderOption &&
             (isSelected
-              ? 'bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary)]'
-              : 'text-[var(--lumen-select-option-text,var(--lumen-color-text-secondary))] hover:bg-[var(--lumen-color-surface-muted)]'),
+              ? "bg-[var(--lumen-color-primary-soft)] font-normal text-[var(--lumen-color-primary)]"
+              : "text-[var(--lumen-select-option-text,var(--lumen-color-text-secondary))] hover:bg-[var(--lumen-color-surface-muted)]"),
           !renderOption &&
             isHighlighted &&
             !option.disabled &&
             !isSelected &&
-            'bg-[var(--lumen-color-surface-muted)]',
+            "bg-[var(--lumen-color-surface-muted)]",
           optionClassName?.(option, state),
         )}
       >
@@ -708,7 +708,7 @@ export const Select = <T extends string | number = string>({
   return (
     <div
       ref={containerRef}
-      className={cn('relative', className)}
+      className={cn("relative", className)}
       onKeyDown={handleKeyDown}
     >
       {/* 触发器 */}
@@ -725,18 +725,18 @@ export const Select = <T extends string | number = string>({
           else openDropdown();
         }}
         className={cn(
-          'flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left font-normal outline-none transition-all focus-visible:border-[var(--lumen-color-primary)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20',
+          "flex w-full cursor-pointer items-center gap-2 border bg-[var(--lumen-color-surface)] text-left font-normal outline-none transition-all focus-visible:border-[var(--lumen-color-primary)] focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20",
           radius ?? radiusTokens.control,
           selectSizeTokens[size],
           disabled || isPreparingOpen
-            ? 'cursor-not-allowed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] opacity-50'
+            ? "cursor-not-allowed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] opacity-50"
             : isOpen
-              ? 'border-[var(--lumen-color-primary)] ring-1 ring-[var(--lumen-color-primary)]/10'
-              : 'border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)]',
+              ? "border-[var(--lumen-color-primary)] ring-1 ring-[var(--lumen-color-primary)]/10"
+              : "border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)]",
           triggerClassName,
         )}
       >
-        {mode === 'multiple' ? renderMultiTrigger() : renderSingleTrigger()}
+        {mode === "multiple" ? renderMultiTrigger() : renderSingleTrigger()}
         {loading || isPreparingOpen ? (
           <LoaderCircle
             size={16}
@@ -746,8 +746,8 @@ export const Select = <T extends string | number = string>({
           <ChevronDown
             size={16}
             className={cn(
-              'shrink-0 text-[var(--lumen-color-text-placeholder)] transition-transform duration-200',
-              isOpen && 'rotate-180',
+              "shrink-0 text-[var(--lumen-color-text-placeholder)] transition-transform duration-200",
+              isOpen && "rotate-180",
             )}
           />
         )}
@@ -763,18 +763,18 @@ export const Select = <T extends string | number = string>({
             data-lumen-overlay-scope={overlayScopeId ?? undefined}
             className={cn(
               radiusTokens.card,
-              'border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]',
+              "border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]",
             )}
             style={{
               ...dropdownStyle,
-              visibility: isDropdownPositioned ? 'visible' : 'hidden',
+              visibility: isDropdownPositioned ? "visible" : "hidden",
               animation: isAnimatingOut
                 ? shouldDropUp
-                  ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
-                  : 'lumen-dropdown-out 0.12s ease-in forwards'
+                  ? "lumen-dropdown-out-up 0.12s ease-in forwards"
+                  : "lumen-dropdown-out 0.12s ease-in forwards"
                 : shouldDropUp
-                  ? 'lumen-dropdown-in-up 0.12s ease-out'
-                  : 'lumen-dropdown-in 0.12s ease-out',
+                  ? "lumen-dropdown-in-up 0.12s ease-out"
+                  : "lumen-dropdown-in 0.12s ease-out",
               transformOrigin: dropdownTransformOrigin(shouldDropUp),
             }}
           >
@@ -795,7 +795,7 @@ export const Select = <T extends string | number = string>({
                     return (
                       <React.Fragment key={String(option.value)}>
                         {shouldRenderGroup && (
-                  <div className="px-3 pb-1 pt-2 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]">
+                          <div className="px-3 pb-1 pt-2 text-[12px] font-medium text-[var(--lumen-color-text-placeholder)]">
                             {option.group}
                           </div>
                         )}
@@ -807,7 +807,7 @@ export const Select = <T extends string | number = string>({
               </div>
             </Scrollbar>
 
-            {mode === 'multiple' && selectedValues.length > 0 && renderFooter()}
+            {mode === "multiple" && selectedValues.length > 0 && renderFooter()}
           </div>,
           document.body,
         )}

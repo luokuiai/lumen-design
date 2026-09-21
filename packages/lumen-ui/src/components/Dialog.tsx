@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { OverlayScopeContext, useOverlayBehavior } from './useOverlayBehavior';
+import React, { useCallback, useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { OverlayScopeContext, useOverlayBehavior } from "./useOverlayBehavior";
 
 export interface DialogProps {
   open: boolean;
@@ -23,14 +23,14 @@ export interface DialogProps {
   lockScroll?: boolean;
   initialFocusRef?: React.RefObject<HTMLElement | null>;
   finalFocusRef?: React.RefObject<HTMLElement | null>;
-  role?: 'dialog' | 'alertdialog';
-  'aria-label'?: string;
-  'aria-labelledby'?: string;
-  'aria-describedby'?: string;
+  role?: "dialog" | "alertdialog";
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
 }
 
 const overlayBaseClassName =
-  'fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto overscroll-contain bg-[var(--lumen-color-overlay)] p-3 backdrop-blur-[2px] pad:p-4 l:p-5 xl:p-6';
+  "fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto overscroll-contain bg-[var(--lumen-color-overlay)] p-3 backdrop-blur-[2px] pad:p-4 l:p-5 xl:p-6";
 
 export const Dialog: React.FC<DialogProps> = ({
   open,
@@ -42,18 +42,18 @@ export const Dialog: React.FC<DialogProps> = ({
   footer,
   dialogId,
   overlayId,
-  overlayClassName = '',
-  panelClassName = '',
-  bodyClassName = '',
+  overlayClassName = "",
+  panelClassName = "",
+  bodyClassName = "",
   closeOnOverlayClick = true,
   closeOnEscape = true,
   lockScroll = true,
   initialFocusRef,
   finalFocusRef,
-  role = 'dialog',
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledBy,
-  'aria-describedby': ariaDescribedBy,
+  role = "dialog",
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-describedby": ariaDescribedBy,
 }) => {
   const [mounted, setMounted] = useState(open);
   const [closing, setClosing] = useState(false);
@@ -115,7 +115,7 @@ export const Dialog: React.FC<DialogProps> = ({
     [closing, onExited],
   );
 
-  if (!mounted || typeof document === 'undefined') return null;
+  if (!mounted || typeof document === "undefined") return null;
 
   const displayChildren = isClosing ? cachedChildren : children;
   const displayTitle = isClosing ? cachedTitle : title;
@@ -136,8 +136,8 @@ export const Dialog: React.FC<DialogProps> = ({
         data-lumen-motion
         className={`${overlayBaseClassName} ${
           isClosing
-            ? 'animate-[lumen-page-fade-out_150ms_ease-in_forwards]'
-            : 'animate-[lumen-page-fade-in_200ms_ease-out]'
+            ? "animate-[lumen-page-fade-out_150ms_ease-in_forwards]"
+            : "animate-[lumen-page-fade-in_200ms_ease-out]"
         } ${overlayClassName}`.trim()}
         style={{ ...viewportStyle, zIndex }}
         onPointerDown={(event) => {
@@ -147,12 +147,12 @@ export const Dialog: React.FC<DialogProps> = ({
         onClick={
           closeOnOverlayClick
             ? (event) => {
-                const startedInside = pointerStartedInsideRef.current;
-                pointerStartedInsideRef.current = false;
-                if (!startedInside && event.target === event.currentTarget) {
-                  requestCloseIfTopmost();
-                }
+              const startedInside = pointerStartedInsideRef.current;
+              pointerStartedInsideRef.current = false;
+              if (!startedInside && event.target === event.currentTarget) {
+                requestCloseIfTopmost();
               }
+            }
             : undefined
         }
         onAnimationEnd={handleAnimationEnd}
@@ -170,8 +170,8 @@ export const Dialog: React.FC<DialogProps> = ({
           data-lumen-motion
           className={`max-h-[calc(100dvh-1.5rem)] ${
             isClosing
-              ? 'animate-[lumen-dialog-out_150ms_ease-in_forwards]'
-              : 'animate-[lumen-dialog-in_200ms_ease-out]'
+              ? "animate-[lumen-dialog-out_150ms_ease-in_forwards]"
+              : "animate-[lumen-dialog-in_200ms_ease-out]"
           } ${panelClassName}`.trim()}
           onClick={(event) => event.stopPropagation()}
         >

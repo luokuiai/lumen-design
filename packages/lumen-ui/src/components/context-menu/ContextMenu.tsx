@@ -5,15 +5,15 @@ import React, {
   useLayoutEffect,
   useRef,
   useState,
-} from 'react';
-import { createPortal } from 'react-dom';
-import { useLongPress } from '../../hooks/useLongPress';
-import { cn } from '../classNames';
+} from "react";
+import { createPortal } from "react-dom";
+import { useLongPress } from "../../hooks/useLongPress";
+import { cn } from "../classNames";
 import {
   FLOATING_LAYER_OPEN_EVENT,
   announceFloatingLayerOpen,
-} from '../floatingEvents';
-import { useOverlayPortalScope } from '../useOverlayBehavior';
+} from "../floatingEvents";
+import { useOverlayPortalScope } from "../useOverlayBehavior";
 
 export interface ContextMenuContentState {
   close: () => void;
@@ -42,7 +42,7 @@ export interface ContextMenuProps {
   ariaLabel?: string;
 }
 
-type ContextMenuPhase = 'closed' | 'opening' | 'open' | 'closing';
+type ContextMenuPhase = "closed" | "opening" | "open" | "closing";
 
 const OPEN_ANIMATION_DELAY_MS = 16;
 const DEFAULT_CLOSE_DELAY_MS = 120;
@@ -64,19 +64,19 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
 }) => {
   const overlayScopeId = useOverlayPortalScope();
   const menuId = useId();
-  const [phase, setPhase] = useState<ContextMenuPhase>('closed');
+  const [phase, setPhase] = useState<ContextMenuPhase>("closed");
   const [anchor, setAnchor] = useState({ x: -9999, y: -9999 });
   const [opensUp, setOpensUp] = useState(false);
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({
     left: -9999,
-    position: 'fixed',
+    position: "fixed",
     top: -9999,
   });
   const menuRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   const openTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
-  const mounted = phase !== 'closed';
+  const mounted = phase !== "closed";
 
   const clearTimers = useCallback(() => {
     if (openTimerRef.current) clearTimeout(openTimerRef.current);
@@ -92,24 +92,24 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
       ? document.activeElement
       : null;
     setAnchor({ x, y });
-    setPhase('opening');
+    setPhase("opening");
     onOpenChange?.(true);
     announceFloatingLayerOpen(menuId);
   }, [clearTimers, disabled, menuId, onOpenChange]);
 
   const closeImmediately = useCallback(() => {
     clearTimers();
-    setPhase('closed');
+    setPhase("closed");
     onOpenChange?.(false);
   }, [clearTimers, onOpenChange]);
 
   const close = useCallback(() => {
-    if (phase === 'closed' || phase === 'closing') return;
+    if (phase === "closed" || phase === "closing") return;
     clearTimers();
-    setPhase('closing');
+    setPhase("closing");
     onOpenChange?.(false);
     closeTimerRef.current = setTimeout(() => {
-      setPhase('closed');
+      setPhase("closed");
       closeTimerRef.current = null;
     }, closeDelayMs);
   }, [clearTimers, closeDelayMs, onOpenChange, phase]);
@@ -124,13 +124,13 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     () => Array.from(
       menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? [],
     ).filter(
-      (item) => !item.hasAttribute('disabled') && item.getAttribute('aria-disabled') !== 'true',
+      (item) => !item.hasAttribute("disabled") && item.getAttribute("aria-disabled") !== "true",
     ),
     [],
   );
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Escape') {
+    if (event.key === "Escape") {
       event.preventDefault();
       close();
       restoreFocusRef.current?.focus();
@@ -141,12 +141,12 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     if (menuItems.length === 0) return;
     const currentIndex = menuItems.indexOf(document.activeElement as HTMLElement);
     let nextIndex: number | null = null;
-    if (event.key === 'ArrowDown') nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % menuItems.length;
-    if (event.key === 'ArrowUp') nextIndex = currentIndex < 0
+    if (event.key === "ArrowDown") nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % menuItems.length;
+    if (event.key === "ArrowUp") nextIndex = currentIndex < 0
       ? menuItems.length - 1
       : (currentIndex - 1 + menuItems.length) % menuItems.length;
-    if (event.key === 'Home') nextIndex = 0;
-    if (event.key === 'End') nextIndex = menuItems.length - 1;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = menuItems.length - 1;
     if (nextIndex === null) return;
     event.preventDefault();
     menuItems[nextIndex]?.focus();
@@ -163,19 +163,19 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     setOpensUp(flipY);
     setMenuStyle({
       left,
-      position: 'fixed',
+      position: "fixed",
       top,
       transformOrigin: `${clamp(anchor.x - left, 0, width)}px ${clamp(anchor.y - top, 0, height)}px`,
       maxHeight: `calc(100vh - ${VIEWPORT_PADDING * 2}px)`,
       maxWidth: `calc(100vw - ${VIEWPORT_PADDING * 2}px)`,
     });
-    if (phase === 'opening') menuRef.current.focus({ preventScroll: true });
+    if (phase === "opening") menuRef.current.focus({ preventScroll: true });
   }, [anchor, mounted, phase]);
 
   useEffect(() => {
-    if (!mounted || phase !== 'opening') return;
+    if (!mounted || phase !== "opening") return;
     openTimerRef.current = setTimeout(() => {
-      setPhase('open');
+      setPhase("open");
       openTimerRef.current = null;
     }, OPEN_ANIMATION_DELAY_MS);
     return () => {
@@ -190,13 +190,13 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
       if (!menuRef.current?.contains(event.target as Node)) close();
     };
     const handleViewportChange = () => close();
-    document.addEventListener('pointerdown', handleOutside);
-    window.addEventListener('scroll', handleViewportChange, true);
-    window.addEventListener('resize', handleViewportChange);
+    document.addEventListener("pointerdown", handleOutside);
+    window.addEventListener("scroll", handleViewportChange, true);
+    window.addEventListener("resize", handleViewportChange);
     return () => {
-      document.removeEventListener('pointerdown', handleOutside);
-      window.removeEventListener('scroll', handleViewportChange, true);
-      window.removeEventListener('resize', handleViewportChange);
+      document.removeEventListener("pointerdown", handleOutside);
+      window.removeEventListener("scroll", handleViewportChange, true);
+      window.removeEventListener("resize", handleViewportChange);
     };
   }, [close, mounted]);
 
@@ -214,7 +214,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   return (
     <div
       data-ui="context-menu-trigger"
-      className={cn('relative', className)}
+      className={cn("relative", className)}
       {...longPressHandlers}
       onContextMenu={(event) => {
         longPressHandlers.onContextMenu(event);
@@ -240,24 +240,24 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
           onKeyDown={handleKeyDown}
           onClick={(event) => {
             const item = (event.target as Element).closest('[role="menuitem"]');
-            if (item && !item.hasAttribute('disabled') && item.getAttribute('aria-disabled') !== 'true') close();
+            if (item && !item.hasAttribute("disabled") && item.getAttribute("aria-disabled") !== "true") close();
           }}
         >
           <div
             data-lumen-motion
             data-ui="context-menu"
             className={cn(
-              'min-w-40 max-w-[320px] overflow-auto rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] py-1 shadow-[var(--lumen-shadow-dropdown)]',
+              "min-w-40 max-w-[320px] overflow-auto rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] py-1 shadow-[var(--lumen-shadow-dropdown)]",
               menuClassName,
             )}
             style={{
               transformOrigin: menuStyle.transformOrigin,
-              animation: phase === 'closing'
-                ? `lumen-dropdown-out${opensUp ? '-up' : ''} 0.12s ease-in forwards`
-                : `lumen-dropdown-in${opensUp ? '-up' : ''} 0.12s ease-out`,
+              animation: phase === "closing"
+                ? `lumen-dropdown-out${opensUp ? "-up" : ""} 0.12s ease-in forwards`
+                : `lumen-dropdown-in${opensUp ? "-up" : ""} 0.12s ease-out`,
             }}
           >
-            {typeof content === 'function' ? content({ close }) : content}
+            {typeof content === "function" ? content({ close }) : content}
           </div>
         </div>,
         document.body,

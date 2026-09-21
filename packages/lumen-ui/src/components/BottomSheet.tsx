@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { OverlayScopeContext, useOverlayBehavior } from './useOverlayBehavior';
+import React, { useCallback, useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { OverlayScopeContext, useOverlayBehavior } from "./useOverlayBehavior";
 
 export interface BottomSheetProps {
   open: boolean;
@@ -24,9 +24,9 @@ export interface BottomSheetProps {
   lockScroll?: boolean;
   initialFocusRef?: React.RefObject<HTMLElement | null>;
   finalFocusRef?: React.RefObject<HTMLElement | null>;
-  'aria-label'?: string;
-  'aria-labelledby'?: string;
-  'aria-describedby'?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
 }
 
 type DragState = {
@@ -37,7 +37,7 @@ type DragState = {
 };
 
 const toCssLength = (value?: number | string) =>
-  typeof value === 'number' ? `${value}px` : value;
+  typeof value === "number" ? `${value}px` : value;
 
 export const BottomSheet: React.FC<BottomSheetProps> = ({
   open,
@@ -48,11 +48,11 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
   description,
   sheetId,
   overlayId,
-  overlayClassName = '',
-  panelClassName = '',
+  overlayClassName = "",
+  panelClassName = "",
   inset = false,
   maxWidth,
-  maxHeight = 'calc(100dvh - var(--lumen-viewport-gutter))',
+  maxHeight = "calc(100dvh - var(--lumen-viewport-gutter))",
   persistent = false,
   closeOnOverlayClick = true,
   closeOnEscape = true,
@@ -61,9 +61,9 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
   lockScroll = true,
   initialFocusRef,
   finalFocusRef,
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledBy,
-  'aria-describedby': ariaDescribedBy,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-describedby": ariaDescribedBy,
 }) => {
   const [mounted, setMounted] = useState(open);
   const [cachedChildren, setCachedChildren] = useState<React.ReactNode>(children);
@@ -125,7 +125,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
   }, []);
 
   const handlePointerDown = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
-    if (!dismissable || !closeOnSwipe || event.pointerType !== 'touch') return;
+    if (!dismissable || !closeOnSwipe || event.pointerType !== "touch") return;
     dragRef.current = {
       pointerId: event.pointerId,
       startTime: performance.now(),
@@ -158,7 +158,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
     if (shouldClose) requestCloseIfTopmost();
   }, [requestCloseIfTopmost, resetDrag]);
 
-  if (!mounted || typeof document === 'undefined') return null;
+  if (!mounted || typeof document === "undefined") return null;
 
   const isClosing = mounted && !open;
   const displayChildren = isClosing ? cachedChildren : children;
@@ -170,7 +170,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
     ariaLabelledBy ?? (hasTitle && !ariaLabel ? generatedTitleId : undefined);
   const resolvedAriaDescribedBy =
     ariaDescribedBy ?? (hasDescription ? generatedDescriptionId : undefined);
-  const sheetState = isClosing ? 'closing' : 'open';
+  const sheetState = isClosing ? "closing" : "open";
 
   return createPortal(
     <OverlayScopeContext.Provider value={scopeId}>
@@ -186,12 +186,12 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
         onClick={
           closeOnOverlayClick && !persistent
             ? (event) => {
-                const startedInside = pointerStartedInsideRef.current;
-                pointerStartedInsideRef.current = false;
-                if (!startedInside && event.target === event.currentTarget) {
-                  requestCloseIfTopmost();
-                }
+              const startedInside = pointerStartedInsideRef.current;
+              pointerStartedInsideRef.current = false;
+              if (!startedInside && event.target === event.currentTarget) {
+                requestCloseIfTopmost();
               }
+            }
             : undefined
         }
       >
@@ -209,13 +209,13 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
           data-bottom-sheet-dragging={dragging || undefined}
           data-lumen-motion
           className={`lumen-bottom-sheet-panel flex w-full flex-col overflow-hidden rounded-t-[16px] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] shadow-[0_-8px_32px_var(--lumen-color-shadow)] ${
-            inset ? 'pad:w-[70%]' : ''
+            inset ? "pad:w-[70%]" : ""
           } ${panelClassName}`.trim()}
           style={{
             maxHeight: toCssLength(maxHeight),
             maxWidth: toCssLength(maxWidth),
             transform: dragOffset > 0 ? `translateY(${dragOffset}px)` : undefined,
-            transition: dragging ? 'none' : 'transform 180ms ease-out',
+            transition: dragging ? "none" : "transform 180ms ease-out",
           }}
           onClick={(event) => event.stopPropagation()}
           onAnimationEnd={handleAnimationEnd}
@@ -235,7 +235,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
           ) : null}
           {hasTitle || hasDescription ? (
             <header
-              className={`shrink-0 px-4 pb-3 pad:px-5 ${showHandle ? '' : 'pt-4 pad:pt-5'}`.trim()}
+              className={`shrink-0 px-4 pb-3 pad:px-5 ${showHandle ? "" : "pt-4 pad:pt-5"}`.trim()}
               data-bottom-sheet-header
             >
               {hasTitle ? (

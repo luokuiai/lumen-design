@@ -1,10 +1,10 @@
-import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
-import { Pagination } from '../components/Pagination';
+import React from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { Pagination } from "../components/Pagination";
 
-describe('Pagination', () => {
-  it('renders page controls in the default variant', () => {
+describe("Pagination", () => {
+  it("renders page controls in the default variant", () => {
     const onPageChange = vi.fn();
     const { unmount } = render(
       <Pagination
@@ -15,19 +15,19 @@ describe('Pagination', () => {
       />,
     );
 
-    const root = screen.getByText('第 3 / 8 页').closest('[data-ui="pagination"]');
-    expect(root).toHaveAttribute('data-variant', 'default');
-    expect(root).toHaveClass('gap-2', 'py-2.5', 'pad:px-4');
-    expect(root).not.toHaveClass('xl:py-4');
-    expect(screen.getByRole('button', { current: 'page' })).toHaveTextContent(
-      '3',
+    const root = screen.getByText("第 3 / 8 页").closest('[data-ui="pagination"]');
+    expect(root).toHaveAttribute("data-variant", "default");
+    expect(root).toHaveClass("gap-2", "py-2.5", "pad:px-4");
+    expect(root).not.toHaveClass("xl:py-4");
+    expect(screen.getByRole("button", { current: "page" })).toHaveTextContent(
+      "3",
     );
-    fireEvent.click(screen.getByRole('button', { name: '下一页' }));
+    fireEvent.click(screen.getByRole("button", { name: "下一页" }));
     expect(onPageChange).toHaveBeenCalledWith(4);
     unmount();
   });
 
-  it('renders previous and next actions in the compact variant', () => {
+  it("renders previous and next actions in the compact variant", () => {
     const onPageChange = vi.fn();
     const { unmount } = render(
       <Pagination
@@ -41,17 +41,17 @@ describe('Pagination', () => {
     );
 
     const root = screen
-      .getByText('共 32 records · 第 2 / 4 页')
+      .getByText("共 32 records · 第 2 / 4 页")
       .closest('[data-ui="pagination"]');
-    expect(root).toHaveAttribute('data-variant', 'compact');
-    expect(root).toHaveClass('flex-row', 'items-center', 'justify-between', 'gap-1.5', 'py-1.5');
-    expect(root).not.toHaveClass('flex-col');
-    fireEvent.click(screen.getByRole('button', { name: '上一页' }));
+    expect(root).toHaveAttribute("data-variant", "compact");
+    expect(root).toHaveClass("flex-row", "items-center", "justify-between", "gap-1.5", "py-1.5");
+    expect(root).not.toHaveClass("flex-col");
+    fireEvent.click(screen.getByRole("button", { name: "上一页" }));
     expect(onPageChange).toHaveBeenCalledWith(1);
     unmount();
   });
 
-  it('uses 10, 20, and 50 as the default page-size options', () => {
+  it("uses 10, 20, and 50 as the default page-size options", () => {
     const onPageSizeChange = vi.fn();
     render(
       <Pagination
@@ -64,18 +64,18 @@ describe('Pagination', () => {
       />,
     );
 
-    fireEvent.click(screen.getByTestId('select-trigger'));
+    fireEvent.click(screen.getByTestId("select-trigger"));
     const options = Array.from(
       document.querySelectorAll('[data-ui="select-option"]'),
       (option) => option.textContent,
     );
-    expect(options).toEqual(['10条/页', '20条/页', '50条/页']);
+    expect(options).toEqual(["10条/页", "20条/页", "50条/页"]);
 
-    fireEvent.click(screen.getByText('20条/页'));
+    fireEvent.click(screen.getByText("20条/页"));
     expect(onPageSizeChange).toHaveBeenCalledWith(20);
   });
 
-  it('hides a compact paginator when there is only one page', () => {
+  it("hides a compact paginator when there is only one page", () => {
     const { container, unmount } = render(
       <Pagination
         variant="compact"

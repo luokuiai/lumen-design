@@ -1,75 +1,75 @@
-import React, { useState } from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
-import { Transfer, type TransferItem } from '../components/Transfer';
+import React, { useState } from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { Transfer, type TransferItem } from "../components/Transfer";
 
 const items: TransferItem[] = [
-  { key: 'camera', label: '摄像机' },
-  { key: 'radar', label: '雷达' },
-  { key: 'weather', label: '气象站', disabled: true },
+  { key: "camera", label: "摄像机" },
+  { key: "radar", label: "雷达" },
+  { key: "weather", label: "气象站", disabled: true },
 ];
 
-describe('Transfer', () => {
-  it('uses medium search controls and regular-weight panel titles', () => {
+describe("Transfer", () => {
+  it("uses medium search controls and regular-weight panel titles", () => {
     render(<Transfer items={items} targetKeys={[]} onChange={() => undefined} />);
 
-    const sourceHeader = screen.getByText('可选项').closest('header');
-    expect(screen.getByText('可选项')).toHaveClass('text-[14px]', 'font-normal');
+    const sourceHeader = screen.getByText("可选项").closest("header");
+    expect(screen.getByText("可选项")).toHaveClass("text-[14px]", "font-normal");
     expect(sourceHeader).toHaveClass(
-      'border-b',
-      'border-[var(--lumen-color-divider)]',
+      "border-b",
+      "border-[var(--lumen-color-divider)]",
     );
-    expect(screen.getByText('0/3')).toHaveClass('text-[13px]');
+    expect(screen.getByText("0/3")).toHaveClass("text-[13px]");
     expect(
       screen
-        .getByRole('textbox', { name: '可选列表搜索' })
+        .getByRole("textbox", { name: "可选列表搜索" })
         .closest('[data-ui="input"]'),
     ).toHaveClass(
-      'h-[var(--lumen-control-height-md)]',
-      'border-[var(--lumen-color-border)]',
-      'text-[14px]',
+      "h-[var(--lumen-control-height-md)]",
+      "border-[var(--lumen-color-border)]",
+      "text-[14px]",
     );
-    const searchWrapper = screen.getByRole('textbox', {
-      name: '可选列表搜索',
+    const searchWrapper = screen.getByRole("textbox", {
+      name: "可选列表搜索",
     }).parentElement?.parentElement;
-    expect(searchWrapper).toHaveClass('px-2', 'pb-1', 'pt-3.5');
-    expect(searchWrapper).not.toHaveClass('border-b');
+    expect(searchWrapper).toHaveClass("px-2", "pb-1", "pt-3.5");
+    expect(searchWrapper).not.toHaveClass("border-b");
   });
 
-  it('keeps the transfer panels horizontal on tablet and desktop breakpoints', () => {
+  it("keeps the transfer panels horizontal on tablet and desktop breakpoints", () => {
     const { container } = render(
       <Transfer items={items} targetKeys={[]} onChange={() => undefined} />,
     );
 
     expect(container.firstElementChild).toHaveClass(
-      'pad:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]',
-      'l:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]',
+      "pad:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]",
+      "l:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]",
     );
   });
 
-  it('moves selected source items through its controlled API', () => {
+  it("moves selected source items through its controlled API", () => {
     const onChange = vi.fn();
-    render(<Transfer items={items} targetKeys={['radar']} onChange={onChange} />);
+    render(<Transfer items={items} targetKeys={["radar"]} onChange={onChange} />);
 
-    fireEvent.click(screen.getByRole('checkbox', { name: '摄像机' }));
-    fireEvent.click(screen.getByRole('button', { name: '移到右侧' }));
-    expect(onChange).toHaveBeenCalledWith(['radar', 'camera']);
+    fireEvent.click(screen.getByRole("checkbox", { name: "摄像机" }));
+    fireEvent.click(screen.getByRole("button", { name: "移到右侧" }));
+    expect(onChange).toHaveBeenCalledWith(["radar", "camera"]);
   });
 
-  it('filters panel items and completes a controlled move', () => {
+  it("filters panel items and completes a controlled move", () => {
     const Example = () => {
       const [targetKeys, setTargetKeys] = useState<React.Key[]>([]);
       return <Transfer items={items} targetKeys={targetKeys} onChange={setTargetKeys} />;
     };
     render(<Example />);
 
-    fireEvent.change(screen.getByRole('textbox', { name: '可选列表搜索' }), {
-      target: { value: '雷达' },
+    fireEvent.change(screen.getByRole("textbox", { name: "可选列表搜索" }), {
+      target: { value: "雷达" },
     });
-    expect(screen.getByRole('checkbox', { name: '雷达' })).toBeVisible();
-    expect(screen.queryByRole('checkbox', { name: '摄像机' })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('checkbox', { name: '雷达' }));
-    fireEvent.click(screen.getByRole('button', { name: '移到右侧' }));
-    expect(screen.getByRole('checkbox', { name: '雷达' })).toBeVisible();
+    expect(screen.getByRole("checkbox", { name: "雷达" })).toBeVisible();
+    expect(screen.queryByRole("checkbox", { name: "摄像机" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("checkbox", { name: "雷达" }));
+    fireEvent.click(screen.getByRole("button", { name: "移到右侧" }));
+    expect(screen.getByRole("checkbox", { name: "雷达" })).toBeVisible();
   });
 });

@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
-import { User } from 'lucide-react';
-import { cn } from './classNames';
-import { radiusTokens } from './designTokens';
+import React, { useState } from "react";
+import { User } from "lucide-react";
+import { cn } from "./classNames";
+import { radiusTokens } from "./designTokens";
 
-export type AvatarSize = 'sm' | 'md' | 'lg';
-export type AvatarShape = 'circle' | 'rounded';
+export type AvatarSize = "sm" | "md" | "lg";
+export type AvatarShape = "circle" | "rounded";
 
 export interface AvatarProps
-  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
   src?: string;
   alt?: string;
   name?: string;
   fallback?: React.ReactNode;
   size?: AvatarSize;
   shape?: AvatarShape;
-  imageProps?: Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'alt' | 'src'>;
+  imageProps?: Omit<React.ImgHTMLAttributes<HTMLImageElement>, "alt" | "src">;
 }
 
 const sizeClasses: Record<AvatarSize, string> = {
-  sm: 'h-8 w-8 text-[11px]',
-  md: 'h-9 w-9 text-[13px]',
-  lg: 'h-10 w-10 text-[14px]',
+  sm: "h-8 w-8 text-[11px]",
+  md: "h-9 w-9 text-[13px]",
+  lg: "h-10 w-10 text-[14px]",
 };
 
 const iconSizes: Record<AvatarSize, number> = {
@@ -31,7 +31,7 @@ const iconSizes: Record<AvatarSize, number> = {
 
 const getInitials = (name: string) => {
   const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return '';
+  if (parts.length === 0) return "";
   if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
   return `${parts[0]![0]}${parts.at(-1)![0]}`.toUpperCase();
 };
@@ -43,12 +43,12 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
       alt,
       name,
       fallback,
-      size = 'md',
-      shape = 'circle',
+      size = "md",
+      shape = "circle",
       imageProps,
       className,
-      role = 'img',
-      'aria-label': ariaLabel,
+      role = "img",
+      "aria-label": ariaLabel,
       ...props
     },
     ref,
@@ -60,17 +60,17 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
       onError: onImageError,
       ...restImageProps
     } = imageProps ?? {};
-    const initials = name ? getInitials(name) : '';
+    const initials = name ? getInitials(name) : "";
 
     return (
       <span
         ref={ref}
         role={role}
-        aria-label={ariaLabel ?? alt ?? name ?? 'Avatar'}
+        aria-label={ariaLabel ?? alt ?? name ?? "Avatar"}
         className={cn(
-          'relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] font-medium text-[var(--lumen-color-text-muted)]',
+          "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] font-medium text-[var(--lumen-color-text-muted)]",
           sizeClasses[size],
-          shape === 'circle' ? 'rounded-full' : radiusTokens.icon,
+          shape === "circle" ? "rounded-full" : radiusTokens.icon,
           className,
         )}
         {...props}
@@ -82,7 +82,7 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
             alt=""
             aria-hidden="true"
             draggable={false}
-            className={cn('h-full w-full object-cover', imageClassName)}
+            className={cn("h-full w-full object-cover", imageClassName)}
             onError={(event) => {
               setFailedSrc(src ?? null);
               onImageError?.(event);
@@ -97,4 +97,4 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
   },
 );
 
-Avatar.displayName = 'Avatar';
+Avatar.displayName = "Avatar";

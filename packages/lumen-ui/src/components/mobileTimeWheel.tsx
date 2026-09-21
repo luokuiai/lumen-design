@@ -1,10 +1,10 @@
-import React, { useEffect, useId, useMemo, useRef } from 'react';
+import React, { useEffect, useId, useMemo, useRef } from "react";
 
 const ITEM_HEIGHT = 44;
 const VISIBLE_ITEMS = 3;
 const WHEEL_HEIGHT = ITEM_HEIGHT * VISIBLE_ITEMS;
 const CENTER_OFFSET = (WHEEL_HEIGHT - ITEM_HEIGHT) / 2;
-const pad = (value: number) => String(value).padStart(2, '0');
+const pad = (value: number) => String(value).padStart(2, "0");
 
 interface TimeWheelColumnProps {
   label: string;
@@ -42,12 +42,12 @@ const TimeWheelColumn: React.FC<TimeWheelColumnProps> = ({
     const track = trackRef.current;
     if (!track) return positionRef.current;
     const transform = window.getComputedStyle(track).transform;
-    if (!transform || transform === 'none') return positionRef.current;
+    if (!transform || transform === "none") return positionRef.current;
     const values = transform.match(/matrix(?:3d)?\(([^)]+)\)/)?.[1]
-      ?.split(',')
+      ?.split(",")
       .map(Number);
     const translateY = values?.length === 16 ? values[13] : values?.[5];
-    return typeof translateY === 'number' && Number.isFinite(translateY)
+    return typeof translateY === "number" && Number.isFinite(translateY)
       ? CENTER_OFFSET - translateY
       : positionRef.current;
   };
@@ -96,7 +96,7 @@ const TimeWheelColumn: React.FC<TimeWheelColumnProps> = ({
     index: number,
     commit = true,
     requestedDuration?: number,
-    easing = 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+    easing = "cubic-bezier(0.2, 0.8, 0.2, 1)",
   ) => {
     cancelMotion();
     const start = positionRef.current;
@@ -113,14 +113,14 @@ const TimeWheelColumn: React.FC<TimeWheelColumnProps> = ({
     }
 
     const track = trackRef.current;
-    if (track && typeof track.animate === 'function') {
+    if (track && typeof track.animate === "function") {
       const targetTransform = `translate3d(0, ${CENTER_OFFSET - target}px, 0)`;
       const animation = track.animate(
         [
           { transform: `translate3d(0, ${CENTER_OFFSET - start}px, 0)` },
           { transform: targetTransform },
         ],
-        { duration, easing, fill: 'forwards' },
+        { duration, easing, fill: "forwards" },
       );
       motionAnimationRef.current = animation;
       animation.onfinish = () => {
@@ -172,7 +172,7 @@ const TimeWheelColumn: React.FC<TimeWheelColumnProps> = ({
       index,
       true,
       duration,
-      'cubic-bezier(0.12, 0.72, 0.18, 1)',
+      "cubic-bezier(0.12, 0.72, 0.18, 1)",
     );
   };
 
@@ -204,7 +204,7 @@ const TimeWheelColumn: React.FC<TimeWheelColumnProps> = ({
           tabIndex={0}
           data-mobile-time-wheel-column
           className="relative overflow-hidden overscroll-contain rounded-[var(--lumen-radius-control)] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]"
-          style={{ height: WHEEL_HEIGHT, touchAction: 'none' }}
+          style={{ height: WHEEL_HEIGHT, touchAction: "none" }}
           onWheel={(event) => {
             event.preventDefault();
             cancelMotion();
@@ -255,9 +255,9 @@ const TimeWheelColumn: React.FC<TimeWheelColumnProps> = ({
             settle();
           }}
           onKeyDown={(event) => {
-            if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+            if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
             event.preventDefault();
-            const direction = event.key === 'ArrowDown' ? 1 : -1;
+            const direction = event.key === "ArrowDown" ? 1 : -1;
             const index = Math.min(
               values.length - 1,
               Math.max(0, activeIndexRef.current + direction),
@@ -269,8 +269,8 @@ const TimeWheelColumn: React.FC<TimeWheelColumnProps> = ({
             ref={trackRef}
             className="will-change-transform"
             style={{
-              backfaceVisibility: 'hidden',
-              contain: 'layout paint style',
+              backfaceVisibility: "hidden",
+              contain: "layout paint style",
             }}
           >
             {values.map((item, index) => {
@@ -318,7 +318,7 @@ interface MobileTimeWheelProps {
   onHourChange: (value: string) => void;
   onMinuteChange: (value: string) => void;
   onSecondChange?: (value: string) => void;
-  precision?: 'minute' | 'second';
+  precision?: "minute" | "second";
   minuteStep?: number;
   labels: { hour: string; minute: string; second: string };
 }
@@ -326,11 +326,11 @@ interface MobileTimeWheelProps {
 export const MobileTimeWheel: React.FC<MobileTimeWheelProps> = ({
   hour,
   minute,
-  second = '00',
+  second = "00",
   onHourChange,
   onMinuteChange,
   onSecondChange,
-  precision = 'minute',
+  precision = "minute",
   minuteStep = 1,
   labels,
 }) => {
@@ -363,7 +363,7 @@ export const MobileTimeWheel: React.FC<MobileTimeWheelProps> = ({
         value={minute}
         onChange={onMinuteChange}
       />
-      {precision === 'second' ? (
+      {precision === "second" ? (
         <TimeWheelColumn
           label={labels.second}
           values={seconds}

@@ -1,16 +1,16 @@
-import React, { useMemo } from 'react';
-import { cn } from './classNames';
+import React, { useMemo } from "react";
+import { cn } from "./classNames";
 
 export interface WatermarkFont {
   color?: string;
   fontFamily?: string;
   fontSize?: number;
-  fontStyle?: React.CSSProperties['fontStyle'];
-  fontWeight?: React.CSSProperties['fontWeight'];
+  fontStyle?: React.CSSProperties["fontStyle"];
+  fontWeight?: React.CSSProperties["fontWeight"];
 }
 
 export interface WatermarkProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
   content?: string | string[];
   image?: string;
   rotate?: number;
@@ -26,15 +26,15 @@ export interface WatermarkProps
 }
 
 const escapeXml = (value: string) => value
-  .replaceAll('&', '&amp;')
-  .replaceAll('<', '&lt;')
-  .replaceAll('>', '&gt;')
-  .replaceAll('"', '&quot;')
-  .replaceAll("'", '&apos;');
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;")
+  .replaceAll('"', "&quot;")
+  .replaceAll("'", "&apos;");
 
 const toDataUrl = (svg: string) => {
   const bytes = new TextEncoder().encode(svg);
-  let binary = '';
+  let binary = "";
   bytes.forEach((byte) => {
     binary += String.fromCharCode(byte);
   });
@@ -66,10 +66,10 @@ export const Watermark = React.forwardRef<HTMLDivElement, WatermarkProps>(
     const [offsetX, offsetY] = offset;
     const [markWidth, markHeight] = markSize;
     const {
-      color = 'var(--lumen-color-text)',
-      fontFamily = 'sans-serif',
+      color = "var(--lumen-color-text)",
+      fontFamily = "sans-serif",
       fontSize = 14,
-      fontStyle = 'normal',
+      fontStyle = "normal",
       fontWeight = 400,
     } = font;
     const tileWidth = Math.max(1, markWidth + gapX);
@@ -84,13 +84,13 @@ export const Watermark = React.forwardRef<HTMLDivElement, WatermarkProps>(
         );
       }
 
-      const lines = (Array.isArray(content) ? content : [content ?? '']).filter(Boolean);
+      const lines = (Array.isArray(content) ? content : [content ?? ""]).filter(Boolean);
       if (!lines.length) return undefined;
       const lineHeight = fontSize * 1.4;
       const firstLineY = -((lines.length - 1) * lineHeight) / 2;
       const text = lines.map((line, index) => (
         `<text x="0" y="${firstLineY + index * lineHeight}" text-anchor="middle" dominant-baseline="middle" font-family="${escapeXml(fontFamily)}" font-size="${fontSize}" font-style="${fontStyle}" font-weight="${fontWeight}" fill="white">${escapeXml(line)}</text>`
-      )).join('');
+      )).join("");
       return toDataUrl(
         `<svg xmlns="http://www.w3.org/2000/svg" width="${tileWidth}" height="${tileHeight}" viewBox="0 0 ${tileWidth} ${tileHeight}"><g transform="${transform}">${text}</g></svg>`,
       );
@@ -98,29 +98,29 @@ export const Watermark = React.forwardRef<HTMLDivElement, WatermarkProps>(
 
     const patternStyle: React.CSSProperties = image
       ? {
-          backgroundImage: pattern,
-          backgroundPosition: `${offsetX}px ${offsetY}px`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: `${tileWidth}px ${tileHeight}px`,
-        }
+        backgroundImage: pattern,
+        backgroundPosition: `${offsetX}px ${offsetY}px`,
+        backgroundRepeat: "repeat",
+        backgroundSize: `${tileWidth}px ${tileHeight}px`,
+      }
       : {
-          backgroundColor: color,
-          maskImage: pattern,
-          maskPosition: `${offsetX}px ${offsetY}px`,
-          maskRepeat: 'repeat',
-          maskSize: `${tileWidth}px ${tileHeight}px`,
-          WebkitMaskImage: pattern,
-          WebkitMaskPosition: `${offsetX}px ${offsetY}px`,
-          WebkitMaskRepeat: 'repeat',
-          WebkitMaskSize: `${tileWidth}px ${tileHeight}px`,
-        };
+        backgroundColor: color,
+        maskImage: pattern,
+        maskPosition: `${offsetX}px ${offsetY}px`,
+        maskRepeat: "repeat",
+        maskSize: `${tileWidth}px ${tileHeight}px`,
+        WebkitMaskImage: pattern,
+        WebkitMaskPosition: `${offsetX}px ${offsetY}px`,
+        WebkitMaskRepeat: "repeat",
+        WebkitMaskSize: `${tileWidth}px ${tileHeight}px`,
+      };
 
     return (
       <div
         {...props}
         ref={ref}
         data-ui="watermark"
-        className={cn('isolate relative', className)}
+        className={cn("isolate relative", className)}
       >
         {children}
         {pattern ? (
@@ -128,8 +128,8 @@ export const Watermark = React.forwardRef<HTMLDivElement, WatermarkProps>(
             aria-hidden="true"
             data-watermark-overlay
             className={cn(
-              'pointer-events-none inset-0 select-none',
-              fullPage ? 'fixed' : 'absolute',
+              "pointer-events-none inset-0 select-none",
+              fullPage ? "fixed" : "absolute",
               overlayClassName,
             )}
             style={{
@@ -145,4 +145,4 @@ export const Watermark = React.forwardRef<HTMLDivElement, WatermarkProps>(
   },
 );
 
-Watermark.displayName = 'Watermark';
+Watermark.displayName = "Watermark";

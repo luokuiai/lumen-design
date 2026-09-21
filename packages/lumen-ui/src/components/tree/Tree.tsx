@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
-import { ChevronRight } from 'lucide-react';
-import { cn } from '../classNames';
+import React, { useRef, useState } from "react";
+import { ChevronRight } from "lucide-react";
+import { cn } from "../classNames";
 
 export interface TreeNode {
   /** Unique across the entire tree. */
@@ -13,7 +13,7 @@ export interface TreeNode {
   selectable?: boolean;
 }
 
-export interface TreeProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSelect' | 'children'> {
+export interface TreeProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect" | "children"> {
   nodes: TreeNode[];
   expandedKeys?: string[];
   defaultExpandedKeys?: string[];
@@ -24,29 +24,29 @@ export interface TreeProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   /** Click or Space toggles each node independently; no modifier key required. */
   multiple?: boolean;
   disabled?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   renderLabel?: (node: TreeNode) => React.ReactNode;
   emptyContent?: React.ReactNode;
 }
 
 const sizes = {
-  sm: 'min-h-[var(--lumen-control-height-sm)] text-[13px]',
-  md: 'min-h-[var(--lumen-control-height-md)] text-[14px]',
-  lg: 'min-h-[var(--lumen-control-height-lg)] text-[15px]',
+  sm: "min-h-[var(--lumen-control-height-sm)] text-[13px]",
+  md: "min-h-[var(--lumen-control-height-md)] text-[14px]",
+  lg: "min-h-[var(--lumen-control-height-lg)] text-[15px]",
 };
 
 /** A tree view with independent selection and visible-node keyboard navigation. */
 export function Tree({
   nodes, expandedKeys, defaultExpandedKeys = [], onExpandedChange,
   selectedKeys, defaultSelectedKeys = [], onSelectionChange,
-  multiple = false, disabled = false, size = 'md', renderLabel,
+  multiple = false, disabled = false, size = "md", renderLabel,
   emptyContent, className, onKeyDown, ...props
 }: TreeProps) {
   const [internalExpanded, setInternalExpanded] = useState(defaultExpandedKeys);
   const [internalSelected, setInternalSelected] = useState(defaultSelectedKeys);
   const [focusedKey, setFocusedKey] = useState<string | null>(null);
   const items = useRef(new Map<string, HTMLDivElement>());
-  const typeahead = useRef({ text: '', time: 0 });
+  const typeahead = useRef({ text: "", time: 0 });
   const expanded = new Set(expandedKeys ?? internalExpanded);
   const selection = selectedKeys ?? internalSelected;
   const selected = new Set(multiple ? selection : selection.slice(0, 1));
@@ -86,23 +86,23 @@ export function Tree({
   const handleKey = (event: React.KeyboardEvent<HTMLDivElement>, node: TreeNode) => {
     const index = visible.findIndex((entry) => entry.node.key === node.key);
     switch (event.key) {
-      case 'ArrowDown': focus(visible[index + 1]?.node.key); break;
-      case 'ArrowUp': focus(visible[index - 1]?.node.key); break;
-      case 'Home': focus(visible[0]?.node.key); break;
-      case 'End': focus(visible.at(-1)?.node.key); break;
-      case 'ArrowRight':
+      case "ArrowDown": focus(visible[index + 1]?.node.key); break;
+      case "ArrowUp": focus(visible[index - 1]?.node.key); break;
+      case "Home": focus(visible[0]?.node.key); break;
+      case "End": focus(visible.at(-1)?.node.key); break;
+      case "ArrowRight":
         if (!expanded.has(node.key)) toggleExpanded(node);
         else focus(node.children?.[0]?.key);
         break;
-      case 'ArrowLeft':
+      case "ArrowLeft":
         if (expanded.has(node.key) && node.children?.length) toggleExpanded(node);
         else focus(visible[index]?.parent);
         break;
-      case 'Enter': case ' ': select(node); break;
+      case "Enter": case " ": select(node); break;
       default: {
         if (event.key.length !== 1 || event.ctrlKey || event.metaKey || event.altKey) return;
         const now = Date.now();
-        const previous = now - typeahead.current.time < 500 ? typeahead.current.text : '';
+        const previous = now - typeahead.current.time < 500 ? typeahead.current.text : "";
         const text = previous + event.key.toLocaleLowerCase();
         typeahead.current = { text, time: now };
         const query = [...text].every((letter) => letter === text[0]) ? text[0]! : text;
@@ -137,12 +137,12 @@ export function Tree({
       >
         <div
           className={cn(
-            'flex items-center gap-1 rounded-[var(--lumen-radius-control)] pr-2',
+            "flex items-center gap-1 rounded-[var(--lumen-radius-control)] pr-2",
             sizes[size],
             selected.has(node.key)
-              ? 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]'
-              : 'text-[var(--lumen-color-text)]',
-            isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-[var(--lumen-color-surface-muted)]',
+              ? "bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]"
+              : "text-[var(--lumen-color-text)]",
+            isDisabled ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-[var(--lumen-color-surface-muted)]",
           )}
           style={{ paddingInlineStart: level * 20 + 4 }}
           onClick={() => { focus(node.key); select(node); }}
@@ -152,7 +152,7 @@ export function Tree({
             className="flex h-8 w-8 shrink-0 items-center justify-center"
             onClick={(event) => { if (!branch) return; event.stopPropagation(); focus(node.key); toggleExpanded(node); }}
           >
-            {branch && <ChevronRight size={16} className={cn('transition-transform duration-200 motion-reduce:transition-none', expanded.has(node.key) && 'rotate-90')} />}
+            {branch && <ChevronRight size={16} className={cn("transition-transform duration-200 motion-reduce:transition-none", expanded.has(node.key) && "rotate-90")} />}
           </span>
           {node.icon && <span aria-hidden="true" className="flex shrink-0 items-center">{node.icon}</span>}
           <span className="min-w-0 break-words py-1">{renderLabel?.(node) ?? node.label}</span>
@@ -163,7 +163,7 @@ export function Tree({
             aria-hidden={!expanded.has(node.key) || undefined}
             inert={!expanded.has(node.key)}
             className="grid transition-[grid-template-rows,opacity] duration-200 ease-out motion-reduce:transition-none"
-            style={{ gridTemplateRows: expanded.has(node.key) ? '1fr' : '0fr', opacity: expanded.has(node.key) ? 1 : 0 }}
+            style={{ gridTemplateRows: expanded.has(node.key) ? "1fr" : "0fr", opacity: expanded.has(node.key) ? 1 : 0 }}
           >
             <div className="min-h-0 overflow-hidden">
               <div className="flex flex-col gap-0.5 pt-0.5">{renderNodes(node.children!, level + 1)}</div>
@@ -180,7 +180,7 @@ export function Tree({
       role="tree"
       aria-multiselectable={multiple || undefined}
       aria-disabled={disabled || undefined}
-      className={cn('flex min-w-0 flex-col gap-0.5', className)}
+      className={cn("flex min-w-0 flex-col gap-0.5", className)}
     >
       {nodes.length ? renderNodes(nodes, 0) : emptyContent}
     </div>

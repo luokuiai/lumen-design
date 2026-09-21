@@ -1,18 +1,18 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 const FOCUSABLE_SELECTOR = [
-  'a[href]',
-  'area[href]',
-  'button:not([disabled])',
+  "a[href]",
+  "area[href]",
+  "button:not([disabled])",
   'input:not([disabled]):not([type="hidden"])',
-  'select:not([disabled])',
-  'textarea:not([disabled])',
-  'iframe',
-  'object',
-  'embed',
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  "iframe",
+  "object",
+  "embed",
   '[contenteditable="true"]',
   '[tabindex]:not([tabindex="-1"])',
-].join(',');
+].join(",");
 
 const overlayStack: symbol[] = [];
 let nextOverlayZIndex = 100;
@@ -25,10 +25,10 @@ let previousScrollStyles: {
 } | null = null;
 
 const isElementVisible = (element: HTMLElement) =>
-  element.getAttribute('aria-hidden') !== 'true' &&
+  element.getAttribute("aria-hidden") !== "true" &&
   !element.hidden &&
-  window.getComputedStyle(element).display !== 'none' &&
-  window.getComputedStyle(element).visibility !== 'hidden';
+  window.getComputedStyle(element).display !== "none" &&
+  window.getComputedStyle(element).visibility !== "hidden";
 
 const getFocusableElements = (container: HTMLElement) =>
   Array.from(
@@ -60,9 +60,9 @@ const lockDocumentScroll = () => {
       Number.parseFloat(window.getComputedStyle(body).paddingRight) || 0;
     body.style.paddingRight = `${currentPadding + scrollbarWidth}px`;
   }
-  body.style.overflow = 'hidden';
-  body.style.overscrollBehavior = 'contain';
-  documentElement.style.overflow = 'hidden';
+  body.style.overflow = "hidden";
+  body.style.overscrollBehavior = "contain";
+  documentElement.style.overflow = "hidden";
 };
 
 const unlockDocumentScroll = () => {
@@ -105,15 +105,15 @@ export const useOverlayBehavior = ({
   onRequestClose,
 }: UseOverlayBehaviorOptions) => {
   const scopeId = React.useId();
-  const tokenRef = useRef(Symbol('lumen-overlay'));
+  const tokenRef = useRef(Symbol("lumen-overlay"));
   const requestCloseRef = useRef(onRequestClose);
   const dismissableRef = useRef(dismissable);
   const closeOnEscapeRef = useRef(closeOnEscape);
   const lastFocusedInsideRef = useRef<HTMLElement | null>(null);
   const [zIndex, setZIndex] = useState(100);
   const [viewportStyle, setViewportStyle] = useState<React.CSSProperties>({
-    bottom: 'auto',
-    height: '100dvh',
+    bottom: "auto",
+    height: "100dvh",
   });
 
   requestCloseRef.current = onRequestClose;
@@ -149,7 +149,7 @@ export const useOverlayBehavior = ({
       if (!container) return;
       const target =
         initialFocusRef?.current ??
-        container.querySelector<HTMLElement>('[autofocus]') ??
+        container.querySelector<HTMLElement>("[autofocus]") ??
         getFocusableElements(container)[0] ??
         container;
       target.focus({ preventScroll: true });
@@ -165,13 +165,13 @@ export const useOverlayBehavior = ({
       const isOwnedPortalTarget =
         target instanceof HTMLElement &&
         target
-          .closest('[data-lumen-overlay-scope]')
-          ?.getAttribute('data-lumen-overlay-scope') === scopeId;
+          .closest("[data-lumen-overlay-scope]")
+          ?.getAttribute("data-lumen-overlay-scope") === scopeId;
 
       if (event.defaultPrevented) return;
 
       if (
-        event.key === 'Escape' &&
+        event.key === "Escape" &&
         closeOnEscapeRef.current &&
         dismissableRef.current
       ) {
@@ -181,7 +181,7 @@ export const useOverlayBehavior = ({
         return;
       }
 
-      if (event.key !== 'Tab') return;
+      if (event.key !== "Tab") return;
       const container = containerRef.current;
       if (!container) return;
       if (isOwnedPortalTarget && !container.contains(target)) return;
@@ -217,8 +217,8 @@ export const useOverlayBehavior = ({
       if (!container || !(target instanceof HTMLElement)) return;
       const isOwnedPortalTarget =
         target
-          .closest('[data-lumen-overlay-scope]')
-          ?.getAttribute('data-lumen-overlay-scope') === scopeId;
+          .closest("[data-lumen-overlay-scope]")
+          ?.getAttribute("data-lumen-overlay-scope") === scopeId;
       if (container.contains(target) || isOwnedPortalTarget) {
         lastFocusedInsideRef.current = target;
         return;
@@ -231,13 +231,13 @@ export const useOverlayBehavior = ({
       fallback.focus({ preventScroll: true });
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('focusin', handleFocusIn);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("focusin", handleFocusIn);
 
     return () => {
       window.cancelAnimationFrame(animationFrame);
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('focusin', handleFocusIn);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("focusin", handleFocusIn);
       removeFromOverlayStack(token);
       if (lockScroll) unlockDocumentScroll();
 
@@ -257,24 +257,24 @@ export const useOverlayBehavior = ({
 
   useEffect(() => {
     if (!enabled || !window.visualViewport) {
-      setViewportStyle({ bottom: 'auto', height: '100dvh' });
+      setViewportStyle({ bottom: "auto", height: "100dvh" });
       return undefined;
     }
 
     const viewport = window.visualViewport;
     const updateViewport = () => {
       setViewportStyle({
-        bottom: 'auto',
+        bottom: "auto",
         height: `${viewport.height}px`,
         top: `${viewport.offsetTop}px`,
       });
     };
     updateViewport();
-    viewport.addEventListener('resize', updateViewport);
-    viewport.addEventListener('scroll', updateViewport);
+    viewport.addEventListener("resize", updateViewport);
+    viewport.addEventListener("scroll", updateViewport);
     return () => {
-      viewport.removeEventListener('resize', updateViewport);
-      viewport.removeEventListener('scroll', updateViewport);
+      viewport.removeEventListener("resize", updateViewport);
+      viewport.removeEventListener("scroll", updateViewport);
     };
   }, [enabled]);
 

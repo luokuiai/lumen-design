@@ -1,7 +1,7 @@
-import React from 'react';
-import { cn } from './classNames';
+import React from "react";
+import { cn } from "./classNames";
 
-export type ListDensity = 'default' | 'compact';
+export type ListDensity = "default" | "compact";
 
 export interface ListProps extends React.HTMLAttributes<HTMLUListElement> {
   density?: ListDensity;
@@ -12,7 +12,7 @@ export interface ListProps extends React.HTMLAttributes<HTMLUListElement> {
 export const List = React.forwardRef<HTMLUListElement, ListProps>(
   (
     {
-      density = 'default',
+      density = "default",
       bordered = true,
       divided = true,
       className,
@@ -26,20 +26,20 @@ export const List = React.forwardRef<HTMLUListElement, ListProps>(
       data-ui="list"
       data-density={density}
       className={cn(
-        'min-w-0 overflow-hidden bg-[var(--lumen-color-surface)]',
-        bordered && 'rounded-[8px] border border-[var(--lumen-color-border)]',
-        divided && '[&>li+li]:border-t [&>li+li]:border-[var(--lumen-color-surface-muted)]',
-        density === 'compact' && '[&>li>button]:px-3 [&>li>button]:py-2 [&>li>div:first-child]:px-3 [&>li>div:first-child]:py-2',
+        "min-w-0 overflow-hidden bg-[var(--lumen-color-surface)]",
+        bordered && "rounded-[8px] border border-[var(--lumen-color-border)]",
+        divided && "[&>li+li]:border-t [&>li+li]:border-[var(--lumen-color-surface-muted)]",
+        density === "compact" && "[&>li>button]:px-3 [&>li>button]:py-2 [&>li>div:first-child]:px-3 [&>li>div:first-child]:py-2",
         className,
       )}
     />
   ),
 );
 
-List.displayName = 'List';
+List.displayName = "List";
 
 export interface ListItemProps
-  extends Omit<React.LiHTMLAttributes<HTMLLIElement>, 'title'> {
+  extends Omit<React.LiHTMLAttributes<HTMLLIElement>, "title"> {
   title: React.ReactNode;
   description?: React.ReactNode;
   leading?: React.ReactNode;
@@ -100,8 +100,8 @@ export const ListItem = React.forwardRef<HTMLLIElement, ListItemProps>(
         data-selected={selected || undefined}
         data-disabled={disabled || undefined}
         className={cn(
-          'flex min-w-0 items-center transition-colors data-[selected=true]:bg-[var(--lumen-color-info-soft)] data-[disabled=true]:opacity-50',
-          !disabled && 'hover:bg-[var(--lumen-color-surface-hover)]',
+          "flex min-w-0 items-center transition-colors data-[selected=true]:bg-[var(--lumen-color-info-soft)] data-[disabled=true]:opacity-50",
+          !disabled && "hover:bg-[var(--lumen-color-surface-hover)]",
           className,
         )}
       >
@@ -125,4 +125,4 @@ export const ListItem = React.forwardRef<HTMLLIElement, ListItemProps>(
   },
 );
 
-ListItem.displayName = 'ListItem';
+ListItem.displayName = "ListItem";

@@ -1,10 +1,10 @@
-import React from 'react';
-import { Check, X } from 'lucide-react';
-import { cn } from './classNames';
+import React from "react";
+import { Check, X } from "lucide-react";
+import { cn } from "./classNames";
 
-export type StepStatus = 'wait' | 'process' | 'finish' | 'error';
-export type StepsDirection = 'horizontal' | 'vertical';
-export type StepsSize = 'sm' | 'md';
+export type StepStatus = "wait" | "process" | "finish" | "error";
+export type StepsDirection = "horizontal" | "vertical";
+export type StepsSize = "sm" | "md";
 
 export interface StepItem {
   title: React.ReactNode;
@@ -15,7 +15,7 @@ export interface StepItem {
 }
 
 export interface StepsProps
-  extends Omit<React.HTMLAttributes<HTMLOListElement>, 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLOListElement>, "onChange"> {
   items: StepItem[];
   current?: number;
   direction?: StepsDirection;
@@ -24,17 +24,17 @@ export interface StepsProps
 }
 
 const indicatorStatusClassNames: Record<StepStatus, string> = {
-  wait: 'border border-[color:var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-placeholder)]',
-  process: 'border border-[color:var(--lumen-color-primary)] bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)]',
-  finish: 'border border-[color:var(--lumen-color-primary)] bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]',
-  error: 'border border-[color:var(--lumen-color-danger)] bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger)]',
+  wait: "border border-[color:var(--lumen-color-border-hover)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text-placeholder)]",
+  process: "border border-[color:var(--lumen-color-primary)] bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)]",
+  finish: "border border-[color:var(--lumen-color-primary)] bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]",
+  error: "border border-[color:var(--lumen-color-danger)] bg-[var(--lumen-color-danger-soft)] text-[var(--lumen-color-danger)]",
 };
 
 const getStepStatus = (item: StepItem, index: number, current: number): StepStatus => {
   if (item.status) return item.status;
-  if (index < current) return 'finish';
-  if (index === current) return 'process';
-  return 'wait';
+  if (index < current) return "finish";
+  if (index === current) return "process";
+  return "wait";
 };
 
 export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
@@ -42,8 +42,8 @@ export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
     {
       items,
       current = 0,
-      direction = 'horizontal',
-      size = 'md',
+      direction = "horizontal",
+      size = "md",
       onChange,
       className,
       ...props
@@ -57,9 +57,9 @@ export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
       data-ui="steps"
       data-direction={direction}
       className={cn(
-        direction === 'horizontal'
-          ? 'flex min-w-0 flex-row gap-0 overflow-x-auto'
-          : 'flex min-w-0 flex-col gap-4',
+        direction === "horizontal"
+          ? "flex min-w-0 flex-row gap-0 overflow-x-auto"
+          : "flex min-w-0 flex-col gap-4",
         className,
       )}
     >
@@ -70,37 +70,37 @@ export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
           ? getStepStatus(nextItem, index + 1, current)
           : undefined;
         const interactive = Boolean(onChange) && !item.disabled;
-        const indicatorFrameSize = size === 'sm' ? 'h-9 w-9' : 'h-10 w-10';
-        const indicatorSize = size === 'sm' ? 'h-7 w-7 text-[12px]' : 'h-8 w-8 text-[13px]';
-        const horizontalConnectorStart = size === 'sm'
-          ? status === 'process'
-            ? 'after:left-[calc(50%+22px)]'
-            : 'after:left-[calc(50%+18px)]'
-          : status === 'process'
-            ? 'after:left-[calc(50%+24px)]'
-            : 'after:left-[calc(50%+20px)]';
-        const horizontalConnectorEnd = size === 'sm'
-          ? nextStatus === 'process'
-            ? 'after:right-[calc(-50%+22px)]'
-            : 'after:right-[calc(-50%+18px)]'
-          : nextStatus === 'process'
-            ? 'after:right-[calc(-50%+24px)]'
-            : 'after:right-[calc(-50%+20px)]';
-        const horizontalConnectorAxis = size === 'sm'
-          ? 'after:top-[17px]'
-          : 'after:top-[19px]';
-        const verticalConnectorStart = size === 'sm'
-          ? status === 'process' ? 'after:top-10' : 'after:top-9'
-          : status === 'process' ? 'after:top-11' : 'after:top-10';
-        const verticalConnectorEnd = nextStatus === 'process'
-          ? 'after:bottom-[-12px]'
-          : 'after:bottom-[-16px]';
-        const verticalConnectorAxis = size === 'sm'
-          ? 'after:left-[17px]'
-          : 'after:left-[19px]';
-        const indicatorContent = item.icon ?? (status === 'finish'
+        const indicatorFrameSize = size === "sm" ? "h-9 w-9" : "h-10 w-10";
+        const indicatorSize = size === "sm" ? "h-7 w-7 text-[12px]" : "h-8 w-8 text-[13px]";
+        const horizontalConnectorStart = size === "sm"
+          ? status === "process"
+            ? "after:left-[calc(50%+22px)]"
+            : "after:left-[calc(50%+18px)]"
+          : status === "process"
+            ? "after:left-[calc(50%+24px)]"
+            : "after:left-[calc(50%+20px)]";
+        const horizontalConnectorEnd = size === "sm"
+          ? nextStatus === "process"
+            ? "after:right-[calc(-50%+22px)]"
+            : "after:right-[calc(-50%+18px)]"
+          : nextStatus === "process"
+            ? "after:right-[calc(-50%+24px)]"
+            : "after:right-[calc(-50%+20px)]";
+        const horizontalConnectorAxis = size === "sm"
+          ? "after:top-[17px]"
+          : "after:top-[19px]";
+        const verticalConnectorStart = size === "sm"
+          ? status === "process" ? "after:top-10" : "after:top-9"
+          : status === "process" ? "after:top-11" : "after:top-10";
+        const verticalConnectorEnd = nextStatus === "process"
+          ? "after:bottom-[-12px]"
+          : "after:bottom-[-16px]";
+        const verticalConnectorAxis = size === "sm"
+          ? "after:left-[17px]"
+          : "after:left-[19px]";
+        const indicatorContent = item.icon ?? (status === "finish"
           ? <Check size={15} strokeWidth={2.5} />
-          : status === 'error'
+          : status === "error"
             ? <X size={15} strokeWidth={2.5} />
             : index + 1);
         const content = (
@@ -108,14 +108,14 @@ export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
             <span
               aria-hidden="true"
               className={cn(
-                'relative z-[1] flex shrink-0 items-center justify-center rounded-full',
+                "relative z-[1] flex shrink-0 items-center justify-center rounded-full",
                 indicatorFrameSize,
-                status === 'process' && 'bg-[var(--lumen-color-primary-soft-hover)]',
+                status === "process" && "bg-[var(--lumen-color-primary-soft-hover)]",
               )}
             >
               <span
                 className={cn(
-                  'flex items-center justify-center rounded-full font-medium transition-colors',
+                  "flex items-center justify-center rounded-full font-medium transition-colors",
                   indicatorSize,
                   indicatorStatusClassNames[status],
                 )}
@@ -126,10 +126,10 @@ export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
             <span className="min-w-0 pt-0.5 pad:pt-1">
               <span
                 className={cn(
-                  'block text-[13px] font-medium leading-5',
-                  status === 'process' && 'text-[var(--lumen-color-primary)]',
-                  status === 'error' && 'text-[var(--lumen-color-danger-text)]',
-                  (status === 'wait' || status === 'finish') && 'text-[var(--lumen-color-text-secondary)]',
+                  "block text-[13px] font-medium leading-5",
+                  status === "process" && "text-[var(--lumen-color-primary)]",
+                  status === "error" && "text-[var(--lumen-color-danger-text)]",
+                  (status === "wait" || status === "finish") && "text-[var(--lumen-color-text-secondary)]",
                 )}
               >
                 {item.title}
@@ -146,22 +146,22 @@ export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
         return (
           <li
             key={index}
-            aria-current={status === 'process' ? 'step' : undefined}
+            aria-current={status === "process" ? "step" : undefined}
             data-status={status}
             className={cn(
-              'relative flex-1',
-              direction === 'horizontal' ? 'min-w-[120px]' : 'min-w-0',
-              item.disabled && 'opacity-50',
-              index < items.length - 1 && direction === 'vertical'
+              "relative flex-1",
+              direction === "horizontal" ? "min-w-[120px]" : "min-w-0",
+              item.disabled && "opacity-50",
+              index < items.length - 1 && direction === "vertical"
                 && cn(
-                  'after:absolute after:w-px after:bg-[var(--lumen-color-border)]',
+                  "after:absolute after:w-px after:bg-[var(--lumen-color-border)]",
                   verticalConnectorAxis,
                   verticalConnectorStart,
                   verticalConnectorEnd,
                 ),
-              index < items.length - 1 && direction === 'horizontal'
+              index < items.length - 1 && direction === "horizontal"
                 && cn(
-                  'after:absolute after:h-px after:bg-[var(--lumen-color-border)]',
+                  "after:absolute after:h-px after:bg-[var(--lumen-color-border)]",
                   horizontalConnectorAxis,
                   horizontalConnectorStart,
                   horizontalConnectorEnd,
@@ -172,10 +172,10 @@ export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
               <button
                 type="button"
                 className={cn(
-                  'flex w-full gap-3 rounded-[8px] focus:outline-none',
-                  direction === 'horizontal'
-                    ? 'flex-col items-center px-2 text-center'
-                    : 'items-start text-left',
+                  "flex w-full gap-3 rounded-[8px] focus:outline-none",
+                  direction === "horizontal"
+                    ? "flex-col items-center px-2 text-center"
+                    : "items-start text-left",
                 )}
                 onClick={() => onChange?.(index, item)}
               >
@@ -184,10 +184,10 @@ export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
             ) : (
               <div
                 className={cn(
-                  'flex gap-3',
-                  direction === 'horizontal'
-                    ? 'flex-col items-center px-2 text-center'
-                    : 'items-start text-left',
+                  "flex gap-3",
+                  direction === "horizontal"
+                    ? "flex-col items-center px-2 text-center"
+                    : "items-start text-left",
                 )}
               >
                 {content}
@@ -200,4 +200,4 @@ export const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
   ),
 );
 
-Steps.displayName = 'Steps';
+Steps.displayName = "Steps";

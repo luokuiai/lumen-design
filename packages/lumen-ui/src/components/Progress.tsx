@@ -1,13 +1,13 @@
-import React from 'react';
-import { cn } from './classNames';
-import { useLumenLocale } from '../i18n';
+import React from "react";
+import { cn } from "./classNames";
+import { useLumenLocale } from "../i18n";
 
-export type ProgressType = 'line' | 'circle';
-export type ProgressSize = 'sm' | 'md' | 'lg';
-export type ProgressStatus = 'info' | 'success' | 'warning' | 'danger';
+export type ProgressType = "line" | "circle";
+export type ProgressSize = "sm" | "md" | "lg";
+export type ProgressStatus = "info" | "success" | "warning" | "danger";
 
 export interface ProgressProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   value?: number;
   max?: number;
   type?: ProgressType;
@@ -20,16 +20,16 @@ export interface ProgressProps
 }
 
 const progressColorVariables: Record<ProgressStatus, string> = {
-  info: 'var(--lumen-color-primary)',
-  success: 'var(--lumen-color-success)',
-  warning: 'var(--lumen-color-warning)',
-  danger: 'var(--lumen-color-danger)',
+  info: "var(--lumen-color-primary)",
+  success: "var(--lumen-color-success)",
+  warning: "var(--lumen-color-warning)",
+  danger: "var(--lumen-color-danger)",
 };
 
 const lineHeightClassNames: Record<ProgressSize, string> = {
-  sm: 'h-1',
-  md: 'h-1.5',
-  lg: 'h-2',
+  sm: "h-1",
+  md: "h-[5px]",
+  lg: "h-2",
 };
 
 const circleSizeTokens: Record<ProgressSize, { size: number; inset: number }> = {
@@ -43,9 +43,9 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     {
       value = 0,
       max = 100,
-      type = 'line',
-      size = 'md',
-      status = 'info',
+      type = "line",
+      size = "md",
+      status = "info",
       label,
       showValue = false,
       indeterminate = false,
@@ -62,10 +62,10 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     const valueLabel = formatValue?.(percentage, safeValue, safeMax) ?? `${percentage}%`;
     const color = progressColorVariables[status];
     const ariaProps = indeterminate
-      ? { 'aria-valuetext': locale.accessibility.loading }
-      : { 'aria-valuemin': 0, 'aria-valuemax': safeMax, 'aria-valuenow': safeValue };
+      ? { "aria-valuetext": locale.accessibility.loading }
+      : { "aria-valuemin": 0, "aria-valuemax": safeMax, "aria-valuenow": safeValue };
 
-    if (type === 'circle') {
+    if (type === "circle") {
       const circle = circleSizeTokens[size];
       return (
         <div
@@ -76,10 +76,10 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
           data-ui="progress"
           data-type="circle"
           data-status={status}
-          className={cn('inline-flex flex-col items-center gap-2', className)}
+          className={cn("inline-flex flex-col items-center gap-2", className)}
         >
           <div
-            className={cn('relative rounded-full', indeterminate && 'animate-spin')}
+            className={cn("relative rounded-full", indeterminate && "animate-spin")}
             style={{
               width: circle.size,
               height: circle.size,
@@ -109,7 +109,7 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         data-ui="progress"
         data-type="line"
         data-status={status}
-        className={cn('min-w-0', className)}
+        className={cn("min-w-0", className)}
       >
         {label || showValue ? (
           <div className="mb-2 flex items-center justify-between gap-3 text-[13px] leading-5">
@@ -121,14 +121,14 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         ) : null}
         <div
           className={cn(
-            'w-full overflow-hidden rounded-full bg-[var(--lumen-color-surface-muted)]',
+            "w-full overflow-hidden rounded-full bg-[var(--lumen-color-surface-muted)]",
             lineHeightClassNames[size],
           )}
         >
           <div
             className={cn(
-              'h-full rounded-full transition-[width] duration-300 ease-out',
-              indeterminate && 'w-2/5 animate-pulse',
+              "h-full rounded-full transition-[width] duration-300 ease-out",
+              indeterminate && "w-2/5 animate-pulse",
             )}
             style={{
               width: indeterminate ? undefined : `${percentage}%`,
@@ -141,4 +141,4 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
   },
 );
 
-Progress.displayName = 'Progress';
+Progress.displayName = "Progress";

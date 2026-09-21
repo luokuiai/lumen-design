@@ -1,12 +1,12 @@
-import React from 'react';
-import { X } from 'lucide-react';
-import { cn } from './classNames';
-import { semanticBadgeToneClassNames } from './designTokens';
-import { useLumenLocale } from '../i18n';
+import React from "react";
+import { X } from "lucide-react";
+import { cn } from "./classNames";
+import { semanticBadgeToneClassNames } from "./designTokens";
+import { useLumenLocale } from "../i18n";
 
 export type ChipTone = keyof typeof semanticBadgeToneClassNames;
-export type ChipSize = 'sm' | 'md';
-export type ChipShape = 'rounded' | 'pill';
+export type ChipSize = "sm" | "md";
+export type ChipShape = "rounded" | "pill";
 
 interface ChipBaseProps {
   children: React.ReactNode;
@@ -22,30 +22,30 @@ interface ChipBaseProps {
 
 export type ChipProps = ChipBaseProps & (
   | {
-      onSelect: (selected: boolean) => void;
-      onClose?: () => void;
-    }
+    onSelect: (selected: boolean) => void;
+    onClose?: () => void;
+  }
   | {
-      onSelect?: (selected: boolean) => void;
-      onClose: () => void;
-    }
+    onSelect?: (selected: boolean) => void;
+    onClose: () => void;
+  }
 );
 
 const chipSizeClassNames: Record<ChipSize, string> = {
-  sm: 'min-h-5 text-[12px]',
-  md: 'min-h-[26px] text-[13px]',
+  sm: "min-h-5 text-[12px]",
+  md: "min-h-[26px] text-[13px]",
 };
 
 const chipShapeClassNames: Record<ChipShape, string> = {
-  rounded: 'rounded-[4px]',
-  pill: 'rounded-full',
+  rounded: "rounded-[4px]",
+  pill: "rounded-full",
 };
 
 export const Chip: React.FC<ChipProps> = ({
   children,
-  tone = 'neutral',
-  size = 'md',
-  shape = 'rounded',
+  tone = "neutral",
+  size = "md",
+  shape = "rounded",
   icon,
   selected = false,
   disabled = false,
@@ -68,12 +68,12 @@ export const Chip: React.FC<ChipProps> = ({
       data-selected={selected || undefined}
       data-disabled={disabled || undefined}
       className={cn(
-        'inline-flex max-w-full items-center overflow-hidden font-normal leading-none ring-inset transition-colors',
+        "inline-flex max-w-full items-center overflow-hidden font-normal leading-none ring-inset transition-colors",
         semanticBadgeToneClassNames[tone],
         chipSizeClassNames[size],
         chipShapeClassNames[shape],
-        selected && 'ring-1 ring-current',
-        disabled && 'opacity-50',
+        selected && "ring-1 ring-current",
+        disabled && "opacity-50",
         className,
       )}
     >

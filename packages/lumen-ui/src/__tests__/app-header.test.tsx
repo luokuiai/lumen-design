@@ -1,10 +1,10 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import { AppHeader } from '../components/AppHeader';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { AppHeader } from "../components/AppHeader";
 
-describe('AppHeader', () => {
-  it('renders navigation, heading, search, and action slots', () => {
+describe("AppHeader", () => {
+  it("renders navigation, heading, search, and action slots", () => {
     render(
       <AppHeader
         data-testid="app-header"
@@ -17,25 +17,25 @@ describe('AppHeader', () => {
       />,
     );
 
-    const header = screen.getByTestId('app-header');
-    expect(header.tagName).toBe('HEADER');
-    expect(header).toHaveAttribute('data-ui', 'app-header');
-    expect(header).toHaveClass('custom-header');
-    expect(screen.getByRole('heading', { name: 'Operations', level: 1 })).toHaveClass(
-      'text-[20px]',
-      'font-medium',
+    const header = screen.getByTestId("app-header");
+    expect(header.tagName).toBe("HEADER");
+    expect(header).toHaveAttribute("data-ui", "app-header");
+    expect(header).toHaveClass("custom-header");
+    expect(screen.getByRole("heading", { name: "Operations", level: 1 })).toHaveClass(
+      "text-[20px]",
+      "font-medium",
     );
-    const heading = screen.getByRole('heading', { name: 'Operations', level: 1 });
-    expect(heading).toHaveAttribute('data-ui', 'app-header-title');
-    expect(heading).toHaveAttribute('data-variant', 'h2');
-    expect(heading).toHaveClass('text-[var(--lumen-color-text-heading,var(--lumen-color-text-strong))]');
-    expect(screen.getByText('Monitor active work')).toHaveClass('text-[12px]');
-    expect(screen.getByRole('button', { name: 'Menu' })).toBeInTheDocument();
-    expect(screen.getByRole('searchbox', { name: 'Search' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Notifications' })).toBeInTheDocument();
+    const heading = screen.getByRole("heading", { name: "Operations", level: 1 });
+    expect(heading).toHaveAttribute("data-ui", "app-header-title");
+    expect(heading).toHaveAttribute("data-variant", "h2");
+    expect(heading).toHaveClass("text-[var(--lumen-color-text-heading,var(--lumen-color-text-strong))]");
+    expect(screen.getByText("Monitor active work")).toHaveClass("text-[12px]");
+    expect(screen.getByRole("button", { name: "Menu" })).toBeInTheDocument();
+    expect(screen.getByRole("searchbox", { name: "Search" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Notifications" })).toBeInTheDocument();
   });
 
-  it('omits optional regions when no slot content is provided', () => {
+  it("omits optional regions when no slot content is provided", () => {
     const { container } = render(<AppHeader title="Operations" />);
 
     expect(container.querySelector('[data-ui="app-header-navigation"]')).toBeNull();

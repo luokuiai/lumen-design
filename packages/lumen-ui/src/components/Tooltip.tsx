@@ -5,16 +5,16 @@ import React, {
   useLayoutEffect,
   useRef,
   useState,
-} from 'react';
-import { createPortal } from 'react-dom';
-import { cn } from './classNames';
-import { computePosition } from './tooltip-positions';
-import type { TooltipPlacement } from './tooltip-positions';
+} from "react";
+import { createPortal } from "react-dom";
+import { cn } from "./classNames";
+import { computePosition } from "./tooltip-positions";
+import type { TooltipPlacement } from "./tooltip-positions";
 
 export type { TooltipPlacement };
 
 /** 动画阶段 */
-type Phase = 'hidden' | 'entering' | 'visible' | 'exiting';
+type Phase = "hidden" | "entering" | "visible" | "exiting";
 
 export interface TooltipProps {
   /** 要显示的提示内容 */
@@ -45,9 +45,9 @@ function mergeRefs<T>(
 ): (el: T | null) => void {
   return (el: T | null) => {
     refs.forEach((ref) => {
-      if (typeof ref === 'function') {
+      if (typeof ref === "function") {
         ref(el);
-      } else if (ref && typeof ref === 'object') {
+      } else if (ref && typeof ref === "object") {
         (ref as React.MutableRefObject<T | null>).current = el;
       }
     });
@@ -57,14 +57,14 @@ function mergeRefs<T>(
 /** 根据 placement 获取 transform-origin 类名 */
 function getOriginClass(placement: TooltipPlacement): string {
   switch (placement) {
-    case 'top':
-      return 'origin-bottom';
-    case 'bottom':
-      return 'origin-top';
-    case 'left':
-      return 'origin-right';
-    case 'right':
-      return 'origin-left';
+    case "top":
+      return "origin-bottom";
+    case "bottom":
+      return "origin-top";
+    case "left":
+      return "origin-right";
+    case "right":
+      return "origin-left";
   }
 }
 
@@ -77,7 +77,7 @@ function getOriginClass(placement: TooltipPlacement): string {
 export const Tooltip: React.FC<TooltipProps> = ({
   content,
   children,
-  placement = 'top',
+  placement = "top",
   showDelay = 350,
   hideDelay = 150,
   disabled = false,
@@ -86,10 +86,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
   offset = 12,
   showArrow = true,
 }) => {
-  const [phase, setPhase] = useState<Phase>('hidden');
+  const [phase, setPhase] = useState<Phase>("hidden");
   const [positionStyle, setPositionStyle] = useState<React.CSSProperties>({
-    position: 'fixed',
-    pointerEvents: 'none',
+    position: "fixed",
+    pointerEvents: "none",
   });
   const [actualPlacement, setActualPlacement] = useState<TooltipPlacement>(placement);
   const [arrowStyle, setArrowStyle] = useState<React.CSSProperties>({});
@@ -120,11 +120,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
     };
     const result = computePosition(triggerRect, tooltipSize, placement, offset);
     setPositionStyle({
-      position: 'fixed',
+      position: "fixed",
       left: result.x,
       top: result.y,
       zIndex: 1200,
-      pointerEvents: 'none',
+      pointerEvents: "none",
     });
     setActualPlacement(result.actualPlacement);
     setArrowStyle(result.arrowStyle);
@@ -142,52 +142,52 @@ export const Tooltip: React.FC<TooltipProps> = ({
     ) return;
     clearTimers();
     showTimerRef.current = setTimeout(() => {
-      setPhase('entering');
+      setPhase("entering");
     }, showDelay);
   }, [disabled, onlyWhenOverflow, showDelay, clearTimers]);
 
   // 触发隐藏
   const hide = useCallback(() => {
     clearTimers();
-    if (phase === 'hidden') return;
+    if (phase === "hidden") return;
     hideTimerRef.current = setTimeout(() => {
-      setPhase('exiting');
+      setPhase("exiting");
     }, hideDelay);
   }, [phase, hideDelay, clearTimers]);
 
   const dismissOnScroll = useCallback(() => {
     clearTimers();
-    setPhase('hidden');
+    setPhase("hidden");
   }, [clearTimers]);
 
   // 挂载后先计算位置；方向动画由 CSS keyframe 驱动。
   useLayoutEffect(() => {
-    if (phase === 'entering') {
+    if (phase === "entering") {
       updatePosition();
     }
   }, [phase, updatePosition]);
 
   // 滚动任意容器时立即关闭，并取消等待显示的 tooltip。
   useEffect(() => {
-    window.addEventListener('scroll', dismissOnScroll, {
+    window.addEventListener("scroll", dismissOnScroll, {
       capture: true,
       passive: true,
     });
 
     return () => {
-      window.removeEventListener('scroll', dismissOnScroll, true);
+      window.removeEventListener("scroll", dismissOnScroll, true);
     };
   }, [dismissOnScroll]);
 
   // 展示期间仅在视口尺寸变化时重新计算位置。
   useEffect(() => {
-    if (phase !== 'visible' && phase !== 'entering') return;
+    if (phase !== "visible" && phase !== "entering") return;
 
     const handleResize = () => updatePosition();
-    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener("resize", handleResize, { passive: true });
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, [phase, updatePosition]);
 
@@ -202,20 +202,20 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const handleAnimationEnd = useCallback((event: React.AnimationEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget) return;
     setPhase((currentPhase) => {
-      if (currentPhase === 'entering') return 'visible';
-      if (currentPhase === 'exiting') return 'hidden';
+      if (currentPhase === "entering") return "visible";
+      if (currentPhase === "exiting") return "hidden";
       return currentPhase;
     });
   }, []);
 
-  const tooltipNode = phase !== 'hidden' ? (
+  const tooltipNode = phase !== "hidden" ? (
     <div
       ref={tooltipRef}
       data-lumen-motion
       data-placement={actualPlacement}
-      data-state={phase === 'entering' ? 'opening' : phase === 'exiting' ? 'closing' : 'open'}
+      data-state={phase === "entering" ? "opening" : phase === "exiting" ? "closing" : "open"}
       className={cn(
-        'lumen-tooltip bg-[var(--lumen-color-tooltip)]/90 text-[var(--lumen-color-on-primary)] text-[12px] px-3 py-1.5 rounded-md shadow-xl whitespace-nowrap',
+        "lumen-tooltip bg-[var(--lumen-color-tooltip)]/90 text-[var(--lumen-color-on-primary)] text-[12px] px-3 py-1.5 rounded-md shadow-xl whitespace-nowrap",
         getOriginClass(actualPlacement),
         className,
       )}

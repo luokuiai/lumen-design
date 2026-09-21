@@ -6,20 +6,20 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from 'react';
-import { createPortal } from 'react-dom';
-import { Check, ChevronsUpDown, LoaderCircle, Plus, X } from 'lucide-react';
-import { cn } from '../classNames';
-import { radiusTokens } from '../designTokens';
-import { dropdownTransformOrigin } from '../dropdownMotion';
-import { useOverlayPortalScope } from '../useOverlayBehavior';
-import { useLumenLocale } from '../../i18n';
+} from "react";
+import { createPortal } from "react-dom";
+import { Check, ChevronsUpDown, LoaderCircle, Plus, X } from "lucide-react";
+import { cn } from "../classNames";
+import { radiusTokens } from "../designTokens";
+import { dropdownTransformOrigin } from "../dropdownMotion";
+import { useOverlayPortalScope } from "../useOverlayBehavior";
+import { useLumenLocale } from "../../i18n";
 
 const CLOSE_ANIMATION_MS = 120;
-const SHOULD_SKIP_CLOSE_ANIMATION_IN_TEST = import.meta.env.MODE === 'test';
+const SHOULD_SKIP_CLOSE_ANIMATION_IN_TEST = import.meta.env.MODE === "test";
 
 export type ComboboxOptionValue = string | number;
-export type ComboboxSize = 'sm' | 'md' | 'lg';
+export type ComboboxSize = "sm" | "md" | "lg";
 
 export interface ComboboxOption<T extends ComboboxOptionValue = string> {
   label: string;
@@ -76,25 +76,25 @@ export interface ComboboxProps<T extends ComboboxOptionValue = string> {
   name?: string;
   required?: boolean;
   autoComplete?: string;
-  'aria-label'?: string;
-  'aria-labelledby'?: string;
-  'aria-describedby'?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
 }
 
 const sizeTokens: Record<ComboboxSize, { root: string; text: string; icon: number }> = {
   sm: {
-    root: 'min-h-[var(--lumen-control-height-sm)] px-2.5',
-    text: 'text-[13px]',
+    root: "min-h-[var(--lumen-control-height-sm)] px-2.5",
+    text: "text-[13px]",
     icon: 14,
   },
   md: {
-    root: 'min-h-[var(--lumen-control-height-md)] px-3',
-    text: 'text-[14px]',
+    root: "min-h-[var(--lumen-control-height-md)] px-3",
+    text: "text-[14px]",
     icon: 16,
   },
   lg: {
-    root: 'min-h-[var(--lumen-control-height-lg)] px-3.5',
-    text: 'text-[15px]',
+    root: "min-h-[var(--lumen-control-height-lg)] px-3.5",
+    text: "text-[15px]",
     icon: 18,
   },
 };
@@ -132,7 +132,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
     loadingText: loadingTextProp,
     emptyText: emptyTextProp,
     placeholder,
-    size = 'md',
+    size = "md",
     disabled = false,
     invalid = false,
     clearable = true,
@@ -147,10 +147,10 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
     id,
     name,
     required,
-    autoComplete = 'off',
-    'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledBy,
-    'aria-describedby': ariaDescribedBy,
+    autoComplete = "off",
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
+    "aria-describedby": ariaDescribedBy,
   }: ComboboxProps<T>,
   forwardedRef: React.ForwardedRef<HTMLInputElement>,
 ) => {
@@ -169,7 +169,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
     const selected = options.find((option) => option.value === value);
     if (defaultInputValue !== undefined) return defaultInputValue;
     if (selected) return selected.label;
-    return allowCustomValue && typeof value === 'string' ? value : '';
+    return allowCustomValue && typeof value === "string" ? value : "";
   });
   const [open, setOpen] = useState(false);
   const [animatingOut, setAnimatingOut] = useState(false);
@@ -177,7 +177,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
   const [dropUp, setDropUp] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({
-    position: 'fixed',
+    position: "fixed",
     zIndex: 9999,
   });
   const effectiveInputValue = inputValue ?? internalInputValue;
@@ -186,8 +186,8 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
     placeholder: locale.select.searchPlaceholder,
     emptyText: locale.select.emptyText,
     loadingText: locale.select.loadingText,
-    open: 'Open options',
-    close: 'Close options',
+    open: "Open options",
+    close: "Close options",
   };
   const resolvedPlaceholder = placeholder ?? comboboxLocale.placeholder;
   const loadingText = loadingTextProp ?? comboboxLocale.loadingText;
@@ -210,7 +210,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
   const canCreateCustomValue = allowCustomValue
     && Boolean(customValue)
     && !options.some((option) =>
-      option.label.localeCompare(customValue, undefined, { sensitivity: 'accent' }) === 0
+      option.label.localeCompare(customValue, undefined, { sensitivity: "accent" }) === 0
       || String(option.value) === customValue);
   const createOptionIndex = canCreateCustomValue ? filteredOptions.length : -1;
 
@@ -223,13 +223,13 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
     if (selectedOption) {
       setInput(selectedOption.label);
     } else if (!allowCustomValue) {
-      setInput('');
+      setInput("");
     }
   }, [allowCustomValue, selectedOption, setInput]);
 
   const setInputElementRef = useCallback((element: HTMLInputElement | null) => {
     inputRef.current = element;
-    if (typeof forwardedRef === 'function') forwardedRef(element);
+    if (typeof forwardedRef === "function") forwardedRef(element);
     else if (forwardedRef) forwardedRef.current = element;
   }, [forwardedRef]);
 
@@ -285,7 +285,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
       Math.max(viewportPadding, window.innerWidth - width - viewportPadding),
     );
     setDropUp(shouldDropUp);
-    setDropdownStyle({ position: 'fixed', top, left, width, zIndex: 9999 });
+    setDropdownStyle({ position: "fixed", top, left, width, zIndex: 9999 });
     setPositioned(true);
   }, []);
 
@@ -312,13 +312,13 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (composingRef.current) return;
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
       if (!open) openDropdown();
-      moveHighlight(event.key === 'ArrowDown' ? 1 : -1);
+      moveHighlight(event.key === "ArrowDown" ? 1 : -1);
       return;
     }
-    if (event.key === 'Enter' && open) {
+    if (event.key === "Enter" && open) {
       if (highlightedIndex === createOptionIndex && commitCustomValue()) {
         event.preventDefault();
         return;
@@ -332,7 +332,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
       }
       return;
     }
-    if (event.key === 'Escape' && open) {
+    if (event.key === "Escape" && open) {
       event.preventDefault();
       closeDropdown(true, true);
     }
@@ -342,8 +342,8 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
     if (Object.is(previousValueRef.current, value)) return;
     previousValueRef.current = value;
     if (selectedOption) setInput(selectedOption.label);
-    else if (allowCustomValue && typeof value === 'string') setInput(value);
-    else setInput('');
+    else if (allowCustomValue && typeof value === "string") setInput(value);
+    else setInput("");
   }, [allowCustomValue, selectedOption, setInput, value]);
 
   useEffect(() => {
@@ -364,7 +364,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
     const activeOption = document.getElementById(
       `${listboxId}-option-${highlightedIndex}`,
     );
-    activeOption?.scrollIntoView?.({ block: 'nearest' });
+    activeOption?.scrollIntoView?.({ block: "nearest" });
   }, [highlightedIndex, listboxId, open]);
 
   useEffect(() => {
@@ -374,25 +374,25 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
       if (rootRef.current?.contains(target) || dropdownRef.current?.contains(target)) return;
       closeDropdown(true);
     };
-    document.addEventListener('mousedown', handlePointerDown);
-    return () => document.removeEventListener('mousedown', handlePointerDown);
+    document.addEventListener("mousedown", handlePointerDown);
+    return () => document.removeEventListener("mousedown", handlePointerDown);
   }, [closeDropdown, open]);
 
   useLayoutEffect(() => {
     if (!open) return undefined;
     updateDropdownPosition();
-    window.addEventListener('scroll', updateDropdownPosition, true);
-    window.addEventListener('resize', updateDropdownPosition);
+    window.addEventListener("scroll", updateDropdownPosition, true);
+    window.addEventListener("resize", updateDropdownPosition);
     return () => {
-      window.removeEventListener('scroll', updateDropdownPosition, true);
-      window.removeEventListener('resize', updateDropdownPosition);
+      window.removeEventListener("scroll", updateDropdownPosition, true);
+      window.removeEventListener("resize", updateDropdownPosition);
     };
   }, [open, updateDropdownPosition]);
 
   useEffect(() => {
     if (!open) return undefined;
     const frame = window.requestAnimationFrame(updateDropdownPosition);
-    const observer = dropdownRef.current && typeof ResizeObserver !== 'undefined'
+    const observer = dropdownRef.current && typeof ResizeObserver !== "undefined"
       ? new ResizeObserver(updateDropdownPosition)
       : null;
     if (dropdownRef.current) observer?.observe(dropdownRef.current);
@@ -411,8 +411,8 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
     ? `${listboxId}-option-${highlightedIndex}`
     : undefined;
   const rootStateClassName = invalid
-    ? 'border-[var(--lumen-color-danger)] focus-within:border-[var(--lumen-color-danger)] focus-within:ring-2 focus-within:ring-[var(--lumen-color-danger)]/10'
-    : 'border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)] focus-within:border-[var(--lumen-color-primary)] focus-within:ring-2 focus-within:ring-[var(--lumen-color-primary)]/10';
+    ? "border-[var(--lumen-color-danger)] focus-within:border-[var(--lumen-color-danger)] focus-within:ring-2 focus-within:ring-[var(--lumen-color-danger)]/10"
+    : "border-[var(--lumen-color-border)] hover:border-[var(--lumen-color-border-hover)] focus-within:border-[var(--lumen-color-primary)] focus-within:ring-2 focus-within:ring-[var(--lumen-color-primary)]/10";
 
   const dropdown = open ? (
     <div
@@ -421,19 +421,19 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
       data-testid="combobox-dropdown"
       data-lumen-overlay-scope={overlayScopeId ?? undefined}
       className={cn(
-        'overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-lg',
+        "overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-lg",
         dropdownClassName,
       )}
       style={{
         ...dropdownStyle,
-        visibility: positioned ? 'visible' : 'hidden',
+        visibility: positioned ? "visible" : "hidden",
         animation: animatingOut
           ? dropUp
-            ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
-            : 'lumen-dropdown-out 0.12s ease-in forwards'
+            ? "lumen-dropdown-out-up 0.12s ease-in forwards"
+            : "lumen-dropdown-out 0.12s ease-in forwards"
           : dropUp
-            ? 'lumen-dropdown-in-up 0.12s ease-out'
-            : 'lumen-dropdown-in 0.12s ease-out',
+            ? "lumen-dropdown-in-up 0.12s ease-out"
+            : "lumen-dropdown-in 0.12s ease-out",
         transformOrigin: dropdownTransformOrigin(dropUp),
       }}
     >
@@ -452,54 +452,54 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
           </div>
         ) : filteredOptions.length || canCreateCustomValue ? <>
           {filteredOptions.map((option, index) => {
-          const selected = option.value === value;
-          const highlighted = index === highlightedIndex;
-          const state: ComboboxOptionRenderState = {
-            selected,
-            highlighted,
-            disabled: Boolean(option.disabled),
-            index,
-          };
-          return (
-            <button
-              key={String(option.value)}
-              id={`${listboxId}-option-${index}`}
-              type="button"
-              role="option"
-              aria-selected={selected}
-              disabled={option.disabled}
-              data-ui="combobox-option"
-              data-selected={selected || undefined}
-              data-highlighted={highlighted || undefined}
-              className={cn(
-                renderOption
-                  ? 'block w-full text-left transition-colors'
-                  : 'flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] transition-colors',
-                option.disabled && 'cursor-not-allowed opacity-40',
-                !renderOption && selected && 'bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]',
-                !renderOption && highlighted && !selected && !option.disabled && 'bg-[var(--lumen-color-surface-muted)]',
-                !renderOption && !selected && 'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]',
-                optionClassName?.(option, state),
-              )}
-              onMouseDown={(event) => event.preventDefault()}
-              onMouseEnter={() => !option.disabled && setHighlightedIndex(index)}
-              onClick={() => selectOption(option)}
-            >
-              {renderOption ? renderOption(option, state) : (
-                <>
-                  {option.icon ? <span className="shrink-0">{option.icon}</span> : null}
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate leading-5">{option.label}</span>
-                    {option.description ? (
-                      <span className="block truncate text-[12px] text-[var(--lumen-color-text-placeholder)]">
-                        {option.description}
-                      </span>
-                    ) : null}
-                  </span>
-                  {selected ? <Check aria-hidden="true" size={15} className="shrink-0" /> : null}
-                </>
-              )}
-            </button>
+            const selected = option.value === value;
+            const highlighted = index === highlightedIndex;
+            const state: ComboboxOptionRenderState = {
+              selected,
+              highlighted,
+              disabled: Boolean(option.disabled),
+              index,
+            };
+            return (
+              <button
+                key={String(option.value)}
+                id={`${listboxId}-option-${index}`}
+                type="button"
+                role="option"
+                aria-selected={selected}
+                disabled={option.disabled}
+                data-ui="combobox-option"
+                data-selected={selected || undefined}
+                data-highlighted={highlighted || undefined}
+                className={cn(
+                  renderOption
+                    ? "block w-full text-left transition-colors"
+                    : "flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] transition-colors",
+                  option.disabled && "cursor-not-allowed opacity-40",
+                  !renderOption && selected && "bg-[var(--lumen-color-primary-soft)] text-[var(--lumen-color-primary)]",
+                  !renderOption && highlighted && !selected && !option.disabled && "bg-[var(--lumen-color-surface-muted)]",
+                  !renderOption && !selected && "text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-surface-muted)]",
+                  optionClassName?.(option, state),
+                )}
+                onMouseDown={(event) => event.preventDefault()}
+                onMouseEnter={() => !option.disabled && setHighlightedIndex(index)}
+                onClick={() => selectOption(option)}
+              >
+                {renderOption ? renderOption(option, state) : (
+                  <>
+                    {option.icon ? <span className="shrink-0">{option.icon}</span> : null}
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate leading-5">{option.label}</span>
+                      {option.description ? (
+                        <span className="block truncate text-[12px] text-[var(--lumen-color-text-placeholder)]">
+                          {option.description}
+                        </span>
+                      ) : null}
+                    </span>
+                    {selected ? <Check aria-hidden="true" size={15} className="shrink-0" /> : null}
+                  </>
+                )}
+              </button>
             );
           })}
           {canCreateCustomValue ? (
@@ -511,8 +511,8 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
               data-ui="combobox-create-option"
               data-highlighted={highlightedIndex === createOptionIndex || undefined}
               className={cn(
-                'flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] text-[var(--lumen-color-primary)] transition-colors hover:bg-[var(--lumen-color-surface-muted)]',
-                highlightedIndex === createOptionIndex && 'bg-[var(--lumen-color-surface-muted)]',
+                "flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] text-[var(--lumen-color-primary)] transition-colors hover:bg-[var(--lumen-color-surface-muted)]",
+                highlightedIndex === createOptionIndex && "bg-[var(--lumen-color-surface-muted)]",
               )}
               onMouseDown={(event) => event.preventDefault()}
               onMouseEnter={() => setHighlightedIndex(createOptionIndex)}
@@ -532,19 +532,19 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
   ) : null;
 
   return (
-    <div ref={rootRef} data-ui="combobox" className={cn('relative w-full', className)}>
+    <div ref={rootRef} data-ui="combobox" className={cn("relative w-full", className)}>
       <div
         data-ui="combobox-control"
         data-size={size}
         data-invalid={invalid || undefined}
         data-disabled={disabled || undefined}
         className={cn(
-          'flex w-full items-center gap-2 border bg-[var(--lumen-color-surface)] transition-all',
+          "flex w-full items-center gap-2 border bg-[var(--lumen-color-surface)] transition-all",
           radiusTokens.control,
           tokens.root,
           tokens.text,
           disabled
-            ? 'cursor-not-allowed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-placeholder)]'
+            ? "cursor-not-allowed border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)] text-[var(--lumen-color-text-placeholder)]"
             : rootStateClassName,
         )}
       >
@@ -568,7 +568,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
           placeholder={resolvedPlaceholder}
           value={effectiveInputValue}
           className={cn(
-            'min-w-0 flex-1 bg-transparent text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed',
+            "min-w-0 flex-1 bg-transparent text-[var(--lumen-color-text)] outline-none placeholder:text-[var(--lumen-color-text-placeholder)] disabled:cursor-not-allowed",
             inputClassName,
           )}
           onFocus={() => {
@@ -606,7 +606,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
             onMouseDown={(event) => event.preventDefault()}
             onClick={() => {
               onChange(null, null);
-              setInput('');
+              setInput("");
               inputRef.current?.focus();
               openDropdown();
             }}
@@ -633,7 +633,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
           <ChevronsUpDown aria-hidden="true" size={tokens.icon} />
         </button>
       </div>
-      {dropdown && typeof document !== 'undefined'
+      {dropdown && typeof document !== "undefined"
         ? createPortal(dropdown, document.body)
         : null}
     </div>
@@ -641,7 +641,7 @@ const ComboboxInner = <T extends ComboboxOptionValue = string>(
 };
 
 const ForwardedCombobox = React.forwardRef(ComboboxInner);
-ForwardedCombobox.displayName = 'Combobox';
+ForwardedCombobox.displayName = "Combobox";
 
 export const Combobox = ForwardedCombobox as <
   T extends ComboboxOptionValue = string,

@@ -4,22 +4,22 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from 'react';
-import { createPortal } from 'react-dom';
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from './Button';
-import { Calendar } from './calendar/Calendar';
-import { cn } from './classNames';
-import { radiusTokens } from './designTokens';
-import { MobilePickerDialog } from './mobilePickerDialog';
-import { useMobilePicker } from './useMobilePicker';
-import { useOverlayPortalScope } from './useOverlayBehavior';
-import { type LumenLocale, useLumenLocale, zhCN } from '../i18n';
+} from "react";
+import { createPortal } from "react-dom";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "./Button";
+import { Calendar } from "./calendar/Calendar";
+import { cn } from "./classNames";
+import { radiusTokens } from "./designTokens";
+import { MobilePickerDialog } from "./mobilePickerDialog";
+import { useMobilePicker } from "./useMobilePicker";
+import { useOverlayPortalScope } from "./useOverlayBehavior";
+import { type LumenLocale, useLumenLocale, zhCN } from "../i18n";
 
 // ─── 类型定义 ────────────────────────────────────────────
 
-export type DatePickerMode = 'year-month' | 'year-month-day';
-export type DatePickerSize = 'sm' | 'md' | 'lg';
+export type DatePickerMode = "year-month" | "year-month-day";
+export type DatePickerSize = "sm" | "md" | "lg";
 
 export interface DatePickerProps {
   /** 当前值，year-month-day 模式 "YYYY-MM-DD"，year-month 模式 "YYYY-MM" */
@@ -60,36 +60,36 @@ const DROPDOWN_VIEWPORT_MARGIN = 8;
 
 // ─── 工具函数 ──────────────────────────────────────────
 
-const pad = (n: number) => String(n).padStart(2, '0');
+const pad = (n: number) => String(n).padStart(2, "0");
 
 /** 格式化显示值 */
 export const formatValue = (
   value: string,
   mode: DatePickerMode,
   fmt?: string,
-  locale: LumenLocale['datePicker'] = zhCN.datePicker,
+  locale: LumenLocale["datePicker"] = zhCN.datePicker,
 ): string => {
-  if (!value) return '';
-  const parts = value.split('-').map(Number);
+  if (!value) return "";
+  const parts = value.split("-").map(Number);
   if (!fmt) {
-    if (mode === 'year-month') {
+    if (mode === "year-month") {
       return locale.formatYearMonth(parts[0]!, parts[1]!);
     }
     return locale.formatDate(parts[0]!, parts[1]!, parts[2]!);
   }
   // 自定义格式（注意 replace 顺序 — MM 必须在 M 之前替换，否则 MM 会被 M 替换破坏）
   return fmt
-    .replace('YYYY', String(parts[0]))
-    .replace('MM', String(parts[1]).padStart(2, '0'))
-    .replace('M', String(parts[1]))
-    .replace('DD', parts[2] ? String(parts[2]).padStart(2, '0') : '')
-    .replace('D', parts[2] ? String(parts[2]) : '');
+    .replace("YYYY", String(parts[0]))
+    .replace("MM", String(parts[1]).padStart(2, "0"))
+    .replace("M", String(parts[1]))
+    .replace("DD", parts[2] ? String(parts[2]).padStart(2, "0") : "")
+    .replace("D", parts[2] ? String(parts[2]) : "");
 };
 
 /** 解析 YYYY-MM-DD 或 YYYY-MM */
 const parseDate = (value: string) => {
   if (!value) return null;
-  const parts = value.split('-').map(Number);
+  const parts = value.split("-").map(Number);
   const year = parts[0];
   const month = parts[1];
   if (year === undefined || month === undefined) return null;
@@ -107,27 +107,27 @@ const getYearPageStart = (year: number) =>
 
 const sizeTokens = {
   sm: {
-    trigger: 'h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]',
-    cell: 'h-8 w-8 text-[12px]',
-    header: 'text-[13px]',
-    footer: 'text-[12px]',
-    dropdown: 'p-3',
+    trigger: "h-[var(--lumen-control-height-sm)] px-2.5 text-[13px]",
+    cell: "h-8 w-8 text-[12px]",
+    header: "text-[13px]",
+    footer: "text-[12px]",
+    dropdown: "p-3",
     icon: 14,
   },
   md: {
-    trigger: 'h-[var(--lumen-control-height-md)] px-3 text-[14px]',
-    cell: 'h-9 w-9 text-[13px]',
-    header: 'text-[15px]',
-    footer: 'text-[13px]',
-    dropdown: 'p-4',
+    trigger: "h-[var(--lumen-control-height-md)] px-3 text-[14px]",
+    cell: "h-9 w-9 text-[13px]",
+    header: "text-[15px]",
+    footer: "text-[13px]",
+    dropdown: "p-4",
     icon: 16,
   },
   lg: {
-    trigger: 'h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]',
-    cell: 'h-10 w-10 text-[14px]',
-    header: 'text-[16px]',
-    footer: 'text-[14px]',
-    dropdown: 'p-5',
+    trigger: "h-[var(--lumen-control-height-lg)] px-3.5 text-[15px]",
+    cell: "h-10 w-10 text-[14px]",
+    header: "text-[16px]",
+    footer: "text-[14px]",
+    dropdown: "p-5",
     icon: 18,
   },
 } as const;
@@ -135,13 +135,13 @@ const sizeTokens = {
 type SizeToken = (typeof sizeTokens)[DatePickerSize];
 
 const pickerIconButtonClassName =
-  'flex h-8 w-8 cursor-pointer items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent';
+  "flex h-8 w-8 cursor-pointer items-center justify-center rounded-[6px] text-[var(--lumen-color-text-muted)] transition-colors hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text-secondary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent";
 
 const pickerHeaderButtonClassName =
-  'cursor-pointer rounded-[6px] px-2 py-1 font-semibold text-[var(--lumen-color-text)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
+  "cursor-pointer rounded-[6px] px-2 py-1 font-semibold text-[var(--lumen-color-text)] transition-colors hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20";
 
 const pickerOptionFocusClassName =
-  'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20';
+  "cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20";
 
 // ─── 组件 ──────────────────────────────────────────────
 
@@ -151,8 +151,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   placeholder: placeholderProp,
   triggerAriaLabel,
   className,
-  mode = 'year-month-day' as DatePickerMode,
-  size = 'md' as DatePickerSize,
+  mode = "year-month-day" as DatePickerMode,
+  size = "md" as DatePickerSize,
   disabled = false,
   clearable = true,
   showToday = true,
@@ -163,7 +163,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const locale = useLumenLocale();
   const isMobile = useMobilePicker();
   const placeholder = placeholderProp ?? locale.datePicker.placeholder;
-  const cancelLabel = locale.locale.startsWith('zh') ? '取消' : 'Cancel';
+  const cancelLabel = locale.locale.startsWith("zh") ? "取消" : "Cancel";
   const overlayScopeId = useOverlayPortalScope();
   const [open, setOpen] = useState(false);
   const [mobileDraftValue, setMobileDraftValue] = useState(value);
@@ -173,7 +173,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const tokens = sizeTokens[size];
 
   // 动画状态
-  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(
+  const [slideDirection, setSlideDirection] = useState<"left" | "right" | null>(
     null,
   );
 
@@ -183,20 +183,20 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   // 下拉面板定位（portal 模式）
   const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({
-    position: 'fixed',
+    position: "fixed",
     zIndex: 9999,
   });
-  const [dropDirection, setDropDirection] = useState<'up' | 'down'>('down');
+  const [dropDirection, setDropDirection] = useState<"up" | "down">("down");
   const triggerRef = useRef<HTMLButtonElement>(null);
   const portalRef = useRef<HTMLDivElement>(null);
 
   const updateDropdownPosition = useCallback(() => {
     if (isMobile) {
-      setDropDirection('down');
+      setDropDirection("down");
       setDropdownStyle({
-        position: 'relative',
-        width: 'min(100%, 320px)',
-        maxHeight: 'calc(100dvh - 24px)',
+        position: "relative",
+        width: "min(100%, 320px)",
+        maxHeight: "calc(100dvh - 24px)",
         zIndex: 9999,
       });
       return;
@@ -208,7 +208,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       DROPDOWN_WIDTH,
       Math.max(0, viewportWidth - DROPDOWN_VIEWPORT_MARGIN * 2),
     );
-    const estimatedDropdownHeight = mode === 'year-month-day' ? 392 : 304;
+    const estimatedDropdownHeight = mode === "year-month-day" ? 392 : 304;
     const dropdownHeight =
       portalRef.current?.offsetHeight || estimatedDropdownHeight;
     const gap = 6;
@@ -229,9 +229,9 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       Math.max(DROPDOWN_VIEWPORT_MARGIN, preferredLeft),
       maxLeft,
     );
-    setDropDirection(shouldDropUp ? 'up' : 'down');
+    setDropDirection(shouldDropUp ? "up" : "down");
     setDropdownStyle({
-      position: 'fixed',
+      position: "fixed",
       left,
       top,
       width: dropdownWidth,
@@ -326,11 +326,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   useEffect(() => {
     if (!open) return;
     updateDropdownPosition();
-    window.addEventListener('scroll', updateDropdownPosition, true);
-    window.addEventListener('resize', updateDropdownPosition);
+    window.addEventListener("scroll", updateDropdownPosition, true);
+    window.addEventListener("resize", updateDropdownPosition);
     return () => {
-      window.removeEventListener('scroll', updateDropdownPosition, true);
-      window.removeEventListener('resize', updateDropdownPosition);
+      window.removeEventListener("scroll", updateDropdownPosition, true);
+      window.removeEventListener("resize", updateDropdownPosition);
     };
   }, [open, updateDropdownPosition]);
 
@@ -341,7 +341,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       updateDropdownPosition();
     });
 
-    if (!portalRef.current || typeof ResizeObserver === 'undefined') {
+    if (!portalRef.current || typeof ResizeObserver === "undefined") {
       return () => {
         window.cancelAnimationFrame(frameId);
       };
@@ -372,12 +372,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       const target = e.target as Node;
       // 忽略触发器和 portal 下拉面板内的点击
       if (ref.current?.contains(target)) return;
-      const portal = document.querySelector('[data-date-picker-portal]');
+      const portal = document.querySelector("[data-date-picker-portal]");
       if (portal?.contains(target)) return;
       closeDropdown();
     };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, [open, closeDropdown]);
 
   // ─── 范围限制工具 ──────────────────────────────────
@@ -403,7 +403,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   // ─── 导航处理 ──────────────────────────────────────
 
-  const animateSlide = useCallback((direction: 'left' | 'right') => {
+  const animateSlide = useCallback((direction: "left" | "right") => {
     setSlideDirection(direction);
   }, []);
 
@@ -417,12 +417,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   // year-month 模式导航
   const prevYear = useCallback(() => {
     setViewYear((y) => y - 1);
-    animateSlide('right');
+    animateSlide("right");
   }, [animateSlide]);
 
   const nextYear = useCallback(() => {
     setViewYear((y) => y + 1);
-    animateSlide('left');
+    animateSlide("left");
   }, [animateSlide]);
 
   const prevYearRange = useCallback(() => {
@@ -485,7 +485,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   // 选中值解析（year-month 模式）
   const selectedValue = isMobile && open ? mobileDraftValue : value;
   const selectedMonth = useMemo(() => {
-    if (mode !== 'year-month' || !selectedValue) return null;
+    if (mode !== "year-month" || !selectedValue) return null;
     const p = parseDate(selectedValue);
     return p ? { year: p.year, month: p.month } : null;
   }, [mode, selectedValue]);
@@ -495,9 +495,9 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   return (
     <div
       ref={ref}
-      className={cn('relative', className)}
+      className={cn("relative", className)}
       onKeyDown={(event) => {
-        if (!open || event.key !== 'Escape') return;
+        if (!open || event.key !== "Escape") return;
         event.preventDefault();
         event.stopPropagation();
         closeDropdown();
@@ -520,12 +520,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         }}
         className={cn(
           `flex w-full cursor-pointer items-center border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] outline-none transition-all ${radiusTokens.control}`,
-          'hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)]',
+          "hover:border-[var(--lumen-color-border-hover)] focus:border-[var(--lumen-color-primary)]",
           open &&
             !isAnimatingOut &&
-            'border-[var(--lumen-color-primary)] ring-1 ring-[var(--lumen-color-primary)]/10',
+            "border-[var(--lumen-color-primary)] ring-1 ring-[var(--lumen-color-primary)]/10",
           tokens.trigger,
-          disabled && 'cursor-not-allowed opacity-50',
+          disabled && "cursor-not-allowed opacity-50",
         )}
       >
         {displayValue ? (
@@ -558,22 +558,22 @@ export const DatePicker: React.FC<DatePickerProps> = ({
               data-lumen-overlay-scope={overlayScopeId ?? undefined}
               className={cn(
                 isMobile
-                  ? 'contents'
-                  : 'overflow-y-auto rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-xl',
+                  ? "contents"
+                  : "overflow-y-auto rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-xl",
               )}
               style={isMobile ? undefined : {
                 ...dropdownStyle,
                 animation: isAnimatingOut
-                    ? dropDirection === 'up'
-                      ? 'lumen-dropdown-out-up 0.12s ease-in forwards'
-                      : 'lumen-dropdown-out 0.12s ease-in forwards'
-                    : dropDirection === 'up'
-                      ? 'lumen-dropdown-in-up 0.12s ease-out'
-                      : 'lumen-dropdown-in 0.12s ease-out',
-                transformOrigin: dropDirection === 'up' ? 'bottom' : 'top',
+                  ? dropDirection === "up"
+                    ? "lumen-dropdown-out-up 0.12s ease-in forwards"
+                    : "lumen-dropdown-out 0.12s ease-in forwards"
+                  : dropDirection === "up"
+                    ? "lumen-dropdown-in-up 0.12s ease-out"
+                    : "lumen-dropdown-in 0.12s ease-out",
+                transformOrigin: dropDirection === "up" ? "bottom" : "top",
               }}
             >
-              {mode === 'year-month-day' ? (
+              {mode === "year-month-day" ? (
                 <Calendar
                   value={selectedValue}
                   onChange={selectDate}
@@ -585,37 +585,37 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                 />
               ) : (
                 <MonthModeContent
-                tokens={tokens}
-                viewYear={viewYear}
-                showYearPicker={showYearPicker}
-                yearPickerStart={yearPickerStart}
-                canGoPrevYearRange={canGoPrevYearRange}
-                canGoNextYearRange={canGoNextYearRange}
-                selectedMonth={selectedMonth}
-                todayDate={todayDate}
-                slideDirection={slideDirection}
-                selectMonth={selectMonth}
-                selectYear={selectYear}
-                prevYear={prevYear}
-                nextYear={nextYear}
-                prevYearRange={prevYearRange}
-                nextYearRange={nextYearRange}
-                setShowYearPicker={setShowYearPicker}
-                onAnimationEnd={handleAnimationEnd}
-                showToday={showToday}
-                clearable={clearable}
-                onClear={() => {
-                  if (isMobile) setMobileDraftValue('');
-                  else {
-                    onChange('');
-                    closeDropdown();
+                  tokens={tokens}
+                  viewYear={viewYear}
+                  showYearPicker={showYearPicker}
+                  yearPickerStart={yearPickerStart}
+                  canGoPrevYearRange={canGoPrevYearRange}
+                  canGoNextYearRange={canGoNextYearRange}
+                  selectedMonth={selectedMonth}
+                  todayDate={todayDate}
+                  slideDirection={slideDirection}
+                  selectMonth={selectMonth}
+                  selectYear={selectYear}
+                  prevYear={prevYear}
+                  nextYear={nextYear}
+                  prevYearRange={prevYearRange}
+                  nextYearRange={nextYearRange}
+                  setShowYearPicker={setShowYearPicker}
+                  onAnimationEnd={handleAnimationEnd}
+                  showToday={showToday}
+                  clearable={clearable}
+                  onClear={() => {
+                    if (isMobile) setMobileDraftValue("");
+                    else {
+                      onChange("");
+                      closeDropdown();
+                    }
+                  }}
+                  onSelectToday={() =>
+                    selectMonth(todayDate.year, todayDate.month)
                   }
-                }}
-                onSelectToday={() =>
-                  selectMonth(todayDate.year, todayDate.month)
-                }
-                isMonthDisabled={isMonthDisabled}
-                isYearDisabled={isYearDisabled}
+                  isMonthDisabled={isMonthDisabled}
+                  isYearDisabled={isYearDisabled}
                 />
               )}
               {isMobile ? (
@@ -658,7 +658,7 @@ interface MonthModeContentProps {
   canGoNextYearRange: boolean;
   selectedMonth: { year: number; month: number } | null;
   todayDate: { year: number; month: number; day: number };
-  slideDirection: 'left' | 'right' | null;
+  slideDirection: "left" | "right" | null;
   selectMonth: (year: number, month: number) => void;
   selectYear: (year: number) => void;
   prevYear: () => void;
@@ -702,184 +702,184 @@ const MonthModeContent: React.FC<MonthModeContentProps> = ({
 }) => {
   const locale = useLumenLocale();
   return (
-  <>
-    <div className={cn(tokens.dropdown, 'pb-0')}>
-      {showYearPicker ? (
+    <>
+      <div className={cn(tokens.dropdown, "pb-0")}>
+        {showYearPicker ? (
         // ─── 年份选择器 ──────────────────────────
-        <>
-          <div className="mb-3 flex items-center justify-between">
-            <button
-              type="button"
-              disabled={!canGoPrevYearRange}
-              onClick={prevYearRange}
-              className={cn(
-                pickerIconButtonClassName,
-                !canGoPrevYearRange && 'opacity-40',
-              )}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <span className={cn(tokens.header, 'font-semibold text-[var(--lumen-color-text)]')}>
-              {yearPickerStart} - {yearPickerStart + 19}
-            </span>
-            <button
-              type="button"
-              disabled={!canGoNextYearRange}
-              onClick={nextYearRange}
-              className={cn(
-                pickerIconButtonClassName,
-                !canGoNextYearRange && 'opacity-40',
-              )}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-          <div className="grid grid-cols-5 gap-1 text-center">
-            {Array.from({ length: 20 }, (_, i) => yearPickerStart + i).map(
-              (y) => {
-                const disabled = isYearDisabled(y);
-                const isCurrent = y === todayDate.year;
-                const isSelected = y === viewYear;
-                return (
-                  <button
-                    key={y}
-                    type="button"
-                    disabled={disabled}
-                    onClick={() => selectYear(y)}
-                    className={cn(
-                      'mx-auto flex h-10 w-12 items-center justify-center rounded-full text-[13px] transition-all',
-                      pickerOptionFocusClassName,
-                      isSelected &&
-                        'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
-                      !isSelected &&
-                        isCurrent &&
-                        'font-semibold text-[var(--lumen-color-primary)]',
-                      !isSelected &&
-                        !isCurrent &&
-                        !disabled &&
-                        'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)]',
-                      disabled && 'cursor-not-allowed text-[var(--lumen-color-border-hover)]',
-                    )}
-                  >
-                    {y}
-                  </button>
-                );
-              },
-            )}
-          </div>
-        </>
-      ) : (
-        // ─── 月份选择器 ──────────────────────────
-        <>
-          <div className="mb-3 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={prevYear}
-              className={pickerIconButtonClassName}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowYearPicker(true)}
-              className={cn(
-                tokens.header,
-                pickerHeaderButtonClassName,
-              )}
-            >
-              {locale.calendar.year(viewYear)}
-            </button>
-            <button
-              type="button"
-              onClick={nextYear}
-              className={pickerIconButtonClassName}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-          <div className="overflow-hidden">
-            <div
-              onAnimationEnd={onAnimationEnd}
-              style={
-                slideDirection === 'left'
-                  ? { animation: 'calendarSlideLeft 0.2s ease-out' }
-                  : slideDirection === 'right'
-                    ? { animation: 'calendarSlideRight 0.2s ease-out' }
-                    : undefined
-              }
-            >
-              <div className="grid grid-cols-4 gap-2">
-                {locale.calendar.months.map((label, idx) => {
-                  const isSelected =
-                    selectedMonth?.year === viewYear &&
-                    selectedMonth?.month === idx;
-                  const isCurrent =
-                    viewYear === todayDate.year && idx === todayDate.month;
-                  const disabled = isMonthDisabled(viewYear, idx);
+          <>
+            <div className="mb-3 flex items-center justify-between">
+              <button
+                type="button"
+                disabled={!canGoPrevYearRange}
+                onClick={prevYearRange}
+                className={cn(
+                  pickerIconButtonClassName,
+                  !canGoPrevYearRange && "opacity-40",
+                )}
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <span className={cn(tokens.header, "font-semibold text-[var(--lumen-color-text)]")}>
+                {yearPickerStart} - {yearPickerStart + 19}
+              </span>
+              <button
+                type="button"
+                disabled={!canGoNextYearRange}
+                onClick={nextYearRange}
+                className={cn(
+                  pickerIconButtonClassName,
+                  !canGoNextYearRange && "opacity-40",
+                )}
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+            <div className="grid grid-cols-5 gap-1 text-center">
+              {Array.from({ length: 20 }, (_, i) => yearPickerStart + i).map(
+                (y) => {
+                  const disabled = isYearDisabled(y);
+                  const isCurrent = y === todayDate.year;
+                  const isSelected = y === viewYear;
                   return (
                     <button
-                      key={idx}
+                      key={y}
                       type="button"
                       disabled={disabled}
-                      onClick={() => selectMonth(viewYear, idx)}
+                      onClick={() => selectYear(y)}
                       className={cn(
-                        'relative mx-auto flex h-10 w-10 items-center justify-center rounded-full text-[13px] transition-all',
+                        "mx-auto flex h-10 w-12 items-center justify-center rounded-full text-[13px] transition-all",
                         pickerOptionFocusClassName,
                         isSelected &&
-                          'bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm',
+                        "bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm",
                         !isSelected &&
-                          isCurrent &&
-                          'font-semibold text-[var(--lumen-color-primary)]',
+                        isCurrent &&
+                        "font-semibold text-[var(--lumen-color-primary)]",
                         !isSelected &&
-                          !isCurrent &&
-                          !disabled &&
-                          'text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]',
-                        disabled && 'cursor-not-allowed text-[var(--lumen-color-border-hover)]',
+                        !isCurrent &&
+                        !disabled &&
+                        "text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)]",
+                        disabled && "cursor-not-allowed text-[var(--lumen-color-border-hover)]",
                       )}
                     >
-                      {label}
-                      {isCurrent && !isSelected && (
-                        <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[var(--lumen-color-primary)]" />
-                      )}
+                      {y}
                     </button>
                   );
-                })}
+                },
+              )}
+            </div>
+          </>
+        ) : (
+        // ─── 月份选择器 ──────────────────────────
+          <>
+            <div className="mb-3 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={prevYear}
+                className={pickerIconButtonClassName}
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowYearPicker(true)}
+                className={cn(
+                  tokens.header,
+                  pickerHeaderButtonClassName,
+                )}
+              >
+                {locale.calendar.year(viewYear)}
+              </button>
+              <button
+                type="button"
+                onClick={nextYear}
+                className={pickerIconButtonClassName}
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+            <div className="overflow-hidden">
+              <div
+                onAnimationEnd={onAnimationEnd}
+                style={
+                  slideDirection === "left"
+                    ? { animation: "calendarSlideLeft 0.2s ease-out" }
+                    : slideDirection === "right"
+                      ? { animation: "calendarSlideRight 0.2s ease-out" }
+                      : undefined
+                }
+              >
+                <div className="grid grid-cols-4 gap-2">
+                  {locale.calendar.months.map((label, idx) => {
+                    const isSelected =
+                      selectedMonth?.year === viewYear &&
+                    selectedMonth?.month === idx;
+                    const isCurrent =
+                      viewYear === todayDate.year && idx === todayDate.month;
+                    const disabled = isMonthDisabled(viewYear, idx);
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        disabled={disabled}
+                        onClick={() => selectMonth(viewYear, idx)}
+                        className={cn(
+                          "relative mx-auto flex h-10 w-10 items-center justify-center rounded-full text-[13px] transition-all",
+                          pickerOptionFocusClassName,
+                          isSelected &&
+                          "bg-[var(--lumen-color-primary)] font-medium text-[var(--lumen-color-on-primary)] shadow-sm",
+                          !isSelected &&
+                          isCurrent &&
+                          "font-semibold text-[var(--lumen-color-primary)]",
+                          !isSelected &&
+                          !isCurrent &&
+                          !disabled &&
+                          "text-[var(--lumen-color-text-secondary)] hover:bg-[var(--lumen-color-primary-soft)] hover:text-[var(--lumen-color-primary)]",
+                          disabled && "cursor-not-allowed text-[var(--lumen-color-border-hover)]",
+                        )}
+                      >
+                        {label}
+                        {isCurrent && !isSelected && (
+                          <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[var(--lumen-color-primary)]" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </div>
-        </>
-      )}
-    </div>
-
-    {/* 底部操作 */}
-    {(showToday || (clearable && selectedMonth)) && (
-      <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-4 py-3">
-        {showToday && (
-          <button
-            type="button"
-            onClick={onSelectToday}
-            className={cn(
-              tokens.footer,
-              'font-medium text-[var(--lumen-color-primary)] hover:text-[var(--lumen-color-primary-active)] transition-colors',
-            )}
-          >
-            {locale.common.today}
-          </button>
-        )}
-        {clearable && selectedMonth && (
-          <button
-            type="button"
-            onClick={onClear}
-            className={cn(
-              tokens.footer,
-              'text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)] transition-colors ml-auto',
-            )}
-          >
-            {locale.common.clear}
-          </button>
+          </>
         )}
       </div>
-    )}
-  </>
+
+      {/* 底部操作 */}
+      {(showToday || (clearable && selectedMonth)) && (
+        <div className="flex items-center justify-between border-t border-[var(--lumen-color-surface-muted)] px-4 py-3">
+          {showToday && (
+            <button
+              type="button"
+              onClick={onSelectToday}
+              className={cn(
+                tokens.footer,
+                "font-medium text-[var(--lumen-color-primary)] hover:text-[var(--lumen-color-primary-active)] transition-colors",
+              )}
+            >
+              {locale.common.today}
+            </button>
+          )}
+          {clearable && selectedMonth && (
+            <button
+              type="button"
+              onClick={onClear}
+              className={cn(
+                tokens.footer,
+                "text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)] transition-colors ml-auto",
+              )}
+            >
+              {locale.common.clear}
+            </button>
+          )}
+        </div>
+      )}
+    </>
   );
 };

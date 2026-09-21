@@ -1,10 +1,10 @@
-import React, { useEffect, useId, useRef, useState } from 'react';
-import { Check, Minus } from 'lucide-react';
-import { cn } from './classNames';
+import React, { useEffect, useId, useRef, useState } from "react";
+import { Check, Minus } from "lucide-react";
+import { cn } from "./classNames";
 
 export interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type' | 'onChange'> {
-  size?: 'sm' | 'md' | 'lg';
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "type" | "onChange"> {
+  size?: "sm" | "md" | "lg";
   checked?: boolean;
   defaultChecked?: boolean;
   disabled?: boolean;
@@ -15,7 +15,7 @@ export interface CheckboxProps
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({
-  size = 'md',
+  size = "md",
   checked,
   defaultChecked = false,
   disabled = false,
@@ -32,15 +32,15 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   const inputId = id ?? generatedId;
   const labelId = `${inputId}-label`;
   const descriptionId = `${inputId}-description`;
-  const isControlled = typeof checked === 'boolean';
+  const isControlled = typeof checked === "boolean";
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const currentChecked = isControlled ? checked : internalChecked;
-  const isSmall = size === 'sm';
-  const controlSize = size === 'sm' ? 'h-3.5 w-3.5' : size === 'lg' ? 'h-[18px] w-[18px]' : 'h-4 w-4';
-  const indicatorRadius = size === 'sm' ? 'rounded-[3px]' : size === 'lg' ? 'rounded-[5px]' : 'rounded-[4px]';
-  const iconSize = size === 'sm' ? 9 : size === 'lg' ? 13 : 11;
+  const isSmall = size === "sm";
+  const controlSize = size === "sm" ? "h-3.5 w-3.5" : size === "lg" ? "h-[18px] w-[18px]" : "h-4 w-4";
+  const indicatorRadius = size === "sm" ? "rounded-[3px]" : size === "lg" ? "rounded-[5px]" : "rounded-[4px]";
+  const iconSize = size === "sm" ? 9 : size === "lg" ? 13 : 11;
   const hasDescription = Boolean(description);
-  const explicitAriaLabel = props['aria-label'];
+  const explicitAriaLabel = props["aria-label"];
 
   useEffect(() => {
     if (inputRef.current) {
@@ -63,17 +63,17 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     <label
       htmlFor={inputId}
       className={cn(
-        'inline-flex gap-3 py-1.5',
-        hasDescription ? 'items-start' : 'items-center',
-        isSmall && 'gap-2',
-        disabled ? 'cursor-not-allowed opacity-55' : 'cursor-pointer',
+        "inline-flex gap-3 py-1.5",
+        hasDescription ? "items-start" : "items-center",
+        isSmall && "gap-2",
+        disabled ? "cursor-not-allowed opacity-55" : "cursor-pointer",
         className,
       )}
     >
       <span
         className={cn(
-          'relative inline-flex shrink-0 items-center justify-center',
-          hasDescription && 'mt-0.5',
+          "relative inline-flex shrink-0 items-center justify-center",
+          hasDescription && "mt-0.5",
           controlSize,
         )}
       >
@@ -86,22 +86,22 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           disabled={disabled}
           aria-labelledby={!explicitAriaLabel && label ? labelId : undefined}
           aria-describedby={description ? descriptionId : undefined}
-          aria-label={explicitAriaLabel ?? (typeof label === 'string' ? label : undefined)}
-          aria-checked={indeterminate ? 'mixed' : currentChecked}
+          aria-label={explicitAriaLabel ?? (typeof label === "string" ? label : undefined)}
+          aria-checked={indeterminate ? "mixed" : currentChecked}
           className="peer sr-only"
           onChange={handleChange}
         />
         <span
           aria-hidden="true"
           className={cn(
-            'flex items-center justify-center border transition-all',
+            "flex items-center justify-center border transition-all",
             controlSize,
             indicatorRadius,
             indicatorVisible
-              ? 'border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]'
-              : 'border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_60%,var(--lumen-color-surface))] bg-[var(--lumen-color-surface)] text-transparent',
-            !disabled && 'peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--lumen-color-info-border)]/70 peer-focus-visible:ring-offset-2',
-            !disabled && !indicatorVisible && 'hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)]',
+              ? "border-[var(--lumen-color-primary)] bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)] shadow-[0_8px_18px_var(--lumen-color-focus-ring)]"
+              : "border-[color-mix(in_srgb,var(--lumen-color-text-placeholder)_60%,var(--lumen-color-surface))] bg-[var(--lumen-color-surface)] text-transparent",
+            !disabled && "peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--lumen-color-info-border)]/70 peer-focus-visible:ring-offset-2",
+            !disabled && !indicatorVisible && "hover:border-[var(--lumen-color-info-border)] hover:bg-[var(--lumen-color-surface-hover)]",
           )}
         >
           {indeterminate ? (
@@ -117,9 +117,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             <span
               id={labelId}
               className={cn(
-                'block font-normal',
-                'text-[var(--lumen-color-text)]',
-                'text-[14px] leading-5',
+                "block font-normal",
+                "text-[var(--lumen-color-text)]",
+                "text-[14px] leading-5",
               )}
             >
               {label}
@@ -129,8 +129,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             <span
               id={descriptionId}
               className={cn(
-                'mt-0.5 block text-[var(--lumen-color-text-muted)]',
-                isSmall ? 'text-[12px] leading-4.5' : 'text-[12px] leading-5',
+                "mt-0.5 block text-[var(--lumen-color-text-muted)]",
+                isSmall ? "text-[12px] leading-4.5" : "text-[12px] leading-5",
               )}
             >
               {description}

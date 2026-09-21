@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { cn } from './classNames';
+import React, { useEffect, useRef } from "react";
+import { cn } from "./classNames";
 import {
   tabVariantClassNames,
-} from './designTokens';
-import type { LucideIcon } from 'lucide-react';
+} from "./designTokens";
+import type { LucideIcon } from "lucide-react";
 
 export interface TabOption<T extends string> {
   value: T;
@@ -30,10 +30,10 @@ export const Tabs = <T extends string>({
   value,
   options,
   onChange,
-  variant = 'default',
-  className = '',
+  variant = "default",
+  className = "",
   gridClassName,
-  itemClassName = '',
+  itemClassName = "",
   aside,
   idPrefix,
 }: TabsProps<T>) => {
@@ -42,9 +42,9 @@ export const Tabs = <T extends string>({
   const styles = tabVariantClassNames[variant];
   const resolvedGridClassName =
     gridClassName ??
-    (variant === 'card'
-      ? 'grid grid-cols-1 gap-2 pad:grid-cols-2 l:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 xxxl:grid-cols-6'
-      : 'flex items-center gap-2 overflow-x-auto overflow-y-hidden');
+    (variant === "card"
+      ? "grid grid-cols-1 gap-2 pad:grid-cols-2 l:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 xxxl:grid-cols-6"
+      : "flex items-center gap-2 overflow-x-auto overflow-y-hidden");
 
   useEffect(() => {
     const tabList = tabListRef.current;
@@ -63,22 +63,22 @@ export const Tabs = <T extends string>({
     }
     if (delta === 0) return;
 
-    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     tabList.scrollTo({
       left: tabList.scrollLeft + delta,
-      behavior: reducedMotion ? 'auto' : 'smooth',
+      behavior: reducedMotion ? "auto" : "smooth",
     });
   }, [value]);
 
   return (
     <div data-ui="tabs-surface" className={cn(styles.container, className)}>
-      <div className={cn('flex flex-col gap-3 pad:gap-4 l:flex-row l:items-center l:justify-between')}>
+      <div className={cn("flex flex-col gap-3 pad:gap-4 l:flex-row l:items-center l:justify-between")}>
         <div
           ref={tabListRef}
           role="tablist"
           tabIndex={-1}
           data-testid="tabs-grid"
-          className={cn(resolvedGridClassName, aside ? 'min-w-0 flex-1' : '')}
+          className={cn(resolvedGridClassName, aside ? "min-w-0 flex-1" : "")}
         >
           {options.map((option) => {
             const active = option.value === value;
@@ -102,9 +102,9 @@ export const Tabs = <T extends string>({
                 className={cn(
                   styles.base,
                   active ? styles.active : styles.inactive,
-                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)] focus-visible:bg-[var(--lumen-color-primary-soft)]',
-                  variant === 'default' ? 'rounded-[8px]' : '',
-                  option.disabled ? 'cursor-not-allowed opacity-45 hover:translate-y-0' : '',
+                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)] focus-visible:bg-[var(--lumen-color-primary-soft)]",
+                  variant === "default" ? "rounded-[8px]" : "",
+                  option.disabled ? "cursor-not-allowed opacity-45 hover:translate-y-0" : "",
                   itemClassName,
                 )}
               >
@@ -117,7 +117,7 @@ export const Tabs = <T extends string>({
                     <Icon size={14} className="shrink-0" />
                   )
                 ) : null}
-                <span className={styles.iconBase ? 'leading-none' : undefined}>{option.label}</span>
+                <span className={styles.iconBase ? "leading-none" : undefined}>{option.label}</span>
                 {option.count !== undefined && option.count !== null ? (
                   <span
                     className={cn(

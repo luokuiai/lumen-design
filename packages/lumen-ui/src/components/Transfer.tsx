@@ -1,16 +1,16 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState } from "react";
 import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   ChevronUp,
   Search,
-} from 'lucide-react';
-import { Button } from './Button';
-import { Checkbox } from './Checkbox';
-import { Input } from './Input';
-import { cn } from './classNames';
-import { useLumenLocale } from '../i18n';
+} from "lucide-react";
+import { Button } from "./Button";
+import { Checkbox } from "./Checkbox";
+import { Input } from "./Input";
+import { cn } from "./classNames";
+import { useLumenLocale } from "../i18n";
 
 export interface TransferItem {
   key: React.Key;
@@ -35,7 +35,7 @@ export interface TransferProps {
 }
 
 const defaultFilterOption = (query: string, item: TransferItem) =>
-  `${item.label} ${typeof item.description === 'string' ? item.description : ''}`
+  `${item.label} ${typeof item.description === "string" ? item.description : ""}`
     .toLowerCase()
     .includes(query.toLowerCase());
 
@@ -58,8 +58,8 @@ export const Transfer: React.FC<TransferProps> = ({
   const targetTitle = targetTitleProp === undefined ? locale.transfer.targetTitle : targetTitleProp;
   const searchPlaceholder = searchPlaceholderProp ?? locale.transfer.searchPlaceholder;
   const emptyText = emptyTextProp === undefined ? locale.transfer.emptyText : emptyTextProp;
-  const [sourceQuery, setSourceQuery] = useState('');
-  const [targetQuery, setTargetQuery] = useState('');
+  const [sourceQuery, setSourceQuery] = useState("");
+  const [targetQuery, setTargetQuery] = useState("");
   const [selectedSourceKeys, setSelectedSourceKeys] = useState<React.Key[]>([]);
   const [selectedTargetKeys, setSelectedTargetKeys] = useState<React.Key[]>([]);
   const targetKeySet = useMemo(() => new Set(targetKeys), [targetKeys]);
@@ -117,7 +117,7 @@ export const Transfer: React.FC<TransferProps> = ({
     selectedKeys: React.Key[];
     selectedSet: Set<React.Key>;
     setSelectedKeys: React.Dispatch<React.SetStateAction<React.Key[]>>;
-    side: 'source' | 'target';
+    side: "source" | "target";
   }) => {
     const selectableItems = panelItems.filter((item) => !item.disabled);
     const selectedVisibleCount = selectableItems.filter((item) => selectedSet.has(item.key)).length;
@@ -196,7 +196,7 @@ export const Transfer: React.FC<TransferProps> = ({
     <div
       data-ui="transfer"
       className={cn(
-        'grid min-w-0 grid-cols-1 gap-3 pad:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] pad:items-center l:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] l:items-center',
+        "grid min-w-0 grid-cols-1 gap-3 pad:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] pad:items-center l:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] l:items-center",
         className,
       )}
     >
@@ -208,7 +208,7 @@ export const Transfer: React.FC<TransferProps> = ({
         selectedKeys: selectedSourceKeys,
         selectedSet: selectedSourceSet,
         setSelectedKeys: setSelectedSourceKeys,
-        side: 'source',
+        side: "source",
       })}
       <div className="flex justify-center gap-2 pad:flex-col l:flex-col">
         <Button
@@ -255,7 +255,7 @@ export const Transfer: React.FC<TransferProps> = ({
         selectedKeys: selectedTargetKeys,
         selectedSet: selectedTargetSet,
         setSelectedKeys: setSelectedTargetKeys,
-        side: 'target',
+        side: "target",
       })}
     </div>
   );

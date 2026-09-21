@@ -1,9 +1,9 @@
-import { Search } from 'lucide-react';
-import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { Dialog } from '../Dialog';
-import { Scrollbar } from '../Scrollbar';
-import { cn } from '../classNames';
-import { useLumenLocale } from '../../i18n';
+import { Search } from "lucide-react";
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { Dialog } from "../Dialog";
+import { Scrollbar } from "../Scrollbar";
+import { cn } from "../classNames";
+import { useLumenLocale } from "../../i18n";
 
 export interface CommandPaletteItem {
   id: string;
@@ -55,7 +55,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   closeOnSelect = true,
   loop = true,
   enableShortcut = false,
-  shortcutKey = 'k',
+  shortcutKey = "k",
   className,
 }) => {
   const locale = useLumenLocale();
@@ -63,7 +63,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   const placeholder = placeholderProp ?? locale.commandPalette.placeholder;
   const emptyText = emptyTextProp === undefined ? locale.commandPalette.emptyText : emptyTextProp;
   const loadingText = loadingTextProp ?? locale.commandPalette.loadingText;
-  const [internalSearchValue, setInternalSearchValue] = useState('');
+  const [internalSearchValue, setInternalSearchValue] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -87,7 +87,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       .map((group) => ({
         ...group,
         items: group.items.filter((item) =>
-          normalize([item.label, item.description, ...(item.keywords ?? [])].filter(Boolean).join(' '))
+          normalize([item.label, item.description, ...(item.keywords ?? [])].filter(Boolean).join(" "))
             .includes(query),
         ),
       }))
@@ -98,7 +98,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     () => filteredGroups.flatMap((group) => group.items),
     [filteredGroups],
   );
-  const visibleItemsKey = visibleItems.map((item) => `${item.id}:${item.disabled ? 1 : 0}`).join('|');
+  const visibleItemsKey = visibleItems.map((item) => `${item.id}:${item.disabled ? 1 : 0}`).join("|");
   const firstEnabledIndex = visibleItems.findIndex((item) => !item.disabled);
 
   useEffect(() => {
@@ -109,7 +109,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     const activeOption = panelRef.current?.querySelector<HTMLElement>(
       '[role="option"][aria-selected="true"]',
     );
-    activeOption?.scrollIntoView?.({ block: 'nearest' });
+    activeOption?.scrollIntoView?.({ block: "nearest" });
   }, [activeIndex]);
 
   useEffect(() => {
@@ -120,8 +120,8 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         onOpenChange(!open);
       }
     };
-    document.addEventListener('keydown', handleShortcut);
-    return () => document.removeEventListener('keydown', handleShortcut);
+    document.addEventListener("keydown", handleShortcut);
+    return () => document.removeEventListener("keydown", handleShortcut);
   }, [enableShortcut, onOpenChange, open, shortcutKey]);
 
   const selectItem = useCallback(
@@ -151,13 +151,13 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   );
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'ArrowDown') {
+    if (event.key === "ArrowDown") {
       event.preventDefault();
       moveActiveItem(1);
-    } else if (event.key === 'ArrowUp') {
+    } else if (event.key === "ArrowUp") {
       event.preventDefault();
       moveActiveItem(-1);
-    } else if (event.key === 'Enter') {
+    } else if (event.key === "Enter") {
       const activeItem = visibleItems[activeIndex];
       if (activeItem && !activeItem.disabled) {
         event.preventDefault();
@@ -183,7 +183,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         ref={panelRef}
         data-ui="command-palette"
         className={cn(
-          'isolate w-full overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] shadow-[var(--lumen-shadow-dialog)]',
+          "isolate w-full overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] text-[var(--lumen-color-text)] shadow-[var(--lumen-shadow-dialog)]",
           className,
         )}
         onKeyDown={(event) => handleKeyDown(event as React.KeyboardEvent<HTMLInputElement>)}
@@ -243,11 +243,11 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                       aria-selected={selected}
                       disabled={item.disabled}
                       className={cn(
-                        'flex min-h-10 w-full items-center gap-3 rounded-[6px] px-3 py-2 text-left outline-none transition-colors',
-                        selected && 'bg-[var(--lumen-color-surface-hover)]',
+                        "flex min-h-10 w-full items-center gap-3 rounded-[6px] px-3 py-2 text-left outline-none transition-colors",
+                        selected && "bg-[var(--lumen-color-surface-hover)]",
                         item.disabled
-                          ? 'cursor-not-allowed opacity-45'
-                          : 'cursor-pointer hover:bg-[var(--lumen-color-surface-hover)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/30',
+                          ? "cursor-not-allowed opacity-45"
+                          : "cursor-pointer hover:bg-[var(--lumen-color-surface-hover)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/30",
                       )}
                       onMouseEnter={() => setActiveIndex(currentIndex)}
                       onClick={() => selectItem(item)}

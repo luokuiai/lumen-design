@@ -1,19 +1,19 @@
-import type { SVGAttributes } from 'react';
+import type { SVGAttributes } from "react";
 
 export type FileTypeIconCategory =
-  | 'pdf'
-  | 'document'
-  | 'spreadsheet'
-  | 'presentation'
-  | 'image'
-  | 'video'
-  | 'audio'
-  | 'archive'
-  | 'text'
-  | 'app'
-  | 'bin';
+  | "pdf"
+  | "document"
+  | "spreadsheet"
+  | "presentation"
+  | "image"
+  | "video"
+  | "audio"
+  | "archive"
+  | "text"
+  | "app"
+  | "bin";
 
-export type FileTypeIconSize = 'sm' | 'md' | 'lg';
+export type FileTypeIconSize = "sm" | "md" | "lg";
 
 export interface FileTypeIconSource {
   fileName?: string;
@@ -28,8 +28,8 @@ export interface ResolvedFileType {
 }
 
 export interface FileTypeIconProps
-  extends Omit<SVGAttributes<SVGSVGElement>, 'children'>,
-    FileTypeIconSource {
+  extends Omit<SVGAttributes<SVGSVGElement>, "children">,
+  FileTypeIconSource {
   category?: FileTypeIconCategory;
   label?: string;
   size?: FileTypeIconSize;

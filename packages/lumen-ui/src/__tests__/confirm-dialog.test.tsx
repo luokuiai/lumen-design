@@ -1,10 +1,10 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import { ConfirmDialog } from '../components/ConfirmDialog';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 
-describe('ConfirmDialog', () => {
-  it('uses its desktop width and keeps actions aligned on every viewport', () => {
+describe("ConfirmDialog", () => {
+  it("uses its desktop width and keeps actions aligned on every viewport", () => {
     render(
       <ConfirmDialog
         open
@@ -16,20 +16,20 @@ describe('ConfirmDialog', () => {
     );
 
     const panel = document.querySelector('[data-dialog="confirm-dialog"]');
-    const actions = document.querySelector('[data-dialog-footer]');
-    expect(screen.getByText('Confirm action')).toHaveClass(
-      'text-[16px]',
-      'font-semibold',
-      'leading-6',
+    const actions = document.querySelector("[data-dialog-footer]");
+    expect(screen.getByText("Confirm action")).toHaveClass(
+      "text-[16px]",
+      "font-semibold",
+      "leading-6",
     );
-    expect(panel).toHaveClass('max-w-[420px]');
-    expect(panel).not.toHaveClass('max-w-full');
+    expect(panel).toHaveClass("max-w-[420px]");
+    expect(panel).not.toHaveClass("max-w-full");
     expect(actions?.parentElement).toBe(panel);
-    expect(actions).toContainElement(screen.getByRole('button', { name: '确认' }));
-    expect(actions).toContainElement(screen.getByRole('button', { name: '取消' }));
-    expect(panel?.querySelector('[data-dialog-body]')).toBeNull();
-    const dialog = screen.getByRole('alertdialog', { name: 'Confirm action' });
-    expect(dialog).toHaveAccessibleDescription('This action cannot be undone.');
-    expect(dialog).toHaveAttribute('aria-modal', 'true');
+    expect(actions).toContainElement(screen.getByRole("button", { name: "确认" }));
+    expect(actions).toContainElement(screen.getByRole("button", { name: "取消" }));
+    expect(panel?.querySelector("[data-dialog-body]")).toBeNull();
+    const dialog = screen.getByRole("alertdialog", { name: "Confirm action" });
+    expect(dialog).toHaveAccessibleDescription("This action cannot be undone.");
+    expect(dialog).toHaveAttribute("aria-modal", "true");
   });
 });

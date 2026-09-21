@@ -1,8 +1,8 @@
-import React from 'react';
-import { cn } from './classNames';
-import { radiusTokens } from './designTokens';
+import React from "react";
+import { cn } from "./classNames";
+import { radiusTokens } from "./designTokens";
 
-export type SegmentedControlSize = 'sm' | 'md';
+export type SegmentedControlSize = "sm" | "md";
 
 export interface SegmentedControlOption<T extends string> {
   label: React.ReactNode;
@@ -11,7 +11,7 @@ export interface SegmentedControlOption<T extends string> {
 }
 
 export interface SegmentedControlProps<T extends string>
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   value: T;
   options: Array<SegmentedControlOption<T>>;
   onChange: (value: T) => void;
@@ -20,23 +20,23 @@ export interface SegmentedControlProps<T extends string>
 }
 
 const rootSizeClasses: Record<SegmentedControlSize, string> = {
-  sm: 'h-[var(--lumen-control-height-sm)]',
-  md: 'h-[var(--lumen-control-height-md)]',
+  sm: "h-[var(--lumen-control-height-sm)]",
+  md: "h-[var(--lumen-control-height-md)]",
 };
 
 const itemSizeClasses: Record<SegmentedControlSize, string> = {
-  sm: 'px-3 text-[13px]',
-  md: 'px-4 text-[14px]',
+  sm: "px-3 text-[13px]",
+  md: "px-4 text-[14px]",
 };
 
 export const SegmentedControl = <T extends string>({
   value,
   options,
   onChange,
-  size = 'md',
+  size = "md",
   fullWidth = false,
   className,
-  role = 'group',
+  role = "group",
   ...props
 }: SegmentedControlProps<T>) => (
   <div
@@ -45,10 +45,10 @@ export const SegmentedControl = <T extends string>({
     data-ui="segmented-control"
     data-size={size}
     className={cn(
-      'inline-flex max-w-full gap-1 border border-[var(--lumen-color-border)]/80 bg-[var(--lumen-color-surface-glass)] p-1 backdrop-blur-[5px]',
+      "inline-flex max-w-full gap-1 border border-[var(--lumen-color-border)]/80 bg-[var(--lumen-color-surface-glass)] p-1 backdrop-blur-[5px]",
       radiusTokens.control,
       rootSizeClasses[size],
-      fullWidth && 'flex w-full',
+      fullWidth && "flex w-full",
       className,
     )}
   >
@@ -62,12 +62,12 @@ export const SegmentedControl = <T extends string>({
           disabled={option.disabled}
           onClick={() => onChange(option.value)}
           className={cn(
-            'inline-flex h-full min-w-0 items-center justify-center whitespace-nowrap rounded-[5px] font-normal transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-45',
+            "inline-flex h-full min-w-0 items-center justify-center whitespace-nowrap rounded-[5px] font-normal transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lumen-color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-45",
             itemSizeClasses[size],
-            fullWidth && 'flex-1',
+            fullWidth && "flex-1",
             active
-              ? 'bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)]'
-              : 'text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text)]',
+              ? "bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)]"
+              : "text-[var(--lumen-color-text-muted)] hover:bg-[var(--lumen-color-surface-muted)] hover:text-[var(--lumen-color-text)]",
           )}
         >
           {option.label}

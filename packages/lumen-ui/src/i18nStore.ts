@@ -1,4 +1,4 @@
-import type { LumenLocale } from './i18n';
+import type { LumenLocale } from "./i18n";
 
 let activeLocale: LumenLocale | undefined;
 

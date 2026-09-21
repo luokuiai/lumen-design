@@ -1,7 +1,7 @@
 {
   "name": "@luokuiai/lumen-playground",
   "private": true,
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.9",
   "type": "module",
   "scripts": {
     "build": "bun run generate:examples && vite build",
@@ -25,6 +25,6 @@
     "@tailwindcss/vite": "^4.1.4",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",
-    "vite": "^6.4.3"
+    "vite": "^7.3.6"
   }
 }

@@ -1,14 +1,14 @@
-import React from 'react';
-import { cn } from '../classNames';
-import type { ScrollbarProps } from '../Scrollbar';
+import React from "react";
+import { cn } from "../classNames";
+import type { ScrollbarProps } from "../Scrollbar";
 
-type Axis = 'x' | 'y';
+type Axis = "x" | "y";
 type Metrics = { width: number; height: number; scrollWidth: number; scrollHeight: number; left: number; top: number };
 const emptyMetrics: Metrics = { width: 0, height: 0, scrollWidth: 0, scrollHeight: 0, left: 0, top: 0 };
 
 /** Keep the forwarded ref and DOM events on the actual scroll viewport. */
 export const OuterScrollbar = React.forwardRef<HTMLDivElement, ScrollbarProps>(
-  ({ orientation = 'vertical', size = 'md', autoHide = false, className, style, children, tabIndex = -1, onScroll, ...props }, ref) => {
+  ({ orientation = "vertical", size = "md", autoHide = false, className, style, children, tabIndex = -1, onScroll, ...props }, ref) => {
     const viewportRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
     const drag = React.useRef<{ axis: Axis; start: number; scroll: number; ratio: number } | null>(null);
@@ -28,15 +28,15 @@ export const OuterScrollbar = React.forwardRef<HTMLDivElement, ScrollbarProps>(
 
     React.useLayoutEffect(() => {
       measure();
-      const observer = typeof ResizeObserver === 'undefined' ? undefined : new ResizeObserver(measure);
+      const observer = typeof ResizeObserver === "undefined" ? undefined : new ResizeObserver(measure);
       if (viewportRef.current) observer?.observe(viewportRef.current);
       if (contentRef.current) observer?.observe(contentRef.current);
-      window.addEventListener('resize', measure);
-      return () => { observer?.disconnect(); window.removeEventListener('resize', measure); };
+      window.addEventListener("resize", measure);
+      return () => { observer?.disconnect(); window.removeEventListener("resize", measure); };
     }, [children, orientation, measure]);
 
     const renderTrack = (axis: Axis) => {
-      const vertical = axis === 'y';
+      const vertical = axis === "y";
       const extent = vertical ? metrics.height : metrics.width;
       const total = vertical ? metrics.scrollHeight : metrics.scrollWidth;
       const position = vertical ? metrics.top : metrics.left;
@@ -92,7 +92,7 @@ export const OuterScrollbar = React.forwardRef<HTMLDivElement, ScrollbarProps>(
     };
 
     return (
-      <div className={cn('lumen-scrollbar lumen-scrollbar-outer', className)} style={style} data-ui="scrollbar-shell" data-orientation={orientation} data-size={size} data-auto-hide={autoHide || undefined}>
+      <div className={cn("lumen-scrollbar lumen-scrollbar-outer", className)} style={style} data-ui="scrollbar-shell" data-orientation={orientation} data-size={size} data-auto-hide={autoHide || undefined}>
         <div
           {...props}
           ref={viewportRef}
@@ -107,11 +107,11 @@ export const OuterScrollbar = React.forwardRef<HTMLDivElement, ScrollbarProps>(
         >
           <div ref={contentRef}>{children}</div>
         </div>
-        {orientation !== 'horizontal' && renderTrack('y')}
-        {orientation !== 'vertical' && renderTrack('x')}
+        {orientation !== "horizontal" && renderTrack("y")}
+        {orientation !== "vertical" && renderTrack("x")}
       </div>
     );
   },
 );
 
-OuterScrollbar.displayName = 'OuterScrollbar';
+OuterScrollbar.displayName = "OuterScrollbar";
