@@ -57,6 +57,7 @@
 
 :where([data-lumen-theme]) {
   font-family: var(--lumen-font-family);
+  font-size: 14px;
   font-weight: var(--lumen-font-weight-normal);
   color: var(--lumen-color-text);
   font-synthesis: none;
