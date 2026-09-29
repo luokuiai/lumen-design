@@ -985,7 +985,11 @@ const timelineItems = [
     id: "3",
     date: "2026-08-21 14:20",
     title: "自定义内容",
-    icon: <Bell size={16} className="text-[var(--lumen-color-primary)]" />,
+    icon: (
+      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)]">
+        <Bell size={16} />
+      </span>
+    ),
     content: (
       <div className="flex items-center justify-between gap-4">
         <div>

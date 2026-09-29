@@ -82,7 +82,7 @@ export const Timeline: React.FC<TimelineProps> = ({
   }
 
   return (
-    <div className="relative">
+    <div className="relative grid grid-cols-[max-content_minmax(0,1fr)] gap-x-3 pad:gap-x-4">
       {displayItems.map((item, idx) => {
         const style = typeStyles[item.type || "default"];
         const isExpanded = expandedItems.has(item.id);
@@ -92,29 +92,29 @@ export const Timeline: React.FC<TimelineProps> = ({
           <div
             key={item.id}
             data-timeline-item
-            className={`relative flex gap-3 pb-4 pad:gap-4 ${idx === displayItems.length - 1 ? "" : ""}`}
+            className="contents"
           >
-            {idx < displayItems.length - 1 && (
-              <div
-                data-timeline-connector
-                className={`absolute left-[6px] top-[22px] bottom-0 w-[2px] rounded-full opacity-[0.45] ${style.line}`}
-              />
-            )}
-            <div className="relative flex flex-col items-center">
+            <div className="relative flex min-w-[14px] flex-col items-center">
               <div
                 aria-hidden="true"
                 data-timeline-marker
-                className="relative z-10 mt-1 flex h-[14px] w-[14px] shrink-0 items-center justify-center"
+                className="relative z-10 mt-1 flex min-h-[14px] min-w-[14px] shrink-0 items-center justify-center [&>*]:shrink-0"
               >
                 {item.icon ?? (
                   <span className={`h-[14px] w-[14px] rounded-full border-2 ${style.dot}`} />
                 )}
               </div>
+              {idx < displayItems.length - 1 && (
+                <div
+                  data-timeline-connector
+                  className={`mt-1 w-[2px] flex-1 rounded-full opacity-[0.45] ${style.line}`}
+                />
+              )}
             </div>
 
             <div
               data-timeline-content
-              className={`min-w-0 flex-1 rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-3 transition-shadow hover:shadow-sm pad:p-4 ${
+              className={`mb-4 min-w-0 flex-1 rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-3 transition-shadow hover:shadow-sm pad:p-4 ${
                 onItemClick ? "cursor-pointer" : ""
               }`}
               onClick={() => onItemClick?.(item.id)}
@@ -180,7 +180,7 @@ export const Timeline: React.FC<TimelineProps> = ({
         );
       })}
       {maxItems && items.length > maxItems && (
-        <p className="pl-[30px] text-[12px] text-[var(--lumen-color-text-placeholder)]">
+        <p className="col-span-2 pl-[30px] text-[12px] text-[var(--lumen-color-text-placeholder)]">
           {locale.timeline.remaining(items.length - maxItems)}
         </p>
       )}

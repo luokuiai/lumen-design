@@ -19,7 +19,10 @@ describe("Timeline", () => {
     );
 
     expect(getByTestId("custom-timeline-icon")).toBeInTheDocument();
-    expect(container.querySelector("[data-timeline-marker] .rounded-full")).not.toBeInTheDocument();
+    const marker = container.querySelector("[data-timeline-marker]");
+    expect(marker).toHaveClass("[&>*]:shrink-0");
+    expect(marker).toHaveClass("min-h-[14px]", "min-w-[14px]");
+    expect(marker?.querySelector(".rounded-full")).not.toBeInTheDocument();
   });
 
   it("renders custom content in place of the default item content", () => {
@@ -51,15 +54,20 @@ describe("Timeline", () => {
     );
 
     const connector = container.querySelector("[data-timeline-connector]");
+    expect(container.firstElementChild).toHaveClass(
+      "grid",
+      "grid-cols-[max-content_minmax(0,1fr)]",
+      "gap-x-3",
+    );
+    expect(container.querySelector("[data-timeline-item]")).toHaveClass("contents");
     expect(connector).toHaveClass(
-      "left-[6px]",
-      "top-[22px]",
-      "bottom-0",
+      "mt-1",
       "w-[2px]",
+      "flex-1",
       "opacity-[0.45]",
     );
-    expect(connector?.parentElement).toHaveAttribute("data-timeline-item");
     expect(container.querySelector("[data-timeline-content]")).toHaveClass(
+      "mb-4",
       "border-[var(--lumen-color-border)]",
     );
   });
