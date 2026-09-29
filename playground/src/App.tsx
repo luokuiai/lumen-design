@@ -968,6 +968,7 @@ const timelineItems = [
     title: "已创建",
     description: "组件画廊初始化，覆盖主组件入口。",
     type: "success" as const,
+    icon: <Check size={18} className="text-[var(--lumen-color-success)]" />,
     meta: [{ label: "操作者", value: "Design Ops" }],
   },
   {
@@ -979,6 +980,21 @@ const timelineItems = [
     meta: [{ label: "范围", value: "Gallery" }],
     beforeValue: "静态预览",
     afterValue: "可交互预览",
+  },
+  {
+    id: "3",
+    date: "2026-08-21 14:20",
+    title: "自定义内容",
+    icon: <Bell size={16} className="text-[var(--lumen-color-primary)]" />,
+    content: (
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <strong className="text-[14px] font-medium text-[var(--lumen-color-text)]">自定义内容区</strong>
+          <p className="mt-1 text-[12px] text-[var(--lumen-color-text-muted)]">可放置任意 React 节点。</p>
+        </div>
+        <Badge variant="info">自定义</Badge>
+      </div>
+    ),
   },
 ];
 

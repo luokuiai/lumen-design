@@ -9,6 +9,8 @@ export interface TimelineItem {
   description?: string;
   meta?: { label: string; value: string }[];
   type?: "default" | "success" | "warning" | "error";
+  icon?: React.ReactNode;
+  content?: React.ReactNode;
   beforeValue?: string;
   afterValue?: string;
 }
@@ -99,40 +101,51 @@ export const Timeline: React.FC<TimelineProps> = ({
               />
             )}
             <div className="relative flex flex-col items-center">
-              <div className={`relative z-10 mt-1 h-[14px] w-[14px] rounded-full border-2 ${style.dot} shrink-0`} />
+              <div
+                aria-hidden="true"
+                data-timeline-marker
+                className="relative z-10 mt-1 flex h-[14px] w-[14px] shrink-0 items-center justify-center"
+              >
+                {item.icon ?? (
+                  <span className={`h-[14px] w-[14px] rounded-full border-2 ${style.dot}`} />
+                )}
+              </div>
             </div>
 
             <div
-              className={`min-w-0 flex-1 rounded-[12px] border border-[var(--lumen-color-surface-muted)] bg-[var(--lumen-color-surface)] p-3 transition-shadow hover:shadow-sm pad:p-4 ${
+              data-timeline-content
+              className={`min-w-0 flex-1 rounded-[12px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] p-3 transition-shadow hover:shadow-sm pad:p-4 ${
                 onItemClick ? "cursor-pointer" : ""
               }`}
               onClick={() => onItemClick?.(item.id)}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className={`inline-flex rounded-full px-2 py-0.5 text-[12px] font-medium ${style.badge}`}>
-                      {item.title}
-                    </span>
-                    {hasDetails && (
-                      <button
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          toggleExpand(item.id);
-                        }}
-                        className="inline-flex items-center gap-0.5 text-[12px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"
-                      >
-                        {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
-                        {locale.timeline.details}
-                      </button>
-                    )}
+              {item.content ?? (
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className={`inline-flex rounded-full px-2 py-0.5 text-[12px] font-medium ${style.badge}`}>
+                        {item.title}
+                      </span>
+                      {hasDetails && (
+                        <button
+                          type="button"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            toggleExpand(item.id);
+                          }}
+                          className="inline-flex items-center gap-0.5 text-[12px] text-[var(--lumen-color-text-placeholder)] hover:text-[var(--lumen-color-text-muted)]"
+                        >
+                          {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+                          {locale.timeline.details}
+                        </button>
+                      )}
+                    </div>
+                    <p className="mt-2 text-[12px] text-[var(--lumen-color-text-muted)]">{item.date}</p>
                   </div>
-                  <p className="mt-2 text-[12px] text-[var(--lumen-color-text-muted)]">{item.date}</p>
                 </div>
-              </div>
+              )}
 
-              {item.meta && item.meta.length > 0 && (
+              {item.content == null && item.meta && item.meta.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-3 border-t border-[var(--lumen-color-surface-muted)] pt-3">
                   {item.meta.map((metaItem) => (
                     <div key={metaItem.label}>
@@ -143,7 +156,7 @@ export const Timeline: React.FC<TimelineProps> = ({
                 </div>
               )}
 
-              {isExpanded && hasDetails && (
+              {item.content == null && isExpanded && hasDetails && (
                 <div className="mt-3 space-y-2 border-t border-[var(--lumen-color-surface-muted)] pt-3">
                   {item.description && (
                     <p className="text-[12px] leading-6 text-[var(--lumen-color-text-muted)]">{item.description}</p>
