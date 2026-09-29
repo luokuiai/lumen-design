@@ -114,7 +114,7 @@ export const Tabs = <T extends string>({
                       <Icon size={16} className="shrink-0" strokeWidth={2.2} />
                     </span>
                   ) : (
-                    <Icon size={14} className="shrink-0" />
+                    <Icon size={16} className="shrink-0" strokeWidth={2.2} />
                   )
                 ) : null}
                 <span className={styles.iconBase ? "leading-none" : undefined}>{option.label}</span>

@@ -147,6 +147,8 @@ describe("SideNav", () => {
       "font-normal",
     );
     expect(activeItem).not.toHaveClass("font-medium");
+    expect(activeItem.querySelector("svg")).toHaveAttribute("width", "18");
+    expect(activeItem.querySelector("svg")).toHaveAttribute("stroke-width", "1.75");
     expect(screen.getByRole("button", { name: "Settings" })).toHaveClass("font-normal");
     expect(screen.getByText("Workspace")).toHaveClass("text-[13px]", "font-normal");
 
