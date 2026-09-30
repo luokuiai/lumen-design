@@ -10,7 +10,7 @@ const options = [
 ];
 
 describe("Tabs", () => {
-  it.each(["default", "pill", "card"] as const)("keeps keyboard focus separate from selection in %s tabs", async (variant) => {
+  it.each(["default", "pill", "square"] as const)("keeps keyboard focus separate from selection in %s tabs", async (variant) => {
     const user = userEvent.setup();
     const onChange = vi.fn();
     render(<Tabs value="overview" options={options} variant={variant} onChange={onChange} />);
@@ -48,7 +48,7 @@ describe("Tabs", () => {
   });
 
   it("keeps the pill variant available", () => {
-    render(
+    const { container } = render(
       <Tabs
         value="overview"
         options={options}
@@ -59,6 +59,38 @@ describe("Tabs", () => {
 
     expect(screen.getByRole("tab", { name: "Overview" })).toHaveClass(
       "rounded-full",
+    );
+    expect(container.firstElementChild).toHaveClass("bg-transparent");
+  });
+
+  it("uses a compact flat treatment for square tabs", () => {
+    const { container } = render(
+      <Tabs
+        value="overview"
+        options={[
+          { label: "Overview", value: "overview", count: 12 },
+          { label: "Activity", value: "activity", count: 4 },
+        ]}
+        variant="square"
+        size="sm"
+        onChange={() => undefined}
+      />,
+    );
+
+    expect(container.firstElementChild).toHaveClass("bg-transparent");
+    expect(screen.getByRole("tab", { name: "Overview 12" })).toHaveClass(
+      "bg-[var(--lumen-color-primary-soft)]",
+      "border-[color-mix(in_srgb,var(--lumen-color-primary)_45%,transparent)]",
+      "min-h-9",
+      "py-1.5",
+      "rounded-[6px]",
+    );
+    expect(screen.getByText("12")).toHaveClass(
+      "text-[var(--lumen-color-primary)]",
+    );
+    expect(screen.getByText("4")).toHaveClass(
+      "text-[var(--lumen-color-text-muted)]",
+      "group-hover:text-[var(--lumen-color-primary)]",
     );
   });
 

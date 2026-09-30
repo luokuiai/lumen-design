@@ -398,7 +398,7 @@ const galleryCategories: GalleryCategory[] = [
       demo("AppBar", "navigation", "AppBar, Button, Typography", '    <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <AppBar\n        position="absolute"\n        title="订单详情"\n        leading={(\n          <Button iconOnly variant="ghost" aria-label="返回" icon={<ArrowLeft size={19} />} />\n        )}\n        actions={(\n          <Button iconOnly variant="ghost" aria-label="更多操作" icon={<MoreHorizontal size={19} />} />\n        )}\n      />\n      <div className="px-5 pt-20">\n        <Typography variant="h3">#LM-20260904</Typography>\n        <Typography variant="caption" color="muted">等待审核</Typography>\n      </div>\n    </div>', "ArrowLeft, MoreHorizontal"),
       demo("BottomNavigation", "navigation", "BottomNavigation, Typography", '    <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">\n        <Typography variant="h3">{value}</Typography>\n        <Typography variant="caption" color="muted">当前底部导航目标</Typography>\n      </div>\n      <BottomNavigation\n        position="absolute"\n        value={value}\n        onChange={setValue}\n        items={[\n          { value: \'home\', label: \'首页\', icon: Star },\n          { value: \'schedule\', label: \'日程\', icon: CalendarDays },\n          { value: \'messages\', label: \'消息\', icon: Bell, badge: 3, badgeLabel: \'3 条未读消息\' },\n          { value: \'profile\', label: \'我的\', icon: UserRound },\n        ]}\n      />\n    </div>', "Bell, CalendarDays, Star, UserRound", "const [value, setValue] = useState('home');"),
       demo("Breadcrumb", "navigation", "Breadcrumb", "    <Breadcrumb items={[\n      { label: '首页', href: '/' },\n      { label: '订单详情' },\n    ]} />"),
-      demo("Tabs", "navigation", "Tabs, TabView", '    <div>\n      <Tabs\n        value={value}\n        idPrefix="account-tabs"\n        options={[\n          { value: \'overview\', label: \'总览\' },\n          { value: \'activity\', label: \'动态\' },\n        ]}\n        onChange={setValue}\n      />\n      <TabView\n        value={value}\n        idPrefix="account-tabs"\n        items={[\n          { value: \'overview\', content: \'总览内容\' },\n          { value: \'activity\', content: \'动态内容\' },\n        ]}\n        onChange={setValue}\n        swipeable\n      />\n    </div>', undefined, "const [value, setValue] = useState('overview');", ["Tabs"], ["Tabs", "TabView"]),
+      demo("Tabs", "navigation", "Tabs, TabView", '    <div>\n      <Tabs\n        value={value}\n        idPrefix="account-tabs"\n        options={[\n          { value: \'overview\', label: \'总览\' },\n          { value: \'activity\', label: \'动态\' },\n        ]}\n        onChange={setValue}\n      />\n      <TabView\n        value={value}\n        idPrefix="account-tabs"\n        items={[\n          { value: \'overview\', content: \'总览内容\' },\n          { value: \'activity\', content: \'动态内容\' },\n        ]}\n        onChange={setValue}\n        swipeable\n      />\n    </div>', undefined, "const [value, setValue] = useState('overview');", ["Tabs · Default", "Tabs · Pill", "Tabs · Square"], ["Tabs", "TabView"]),
       demo("Steps", "navigation", "Steps", "    <Steps current={1} items={[{ title: '提交' }, { title: '完成' }]} />"),
       demo("Pagination", "data", "Pagination", "    <Pagination currentPage={1} totalPages={5} onPageChange={setPage} />"),
       demo("ScrollToEdge", "navigation", "ScrollToEdge", '    <ScrollToEdge direction="top" threshold={240} />'),
@@ -630,6 +630,9 @@ const zhExampleNames: Record<string, string> = {
   "DataTable · Embedded": "数据表格 · 嵌入式",
   "FileUpload Progress": "文件上传 · 上传进度",
   "FileUpload Compact": "文件上传 · 紧凑模式",
+  "Tabs · Default": "标签页 · 默认",
+  "Tabs · Pill": "标签页 · 胶囊",
+  "Tabs · Square": "标签页 · 方形",
 };
 
 const allDemos = galleryCategories.flatMap((category) => category.demos);
@@ -838,6 +841,20 @@ const cascaderOptions = [
       { value: "offline", label: "暂未开通", disabled: true },
     ],
   },
+];
+
+const workspaceTabOptions = [
+  { value: "overview" as const, label: "运营总览", count: 12, icon: Bell },
+  { value: "usage" as const, label: "使用情况", count: 8, icon: Check },
+  { value: "tokens" as const, label: "设计令牌", count: 32, icon: Settings },
+];
+
+const squareTabOptions = [
+  { value: "all" as const, label: "全部", count: 128 },
+  { value: "pending" as const, label: "待处理", count: 18 },
+  { value: "active" as const, label: "进行中", count: 32 },
+  { value: "completed" as const, label: "已完成", count: 73 },
+  { value: "closed" as const, label: "已关闭", count: 5 },
 ];
 
 const treeNodes: TreeNode[] = [
@@ -1390,7 +1407,7 @@ function DemoCard({
   const copied = activeDemo?.copiedCodeTitle === title;
 
   return (
-    <Card className={`${wide ? "demo-card-wide " : ""}demo-card`.trim()}>
+    <Card variant="outlined" className={`${wide ? "demo-card-wide " : ""}demo-card`.trim()}>
       <CardHeader className="demo-card-header">
         <CardTitle>{localizedTitle}</CardTitle>
         {activeDemo ? (
@@ -1508,6 +1525,8 @@ export default function App() {
   const [radioValue, setRadioValue] = useState("pad");
   const [segment, setSegment] = useState<"all" | "active" | "archived">("all");
   const [tab, setTab] = useState<"overview" | "usage" | "tokens">("overview");
+  const [pillTab, setPillTab] = useState<"overview" | "usage" | "tokens">("overview");
+  const [squareTab, setSquareTab] = useState<"all" | "pending" | "active" | "completed" | "closed">("all");
   const [bottomNavigationValue, setBottomNavigationValue] = useState("home");
   const [currentStep, setCurrentStep] = useState(1);
   const [stepsDirection, setStepsDirection] = useState<StepsDirection>("horizontal");
@@ -3033,17 +3052,13 @@ export default function App() {
                                   </div>
                                 </div>
                               </DemoCard>
-                              <DemoCard title="Tabs" wide>
+                              <DemoCard title="Tabs · Default" wide>
                                 <div className="w-full overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
                                   <Tabs
                                     value={tab}
                                     onChange={setTab}
                                     idPrefix="workspace-tabs"
-                                    options={[
-                                      { value: "overview", label: "运营总览", count: 12, icon: Bell },
-                                      { value: "usage", label: "使用情况", count: 8, icon: Check },
-                                      { value: "tokens", label: "设计令牌", count: 32, icon: Settings },
-                                    ]}
+                                    options={workspaceTabOptions}
                                     className="px-4 pt-2 l:px-6"
                                     aside={<Button size="sm" variant="secondary">导出</Button>}
                                   />
@@ -3105,6 +3120,69 @@ export default function App() {
                                         ),
                                       },
                                     ]}
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Tabs · Pill" wide>
+                                <div className="w-full overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
+                                  <Tabs
+                                    variant="pill"
+                                    value={pillTab}
+                                    onChange={setPillTab}
+                                    idPrefix="pill-tabs"
+                                    options={workspaceTabOptions}
+                                    className="p-4 l:p-5"
+                                  />
+                                  <TabView
+                                    value={pillTab}
+                                    onChange={setPillTab}
+                                    idPrefix="pill-tabs"
+                                    className="border-t border-[var(--lumen-color-divider)]"
+                                    panelClassName="min-h-36 p-5"
+                                    items={workspaceTabOptions.map((option) => ({
+                                      value: option.value,
+                                      content: (
+                                        <div>
+                                          <Typography variant="h3">{option.label}</Typography>
+                                          <Typography variant="body" color="muted" className="mt-2">
+                                            当前胶囊标签包含 {option.count} 条内容。
+                                          </Typography>
+                                        </div>
+                                      ),
+                                    }))}
+                                  />
+                                </div>
+                              </DemoCard>
+                              <DemoCard title="Tabs · Square" wide>
+                                <div className="w-full overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)]">
+                                  <Tabs
+                                    variant="square"
+                                    size="sm"
+                                    value={squareTab}
+                                    onChange={setSquareTab}
+                                    idPrefix="square-tabs"
+                                    options={squareTabOptions}
+                                    className="p-4 l:p-5"
+                                    gridClassName="flex items-center gap-2 overflow-x-auto overflow-y-hidden"
+                                    itemClassName="shrink-0"
+                                  />
+                                  <TabView
+                                    value={squareTab}
+                                    onChange={setSquareTab}
+                                    idPrefix="square-tabs"
+                                    className="border-t border-[var(--lumen-color-divider)]"
+                                    panelClassName="min-h-36 p-5"
+                                    items={squareTabOptions.map((option) => ({
+                                      value: option.value,
+                                      content: (
+                                        <div>
+                                          <Typography variant="h3">{option.label}</Typography>
+                                          <Typography variant="body" color="muted" className="mt-2">
+                                            当前状态共有 {option.count} 条记录。
+                                          </Typography>
+                                        </div>
+                                      ),
+                                    }))}
                                   />
                                 </div>
                               </DemoCard>

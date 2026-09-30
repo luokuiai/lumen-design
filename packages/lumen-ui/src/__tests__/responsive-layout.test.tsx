@@ -29,7 +29,7 @@ describe("responsive layouts", () => {
       <Tabs
         value="overview"
         options={tabOptions}
-        variant="card"
+        variant="square"
         onChange={() => undefined}
       />,
     );
