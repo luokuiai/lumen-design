@@ -394,7 +394,7 @@ const galleryCategories: GalleryCategory[] = [
     keywords: "AppBar BottomNavigation SideNav Breadcrumb Tabs Steps Pagination ScrollToEdge",
     icon: MoreHorizontal,
     demos: [
-      demo("SideNav", "navigation", "SideNav", '    <SideNav sections={[{ items: [{ value: "overview", label: "总览" }, { value: "settings", label: "设置" }] }]} />'),
+      demo("SideNav", "navigation", "Badge, SideNav", '    <div className="w-full max-w-[320px]">\n      <SideNav\n        activeValue={value}\n        onSelect={setValue}\n        defaultExpandedValues={[\'workspace\']}\n        sections={[{\n          title: \'工作台\',\n          items: [\n            { value: \'overview\', label: \'运营总览\', icon: Star },\n            {\n              value: \'messages\',\n              label: \'消息中心\',\n              icon: Bell,\n              trailing: <Badge size="sm" variant="danger">8</Badge>,\n            },\n            {\n              value: \'automation\',\n              label: \'自动化服务\',\n              renderContent: ({ active, collapsed }) => collapsed ? (\n                <Settings aria-hidden="true" size={18} />\n              ) : (\n                <>\n                  <span aria-hidden="true" className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] ${active ? \'bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)]\' : \'bg-[var(--lumen-color-surface-muted)]\'}`}>AI</span>\n                  <span className="min-w-0 flex-1">\n                    <span className="block truncate">自动化服务</span>\n                    <span className="block truncate text-[12px] leading-4 text-[var(--lumen-color-text-muted)]">3 个流程运行中</span>\n                  </span>\n                </>\n              ),\n              trailing: <span className="h-2 w-2 rounded-full bg-[var(--lumen-color-success)]" aria-label="运行正常" />,\n            },\n            {\n              value: \'workspace\',\n              label: \'工作空间\',\n              icon: Star,\n              children: [\n                { value: \'reports\', label: \'分析报表\' },\n                { value: \'archived\', label: \'已归档\', disabled: true },\n              ],\n            },\n            { value: \'settings\', label: \'系统设置\', icon: Settings },\n          ],\n        }]}\n      />\n    </div>', "Bell, Settings, Star", "const [value, setValue] = useState('overview');"),
       demo("AppBar", "navigation", "AppBar, Button, Typography", '    <div className="relative mx-auto h-56 w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <AppBar\n        position="absolute"\n        title="订单详情"\n        leading={(\n          <Button iconOnly variant="ghost" aria-label="返回" icon={<ArrowLeft size={19} />} />\n        )}\n        actions={(\n          <Button iconOnly variant="ghost" aria-label="更多操作" icon={<MoreHorizontal size={19} />} />\n        )}\n      />\n      <div className="px-5 pt-20">\n        <Typography variant="h3">#LM-20260904</Typography>\n        <Typography variant="caption" color="muted">等待审核</Typography>\n      </div>\n    </div>', "ArrowLeft, MoreHorizontal"),
       demo("BottomNavigation", "navigation", "BottomNavigation, Typography", '    <div className="relative mx-auto h-[320px] w-full max-w-[390px] overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface-muted)]">\n      <div className="flex h-full flex-col items-center justify-center px-6 pb-16 text-center">\n        <Typography variant="h3">{value}</Typography>\n        <Typography variant="caption" color="muted">当前底部导航目标</Typography>\n      </div>\n      <BottomNavigation\n        position="absolute"\n        value={value}\n        onChange={setValue}\n        items={[\n          { value: \'home\', label: \'首页\', icon: Star },\n          { value: \'schedule\', label: \'日程\', icon: CalendarDays },\n          { value: \'messages\', label: \'消息\', icon: Bell, badge: 3, badgeLabel: \'3 条未读消息\' },\n          { value: \'profile\', label: \'我的\', icon: UserRound },\n        ]}\n      />\n    </div>', "Bell, CalendarDays, Star, UserRound", "const [value, setValue] = useState('home');"),
       demo("Breadcrumb", "navigation", "Breadcrumb", "    <Breadcrumb items={[\n      { label: '首页', href: '/' },\n      { label: '订单详情' },\n    ]} />"),
@@ -2883,13 +2883,45 @@ export default function App() {
                                     activeValue={sideNavValue}
                                     onSelect={setSideNavValue}
                                     defaultExpandedValues={["workspace"]}
-                                    sections={[{ items: [
+                                    sections={[{ title: "工作台", items: [
+                                      { value: "overview", label: "运营总览", icon: Star },
+                                      {
+                                        value: "messages",
+                                        label: "消息中心",
+                                        icon: Bell,
+                                        trailing: <Badge size="sm" variant="danger">8</Badge>,
+                                      },
+                                      {
+                                        value: "automation",
+                                        label: "自动化服务",
+                                        renderContent: ({ active, collapsed }) => collapsed ? (
+                                          <Settings aria-hidden="true" size={18} />
+                                        ) : (
+                                          <>
+                                            <span
+                                              aria-hidden="true"
+                                              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] ${active ? "bg-[var(--lumen-color-primary)] text-[var(--lumen-color-on-primary)]" : "bg-[var(--lumen-color-surface-muted)]"}`}
+                                            >
+                                              AI
+                                            </span>
+                                            <span className="min-w-0 flex-1">
+                                              <span className="block truncate">自动化服务</span>
+                                              <span className="block truncate text-[12px] leading-4 text-[var(--lumen-color-text-muted)]">3 个流程运行中</span>
+                                            </span>
+                                          </>
+                                        ),
+                                        trailing: (
+                                          <span
+                                            className="h-2 w-2 rounded-full bg-[var(--lumen-color-success)]"
+                                            aria-label="运行正常"
+                                          />
+                                        ),
+                                      },
                                       {
                                         value: "workspace",
                                         label: "工作空间",
                                         icon: Star,
                                         children: [
-                                          { value: "overview", label: "运营总览" },
                                           { value: "reports", label: "分析报表" },
                                           { value: "archived", label: "已归档", disabled: true },
                                         ],
