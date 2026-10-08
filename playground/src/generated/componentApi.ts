@@ -4045,10 +4045,18 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     },
     {
       "name": "variant",
-      "type": "\"default\" | \"pill\" | \"card\"",
+      "type": "\"default\" | \"pill\" | \"square\"",
       "defaultValue": "'default'",
       "description": "设置组件的视觉变体。",
       "descriptionEn": "Sets the visual variant of the component.",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "defaultValue": "'md'",
+      "description": "设置组件尺寸。",
+      "descriptionEn": "Sets the component size.",
       "required": false
     },
     {

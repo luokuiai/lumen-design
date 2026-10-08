@@ -3,7 +3,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Bell, Settings } from "lucide-react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { SideNav } from "../components/SideNav";
+import { SideNav, type SideNavItemRenderState } from "../components/SideNav";
 
 const sections = [
   {
@@ -43,6 +43,7 @@ describe("SideNav", () => {
     );
     const group = screen.getByRole("button", { name: "Workspace" });
     const region = document.getElementById(group.getAttribute("aria-controls")!)!;
+    expect(group.querySelectorAll("svg")[1]?.parentElement).toHaveClass("w-8", "justify-center");
     expect(group).toHaveAttribute("data-active", "true");
     expect(group).not.toHaveAttribute("aria-current");
     expect(region).toHaveAttribute("inert");
@@ -162,6 +163,45 @@ describe("SideNav", () => {
 
     expect(screen.getByRole("navigation")).toHaveAttribute("data-collapsed", "true");
     expect(screen.getByRole("link", { name: "Overview" })).toHaveClass("justify-center");
+  });
+
+  it("renders custom item content without replacing navigation behavior", () => {
+    const onSelect = vi.fn();
+    const renderContent = vi.fn(({ collapsed, defaultContent }: SideNavItemRenderState) => (
+      <>
+        {defaultContent}
+        {!collapsed ? <span>Custom</span> : null}
+      </>
+    ));
+    const customSections = [{ items: [{
+      value: "messages",
+      label: "Messages",
+      renderContent,
+      trailing: <span>12 unread</span>,
+    }] }];
+
+    const { rerender } = render(
+      <SideNav sections={customSections} activeValue="messages" onSelect={onSelect} />,
+    );
+
+    const item = screen.getByRole("button", { name: "Messages" });
+    expect(item).toHaveAttribute("aria-current", "page");
+    expect(item).toHaveTextContent("Custom");
+    expect(item).toHaveTextContent("12 unread");
+    expect(screen.getByText("12 unread").parentElement).toHaveClass("w-8", "justify-center");
+    expect(renderContent).toHaveBeenCalledWith(expect.objectContaining({
+      active: true,
+      collapsed: false,
+      depth: 0,
+      disabled: false,
+    }));
+    fireEvent.click(item);
+    expect(onSelect).toHaveBeenCalledWith("messages", customSections[0]!.items[0]);
+
+    rerender(<SideNav sections={customSections} activeValue="messages" collapsed />);
+    expect(screen.getByRole("button", { name: "Messages" })).toHaveClass("justify-center");
+    expect(screen.queryByText("12 unread")).not.toBeInTheDocument();
+    expect(renderContent).toHaveBeenLastCalledWith(expect.objectContaining({ collapsed: true }));
   });
 
   it("does not show tooltips while quickly moving across collapsed items", () => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { cn } from "./classNames";
 import {
+  tabSizeClassNames,
   tabVariantClassNames,
 } from "./designTokens";
 import type { LucideIcon } from "lucide-react";
@@ -19,6 +20,7 @@ export interface TabsProps<T extends string> {
   options: TabOption<T>[];
   onChange: (value: T) => void;
   variant?: keyof typeof tabVariantClassNames;
+  size?: keyof typeof tabSizeClassNames;
   className?: string;
   gridClassName?: string;
   itemClassName?: string;
@@ -31,6 +33,7 @@ export const Tabs = <T extends string>({
   options,
   onChange,
   variant = "default",
+  size = "md",
   className = "",
   gridClassName,
   itemClassName = "",
@@ -42,7 +45,7 @@ export const Tabs = <T extends string>({
   const styles = tabVariantClassNames[variant];
   const resolvedGridClassName =
     gridClassName ??
-    (variant === "card"
+    (variant === "square"
       ? "grid grid-cols-1 gap-2 pad:grid-cols-2 l:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 xxxl:grid-cols-6"
       : "flex items-center gap-2 overflow-x-auto overflow-y-hidden");
 
@@ -101,6 +104,7 @@ export const Tabs = <T extends string>({
                 }}
                 className={cn(
                   styles.base,
+                  tabSizeClassNames[size],
                   active ? styles.active : styles.inactive,
                   "focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)] focus-visible:bg-[var(--lumen-color-primary-soft)]",
                   variant === "default" ? "rounded-[8px]" : "",

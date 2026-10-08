@@ -12,8 +12,21 @@ export interface SideNavItem<T extends string = string> {
   icon?: LucideIcon;
   href?: string;
   disabled?: boolean;
+  /** 自定义菜单项内容；外层链接或按钮、交互和无障碍语义仍由 SideNav 管理。 */
+  renderContent?: (state: SideNavItemRenderState) => React.ReactNode;
+  /** 展开状态下显示在统一尾部列中的非交互内容。 */
+  trailing?: React.ReactNode;
   /** 子菜单；有子项时作为可展开分组。 */
   children?: SideNavItem<T>[];
+}
+
+export interface SideNavItemRenderState {
+  active: boolean;
+  expanded: boolean;
+  collapsed: boolean;
+  depth: number;
+  disabled: boolean;
+  defaultContent: React.ReactNode;
 }
 
 export interface SideNavSection<T extends string = string> {
@@ -102,18 +115,40 @@ export const SideNav = <T extends string>({
       disabled && sideNavClassNames.disabledItem,
       itemClassName,
     );
-    const content = (
+    const defaultContent = (
       <>
         {Icon ? <Icon aria-hidden="true" className="shrink-0" size={18} strokeWidth={1.75} /> : collapsed ? (
           <span aria-hidden="true" className="text-[13px] font-normal">{item.label.slice(0, 1)}</span>
         ) : null}
         <span className={collapsed ? "sr-only" : "min-w-0 flex-1 truncate"}>{item.label}</span>
+      </>
+    );
+    const customContent = item.renderContent
+      ? item.renderContent({
+        active: active || activeGroup,
+        expanded,
+        collapsed,
+        depth,
+        disabled: Boolean(disabled),
+        defaultContent,
+      })
+      : defaultContent;
+    const content = (
+      <>
+        {customContent}
+        {item.trailing && !collapsed ? (
+          <span className="flex w-8 shrink-0 items-center justify-center">
+            {item.trailing}
+          </span>
+        ) : null}
         {group && !collapsed ? (
-          <ChevronDown
-            aria-hidden="true"
-            size={16}
-            className={cn("shrink-0 transition-transform duration-[160ms] motion-reduce:transition-none", expanded && "rotate-180")}
-          />
+          <span className="flex w-8 shrink-0 items-center justify-center">
+            <ChevronDown
+              aria-hidden="true"
+              size={16}
+              className={cn("transition-transform duration-[160ms] motion-reduce:transition-none", expanded && "rotate-180")}
+            />
+          </span>
         ) : null}
       </>
     );
@@ -124,7 +159,7 @@ export const SideNav = <T extends string>({
     };
     const itemProps = {
       "aria-current": active && !group ? "page" as const : undefined,
-      "aria-label": collapsed ? item.label : undefined,
+      "aria-label": collapsed || item.renderContent ? item.label : undefined,
       "aria-expanded": group && !collapsed ? expanded : undefined,
       "aria-controls": group && !collapsed ? childrenId : undefined,
       "data-side-nav-item": "",
