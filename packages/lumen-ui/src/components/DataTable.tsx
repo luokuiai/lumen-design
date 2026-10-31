@@ -94,8 +94,10 @@ export function DataTable<T>({
   const cellPadding = density === "compact"
     ? "px-3 py-2 mobile:px-2.5"
     : "px-4 py-2.5 mobile:px-3";
+  const headerPadding = density === "compact"
+    ? cellPadding
+    : "px-[18.75px] py-[11.25px] mobile:px-3";
   const cellTextSize = density === "compact" ? "text-[13px]" : "text-[14px]";
-  const headerTextSize = density === "compact" ? "text-[13px]" : "text-[14px]";
   const scrollMaxHeight = maxHeight ?? (stickyHeader ? 400 : undefined);
   const stickyBodyMaxHeight = stickyHeader && scrollMaxHeight !== undefined
     ? `calc(${toCssSize(scrollMaxHeight)} - var(--lumen-data-table-header-height, 44px))`
@@ -227,9 +229,9 @@ export function DataTable<T>({
                           : undefined
                     }
                     className={cn(
-                      cellPadding,
-                      "whitespace-nowrap font-medium leading-5 text-[var(--lumen-color-text-secondary)]",
-                      headerTextSize,
+                      headerPadding,
+                      "whitespace-nowrap text-[13px] font-medium text-[var(--lumen-color-text-secondary)]",
+                      density === "compact" ? "leading-5" : "leading-normal",
                       column.align === "center" && "text-center",
                       column.align === "right" && "text-right",
                       column.headerClassName,

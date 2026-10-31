@@ -3353,7 +3353,7 @@ export default function App() {
                               </DemoCard>
                               <DemoCard title="DataTable · Embedded" wide>
                                 <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
-                                  <div className="border-b border-[var(--lumen-color-border)] px-4 py-3">
+                                  <div className="border-b border-[var(--lumen-color-border)] px-[18.75px] py-3 mobile:px-3">
                                     <CardTitle>公路安全事件</CardTitle>
                                     <CardDescription>
                                       按更新时间排序 · {safetyEvents.length} 条
