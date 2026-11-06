@@ -4,6 +4,18 @@ import { describe, expect, it } from "vitest";
 import { Textarea } from "../components/Textarea";
 
 describe("Textarea", () => {
+  it("disables resizing by default and allows opting into vertical resizing", () => {
+    const { rerender } = render(<Textarea />);
+
+    expect(screen.getByRole("textbox")).toHaveClass("resize-none");
+    expect(screen.getByRole("textbox")).not.toHaveClass("resize-y");
+
+    rerender(<Textarea resize="vertical" />);
+
+    expect(screen.getByRole("textbox")).toHaveClass("resize-y");
+    expect(screen.getByRole("textbox")).not.toHaveClass("resize-none");
+  });
+
   it("shows the current and maximum character count", () => {
     render(<Textarea defaultValue="abc" maxLength={10} showCount />);
 
