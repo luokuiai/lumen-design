@@ -2631,7 +2631,11 @@ export default function App() {
                               </DemoCard>
                               <DemoCard title="Textarea" wide>
                                 <div className="max-w-[640px]">
-                                  <FormField label="备注" className="form-span">
+                                  <FormField
+                                    label="备注"
+                                    className="form-span"
+                                    helperText={'默认禁止拖动，可设置 resize="vertical" 开启纵向拖动。'}
+                                  >
                                     <Textarea
                                       value={textareaText}
                                       onChange={(event) => setTextareaText(event.target.value)}

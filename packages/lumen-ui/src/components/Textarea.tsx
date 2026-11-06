@@ -32,7 +32,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
     {
       size = "lg",
-      resize = "vertical",
+      resize = "none",
       invalid = false,
       showCount = false,
       className,

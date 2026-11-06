@@ -714,7 +714,7 @@ export const generatedComponentApi: Record<string, GeneratedPropDoc[]> = {
     {
       "name": "resize",
       "type": "\"none\" | \"vertical\"",
-      "defaultValue": "'vertical'",
+      "defaultValue": "'none'",
       "description": "设置 resize。",
       "descriptionEn": "Configures resize.",
       "required": false
