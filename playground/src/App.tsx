@@ -2631,7 +2631,11 @@ export default function App() {
                               </DemoCard>
                               <DemoCard title="Textarea" wide>
                                 <div className="max-w-[640px]">
-                                  <FormField label="备注" className="form-span">
+                                  <FormField
+                                    label="备注"
+                                    className="form-span"
+                                    helperText={'默认禁止拖动，可设置 resize="vertical" 开启纵向拖动。'}
+                                  >
                                     <Textarea
                                       value={textareaText}
                                       onChange={(event) => setTextareaText(event.target.value)}
@@ -3353,7 +3357,7 @@ export default function App() {
                               </DemoCard>
                               <DemoCard title="DataTable · Embedded" wide>
                                 <div className="overflow-hidden rounded-[8px] border border-[var(--lumen-color-border)]">
-                                  <div className="border-b border-[var(--lumen-color-border)] px-4 py-3">
+                                  <div className="border-b border-[var(--lumen-color-border)] px-[18.75px] py-3 mobile:px-3">
                                     <CardTitle>公路安全事件</CardTitle>
                                     <CardDescription>
                                       按更新时间排序 · {safetyEvents.length} 条

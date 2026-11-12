@@ -41,8 +41,11 @@ describe("DataTable", () => {
       "ascending",
     );
     expect(screen.getByRole("columnheader", { name: /路段/ })).toHaveClass(
-      "text-[14px]",
+      "text-[13px]",
       "font-medium",
+      "px-[18.75px]",
+      "py-[11.25px]",
+      "leading-normal",
     );
     expect(screen.getByRole("columnheader", { name: /路段/ }).parentElement?.className).toContain(
       "--lumen-color-divider",
