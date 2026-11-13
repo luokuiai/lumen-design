@@ -81,7 +81,7 @@ describe("DropdownMenu", () => {
     expect(menu).toHaveStyle({ left: "100px", top: "78px" });
     expect(menu).toHaveAttribute("data-align", "left");
     expect(menu).toHaveFocus();
-    expect(menu.firstElementChild).toHaveClass("min-w-40", "max-w-[320px]");
+    expect(menu.firstElementChild).toHaveClass("min-w-[180px]", "max-w-[320px]");
     expect(screen.getByRole("menuitem", { name: "First" })).not.toHaveFocus();
   });
 
@@ -123,7 +123,7 @@ describe("DropdownMenu", () => {
 
     const item = screen.getByRole("menuitem", { name: "Delete" });
     expect(item).toBeDisabled();
-    expect(item).toHaveClass("min-h-9", "font-normal");
+    expect(item).toHaveClass("min-h-[38px]", "font-normal");
   });
 
   it("navigates selectable menu items and activates them with the keyboard", async () => {

@@ -58,7 +58,7 @@ export const DropdownMenuItem = React.forwardRef<
     type={type}
     role={role}
     className={cn(
-      "flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-[6px] px-2.5 text-left text-[14px] font-normal text-[var(--lumen-color-text-strong)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] focus-visible:bg-[var(--lumen-color-surface-muted)] focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-border)] disabled:cursor-not-allowed disabled:opacity-45",
+      "flex min-h-[38px] w-full cursor-pointer items-center gap-2 rounded-[6px] px-2.5 text-left text-[14px] font-normal text-[var(--lumen-color-text-strong)] outline-none transition-colors hover:bg-[var(--lumen-color-surface-muted)] focus-visible:bg-[var(--lumen-color-surface-muted)] focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-border)] disabled:cursor-not-allowed disabled:opacity-45",
       className,
     )}
     {...props}
@@ -387,7 +387,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
               className={cn(
                 "rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[var(--lumen-shadow-dropdown)]",
                 resolvedAlign === "right" ? "origin-top-right" : "origin-top-left",
-                menuMode && "min-w-40 max-w-[320px] whitespace-nowrap [&_svg]:shrink-0",
+                menuMode && "min-w-[180px] max-w-[320px] whitespace-nowrap [&_svg]:shrink-0",
                 menuClassName,
               )}
               style={{
