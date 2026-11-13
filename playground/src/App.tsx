@@ -2733,6 +2733,7 @@ export default function App() {
                             <GallerySection key={section.id} section={section}>
                               <DemoCard title="Select" wide>
                                 <div className="form-grid">
+                                  <p className="form-span">展开面板采用紧凑的菜单圆角，支持单选、搜索和多选。</p>
                                   <Select
                                     options={basicSelectOptions}
                                     value={basicSelectValue}
