@@ -2733,7 +2733,6 @@ export default function App() {
                             <GallerySection key={section.id} section={section}>
                               <DemoCard title="Select" wide>
                                 <div className="form-grid">
-                                  <p className="form-span">展开面板采用紧凑的菜单圆角，普通选项最小高度为 36px，条目间距为 2px，带说明的选项随内容增高，支持单选、搜索和多选。</p>
                                   <Select
                                     options={basicSelectOptions}
                                     value={basicSelectValue}
