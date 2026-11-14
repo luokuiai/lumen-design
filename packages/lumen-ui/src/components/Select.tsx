@@ -763,7 +763,7 @@ export const Select = <T extends string | number = string>({
             data-lumen-overlay-scope={overlayScopeId ?? undefined}
             className={cn(
               radiusTokens.icon,
-              "border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]",
+              "will-change-transform border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]",
             )}
             style={{
               ...dropdownStyle,
