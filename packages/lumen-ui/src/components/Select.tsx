@@ -592,7 +592,7 @@ export const Select = <T extends string | number = string>({
             "outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20",
             renderOption
               ? "block w-full text-left transition-all"
-              : "flex min-h-[36px] w-full items-center gap-2.5 rounded-[8px] p-2 text-left text-[14px] transition-colors",
+              : "flex min-h-[36px] w-full items-center gap-2.5 rounded-[6px] p-2 text-left text-[14px] transition-colors",
             option.disabled && "cursor-not-allowed opacity-40",
             !renderOption &&
               (isSelected
@@ -648,7 +648,7 @@ export const Select = <T extends string | number = string>({
           "outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20",
           renderOption
             ? "block w-full text-left transition-all"
-            : "flex min-h-[36px] w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] transition-colors",
+            : "flex min-h-[36px] w-full items-center gap-2 rounded-[6px] p-2 text-left text-[14px] transition-colors",
           option.disabled && "cursor-not-allowed opacity-40",
           !renderOption &&
             (isSelected
