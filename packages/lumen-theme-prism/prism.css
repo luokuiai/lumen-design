@@ -413,6 +413,10 @@
   backdrop-filter: none;
 }
 
+[data-lumen-theme='prism'] [data-ui='select-dropdown'] {
+  border-radius: var(--lumen-radius-icon);
+}
+
 [data-lumen-theme='prism'] [data-ui='dropdown-surface'],
 [data-lumen-theme='prism'] [data-ui='toast'],
 [data-lumen-theme='prism'] [data-ui='tree-select-dropdown'],

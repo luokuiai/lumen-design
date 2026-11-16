@@ -44,7 +44,7 @@ describe("Select", () => {
     const option = document.querySelector('[data-ui="select-option"]');
 
     expect(option).toHaveClass("p-2", "text-[14px]");
-    expect(option?.parentElement).toHaveClass("flex", "flex-col", "gap-1", "p-2");
+    expect(option?.parentElement).toHaveClass("flex", "flex-col", "gap-[2px]", "p-2");
     const scrollbar = option?.closest('[data-ui="scrollbar"]');
     expect(scrollbar).toHaveAttribute("data-size", "sm");
     expect(scrollbar).toHaveAttribute("tabindex", "-1");

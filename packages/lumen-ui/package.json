@@ -1,6 +1,6 @@
 {
   "name": "@luokuiai/lumen-ui",
-  "version": "1.0.1",
+  "version": "1.0.2-beta.1",
   "description": "Lumen UI React component library",
   "type": "module",
   "repository": {
@@ -21,13 +21,14 @@
       "import": "./dist/index.js"
     },
     "./styles.css": "./dist/lumen-ui.css",
+    "./legacy.css": "./dist/lumen-ui.legacy.css",
     "./theme-contract": {
       "types": "./dist/types/theme-contract.d.ts",
       "import": "./dist/theme-contract.js"
     }
   },
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.build.json",
+    "build": "vite build && bun ../../scripts/build-legacy-css.ts && tsc -p tsconfig.build.json",
     "lint": "eslint src --max-warnings=0",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"

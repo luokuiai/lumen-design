@@ -592,7 +592,7 @@ export const Select = <T extends string | number = string>({
             "outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20",
             renderOption
               ? "block w-full text-left transition-all"
-              : "flex w-full items-center gap-2.5 rounded-[8px] p-2 text-left text-[14px] transition-colors",
+              : "flex min-h-[36px] w-full items-center gap-2.5 rounded-[6px] p-2 text-left text-[14px] transition-colors",
             option.disabled && "cursor-not-allowed opacity-40",
             !renderOption &&
               (isSelected
@@ -648,7 +648,7 @@ export const Select = <T extends string | number = string>({
           "outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lumen-color-primary)]/20",
           renderOption
             ? "block w-full text-left transition-all"
-            : "flex w-full items-center gap-2 rounded-[8px] p-2 text-left text-[14px] transition-colors",
+            : "flex min-h-[36px] w-full items-center gap-2 rounded-[6px] p-2 text-left text-[14px] transition-colors",
           option.disabled && "cursor-not-allowed opacity-40",
           !renderOption &&
             (isSelected
@@ -762,8 +762,8 @@ export const Select = <T extends string | number = string>({
             data-testid="select-dropdown"
             data-lumen-overlay-scope={overlayScopeId ?? undefined}
             className={cn(
-              radiusTokens.card,
-              "border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]",
+              radiusTokens.icon,
+              "will-change-transform border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[0_8px_30px_var(--lumen-color-shadow)]",
             )}
             style={{
               ...dropdownStyle,
@@ -781,7 +781,7 @@ export const Select = <T extends string | number = string>({
             {searchable && renderSearchSection()}
 
             <Scrollbar size="sm" autoHide tabIndex={-1} className="max-h-[252px]">
-              <div className="flex flex-col gap-1 p-2">
+              <div className="flex flex-col gap-[2px] p-2">
                 {loading ? (
                   <div className="px-3 py-4 text-center text-[13px] text-[var(--lumen-color-text-placeholder)]">
                     {loadingText}

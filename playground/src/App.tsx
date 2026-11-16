@@ -2228,8 +2228,6 @@ export default function App() {
                               <Settings size={16} />
                               账户设置
                             </DropdownMenuItem>
-                          </div>
-                          <div className="account-menu-actions account-menu-footer">
                             <DropdownMenuItem type="button" role="menuitem" className="account-menu-logout" onClick={close}>
                               <LogOut size={16} />
                               退出登录
@@ -3224,7 +3222,7 @@ export default function App() {
                               </DemoCard>
                               <DemoCard title="DropdownMenu">
                                 <div className="stack">
-                                  <p>菜单默认最小宽度为 160px，文字使用强调色，悬停和聚焦时保持字色。</p>
+                                  <p>菜单默认最小宽度为 180px，菜单项最小高度为 38px，与 ContextMenu 示例一致，条目之间不额外留间隔。文字使用强调色，悬停和聚焦时保持字色。</p>
                                   <DropdownMenu
                                     menuMode
                                     trigger={({ toggle, open, menuId }) => (
