@@ -115,7 +115,104 @@ describe("DropdownMenu", () => {
     const menu = screen.getByTestId("dropdown-menu");
     expect(menu).toHaveStyle({ left: "820px", top: "78px" });
     expect(menu).toHaveAttribute("data-align", "right");
-    expect(menu.firstElementChild).toHaveClass("origin-top-right");
+    expect(menu.firstElementChild).toHaveStyle({ transformOrigin: "right top" });
+  });
+
+  it.each([
+    { align: "left" as const, dropUp: false },
+    { align: "right" as const, dropUp: false },
+    { align: "left" as const, dropUp: true },
+    { align: "right" as const, dropUp: true },
+  ])("matches opening and closing motion to placement (align=$align, up=$dropUp)", ({ align, dropUp }) => {
+    vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockReturnValue(160);
+    vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockReturnValue(120);
+
+    render(
+      <DropdownMenu
+        align={align}
+        trigger={({ toggle }) => <button onClick={toggle}>Open</button>}
+      >
+        <div>Menu content</div>
+      </DropdownMenu>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    const top = dropUp ? window.innerHeight - 60 : 40;
+    vi.spyOn(trigger, "getBoundingClientRect").mockReturnValue({
+      bottom: top + 30,
+      height: 30,
+      left: 100,
+      right: 180,
+      top,
+      width: 80,
+      x: 100,
+      y: top,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.click(trigger);
+
+    const menu = screen.getByTestId("dropdown-menu");
+    const surface = menu.firstElementChild;
+    const transformOrigin = `${align} ${dropUp ? "bottom" : "top"}`;
+    expect(menu).toHaveStyle({
+      top: `${dropUp ? top - 128 : top + 38}px`,
+    });
+    expect(surface).toHaveStyle({
+      animation: `lumen-dropdown-in${dropUp ? "-up" : ""} 0.12s ease-out`,
+      transformOrigin,
+    });
+
+    fireEvent.click(trigger);
+
+    expect(menu).toHaveAttribute("data-state", "closing");
+    expect(surface).toHaveStyle({
+      animation: `lumen-dropdown-out${dropUp ? "-up" : ""} 0.12s ease-in forwards`,
+      transformOrigin,
+    });
+  });
+
+  it("updates motion direction when the open menu is repositioned", () => {
+    vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockReturnValue(160);
+    vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockReturnValue(120);
+
+    render(
+      <DropdownMenu trigger={({ toggle }) => <button onClick={toggle}>Open</button>}>
+        <div>Menu content</div>
+      </DropdownMenu>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    let top = window.innerHeight - 60;
+    vi.spyOn(trigger, "getBoundingClientRect").mockImplementation(() => ({
+      bottom: top + 30,
+      height: 30,
+      left: 100,
+      right: 180,
+      top,
+      width: 80,
+      x: 100,
+      y: top,
+      toJSON: () => ({}),
+    }));
+
+    fireEvent.click(trigger);
+    const surface = screen.getByTestId("dropdown-menu").firstElementChild;
+    expect(surface).toHaveStyle({ transformOrigin: "left bottom" });
+
+    top = 40;
+    fireEvent(window, new Event("resize"));
+
+    expect(screen.getByTestId("dropdown-menu")).toHaveStyle({ top: "78px" });
+    expect(surface).toHaveStyle({
+      animation: "lumen-dropdown-in 0.12s ease-out",
+      transformOrigin: "left top",
+    });
+    fireEvent.click(trigger);
+    expect(surface).toHaveStyle({
+      animation: "lumen-dropdown-out 0.12s ease-in forwards",
+      transformOrigin: "left top",
+    });
   });
 
   it("provides an accessible styled menu item", () => {
