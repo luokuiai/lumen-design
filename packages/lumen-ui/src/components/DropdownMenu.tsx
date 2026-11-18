@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "./classNames";
+import { dropdownTransformOrigin } from "./dropdownMotion";
 import {
   announceFloatingLayerOpen,
   FLOATING_LAYER_OPEN_EVENT,
@@ -87,6 +88,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   const [resolvedAlign, setResolvedAlign] = useState<"left" | "right">(
     align === "right" ? "right" : "left",
   );
+  const [shouldDropUp, setShouldDropUp] = useState(false);
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({
     left: -9999,
     position: "fixed",
@@ -270,6 +272,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
           ? topPlacement
           : Math.max(viewportPadding, viewportHeight - menuHeight - viewportPadding);
     }
+    setShouldDropUp(top < triggerRect.top);
 
     setMenuStyle({
       left,
@@ -386,15 +389,19 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
               data-ui="dropdown-surface"
               className={cn(
                 "rounded-[var(--lumen-radius-icon)] border border-[var(--lumen-color-border)] bg-[var(--lumen-color-surface)] shadow-[var(--lumen-shadow-dropdown)]",
-                resolvedAlign === "right" ? "origin-top-right" : "origin-top-left",
                 menuMode && "min-w-[180px] max-w-[320px] whitespace-nowrap [&_svg]:shrink-0",
                 menuClassName,
               )}
               style={{
                 animation:
-                phase === "closing"
-                  ? "lumen-dropdown-out 0.12s ease-in forwards"
-                  : "lumen-dropdown-in 0.12s ease-out",
+                  phase === "closing"
+                    ? shouldDropUp
+                      ? "lumen-dropdown-out-up 0.12s ease-in forwards"
+                      : "lumen-dropdown-out 0.12s ease-in forwards"
+                    : shouldDropUp
+                      ? "lumen-dropdown-in-up 0.12s ease-out"
+                      : "lumen-dropdown-in 0.12s ease-out",
+                transformOrigin: dropdownTransformOrigin(shouldDropUp, resolvedAlign),
               }}
             >
               {typeof children === "function"

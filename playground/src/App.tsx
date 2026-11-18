@@ -3224,6 +3224,7 @@ export default function App() {
                                 <div className="stack">
                                   <p>菜单默认最小宽度为 180px，菜单项最小高度为 38px，与 ContextMenu 示例一致，条目之间不额外留间隔。文字使用强调色，悬停和聚焦时保持字色。</p>
                                   <DropdownMenu
+                                    className="flex min-h-[240px] items-end"
                                     menuMode
                                     trigger={({ toggle, open, menuId }) => (
                                       <Button
